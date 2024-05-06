@@ -31,23 +31,23 @@ ID,Español,Ingles
 29,General,General
 30,Música,Music
 31,Efectos de Sonido,SFX
-32,Jugadores,Players
-33,Jugador 1,Player 1
-34,Jugador 2,Player 2
-35,Jugador 3,Player 3
-36,Jugador 4,Player 4
-37,Acción / Uso,Action / Use
-38,Ataque,Attack
-39,Esquivar / Evadir,Dodge
-40,Habilidad Principal,Skill 1
-41,Habilidad Secundaria,Skill 2
-42,Inventario,Inventory
-43,Apuntar Estático,Static Aim
-44,Pausa,Pause
-45,Mover Arriba,Move Up
-46,Mover Abajo,Move Down
-47,Mover Izquierda,Move Left
-48,Mover Derecha,Move Right
+32,Acción / Uso,Action / Use
+33,Ataque,Attack
+34,Esquivar / Evadir,Dodge
+35,Habilidad Principal,Skill 1
+36,Habilidad Secundaria,Skill 2
+37,Inventario,Inventory
+38,Apuntar Estático,Static Aim
+39,Pausa,Pause
+40,Editar Controles,Edit Controls
+41,Teclado,Keyboard
+42,Gamepad,Gamepad
+43,Presiona la Tecla para Reasignar...,Press Key to Remap...
+44,,
+45,,
+46,,
+47,,
+48,,
 49,Activa el temblor de la pantalla,Activate screen shaking
 50,Activa la vibración del mando,Activate the vibration of the controller
 51,Ayuda a apuntar con tus armas a distancia ajustando la mirilla al enemigo más cercano,Helps aim your weapons at range by adjusting the sight to the nearest enemy

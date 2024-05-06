@@ -2,8 +2,7 @@ using TMPro;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using Unity.VisualScripting;
-using static UnityEditor.PlayerSettings;
+using System.Linq;
 
 public class Settings : MonoBehaviour {
 
@@ -39,9 +38,11 @@ public class Settings : MonoBehaviour {
     [Header("Calls")]
     private ControlSettings _controlSettings;
     private LanguageManager _languageManager;
+    private EditorInputs _inputs;
 
     private void Awake()
     {
+        _inputs = GetComponentInChildren<EditorInputs>();
         _controlSettings = GetComponent<ControlSettings>();
         _languageManager = FindAnyObjectByType<LanguageManager>();
     }
@@ -67,12 +68,14 @@ public class Settings : MonoBehaviour {
     }
     private void Update()
     {
+        if (_inputs.InConfirm) return;
+
         // MOVER HACIA ATRAS
         if (Input.GetButtonDown("LB") || Input.GetKeyDown(KeyCode.Q))
         {
             int index = _indexConfig;
 
-            if (index == 0) index = 2;
+            if (index == 0) index = (_countForSection.Length - 1);
             else index--;
 
             MoveToSectionInSettings(index);
@@ -83,7 +86,7 @@ public class Settings : MonoBehaviour {
         {
             int index = _indexConfig;
 
-            if (index >= 2) index = 0;
+            if (index >= (_countForSection.Length - 1)) index = 0;
             else index++;
 
             MoveToSectionInSettings(index);
@@ -119,6 +122,13 @@ public class Settings : MonoBehaviour {
                     _timerToDelayRun = 0.1f;
                 }
             }
+        }
+    }
+    public void EditInterable()
+    {
+        for(int i = 0; i < _allContentSelectable.Length; i++)
+        {
+            _allContentSelectable[_posInSettings].interactable = !_allContentSelectable[_posInSettings].interactable;
         }
     }
     // ---- MANIPULATE ---- //

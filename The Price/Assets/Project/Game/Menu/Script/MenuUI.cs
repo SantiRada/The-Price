@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,10 +19,12 @@ public class MenuUI : MonoBehaviour {
     private LanguageManager _language;
     private DetectorPlayers _detectorPlayers;
     private Settings _controlSettings;
+    private EditorInputs _editorInputs;
 
     private void Awake()
     {
         _anim = GetComponent<Animator>();
+        _editorInputs = GetComponentInChildren<EditorInputs>();
         _detectorPlayers = FindAnyObjectByType<DetectorPlayers>();
         _language = FindAnyObjectByType<LanguageManager>();
         _controlSettings = GetComponentInChildren<Settings>();
@@ -51,6 +52,12 @@ public class MenuUI : MonoBehaviour {
     }
     private void Update()
     {
+        if (_editorInputs.InConfirm)
+        {
+            Debug.Log("In Confirm");
+            return;
+        }
+
         // CERRAR SETTINGS Y VOLVER AL MENU BASE
         if ((Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.Escape)) && _posGeneral == 1)
         {
