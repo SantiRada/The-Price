@@ -21,6 +21,7 @@ public class PauseMenu : MonoBehaviour {
     private static bool inPause { get; set; }
 
     private Settings _settings;
+    private bool inConfig = false;
 
     private void Awake()
     {
@@ -36,7 +37,7 @@ public class PauseMenu : MonoBehaviour {
     private void Update()
     {
         // CERRAR SETTINGS Y VOLVER AL MENU BASE
-        if ((Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.Escape)) && _settings.Config)
+        if ((Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.Escape)) && inConfig)
         {
             CloseSettings();
         }
@@ -68,13 +69,15 @@ public class PauseMenu : MonoBehaviour {
     public void GoToSettings()
     {
         _settingsWindow.SetActive(true);
-
+        
+        inConfig = true;
         _settings.OpenConfig();
     }
     public void CloseSettings()
     {
         _settings.CloseConfig();
 
+        inConfig = false;
         _settingsWindow.SetActive(false);
         _menuObject.Select();
     }

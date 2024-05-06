@@ -16933,8 +16933,7 @@ MonoBehaviour:
   - {fileID: 1256347198}
   _countForSection: 090000000400000003000000
   _descriptionSection: {fileID: 1163109909}
-  _gameDropdown: 08000000
-  _screenDropdown: 0000000001000000
+  _dropdowns: 08000000090000000a000000
   _delayToMovementStick: 0.2
 --- !u!1 &2022674772
 GameObject:

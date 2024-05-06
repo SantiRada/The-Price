@@ -87,6 +87,7 @@ public class MenuUI : MonoBehaviour {
         }
         else if (_posGeneral == 1)
         {
+            Debug.Log("Open Config");
             _controlSettings.OpenConfig();
         }
 

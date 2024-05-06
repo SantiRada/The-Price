@@ -2,6 +2,8 @@ using TMPro;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.VisualScripting;
+using static UnityEditor.PlayerSettings;
 
 public class Settings : MonoBehaviour {
 
@@ -17,17 +19,16 @@ public class Settings : MonoBehaviour {
     [Header("Settings")]
     [SerializeField] private TextMeshProUGUI[] _textTitles;
     [SerializeField] private int[] _countForSection;
-    private bool inConfig { get; set; }
     private int _indexConfig = 0;
     private int _posInSettings = 0;
     private int _prevPosInSettings = 0;
+    private int _localPosition = 0;
 
     [Header("Game")]
     [SerializeField] private TextMeshProUGUI _descriptionSection;
 
     [Header("Function for Dropdown")]
-    [SerializeField] private int[] _gameDropdown;
-    [SerializeField] private int[] _screenDropdown;
+    [SerializeField] private int[] _dropdowns = { 8, 9, 10 };
     private float _timerToDelayRun = 0.1f;
     private bool _canRun = true;
 
@@ -50,8 +51,6 @@ public class Settings : MonoBehaviour {
     }
     private void InitialValues()
     {
-        Config = false;
-
         _indexConfig = 0;
         _posInSettings = 0;
 
@@ -97,37 +96,22 @@ public class Settings : MonoBehaviour {
         }
 
         // CANCELAR MOVIMIENTO AL ABRIR UN DROPDOWN
-        if ((Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire3") || Input.GetButtonDown("Submit") || Input.GetButtonDown("Select")) && Config)
+        if (Input.GetButtonDown("Fire1"))
         {
-            switch (_indexConfig)
+            for (int i = 0; i < _dropdowns.Length; i++)
             {
-                case 0:
-                    for (int i = 0; i < _gameDropdown.Length; i++)
-                    {
-                        if (_posInSettings == _gameDropdown[i])
-                        {
-                            _canRun = false;
-                            break;
-                        }
-                    }
+                if (_posInSettings == _dropdowns[i])
+                {
+                    _canRun = false;
                     break;
-                case 1:
-                    for (int i = 0; i < _screenDropdown.Length; i++)
-                    {
-                        if (_posInSettings == _screenDropdown[i])
-                        {
-                            _canRun = false;
-                            break;
-                        }
-                    }
-                    break;
+                }
             }
         }
         if (!_canRun)
         {
             _timerToDelayRun -= Time.deltaTime;
 
-            if (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire3") || Input.GetButtonDown("Submit") || Input.GetButtonDown("Select") || Input.GetButtonDown("Cancel") || Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Fire1"))
             {
                 if (_timerToDelayRun <= 0)
                 {
@@ -137,16 +121,9 @@ public class Settings : MonoBehaviour {
             }
         }
     }
-    // ---- SETTER & GETTER ---- //
-    public bool Config
-    {
-        get { return inConfig; }
-        set { inConfig = value; }
-    }
     // ---- MANIPULATE ---- //
     public void OpenConfig()
     {
-        Config = true;
         _indexConfig = 0;
         _posInSettings = 0;
         _prevPosInSettings = 0;
@@ -159,8 +136,6 @@ public class Settings : MonoBehaviour {
     {
         _controlSettings.SaveData();
 
-        Config = false;
-
         _sectorSettings[_indexConfig].SetActive(false);
     }
     // ---------- MOVEMENT ---------- //
@@ -169,41 +144,10 @@ public class Settings : MonoBehaviour {
         _canMovement = false;
 
         // PINTAR DE NEGRO EL ELEMENTO ANTERIOR
-        if (_indexConfig > 0)
-        {
-            RestartPrevSelect();
+        _allContent[_prevPosInSettings].sprite = _sprBase;
 
-            _allContent[_prevPosInSettings].sprite = _sprBase;
-        }
-        else
-        {
-            _allContent[_posInSettings].sprite = _sprBase;
-        }
-        // --------------------------------- //
-
-        // -- MODIFICAR VALOR DE CONFIG Y MOVER A OTRO ELEMENTO
-        if (num > 0)
-        {
-            _prevPosInSettings--;
-            _posInSettings--;
-        }
-        if (num < 0)
-        {
-            _prevPosInSettings++;
-            _posInSettings++;
-        }
-
-        // CALCULAR POSICIÓN MÁXIMA SEGÚN LA SECCIÓN //
-        if (_posInSettings < 0)
-        {
-            _posInSettings = _countForSection[_indexConfig] - 1;
-        }
-        if (_posInSettings >= _countForSection[_indexConfig])
-        {
-            _posInSettings = 0;
-            RestartPrevSelect();
-        }
-        // ----------------------------------------- //
+        // CALCULAR POSICIONES SEGÚN LA SECCIÓN //
+        TestToRestart(num);
 
         // COLOCAR TEXTO DESCRIPTIVO SI VIENE AL CASO //
         if (_indexConfig == 0)
@@ -216,16 +160,8 @@ public class Settings : MonoBehaviour {
         // ------------------------------------------ //
 
         // PINTAR DE GRIS EL NUEVO ELEMENTO
-        if (_indexConfig > 0)
-        {
-            _allContent[_prevPosInSettings].sprite = _sprSelect;
-            _allContentSelectable[_prevPosInSettings].Select();
-        }
-        else
-        {
-            _allContent[_posInSettings].sprite = _sprSelect;
-            _allContentSelectable[_posInSettings].Select();
-        }
+        _allContent[_posInSettings].sprite = _sprSelect;
+        _allContentSelectable[_posInSettings].Select();
 
         yield return new WaitForSeconds(_delayToMovementStick);
         _canMovement = true;
@@ -233,44 +169,53 @@ public class Settings : MonoBehaviour {
     // ---------- SETTINGS ---------- //
     public void MoveToSectionInSettings(int num)
     {
-        if (_indexConfig > 0)
-        {
-            RestartPrevSelect();
-
-            _allContent[_prevPosInSettings].sprite = _sprBase;
-        }
-        else
-        {
-            _allContent[_posInSettings].sprite = _sprBase;
-        }
-
-        _posInSettings = 0;
+        _allContent[_prevPosInSettings].sprite = _sprBase;
 
         _textTitles[_indexConfig].color = Color.gray;
         _sectorSettings[_indexConfig].SetActive(false);
 
         _indexConfig = num;
+        ResetPosition();
 
         _textTitles[_indexConfig].color = Color.white;
         _sectorSettings[_indexConfig].SetActive(true);
 
+        _allContent[_posInSettings].sprite = _sprSelect;
+        _allContentSelectable[_posInSettings].Select();
+    }
+    private void ResetPosition()
+    {
+        _posInSettings = _localPosition = 0;
+
         if (_indexConfig > 0)
         {
-            RestartPrevSelect();
+            for (int i = 0; i < _indexConfig; i++)
+            {
+                _posInSettings += _countForSection[i];
+            }
+        }
 
-            _allContent[_prevPosInSettings].sprite = _sprSelect;
-        }
-        else
-        {
-            _allContent[_posInSettings].sprite = _sprSelect;
-        }
-    }
-    private void RestartPrevSelect()
-    {
         _prevPosInSettings = _posInSettings;
-        for (int i = 0; i < _indexConfig; i++)
+    }
+    private void TestToRestart(float num)
+    {
+        // -- MODIFICAR VALOR DE CONFIG Y MOVER A OTRO ELEMENTO
+        if (num > 0) _localPosition--;
+        if (num < 0) _localPosition++;
+
+        if (_localPosition >= _countForSection[_indexConfig]) _localPosition = 0;
+        else if (_localPosition < 0) _localPosition = _countForSection[_indexConfig] - 1;
+
+        _posInSettings = _localPosition;
+
+        if(_indexConfig > 0)
         {
-            _prevPosInSettings += _countForSection[i];
+            for (int i = 0; i < _indexConfig; i++)
+            {
+                _posInSettings += _countForSection[i];
+            }
         }
+
+        _prevPosInSettings = _posInSettings;
     }
 }
