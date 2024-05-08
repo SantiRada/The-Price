@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour {
 
     [Header("Stats")]
-    private string _control { get; set; }
+    [SerializeField] private string _control { get; set; }
     [SerializeField] private uint _healthMax;
     [SerializeField] private uint _energyMax;
     [Space]

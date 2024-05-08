@@ -57,10 +57,7 @@ public class DetectorPlayers : MonoBehaviour {
                         {
                             char lastChar = data[0][data[0].Length - 1];
 
-                            if (char.IsDigit(lastChar))
-                            {
-                                AddPlayer(data[0]);
-                            }
+                            if (char.IsDigit(lastChar)) AddPlayer(data[0]);
 
                         }
                     }
@@ -75,19 +72,13 @@ public class DetectorPlayers : MonoBehaviour {
                             }
                         }
 
-                        if (!inTest)
-                        {
-                            AddPlayer("Keyboard & Mouse");
-                        }
+                        if (!inTest) AddPlayer("Keyboard & Mouse");
                     }
                 }
             }
         }
 
-        if (delayToClic)
-        {
-            _timerToStartGame -= Time.deltaTime;
-        }
+        if (delayToClic) _timerToStartGame -= Time.deltaTime;
 
         if(_timerToStartGame <= 0)
         {

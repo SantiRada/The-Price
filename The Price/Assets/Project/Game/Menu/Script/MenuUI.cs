@@ -88,15 +88,8 @@ public class MenuUI : MonoBehaviour {
         _posGeneral = num;
         _sectioners[_posGeneral].SetActive(true);
 
-        if (_posGeneral == 0)
-        {
-            _FirstElement.Select();
-        }
-        else if (_posGeneral == 1)
-        {
-            Debug.Log("Open Config");
-            _controlSettings.OpenConfig();
-        }
+        if (_posGeneral == 0) _FirstElement.Select();
+        else if (_posGeneral == 1) _controlSettings.OpenConfig();
 
         if (num == 2)
         {

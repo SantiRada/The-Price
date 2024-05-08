@@ -30,6 +30,11 @@ public class InputController : MonoBehaviour {
 
         _pauseMenu = FindAnyObjectByType<PauseMenu>();
     }
+    private void Start()
+    {
+        if (!_playerStats.Control.Contains("Joystick")) _playerInput.defaultControlScheme = "Keyboard";
+        else if (_playerStats.Control.Contains("Joystick"))  _playerInput.defaultControlScheme = "Gamepad";
+    }
     private void Update()
     {
         _movement.SetDirection(_playerInput.actions["Move"].ReadValue<Vector2>());

@@ -6358,7 +6358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85409d1f8709b0d49a83a97b0fd6b6af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timerToStartGame: 2
+  _timerToStartGame: 1
   canDetect: 0
   _playersOn:
   - {fileID: 1512568974}
@@ -10913,7 +10913,6 @@ GameObject:
   m_Component:
   - component: {fileID: 931446476}
   - component: {fileID: 931446475}
-  - component: {fileID: 931446477}
   m_Layer: 0
   m_Name: LanguageSelector
   m_TagString: Untagged
@@ -10952,52 +10951,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &931446477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 931446474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 164fa57bf20a0bc44b411ba8f2f9e826, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xboxUI:
-  - {fileID: -828606512, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: -1069218761, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: 284347791, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: -1016978671, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: 1497042589, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: -1114107559, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: 462679719, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: 404551862, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  playStationUI:
-  - {fileID: 1831618786, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: -30176441, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: 299511665, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: 2006557423, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: -457285374, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: -1909668350, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: -2109843830, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: 80381376, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  keyboardMouseUI:
-  - {fileID: -1572477820, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: 1526065191, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: -395252114, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: -1112545574, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: -879888848, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: 2097331414, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: -442799695, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  - {fileID: 2073121213, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
-  _typeController: 0
-  _players: []
-  _countPlayerCreated: 0
-  _playerObj: {fileID: 3292636607405707172, guid: 705b11be53fdbde40be5fe20c87e1a6c, type: 3}
-  _hudPlayer: {fileID: 2289373231361262201, guid: ea35dc23851d9454f9b7c31061cf8ad0, type: 3}
-  _statsPlayer: {fileID: 4808162325149967613, guid: 9029cdb3ec3f8d24c8355b1449f09f94, type: 3}
-  _currentScene: 
 --- !u!1 &951126026
 GameObject:
   m_ObjectHideFlags: 0
@@ -22918,7 +22871,7 @@ MonoBehaviour:
   _countForSection: 09000000040000000300000010000000
   _descriptionSection: {fileID: 1163109909}
   _dropdowns: 08000000090000000a000000
-  _delayToMovementStick: 0.2
+  _delayToMovementStick: 0.25
 --- !u!1 &2022674772
 GameObject:
   m_ObjectHideFlags: 0

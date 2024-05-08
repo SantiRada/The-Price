@@ -5,16 +5,8 @@ using UnityEngine.SceneManagement;
 public enum TypeController { Keyboard, XBox, PlayStation }
 public class InputManager : MonoBehaviour {
 
-    [Header("UI Controller")]
-    [SerializeField] private Sprite[] xboxUI;
-    [SerializeField] private Sprite[] playStationUI;
-    [SerializeField] private Sprite[] keyboardMouseUI;
-    [Space]
-    [SerializeField] private TypeController _typeController;
-
     [Header("Detector Players")]
     public List<string> _players = new List<string>();
-    [SerializeField] private int _countPlayerCreated = 0;
 
     [Header("Content Game")]
     [SerializeField] private GameObject _playerObj;
@@ -47,6 +39,7 @@ public class InputManager : MonoBehaviour {
             // ---- PLAYER -------------------- //
             GameObject obj = Instantiate(_playerObj, new Vector3(i, 0, 0), Quaternion.identity);
             PlayerStats pj = obj.GetComponent<PlayerStats>();
+            pj.Control = _players[i];
 
             // ---- HUD ----------------------- //
             GameObject objHUD = Instantiate(_hudPlayer, Vector3.zero, Quaternion.identity, parentHUD);
@@ -71,36 +64,6 @@ public class InputManager : MonoBehaviour {
             #endregion
 
             pj.SetUI(objHUD, objStats, _players[i]);
-            _countPlayerCreated = i;
         }
-    }
-    public Sprite GetSpriteControl(string input)
-    {
-        Sprite content = null;
-        int position = 0;
-
-        if (input.Contains("Button2")) position = 0;
-        else if (input.Contains("Button3")) position = 1;
-        else if (input.Contains("Button0")) position = 2;
-        else if (input.Contains("Button1")) position = 3;
-        else if (input.Contains("Button4")) position = 4;
-        else if (input.Contains("Button5")) position = 5;
-        else if (input.Contains("Button6")) position = 6;
-        else if (input.Contains("Button7")) position = 7;
-
-        switch (_typeController)
-        {
-            case TypeController.XBox:
-                content = xboxUI[position];
-                break;
-            case TypeController.Keyboard:
-                content = keyboardMouseUI[position];
-                break;
-            case TypeController.PlayStation:
-                content = playStationUI[position];
-                break;
-        }
-
-        return content;
     }
 }

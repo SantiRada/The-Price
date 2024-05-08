@@ -2,7 +2,6 @@ using TMPro;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 public class Settings : MonoBehaviour {
 
@@ -100,6 +99,10 @@ public class Settings : MonoBehaviour {
 
         if(Input.GetAxis("Horizontal") != 0 && _canMovement && _canRun && _posInSettings > 15)
         {
+            if(Input.GetAxis("Horizontal") < 0) if (_posInSettings > 15 && _posInSettings < 24) return;
+
+            if (Input.GetAxis("Horizontal") > 0) if (_posInSettings > 23) return;
+
             StartCoroutine(MovementSection(0));
         }
 
