@@ -8,6 +8,7 @@ public class EditorInputs : MonoBehaviour {
     [Header("Reference Controls")]
     [SerializeField] private InputActionReference[] _inputActionReference;
     [SerializeField] private List<string> _inputData = new List<string>();
+    private string _scheme = "Gamepad";
 
     [Header("Other Data")]
     private PlayerInput _inputAction;
@@ -36,11 +37,26 @@ public class EditorInputs : MonoBehaviour {
         _baseTimer = _timer;
         _sectionConfirm.SetActive(false);
 
-        _inputAction.SwitchCurrentControlScheme("Gamepad");
+        DetectScheme();
+    }
+    private void DetectScheme()
+    {
+        _inputAction.SwitchCurrentControlScheme(_scheme);
 
         for (int i = 0; i < _inputActionReference.Length; i++)
         {
-            _inputData.Add(_inputActionReference[i].action.bindings[0].path);
+            for (int j = 0; j < _inputActionReference[i].action.bindings.Count; j++)
+            {
+                if (_inputActionReference[i].action.bindings[j].path.Contains(_scheme))
+                {
+                    if (_inputData.Count != _inputActionReference.Length)
+                        _inputData.Add(_inputActionReference[i].action.bindings[j].path);
+                    else
+                        _inputData[i] = (_inputActionReference[i].action.bindings[j].path);
+                    // --------------------- //
+                    break;
+                }
+            }
         }
     }
     private void Update()
@@ -51,7 +67,7 @@ public class EditorInputs : MonoBehaviour {
 
             _textConfirm.text = _textContent + "\n\n" + _timer.ToString("f0");
 
-            if(_timer < (_baseTimer - 0.5f))
+            if (_timer < (_baseTimer - 0.5f))
             {
                 if (Input.anyKeyDown)
                 {
@@ -71,10 +87,7 @@ public class EditorInputs : MonoBehaviour {
                 }
             }
 
-            if (_timer < 0)
-            {
-                CloseConfirm();
-            }
+            if (_timer < 1) CloseConfirm();
         }
     }
     private void ChangeBinding(string controlName)
@@ -159,17 +172,15 @@ public class EditorInputs : MonoBehaviour {
     }
     public void EditGamepad(int position)
     {
-        Debug.Log("Si");
-
-        _inputAction.SwitchCurrentControlScheme("Gamepad");
+        _scheme = "Gamepad";
+        DetectScheme();
 
         Edit(position);
     }
     public void EditKeyboard(int position)
     {
-        Debug.Log("Si");
-
-        _inputAction.SwitchCurrentControlScheme("Keyboard");
+        _scheme = "Keyboard";
+        DetectScheme();
 
         Edit(position);
     }

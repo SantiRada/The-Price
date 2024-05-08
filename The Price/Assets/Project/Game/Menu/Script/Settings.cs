@@ -98,6 +98,11 @@ public class Settings : MonoBehaviour {
             StartCoroutine(MovementSection(Input.GetAxis("Vertical")));
         }
 
+        if(Input.GetAxis("Horizontal") != 0 && _canMovement && _canRun && _posInSettings > 15)
+        {
+            StartCoroutine(MovementSection(0));
+        }
+
         // CANCELAR MOVIMIENTO AL ABRIR UN DROPDOWN
         if (Input.GetButtonDown("Fire1"))
         {
@@ -212,6 +217,32 @@ public class Settings : MonoBehaviour {
         // -- MODIFICAR VALOR DE CONFIG Y MOVER A OTRO ELEMENTO
         if (num > 0) _localPosition--;
         if (num < 0) _localPosition++;
+
+        // OPCIONES DE MOVIMIENTO HORIZONTAL PARA LOS CONTROLES
+        #region Horizontal
+        if (num == 0)
+        {
+            if(_posInSettings > 23) _localPosition -= 8;
+            else _localPosition += 8;
+        }
+        #endregion
+
+        #region Vertical
+        if(num != 0)
+        {
+            if (_posInSettings == 23 || _posInSettings == 31)
+            {
+                if (num < 0) _localPosition -= 8;
+            }
+
+            if(_posInSettings == 16 || _posInSettings == 24)
+            {
+                if (num > 0) _localPosition += 8;
+            }
+        }
+
+        #endregion
+        // -----------------------------------------------------
 
         if (_localPosition >= _countForSection[_indexConfig]) _localPosition = 0;
         else if (_localPosition < 0) _localPosition = _countForSection[_indexConfig] - 1;
