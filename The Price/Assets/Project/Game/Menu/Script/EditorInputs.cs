@@ -6,13 +6,9 @@ using UnityEngine.InputSystem;
 public class EditorInputs : MonoBehaviour {
 
     [Header("Reference Controls")]
-    [SerializeField] private InputActionReference[] _inputActionReference;
-    [SerializeField] private List<string> _inputData = new List<string>();
+    public InputActionReference[] _inputActionReference;
+    public List<string> inputData = new List<string>();
     private string _scheme = "Gamepad";
-
-    [Header("Other Data")]
-    private PlayerInput _inputAction;
-    private Settings _settings;
 
     [Header("Confirmation")]
     [SerializeField] private GameObject _sectionConfirm;
@@ -23,10 +19,16 @@ public class EditorInputs : MonoBehaviour {
     private int _positionChange;
     private string _textContent;
 
+    [Header("Other Data")]
+    private PlayerInput _inputAction;
+    private Settings _settings;
+    private DetectControlForUI _detector;
+
     private void Awake()
     {
         _inputAction = GetComponent<PlayerInput>();
-        _settings = GetComponentInParent<Settings>();
+        _settings = FindAnyObjectByType<Settings>();
+        _detector = GetComponent<DetectControlForUI>();
     }
     private void Start()
     {
@@ -49,10 +51,10 @@ public class EditorInputs : MonoBehaviour {
             {
                 if (_inputActionReference[i].action.bindings[j].path.Contains(_scheme))
                 {
-                    if (_inputData.Count != _inputActionReference.Length)
-                        _inputData.Add(_inputActionReference[i].action.bindings[j].path);
+                    if (inputData.Count != _inputActionReference.Length)
+                        inputData.Add(_inputActionReference[i].action.bindings[j].path);
                     else
-                        _inputData[i] = (_inputActionReference[i].action.bindings[j].path);
+                        inputData[i] = (_inputActionReference[i].action.bindings[j].path);
                     // --------------------- //
                     break;
                 }
@@ -154,7 +156,7 @@ public class EditorInputs : MonoBehaviour {
 
         _inputActionReference[_positionChange].action.ChangeBinding(_cleanKey);
 
-        _inputData[_positionChange] = _cleanKey;
+        inputData[_positionChange] = _cleanKey;
 
         CloseConfirm();
     }
@@ -192,6 +194,8 @@ public class EditorInputs : MonoBehaviour {
         _textConfirm.text = _textContent;
 
         _settings.Invoke("EditInterable", 0.5f);
+
+        _detector.ChangeDetectValues();
 
         _sectionConfirm.SetActive(InConfirm);
     }

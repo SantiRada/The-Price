@@ -1,13 +1,19 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DetectControlForUI : MonoBehaviour {
 
+    [Header("Data for Controls")]
+    [SerializeField] private Sprite _sprForKeyboard;
+    [SerializeField] private string[] _dataForGamepad;
+    [SerializeField] private Sprite[] _sprForXbox;
+    [SerializeField] private Sprite[] _sprForPlayStation;
+
     [Header("Data Control UI")]
-    [SerializeField] private Sprite[] _keyboardControl;
-    [SerializeField] private Sprite[] _playstationControl;
-    [SerializeField] private Sprite[] _xboxControl;
+    private Dictionary<string, Sprite> _playStationControl = new Dictionary<string, Sprite>(12);
+    private Dictionary<string, Sprite> _xboxControl = new Dictionary<string, Sprite>(12);
 
     [Header("Data Players")]
     [SerializeField] private TypeController[] _players;
@@ -20,21 +26,20 @@ public class DetectControlForUI : MonoBehaviour {
 
     private void Awake()
     {
-        _inputs = FindAnyObjectByType<EditorInputs>();
+        _inputs = GetComponent<EditorInputs>();
     }
     private void Start()
     {
         ChangeDetectValues();
     }
-    private void LoadAllKeys()
+    private void LoadAllPads()
     {
-        // TEXT.MESH.PRO
         Image[] _allImages = FindObjectsByType<Image>(FindObjectsSortMode.None);
         List<Image> _alListImages = new List<Image>();
 
         foreach (Image contentImage in _allImages)
         {
-            if (contentImage.name.Contains("Key"))
+            if (contentImage.name.Contains("Gamepad"))
             {
                 _alListImages.Add(contentImage);
 
@@ -46,33 +51,62 @@ public class DetectControlForUI : MonoBehaviour {
         }
 
         _contentKey = _alListImages;
-    }
-    private void ChangeDetectValues()
-    {
-        LoadAllKeys();
 
-        for(int i = 0; i < _contentKey.Count; i++)
+        LoadAllInputs();
+    }
+    private void LoadAllInputs()
+    {
+        for (int i = 0; i < _inputs._inputActionReference.Length; i++)
         {
-            _contentKey[i].sprite = GetInput(_contentValue[i]);
+            // GAMEPAD FILL
+            for (int j = 0; j < _dataForGamepad.Length; j++)
+            {
+                if (_dataForGamepad[j] == _inputs.inputData[i])
+                {
+                    string[] data = _inputs._inputActionReference[i].name.Split("/");
+                    string name = data[1];
+
+                    _xboxControl.Add(name, _sprForXbox[j]);
+                    _playStationControl.Add(name, _sprForPlayStation[j]);
+                    break;
+                }
+            }
+        }
+    }
+    public void ChangeDetectValues()
+    {
+        LoadAllPads();
+
+        for (int i = 0; i < _contentKey.Count; i++)
+        {
+            Sprite spr = GetInput(_contentValue[i]);
+
+            if (spr != null)
+            {
+                // GAMEPAD
+                _contentKey[i].sprite = spr;
+            }
+            else
+            {
+                // KEYBOARD
+                _contentKey[i].sprite = _sprForKeyboard;
+                TextMeshProUGUI tmKey = _contentKey[i].gameObject.GetComponentInChildren<TextMeshProUGUI>();
+                for(int j = 0; j < _inputs._inputActionReference[i].action.bindings.Count; j++)
+                {
+                    if (_inputs._inputActionReference[i].action.bindings[j].path.Contains("Keyboard"))
+                    {
+                        string[] data = _inputs._inputActionReference[i].action.bindings[j].path.Split('/');
+                        tmKey.text = data[1].ToString();
+                        break;
+                    }
+                }
+            }
         }
     }
     public Sprite GetInput(string use)
     {
-        Sprite spr = null;
-
-        // Leer _inputs._inputData en la posición en que suceda "use" para saber que tecla devolver
-        switch (use)
-        {
-            case "use": break;
-            case "attack": break;
-            case "dash": break;
-            case "skillOne": break;
-            case "skillTwo": break;
-            case "stats": break;
-            case "staticAim": break;
-            case "pause": break;
-        }
-
-        return spr;
+        if (_players[0] == TypeController.Keyboard) return null;
+        else if (_players[0] == TypeController.PlayStation) return _playStationControl[use];
+        else return _xboxControl[use];
     }
 }

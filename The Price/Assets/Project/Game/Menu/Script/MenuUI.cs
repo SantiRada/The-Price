@@ -24,7 +24,7 @@ public class MenuUI : MonoBehaviour {
     private void Awake()
     {
         _anim = GetComponent<Animator>();
-        _editorInputs = GetComponentInChildren<EditorInputs>();
+        _editorInputs = FindAnyObjectByType<EditorInputs>();
         _detectorPlayers = FindAnyObjectByType<DetectorPlayers>();
         _language = FindAnyObjectByType<LanguageManager>();
         _controlSettings = GetComponentInChildren<Settings>();

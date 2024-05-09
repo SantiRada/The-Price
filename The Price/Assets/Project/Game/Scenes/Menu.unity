@@ -119,6 +119,81 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &21685419
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 21685420}
+  - component: {fileID: 21685422}
+  - component: {fileID: 21685421}
+  m_Layer: 5
+  m_Name: 'Gamepad[StaticAim]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &21685420
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21685419}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2134851573}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -831, y: -151}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &21685421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21685419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &21685422
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21685419}
+  m_CullTransparentMesh: 1
 --- !u!1 &26373248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1418,7 +1493,7 @@ GameObject:
   - component: {fileID: 191362019}
   - component: {fileID: 191362018}
   m_Layer: 5
-  m_Name: Keyboard
+  m_Name: Teclas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1488,7 +1563,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditKeyboard
         m_Mode: 3
@@ -1550,7 +1625,7 @@ GameObject:
   - component: {fileID: 191364981}
   - component: {fileID: 191364980}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Key[Skill Two]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1871,7 +1946,7 @@ GameObject:
   - component: {fileID: 228008512}
   - component: {fileID: 228008511}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Gamepad[Dash]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1946,7 +2021,7 @@ GameObject:
   - component: {fileID: 228737661}
   - component: {fileID: 228737660}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Key[Pause]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3408,7 +3483,7 @@ GameObject:
   - component: {fileID: 298410094}
   - component: {fileID: 298410093}
   m_Layer: 5
-  m_Name: Keyboard
+  m_Name: Teclas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3478,7 +3553,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditKeyboard
         m_Mode: 3
@@ -3936,7 +4011,7 @@ GameObject:
   - component: {fileID: 339934392}
   - component: {fileID: 339934391}
   m_Layer: 5
-  m_Name: Keyboard
+  m_Name: Teclas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4006,7 +4081,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditKeyboard
         m_Mode: 3
@@ -5240,6 +5315,81 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 201.1399, y: 81.7469}
   m_Pivot: {x: 1, y: 0.5}
+--- !u!1 &426632933
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 426632934}
+  - component: {fileID: 426632936}
+  - component: {fileID: 426632935}
+  m_Layer: 5
+  m_Name: 'Gamepad[Use]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &426632934
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426632933}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2134851573}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -831, y: 79}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &426632935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426632933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &426632936
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426632933}
+  m_CullTransparentMesh: 1
 --- !u!1 &437046309
 GameObject:
   m_ObjectHideFlags: 0
@@ -5252,7 +5402,7 @@ GameObject:
   - component: {fileID: 437046312}
   - component: {fileID: 437046311}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Gamepad[Attack]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5517,7 +5667,7 @@ GameObject:
   - component: {fileID: 464212766}
   - component: {fileID: 464212765}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Key[StaticAim]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5592,7 +5742,7 @@ GameObject:
   - component: {fileID: 482232566}
   - component: {fileID: 482232565}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Gamepad[StaticAim]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6458,7 +6608,7 @@ GameObject:
   - component: {fileID: 565424635}
   - component: {fileID: 565424634}
   m_Layer: 5
-  m_Name: Keyboard
+  m_Name: Teclas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6528,7 +6678,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditKeyboard
         m_Mode: 3
@@ -8646,7 +8796,7 @@ GameObject:
   - component: {fileID: 727593479}
   - component: {fileID: 727593478}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Gamepad[Stats]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8797,7 +8947,7 @@ GameObject:
   - component: {fileID: 748739931}
   - component: {fileID: 748739930}
   m_Layer: 5
-  m_Name: Gamepad
+  m_Name: Pads
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8867,7 +9017,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditGamepad
         m_Mode: 3
@@ -9005,7 +9155,7 @@ GameObject:
   - component: {fileID: 758974345}
   - component: {fileID: 758974344}
   m_Layer: 5
-  m_Name: Gamepad
+  m_Name: Pads
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9075,7 +9225,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditGamepad
         m_Mode: 3
@@ -9441,7 +9591,7 @@ GameObject:
   - component: {fileID: 786435794}
   - component: {fileID: 786435793}
   m_Layer: 5
-  m_Name: Gamepad
+  m_Name: Pads
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9511,7 +9661,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditGamepad
         m_Mode: 3
@@ -10913,6 +11063,9 @@ GameObject:
   m_Component:
   - component: {fileID: 931446476}
   - component: {fileID: 931446475}
+  - component: {fileID: 931446477}
+  - component: {fileID: 931446479}
+  - component: {fileID: 931446478}
   m_Layer: 0
   m_Name: LanguageSelector
   m_TagString: Untagged
@@ -10951,6 +11104,114 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &931446477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931446474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a8d11ae83e043042b6743bc875dc3ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sprForKeyboard: {fileID: 68345609, guid: 79dd4ca709df4f54f8418f6aeb29f479, type: 3}
+  _dataForGamepad:
+  - <Gamepad>/buttonSouth
+  - <Gamepad>/buttonWest
+  - <Gamepad>/buttonNorth
+  - <Gamepad>/buttonEast
+  - <Gamepad>/leftShoulder
+  - <Gamepad>/rightShoulder
+  - <Gamepad>/leftTrigger
+  - <Gamepad>/rightTrigger
+  - <Gamepad>/select
+  - <Gamepad>/start
+  - <Gamepad>/leftStickPress
+  - <Gamepad>/rightStickPress
+  _sprForXbox:
+  - {fileID: 377755046, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 1326078527, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 916024815, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 1130572671, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 1270508539, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: -935260825, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 1478228759, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: -341262657, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 900292374, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 557859750, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 1941366922, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 342919630, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  _sprForPlayStation:
+  - {fileID: -1077047832, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: -1524941593, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: 241362842, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: 1383939000, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: 1953342876, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: 1721211025, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: 1765899022, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: -1023827661, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: -585464286, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: -1959214326, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: 9947390, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: 5340362, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  _players: 01000000
+--- !u!114 &931446478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931446474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Gamepad
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &931446479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931446474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02d8c6d081ecc224d988a4d82c6ae593, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inputActionReference:
+  - {fileID: -1022064214346570349, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
+  - {fileID: 8252427877954559611, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
+  - {fileID: -7108234542060806227, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
+  - {fileID: -7318181519810829247, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
+  - {fileID: 3933834307308664728, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
+  - {fileID: -1664690711104120689, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
+  - {fileID: -5619805677398190125, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
+  - {fileID: 6999888723692775931, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
+  inputData: []
+  _sectionConfirm: {fileID: 1614373874}
+  _textConfirm: {fileID: 2034851472}
+  _timer: 4
 --- !u!1 &951126026
 GameObject:
   m_ObjectHideFlags: 0
@@ -11101,6 +11362,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961359458}
   m_CullTransparentMesh: 1
+--- !u!1 &963139167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 963139168}
+  - component: {fileID: 963139170}
+  - component: {fileID: 963139169}
+  m_Layer: 5
+  m_Name: 'Gamepad[Skill One]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &963139168
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963139167}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2134851573}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -831, y: -508}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &963139169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963139167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &963139170
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963139167}
+  m_CullTransparentMesh: 1
 --- !u!1 &966005776
 GameObject:
   m_ObjectHideFlags: 0
@@ -11250,7 +11586,7 @@ GameObject:
   - component: {fileID: 1001064976}
   - component: {fileID: 1001064975}
   m_Layer: 5
-  m_Name: Keyboard
+  m_Name: Teclas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11320,7 +11656,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditKeyboard
         m_Mode: 3
@@ -11470,7 +11806,7 @@ GameObject:
   - component: {fileID: 1020997401}
   - component: {fileID: 1020997400}
   m_Layer: 5
-  m_Name: Keyboard
+  m_Name: Teclas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11540,7 +11876,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditKeyboard
         m_Mode: 3
@@ -11887,6 +12223,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1051204131}
   m_CullTransparentMesh: 1
+--- !u!1 &1068161145
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1068161146}
+  - component: {fileID: 1068161148}
+  - component: {fileID: 1068161147}
+  m_Layer: 5
+  m_Name: 'Gamepad[Pause]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1068161146
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068161145}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2134851573}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -831, y: -267}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1068161147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068161145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1068161148
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068161145}
+  m_CullTransparentMesh: 1
 --- !u!1 &1071220941
 GameObject:
   m_ObjectHideFlags: 0
@@ -11899,7 +12310,7 @@ GameObject:
   - component: {fileID: 1071220944}
   - component: {fileID: 1071220943}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Key[Skill One]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12272,7 +12683,7 @@ GameObject:
   - component: {fileID: 1089863801}
   - component: {fileID: 1089863800}
   m_Layer: 5
-  m_Name: Gamepad
+  m_Name: Pads
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12342,7 +12753,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditGamepad
         m_Mode: 3
@@ -12635,7 +13046,7 @@ GameObject:
   - component: {fileID: 1147508429}
   - component: {fileID: 1147508428}
   m_Layer: 5
-  m_Name: Keyboard
+  m_Name: Teclas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12705,7 +13116,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditKeyboard
         m_Mode: 3
@@ -13171,7 +13582,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1497042589, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
+  m_Sprite: {fileID: 1270508539, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13430,7 +13841,7 @@ GameObject:
   - component: {fileID: 1202145367}
   - component: {fileID: 1202145366}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Key[Attack]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14798,7 +15209,7 @@ GameObject:
   - component: {fileID: 1326105460}
   - component: {fileID: 1326105459}
   m_Layer: 5
-  m_Name: Gamepad
+  m_Name: Pads
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14868,7 +15279,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditGamepad
         m_Mode: 3
@@ -15258,7 +15669,7 @@ GameObject:
   - component: {fileID: 1373153720}
   - component: {fileID: 1373153719}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Gamepad[Skill Two]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15897,7 +16308,7 @@ GameObject:
   - component: {fileID: 1417693074}
   - component: {fileID: 1417693073}
   m_Layer: 5
-  m_Name: Gamepad
+  m_Name: Pads
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15967,7 +16378,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditGamepad
         m_Mode: 3
@@ -16030,7 +16441,7 @@ GameObject:
   - component: {fileID: 1421675967}
   - component: {fileID: 1421675966}
   m_Layer: 5
-  m_Name: Gamepad
+  m_Name: Pads
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16100,7 +16511,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditGamepad
         m_Mode: 3
@@ -16162,7 +16573,7 @@ GameObject:
   - component: {fileID: 1453461626}
   - component: {fileID: 1453461625}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Gamepad[Skill One]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16398,7 +16809,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1114107559, guid: 46523f990e426164b9a7d33f08c68d84, type: 3}
+  m_Sprite: {fileID: -935260825, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -17681,7 +18092,7 @@ GameObject:
   - component: {fileID: 1593814897}
   - component: {fileID: 1593814896}
   m_Layer: 5
-  m_Name: Keyboard
+  m_Name: Teclas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17751,7 +18162,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditKeyboard
         m_Mode: 3
@@ -18028,7 +18439,7 @@ GameObject:
   - component: {fileID: 1614373877}
   - component: {fileID: 1614373876}
   m_Layer: 5
-  m_Name: ConfirmKey > Window
+  m_Name: Confirm > Window
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18632,7 +19043,7 @@ GameObject:
   - component: {fileID: 1746841588}
   - component: {fileID: 1746841587}
   m_Layer: 5
-  m_Name: Input
+  m_Name: 'Gamepad[Use]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18860,7 +19271,7 @@ GameObject:
   - component: {fileID: 1752885015}
   - component: {fileID: 1752885014}
   m_Layer: 5
-  m_Name: Input
+  m_Name: 'Gamepad[Skill Two]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18935,7 +19346,7 @@ GameObject:
   - component: {fileID: 1757998882}
   - component: {fileID: 1757998881}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Gamepad[Use]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19221,7 +19632,7 @@ GameObject:
   - component: {fileID: 1771762978}
   - component: {fileID: 1771762977}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Key[Dash]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19422,7 +19833,7 @@ GameObject:
   - component: {fileID: 1791658548}
   - component: {fileID: 1791658547}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Key[Use]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19584,7 +19995,7 @@ GameObject:
   - component: {fileID: 1794938556}
   - component: {fileID: 1794938555}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Gamepad[Pause]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20182,7 +20593,7 @@ GameObject:
   - component: {fileID: 1816595248}
   - component: {fileID: 1816595247}
   m_Layer: 5
-  m_Name: Gamepad
+  m_Name: Pads
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20252,7 +20663,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029456946}
+      - m_Target: {fileID: 931446479}
         m_TargetAssemblyTypeName: EditorInputs, Assembly-CSharp
         m_MethodName: EditGamepad
         m_Mode: 3
@@ -20893,6 +21304,81 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!1 &1886227617
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1886227618}
+  - component: {fileID: 1886227620}
+  - component: {fileID: 1886227619}
+  m_Layer: 5
+  m_Name: 'Gamepad[Attack]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1886227618
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886227617}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2134851573}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -831, y: 198}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1886227619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886227617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1886227620
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886227617}
+  m_CullTransparentMesh: 1
 --- !u!1 &1888592443
 GameObject:
   m_ObjectHideFlags: 0
@@ -20980,7 +21466,7 @@ GameObject:
   - component: {fileID: 1888717327}
   - component: {fileID: 1888717326}
   m_Layer: 5
-  m_Name: 'Key[0]'
+  m_Name: 'Key[Stats]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21091,7 +21577,7 @@ GameObject:
   - component: {fileID: 1902242030}
   - component: {fileID: 1902242029}
   m_Layer: 5
-  m_Name: Input
+  m_Name: 'Gamepad[Dash]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23295,8 +23781,6 @@ GameObject:
   - component: {fileID: 2029456943}
   - component: {fileID: 2029456945}
   - component: {fileID: 2029456944}
-  - component: {fileID: 2029456946}
-  - component: {fileID: 2029456947}
   m_Layer: 5
   m_Name: Control_Screen
   m_TagString: Untagged
@@ -23364,61 +23848,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2029456942}
   m_CullTransparentMesh: 1
---- !u!114 &2029456946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2029456942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02d8c6d081ecc224d988a4d82c6ae593, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inputActionReference:
-  - {fileID: -1022064214346570349, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
-  - {fileID: 8252427877954559611, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
-  - {fileID: -7108234542060806227, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
-  - {fileID: -7318181519810829247, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
-  - {fileID: 3933834307308664728, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
-  - {fileID: -1664690711104120689, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
-  - {fileID: -5619805677398190125, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
-  - {fileID: 6999888723692775931, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
-  _inputData: []
-  _sectionConfirm: {fileID: 1614373874}
-  _textConfirm: {fileID: 2034851472}
-  _timer: 4
---- !u!114 &2029456947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2029456942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!1 &2030753942
 GameObject:
   m_ObjectHideFlags: 0
@@ -24101,6 +24530,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2048648602}
   m_CullTransparentMesh: 1
+--- !u!1 &2062258291
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2062258292}
+  - component: {fileID: 2062258294}
+  - component: {fileID: 2062258293}
+  m_Layer: 5
+  m_Name: 'Gamepad[Dash]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2062258292
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062258291}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2134851573}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -831, y: -37}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2062258293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062258291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &2062258294
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062258291}
+  m_CullTransparentMesh: 1
 --- !u!1 &2064575840
 GameObject:
   m_ObjectHideFlags: 0
@@ -24478,6 +24982,81 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!1 &2118362327
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2118362328}
+  - component: {fileID: 2118362330}
+  - component: {fileID: 2118362329}
+  m_Layer: 5
+  m_Name: 'Gamepad[Stats]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2118362328
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118362327}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2134851573}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -831, y: -381}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2118362329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118362327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &2118362330
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118362327}
+  m_CullTransparentMesh: 1
 --- !u!1 &2134851572
 GameObject:
   m_ObjectHideFlags: 0
@@ -24508,6 +25087,13 @@ RectTransform:
   m_Children:
   - {fileID: 1559812095}
   - {fileID: 1921971141}
+  - {fileID: 1886227618}
+  - {fileID: 426632934}
+  - {fileID: 2062258292}
+  - {fileID: 21685420}
+  - {fileID: 1068161146}
+  - {fileID: 2118362328}
+  - {fileID: 963139168}
   m_Father: {fileID: 1154968832}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

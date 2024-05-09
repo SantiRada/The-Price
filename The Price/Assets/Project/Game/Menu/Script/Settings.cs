@@ -41,7 +41,7 @@ public class Settings : MonoBehaviour {
 
     private void Awake()
     {
-        _inputs = GetComponentInChildren<EditorInputs>();
+        _inputs = FindAnyObjectByType<EditorInputs>();
         _controlSettings = GetComponent<ControlSettings>();
         _languageManager = FindAnyObjectByType<LanguageManager>();
     }
