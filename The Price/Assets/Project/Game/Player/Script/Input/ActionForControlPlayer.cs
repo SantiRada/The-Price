@@ -1,7 +1,7 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
 
-public class InputController : MonoBehaviour {
+public class ActionForControlPlayer : MonoBehaviour {
 
     [Header("Elements of Player")]
     private CrosshairData _crosshair;

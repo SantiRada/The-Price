@@ -1,69 +1,92 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public enum TypeController { Keyboard, XBox, PlayStation }
 public class InputManager : MonoBehaviour {
 
-    [Header("Detector Players")]
-    public List<string> _players = new List<string>();
+    [Header("Data for Controls")]
+    [SerializeField] private Sprite _sprForKeyboard;
+    [SerializeField] private Sprite[] _sprForXbox = new Sprite[12];
+    [SerializeField] private Sprite[] _sprForPlayStation = new Sprite[12];
 
-    [Header("Content Game")]
-    [SerializeField] private GameObject _playerObj;
-    [SerializeField] private GameObject _hudPlayer;
-    [SerializeField] private GameObject _statsPlayer;
-    [HideInInspector] public string _currentScene;
+    [Header("Data for Inputs")]
+    [SerializeField] private string[] _keyboardInputs = new string[12]; // ARRAY DE INPUTS
+    [SerializeField] private string[] _formatsToGamepad = { "use", "attack", "dash", "staticAim", "skillOne", "skillTwo", "select", "pause" };
+    [SerializeField] private string[] _formatsToKeyboard = { "use", "attack", "dash", "staticAim", "skillOne", "skillTwo" ,"select", "pause" };
+
+    [Header("Private Data")]
+    [SerializeField] private List<Image> _contentKey = new List<Image>();
+    [SerializeField] private List<string> _contentValue = new List<string>();
 
     private void Start()
     {
-        _currentScene = SceneManager.GetActiveScene().name;
-
-        if (_currentScene.Contains("Menu") || _currentScene.Contains("Testing")) return;
-
-        string[] data = PlayerPrefs.GetString("dataPlayers", "Keyboard & Mouse").Split(',');
-
-        for(int i = 0; i < PlayerPrefs.GetInt("countPlayers", 1); i++)
-        {
-            _players.Add(data[i]);
-        }
-
-        CreatePlayersInScene();
+        ChangeDetectValues();
     }
-    private void CreatePlayersInScene()
+    private void LoadAllPads()
     {
-        Transform parentHUD = GameObject.FindGameObjectWithTag("HUD").transform;
-        Transform parentStats = GameObject.FindGameObjectWithTag("UI").transform;
+        Image[] _allImages = FindObjectsByType<Image>(FindObjectsSortMode.None);
+        List<Image> _alListImages = new List<Image>();
 
-        for (int i = 0; i < _players.Count; i++)
+        foreach (Image contentImage in _allImages)
         {
-            // ---- PLAYER -------------------- //
-            GameObject obj = Instantiate(_playerObj, new Vector3(i, 0, 0), Quaternion.identity);
-            PlayerStats pj = obj.GetComponent<PlayerStats>();
-            pj.Control = _players[i];
+            if (contentImage.name.Contains("Key"))
+            {
+                _alListImages.Add(contentImage);
 
-            // ---- HUD ----------------------- //
-            GameObject objHUD = Instantiate(_hudPlayer, Vector3.zero, Quaternion.identity, parentHUD);
-            objHUD.transform.position = Vector3.zero;
-            
-            // ---- STATS --------------------- //
+                string[] data = contentImage.name.Split("[");
+                string[] subdata = data[1].Split("]");
 
-            GameObject objStats = Instantiate(_statsPlayer, Vector3.zero, Quaternion.identity, parentStats);
-            #region RepositionStats
-            // Obtén el RectTransform del Canvas
-            RectTransform canvasRect = parentStats.GetComponent<RectTransform>();
-
-            // Obtén el RectTransform del objeto objStats
-            RectTransform statsRect = objStats.GetComponent<RectTransform>();
-
-            // Establece la posición en el centro del Canvas (0,0)
-            Vector2 centerPosition = new Vector2(canvasRect.rect.width / 2, canvasRect.rect.height / 2);
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, centerPosition, null, out Vector2 anchoredPosition);
-
-            // Establece la posición del objeto objStats en el (0,0) relativo al Canvas
-            statsRect.anchoredPosition = anchoredPosition;
-            #endregion
-
-            pj.SetUI(objHUD, objStats, _players[i]);
+                _contentValue.Add(subdata[0]);
+            }
         }
+
+        _contentKey = _alListImages;
+    }
+    public void ChangeDetectValues()
+    {
+        LoadAllPads();
+
+        for (int i = 0; i < _contentKey.Count; i++)
+        {
+            _contentKey[i].sprite = GetInput(_contentKey[i].tag, _contentValue[i]);
+
+            if (_contentKey[i].sprite == _sprForKeyboard)
+            {
+                // KEYBOARD SPECIFIC DATA
+                TextMeshProUGUI tmKey = _contentKey[i].gameObject.GetComponentInChildren<TextMeshProUGUI>();
+
+                ChangeTextForKeyboard(tmKey, _contentValue[i]);
+            }
+        }
+    }
+    private void ChangeTextForKeyboard(TextMeshProUGUI tmpro, string value)
+    {
+        for(int i = 0; i < _formatsToKeyboard.Length; i++)
+        {
+            if (_formatsToKeyboard[i] == value)
+            {
+                tmpro.text = _keyboardInputs[i].ToString();
+                break;
+            }
+        }
+    }
+    public Sprite GetInput(string element, string use)
+    {
+        for (int i = 0; i < _formatsToGamepad.Length; i++)
+        {
+            if (_formatsToGamepad[i] == use)
+            {
+                // ENCONTRÉ LA POSICION DEL PARAMETRO BUSCADO
+                if (element.Contains("xbox")) return _sprForXbox[i];
+                else if (element.Contains("board")) return _sprForKeyboard;
+                else return _sprForPlayStation[i];
+            }
+        }
+
+        return null;
     }
 }
+
+// PARA EDITAR GAMEPAD EL ARRAY DE FORMATOS ESTÁ EN CONSTANTE CAMBIO DE POSICIONES
+// PARA EDITAR KEYBOARD EL ARRAY DE FORMATOS NO SE MODIFICA PERO SE CAMBIAN LOS VALORES DEL ARRAY DE INPUTS

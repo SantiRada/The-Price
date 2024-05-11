@@ -20,12 +20,12 @@ public class EditorInputs : MonoBehaviour {
 
     [Header("Other Data")]
     private Settings _settings;
-    private DetectControlForUI _detector;
+    private InputManager _inputManager;
 
     private void Awake()
     {
         _settings = FindAnyObjectByType<Settings>();
-        _detector = GetComponent<DetectControlForUI>();
+        _inputManager = GetComponent<InputManager>();
     }
     private void Start()
     {
@@ -35,37 +35,6 @@ public class EditorInputs : MonoBehaviour {
     {
         _baseTimer = _timer;
         _sectionConfirm.SetActive(false);
-
-        DetectScheme();
-    }
-    private void DetectScheme()
-    {
-        string _scheme = "Gamepad";
-        for (int i = 0; i < _inputActionReference.Length; i++)
-        {
-            for (int h = 0; h < 2; h++)
-            {
-                for (int j = 0; j < _inputActionReference[i].action.bindings.Count; j++)
-                {
-                    if (_inputActionReference[i].action.bindings[j].path.Contains(_scheme))
-                    {
-                        if(_scheme == "Gamepad")
-                        {
-                            if (gamepadData.Count != _inputActionReference.Length) gamepadData.Add(_inputActionReference[i].action.bindings[j].path);
-                            else gamepadData[i] = (_inputActionReference[i].action.bindings[j].path);
-                        }
-                        else
-                        {
-                            if (keyboardData.Count != _inputActionReference.Length) keyboardData.Add(_inputActionReference[i].action.bindings[j].path);
-                            else keyboardData[i] = (_inputActionReference[i].action.bindings[j].path);
-                        }
-                        break;
-                    }
-                }
-                _scheme = "Keyboard";
-            }
-            _scheme = "Gamepad";
-        }
     }
     private void Update()
     {
@@ -162,8 +131,8 @@ public class EditorInputs : MonoBehaviour {
 
         _inputActionReference[_positionChange].action.ChangeBinding(_cleanKey);
 
-        if(_schemeModifier == "Gamepad") gamepadData[_positionChange] = _cleanKey;
-        else keyboardData[_positionChange] = _cleanKey;
+        if(_schemeModifier == "Gamepad") _inputManager.GamepadData[_positionChange] = _cleanKey;
+        else _inputManager.KeyboardData[_positionChange] = _cleanKey;
 
         CloseConfirm();
     }
@@ -202,7 +171,7 @@ public class EditorInputs : MonoBehaviour {
 
         _settings.Invoke("EditInterable", 0.5f);
 
-        _detector.ChangeDetectValues();
+        _inputManager.ChangeDetectValues();
 
         _sectionConfirm.SetActive(InConfirm);
     }
