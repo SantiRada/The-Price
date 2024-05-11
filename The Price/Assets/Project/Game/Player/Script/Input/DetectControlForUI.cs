@@ -7,9 +7,9 @@ public class DetectControlForUI : MonoBehaviour {
 
     [Header("Data for Controls")]
     [SerializeField] private Sprite _sprForKeyboard;
-    [SerializeField] private string[] _dataForGamepad;
-    [SerializeField] private Sprite[] _sprForXbox;
-    [SerializeField] private Sprite[] _sprForPlayStation;
+    [SerializeField] private string[] _dataForGamepad = new string[12];
+    [SerializeField] private Sprite[] _sprForXbox = new Sprite[12];
+    [SerializeField] private Sprite[] _sprForPlayStation = new Sprite[12];
 
     [Header("Data Control UI")]
     private Dictionary<string, Sprite> _playStationControl = new Dictionary<string, Sprite>(12);
@@ -19,8 +19,8 @@ public class DetectControlForUI : MonoBehaviour {
     [SerializeField] private TypeController[] _players;
 
     [Header("Private Data")]
-    private List<Image> _contentKey = new List<Image>();
-    private List<string> _contentValue = new List<string>();
+    [SerializeField] private List<Image> _contentKey = new List<Image>();
+    [SerializeField] private List<string> _contentValue = new List<string>();
 
     private EditorInputs _inputs;
 
@@ -61,7 +61,7 @@ public class DetectControlForUI : MonoBehaviour {
             // GAMEPAD FILL
             for (int j = 0; j < _dataForGamepad.Length; j++)
             {
-                if (_dataForGamepad[j] == _inputs.inputData[i])
+                if (_dataForGamepad[j] == _inputs.gamepadData[i])
                 {
                     string[] data = _inputs._inputActionReference[i].name.Split("/");
                     string name = data[1];

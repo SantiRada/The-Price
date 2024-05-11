@@ -1,3 +1,5 @@
+using UnityEngine;
+
 [System.Serializable]
 public class SettingsPlayer
 {
@@ -19,4 +21,22 @@ public class SettingsPlayer
     public float generalSound;
     public float musicSound;
     public float effectSound;
+    // --- CONTROL --- //
+    public string controlUse;
+    public string controlAttack;
+    public string controlDash;
+    public string controlSkillOne;
+    public string controlSkillTwo;
+    public string controlStats;
+    public string controlPause;
+    public string controlStaticAim;
+
+    public string gamepadUse;
+    public string gamepadAttack;
+    public string gamepadDash;
+    public string gamepadSkillOne;
+    public string gamepadSkillTwo;
+    public string gamepadStats;
+    public string gamepadPause;
+    public string gamepadStaticAim;
 }

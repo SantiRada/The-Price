@@ -11157,6 +11157,8 @@ MonoBehaviour:
   - {fileID: 9947390, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
   - {fileID: 5340362, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
   _players: 01000000
+  _contentKey: []
+  _contentValue: []
 --- !u!114 &931446478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11199,6 +11201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02d8c6d081ecc224d988a4d82c6ae593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dataPlayer: 
   _inputActionReference:
   - {fileID: -1022064214346570349, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
   - {fileID: 8252427877954559611, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
@@ -11208,7 +11211,8 @@ MonoBehaviour:
   - {fileID: -1664690711104120689, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
   - {fileID: -5619805677398190125, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
   - {fileID: 6999888723692775931, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
-  inputData: []
+  keyboardData: []
+  gamepadData: []
   _sectionConfirm: {fileID: 1614373874}
   _textConfirm: {fileID: 2034851472}
   _timer: 4
@@ -13180,6 +13184,7 @@ GameObject:
   - component: {fileID: 1154968829}
   - component: {fileID: 1154968834}
   - component: {fileID: 1154968833}
+  - component: {fileID: 1154968835}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -13314,6 +13319,76 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1154968835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154968828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3caf9dc290cd10498dfaef384695de6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dataPlayer: D:\Documentos\Unity\The Price\The Price\Assets\Project\Game\Menu
+  settings:
+    shakeScreen: 0
+    vibration: 0
+    aimAssistant: 0
+    levelHelpAssistant: 0
+    playerIndicators: 0
+    timerToRun: 0
+    damageNumbers: 0
+    healthbarOfEnemys: 0
+    language: 0
+    resolution: 0
+    screenMode: 0
+    lockCursor: 0
+    vSync: 0
+    generalSound: 0
+    musicSound: 0
+    effectSound: 0
+    controlUse: 
+    controlAttack: 
+    controlDash: 
+    controlSkillOne: 
+    controlSkillTwo: 
+    controlStats: 
+    controlPause: 
+    controlStaticAim: 
+    gamepadUse: 
+    gamepadAttack: 
+    gamepadDash: 
+    gamepadSkillOne: 
+    gamepadSkillTwo: 
+    gamepadStats: 
+    gamepadPause: 
+    gamepadStaticAim: 
+  _shakeScreen: {fileID: 1080519341}
+  _vibration: {fileID: 1938614962}
+  _aimAssistant: {fileID: 1385824377}
+  _helpAssistant: {fileID: 1278115793}
+  _playerIndicators: {fileID: 279741699}
+  _timerToRun: {fileID: 820847577}
+  _DamageNumbers: {fileID: 1217131516}
+  _healthbarEnemy: {fileID: 171176945}
+  _language: {fileID: 2087706726}
+  _resolution: {fileID: 377561875}
+  _screenMode: {fileID: 2022674774}
+  _lockCursor: {fileID: 273438267}
+  _vSync: {fileID: 1816401160}
+  _generalSound: {fileID: 1395880853}
+  _musicSound: {fileID: 1811448644}
+  _effectSound: {fileID: 726320540}
+  _controlUse: []
+  _controlAttack: []
+  _controlDash: []
+  _controlSkillOne: []
+  _controlSkillTwo: []
+  _controlStats: []
+  _controlPause: []
+  _controlStaticAim: []
 --- !u!1 &1158569984
 GameObject:
   m_ObjectHideFlags: 0
@@ -23148,7 +23223,6 @@ GameObject:
   - component: {fileID: 2017126969}
   - component: {fileID: 2017126971}
   - component: {fileID: 2017126970}
-  - component: {fileID: 2017126972}
   - component: {fileID: 2017126973}
   m_Layer: 5
   m_Name: Config
@@ -23218,52 +23292,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2017126968}
   m_CullTransparentMesh: 1
---- !u!114 &2017126972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2017126968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3caf9dc290cd10498dfaef384695de6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _dataPlayer: D:\Documentos\Unity\The Price\The Price\Assets\Project\Game\Menu
-  settings:
-    shakeScreen: 0
-    vibration: 0
-    aimAssistant: 0
-    levelHelpAssistant: 0
-    playerIndicators: 0
-    timerToRun: 0
-    damageNumbers: 0
-    healthbarOfEnemys: 0
-    language: 0
-    resolution: 0
-    screenMode: 0
-    lockCursor: 0
-    vSync: 0
-    generalSound: 0
-    musicSound: 0
-    effectSound: 0
-  _shakeScreen: {fileID: 1080519341}
-  _vibration: {fileID: 1938614962}
-  _aimAssistant: {fileID: 1385824377}
-  _helpAssistant: {fileID: 1278115793}
-  _playerIndicators: {fileID: 279741699}
-  _timerToRun: {fileID: 820847577}
-  _DamageNumbers: {fileID: 1217131516}
-  _healthbarEnemy: {fileID: 171176945}
-  _language: {fileID: 2087706726}
-  _resolution: {fileID: 377561875}
-  _screenMode: {fileID: 2022674774}
-  _lockCursor: {fileID: 273438267}
-  _vSync: {fileID: 1816401160}
-  _generalSound: {fileID: 1395880853}
-  _musicSound: {fileID: 1811448644}
-  _effectSound: {fileID: 726320540}
 --- !u!114 &2017126973
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,14 +1,14 @@
 using TMPro;
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
 public class EditorInputs : MonoBehaviour {
 
     [Header("Reference Controls")]
+    [SerializeField] private string _dataPlayer;
     public InputActionReference[] _inputActionReference;
-    public List<string> inputData = new List<string>();
-    private string _scheme = "Gamepad";
+    private string _schemeModifier = "Gamepad";
+    private int _positionChange;
 
     [Header("Confirmation")]
     [SerializeField] private GameObject _sectionConfirm;
@@ -16,17 +16,14 @@ public class EditorInputs : MonoBehaviour {
     [SerializeField] private float _timer;
     private float _baseTimer;
     private bool _inConfirm { get; set; }
-    private int _positionChange;
     private string _textContent;
 
     [Header("Other Data")]
-    private PlayerInput _inputAction;
     private Settings _settings;
     private DetectControlForUI _detector;
 
     private void Awake()
     {
-        _inputAction = GetComponent<PlayerInput>();
         _settings = FindAnyObjectByType<Settings>();
         _detector = GetComponent<DetectControlForUI>();
     }
@@ -43,22 +40,31 @@ public class EditorInputs : MonoBehaviour {
     }
     private void DetectScheme()
     {
-        _inputAction.SwitchCurrentControlScheme(_scheme);
-
+        string _scheme = "Gamepad";
         for (int i = 0; i < _inputActionReference.Length; i++)
         {
-            for (int j = 0; j < _inputActionReference[i].action.bindings.Count; j++)
+            for (int h = 0; h < 2; h++)
             {
-                if (_inputActionReference[i].action.bindings[j].path.Contains(_scheme))
+                for (int j = 0; j < _inputActionReference[i].action.bindings.Count; j++)
                 {
-                    if (inputData.Count != _inputActionReference.Length)
-                        inputData.Add(_inputActionReference[i].action.bindings[j].path);
-                    else
-                        inputData[i] = (_inputActionReference[i].action.bindings[j].path);
-                    // --------------------- //
-                    break;
+                    if (_inputActionReference[i].action.bindings[j].path.Contains(_scheme))
+                    {
+                        if(_scheme == "Gamepad")
+                        {
+                            if (gamepadData.Count != _inputActionReference.Length) gamepadData.Add(_inputActionReference[i].action.bindings[j].path);
+                            else gamepadData[i] = (_inputActionReference[i].action.bindings[j].path);
+                        }
+                        else
+                        {
+                            if (keyboardData.Count != _inputActionReference.Length) keyboardData.Add(_inputActionReference[i].action.bindings[j].path);
+                            else keyboardData[i] = (_inputActionReference[i].action.bindings[j].path);
+                        }
+                        break;
+                    }
                 }
+                _scheme = "Keyboard";
             }
+            _scheme = "Gamepad";
         }
     }
     private void Update()
@@ -96,9 +102,9 @@ public class EditorInputs : MonoBehaviour {
     {
         _settings.EditInterable();
 
-        string _cleanKey = "<" + _inputAction.currentControlScheme + ">/";
+        string _cleanKey = "<" + _schemeModifier + ">/";
 
-        if (_inputAction.currentControlScheme == "Gamepad")
+        if (_schemeModifier == "Gamepad")
         {
             if (controlName.Contains("Button0"))
             {
@@ -156,7 +162,8 @@ public class EditorInputs : MonoBehaviour {
 
         _inputActionReference[_positionChange].action.ChangeBinding(_cleanKey);
 
-        inputData[_positionChange] = _cleanKey;
+        if(_schemeModifier == "Gamepad") gamepadData[_positionChange] = _cleanKey;
+        else keyboardData[_positionChange] = _cleanKey;
 
         CloseConfirm();
     }
@@ -174,14 +181,14 @@ public class EditorInputs : MonoBehaviour {
     }
     public void EditGamepad(int position)
     {
-        _scheme = "Gamepad";
+        _schemeModifier = "Gamepad";
         DetectScheme();
 
         Edit(position);
     }
     public void EditKeyboard(int position)
     {
-        _scheme = "Keyboard";
+        _schemeModifier = "Keyboard";
         DetectScheme();
 
         Edit(position);
