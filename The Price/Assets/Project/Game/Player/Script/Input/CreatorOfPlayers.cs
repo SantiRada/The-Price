@@ -44,10 +44,12 @@ public class CreatorOfPlayers : MonoBehaviour {
             // ---- HUD ----------------------- //
             GameObject objHUD = Instantiate(_hudPlayer, Vector3.zero, Quaternion.identity, parentHUD);
             objHUD.transform.position = Vector3.zero;
+            objHUD.tag = "player" + (i+1).ToString();
             
             // ---- STATS --------------------- //
 
             GameObject objStats = Instantiate(_statsPlayer, Vector3.zero, Quaternion.identity, parentStats);
+            objStats.tag = "player" + (i + 1).ToString();
             #region RepositionStats
             // Obtén el RectTransform del Canvas
             RectTransform canvasRect = parentStats.GetComponent<RectTransform>();
@@ -63,7 +65,23 @@ public class CreatorOfPlayers : MonoBehaviour {
             statsRect.anchoredPosition = anchoredPosition;
             #endregion
 
+            ApplyAllTags(objHUD, objStats, i);
+
             pj.SetUI(objHUD, objStats, _players[i]);
+        }
+    }
+    private void ApplyAllTags(GameObject hud, GameObject stats, int i)
+    {
+        Transform[] childrenHud = hud.GetComponentsInChildren<Transform>(true);
+        Transform[] childrenStats = stats.GetComponentsInChildren<Transform>(true);
+
+        foreach (Transform child in childrenHud)
+        {
+            child.gameObject.tag = "player" + (i + 1).ToString();
+        }
+        foreach (Transform child in childrenStats)
+        {
+            child.gameObject.tag = "player" + (i + 1).ToString();
         }
     }
 }

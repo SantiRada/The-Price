@@ -1823,7 +1823,7 @@ GameObject:
   - component: {fileID: 191364980}
   m_Layer: 5
   m_Name: 'Key[Skill Two]'
-  m_TagString: player1
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2145,7 +2145,7 @@ GameObject:
   - component: {fileID: 228008511}
   m_Layer: 5
   m_Name: 'Key[Dash]'
-  m_TagString: player1
+  m_TagString: gamepad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2220,7 +2220,7 @@ GameObject:
   - component: {fileID: 228737660}
   m_Layer: 5
   m_Name: 'Key[Pause]'
-  m_TagString: player1
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5663,7 +5663,7 @@ GameObject:
   - component: {fileID: 437046311}
   m_Layer: 5
   m_Name: 'Key[Attack]'
-  m_TagString: player1
+  m_TagString: gamepad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5928,7 +5928,7 @@ GameObject:
   - component: {fileID: 464212765}
   m_Layer: 5
   m_Name: 'Key[StaticAim]'
-  m_TagString: player1
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6004,7 +6004,7 @@ GameObject:
   - component: {fileID: 482232565}
   m_Layer: 5
   m_Name: 'Key[StaticAim]'
-  m_TagString: player1
+  m_TagString: gamepad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9330,7 +9330,7 @@ GameObject:
   - component: {fileID: 727593478}
   m_Layer: 5
   m_Name: 'Key[Stats]'
-  m_TagString: player1
+  m_TagString: gamepad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11691,6 +11691,7 @@ MonoBehaviour:
   _sectionConfirm: {fileID: 1614373874}
   _textConfirm: {fileID: 2034851472}
   _timer: 4
+  canUseThatKey: 1
   _contentKeyboardUI:
   - {fileID: 1791658547}
   - {fileID: 1202145366}
@@ -12735,7 +12736,7 @@ GameObject:
   - component: {fileID: 1071220943}
   m_Layer: 5
   m_Name: 'Key[Skill One]'
-  m_TagString: player1
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14355,7 +14356,7 @@ GameObject:
   - component: {fileID: 1202145366}
   m_Layer: 5
   m_Name: 'Key[Attack]'
-  m_TagString: player1
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16320,7 +16321,7 @@ GameObject:
   - component: {fileID: 1373153719}
   m_Layer: 5
   m_Name: 'Key[Skill Two]'
-  m_TagString: player1
+  m_TagString: gamepad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17224,7 +17225,7 @@ GameObject:
   - component: {fileID: 1453461625}
   m_Layer: 5
   m_Name: 'Key[Skill One]'
-  m_TagString: player1
+  m_TagString: gamepad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19997,7 +19998,7 @@ GameObject:
   - component: {fileID: 1757998881}
   m_Layer: 5
   m_Name: 'Key[Use]'
-  m_TagString: player1
+  m_TagString: gamepad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20283,7 +20284,7 @@ GameObject:
   - component: {fileID: 1771762977}
   m_Layer: 5
   m_Name: 'Key[Dash]'
-  m_TagString: player1
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20485,7 +20486,7 @@ GameObject:
   - component: {fileID: 1791658547}
   m_Layer: 5
   m_Name: 'Key[Use]'
-  m_TagString: player1
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20648,7 +20649,7 @@ GameObject:
   - component: {fileID: 1794938555}
   m_Layer: 5
   m_Name: 'Key[Pause]'
-  m_TagString: player1
+  m_TagString: gamepad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22044,7 +22045,7 @@ GameObject:
   - component: {fileID: 1888717326}
   m_Layer: 5
   m_Name: 'Key[Stats]'
-  m_TagString: player1
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

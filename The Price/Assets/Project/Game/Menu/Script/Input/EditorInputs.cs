@@ -17,7 +17,8 @@ public class EditorInputs : MonoBehaviour {
     [SerializeField] private float _timer;
     private float _baseTimer;
     private bool _inConfirm { get; set; }
-    private string _textContent;
+
+    public bool canUseThatKey = true;
 
     [Header("Data UI")]
     [SerializeField] private Image[] _contentKeyboardUI;
@@ -26,11 +27,13 @@ public class EditorInputs : MonoBehaviour {
     [Header("Other Data")]
     private Settings _settings;
     private InputManager _inputManager;
+    private LanguageManager _language;
 
     private void Awake()
     {
         _settings = FindAnyObjectByType<Settings>();
         _inputManager = GetComponent<InputManager>();
+        _language = GetComponent<LanguageManager>();
     }
     private void Start()
     {
@@ -43,11 +46,11 @@ public class EditorInputs : MonoBehaviour {
         {
             _timer -= Time.deltaTime;
 
-            _textConfirm.text = _textContent + "\n\n" + _timer.ToString("f0");
-
+            _textConfirm.text = _language.GetValue(43) + "\n\n" + _timer.ToString("f0");
 
             if (Input.anyKeyDown)
             {
+                canUseThatKey = false;
                 foreach (KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
                 {
                     if (Input.GetKeyDown(keyCode))
@@ -61,27 +64,65 @@ public class EditorInputs : MonoBehaviour {
 
             if (_timer < 1) CloseConfirm();
         }
+        else canUseThatKey = true;
     }
     private void ChangeBinding(string controlName)
     {
-        _settings.EditInterable();
-
         string _cleanKey = "<" + _schemeModifier + ">/";
+        int positionPad = 0;
 
         if (_schemeModifier == "Gamepad")
         {
-            if (Regex.IsMatch(controlName, @"Button0\b")) _cleanKey += "buttonSouth";
-            if (Regex.IsMatch(controlName, @"Button1\b")) _cleanKey += "buttonEast";
-            if (Regex.IsMatch(controlName, @"Button2\b")) _cleanKey += "buttonWest";
-            if (Regex.IsMatch(controlName, @"Button3\b")) _cleanKey += "buttonNorth";
-            if (Regex.IsMatch(controlName, @"Button4\b")) _cleanKey += "leftShoulder";
-            if (Regex.IsMatch(controlName, @"Button5\b")) _cleanKey += "rightShoulder";
-            if (Regex.IsMatch(controlName, @"Button6\b")) _cleanKey += "select";
-            if (Regex.IsMatch(controlName, @"Button7\b")) _cleanKey += "start";
-            if (Regex.IsMatch(controlName, @"Button8\b")) _cleanKey += "leftStickPress";
-            if (Regex.IsMatch(controlName, @"Button9\b")) _cleanKey += "rightStickPress";
-            if (Regex.IsMatch(controlName, @"Button10\b")) _cleanKey += "leftTrigger";
-            if (Regex.IsMatch(controlName, @"Button11\b")) _cleanKey += "rightTrigger";
+            if (Regex.IsMatch(controlName, @"Button0\b"))
+            {
+                _cleanKey += "buttonSouth";
+                positionPad = 2;
+            }
+            if (Regex.IsMatch(controlName, @"Button1\b"))
+            {
+                _cleanKey += "buttonEast";
+                positionPad = 5;
+            }
+            if (Regex.IsMatch(controlName, @"Button2\b"))
+            {
+                _cleanKey += "buttonWest";
+                positionPad = 1;
+            }
+            if (Regex.IsMatch(controlName, @"Button3\b"))
+            {
+                _cleanKey += "buttonNorth";
+                positionPad = 4;
+            }
+            if (Regex.IsMatch(controlName, @"Button4\b"))
+            {
+                _cleanKey += "leftShoulder";
+                positionPad = 3;
+            }
+            if (Regex.IsMatch(controlName, @"Button5\b"))
+            {
+                _cleanKey += "rightShoulder";
+                positionPad = 0;
+            }
+            if (Regex.IsMatch(controlName, @"Button6\b"))
+            {
+                _cleanKey += "select";
+                positionPad = 6;
+            }
+            if (Regex.IsMatch(controlName, @"Button7\b"))
+            {
+                _cleanKey += "start";
+                positionPad = 7;
+            }
+            if (Regex.IsMatch(controlName, @"Button8\b"))
+            {
+                _cleanKey += "leftStickPress";
+                positionPad = 10;
+            }
+            if (Regex.IsMatch(controlName, @"Button9\b"))
+            {
+                _cleanKey += "rightStickPress";
+                positionPad = 11;
+            }
         }
         else { if (!controlName.Contains("Joystick")) _cleanKey += controlName; }
 
@@ -89,35 +130,20 @@ public class EditorInputs : MonoBehaviour {
         _inputActionReference[_positionChange].action.ChangeBinding(controlName);
 
         // ---- CHANGE BINDING IN *InputManager* --- //
-        if (_schemeModifier == "Gamepad") _inputManager.ChangeGamepad(_inputActionReference[_positionChange].action.name, _positionChange); ////////// REVISAR REVISAR REVISAR
+        if (_schemeModifier == "Gamepad") _inputManager.ChangeGamepad(_inputActionReference[_positionChange].action.name, positionPad);
         else _inputManager.ChangeKeyboard(_positionChange, _cleanKey);
-
-        // ---- RESET ELEMENTS IN THE UI ---- //
-        if(_schemeModifier == "Gamepad")
-        {
-            for (int i = 0; i < _contentGamepadUI.Length; i++)
-            {
-                _inputManager.ResetOneElement(_contentGamepadUI[i]);
-            }
-        }
-        else
-        {
-            for(int i = 0; i < _contentKeyboardUI.Length; i++)
-            {
-                _inputManager.ResetOneElement(_contentKeyboardUI[i]);
-            }
-        }
 
         CloseConfirm();
     }
     private void Edit(int position)
     {
+        if (!canUseThatKey) return;
+
         _positionChange = position;
 
-        _textContent = _textConfirm.text;
         _timer = _baseTimer;
 
-        _settings.EditInterable();
+        _settings.enabled = false;
 
         InConfirm = true;
         _sectionConfirm.SetActive(InConfirm);
@@ -139,11 +165,10 @@ public class EditorInputs : MonoBehaviour {
         _positionChange = -1;
 
         InConfirm = false;
-        _textConfirm.text = _textContent;
 
-        _settings.Invoke("EditInterable", 0.5f);
+        _settings.enabled = true;
 
-        _inputManager.ChangeDetectValues();
+        _inputManager.ChangeDetectValues(); 
 
         _sectionConfirm.SetActive(InConfirm);
     }

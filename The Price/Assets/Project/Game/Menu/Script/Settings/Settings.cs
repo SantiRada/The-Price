@@ -67,7 +67,7 @@ public class Settings : MonoBehaviour {
     }
     private void Update()
     {
-        if (_inputs.InConfirm) return;
+        if (_inputs.InConfirm || !_inputs.canUseThatKey) return;
 
         // MOVER HACIA ATRAS
         if (Input.GetButtonDown("LB") || Input.GetKeyDown(KeyCode.Q))

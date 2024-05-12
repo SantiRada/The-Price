@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 7548812163196499928}
   - component: {fileID: 90314782112517625}
   m_Layer: 5
-  m_Name: Input > Skill_2
+  m_Name: 'Key[Skill Two]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 3960852782009034949}
   - component: {fileID: 845142658637424778}
   m_Layer: 5
-  m_Name: Input > Atacar
+  m_Name: 'Key[Attack]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -559,7 +559,7 @@ GameObject:
   - component: {fileID: 3949962761057065726}
   - component: {fileID: 8244925404185396621}
   m_Layer: 5
-  m_Name: Input > Skill_1
+  m_Name: 'Key[Skill One]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

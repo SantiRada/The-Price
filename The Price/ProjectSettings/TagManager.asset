@@ -13,6 +13,8 @@ TagManager:
   - player2
   - player3
   - player4
+  - keyboard
+  - gamepad
   layers:
   - Default
   - TransparentFX

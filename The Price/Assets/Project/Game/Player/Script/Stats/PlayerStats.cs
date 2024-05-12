@@ -53,6 +53,9 @@ public class PlayerStats : MonoBehaviour {
         _stats = stats.GetComponent<DataPlayerStats>();
         _control = data;
 
+        InputManager _inputManager = FindAnyObjectByType<InputManager>();
+        _inputManager.ChangeDetectValues();
+
         InitialValues();
     }
     private string GetHealthUI()

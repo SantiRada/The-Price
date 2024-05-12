@@ -25,6 +25,7 @@ public class InputManager : MonoBehaviour {
     {
         ChangeDetectValues();
     }
+    // ---- SAVE/LOAD DATA ---------- //
     private void LoadAllPads()
     {
         Image[] _allImages = FindObjectsByType<Image>(FindObjectsSortMode.None);
@@ -51,23 +52,9 @@ public class InputManager : MonoBehaviour {
 
         return subdata[0];
     }
-    public void ChangeDetectValues()
-    {
-        LoadAllPads();
-
-        for (int i = 0; i < _contentKey.Count; i++)
-        {
-            _contentKey[i].sprite = GetInput(_contentKey[i].tag, _contentValue[i]);
-
-
-            // KEYBOARD SPECIFIC DATA
-            TextMeshProUGUI tmKey = _contentKey[i].gameObject.GetComponentInChildren<TextMeshProUGUI>();
-            if(tmKey != null) ChangeTextForKeyboard(tmKey, _contentValue[i]);
-        }
-    }
     private void ChangeTextForKeyboard(TextMeshProUGUI tmpro, string value)
     {
-        for(int i = 0; i < _formatsToKeyboard.Count; i++)
+        for (int i = 0; i < _formatsToKeyboard.Count; i++)
         {
             if (string.Compare(_formatsToKeyboard[i].ToLower(), value.ToLower()) == 0)
             {
@@ -76,20 +63,42 @@ public class InputManager : MonoBehaviour {
             }
         }
     }
-    public Sprite GetInput(string element, string use)
+    // ---- UTILITIES --------------- //
+    public void ChangeDetectValues()
+    {
+        if(_contentKey.Count == 0) LoadAllPads();
+
+        for (int i = 0; i < _contentKey.Count; i++)
+        {
+            _contentKey[i].sprite = GetInput(_contentKey[i].tag, _contentValue[i]);
+
+            // KEYBOARD SPECIFIC DATA
+            TextMeshProUGUI tmKey = _contentKey[i].gameObject.GetComponentInChildren<TextMeshProUGUI>();
+            if(tmKey != null) ChangeTextForKeyboard(tmKey, _contentValue[i]);
+        }
+    }
+    private Sprite GetInput(string element, string use)
     {
         for (int i = 0; i < _formatsToGamepad.Count; i++)
         {
             if (string.Compare(_formatsToGamepad[i].ToLower(), use.ToLower()) == 0)
             {
-                for(int j = 0; j < _players.Length; j++)
+                if(element == "keyboard" || element == "gamepad")
                 {
-                    // ENCONTRÉ LA POSICION DEL PARAMETRO BUSCADO
-                    if (element.Contains("player" + j.ToString()))
+                    if (element == "keyboard") return _sprForKeyboard;
+                    else return _sprForXbox[i];
+                }
+                else
+                {
+                    for(int j = 0; j < _players.Length; j++)
                     {
-                        if (_players[j] == TypeController.XBox) return _sprForXbox[i];
-                        else if (_players[j] == TypeController.PlayStation) return _sprForPlayStation[i];
-                        else return _sprForKeyboard;
+                        // ENCONTRÉ LA POSICION DEL PARAMETRO BUSCADO
+                        if (element.Contains("player" + j.ToString()))
+                        {
+                            if (_players[j] == TypeController.XBox) return _sprForXbox[i];
+                            else if (_players[j] == TypeController.PlayStation) return _sprForPlayStation[i];
+                            else return _sprForKeyboard;
+                        }
                     }
                 }
             }
@@ -97,13 +106,7 @@ public class InputManager : MonoBehaviour {
 
         return null;
     }
-    public Sprite ResetOneElement(Image img)
-    {
-        string value = SeparateNameImage(img);
-
-        return GetInput(img.tag, value);
-    }
-    // ---- CHANGE BINDING VISUAL ---- //
+    // ---- CHANGE BINDING VISUAL --- //
     public void ChangeGamepad(string action, int newPosition)
     {
         for(int i = 0; i < _formatsToGamepad.Count; i++)
