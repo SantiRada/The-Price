@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -81,7 +83,7 @@ public class InputManager : MonoBehaviour {
     {
         for (int i = 0; i < _formatsToGamepad.Count; i++)
         {
-            if (_formatsToGamepad[i] == use)
+            if (string.Compare(_formatsToGamepad[i].ToLower(), use.ToLower()) == 0)
             {
                 // ENCONTRÉ LA POSICION DEL PARAMETRO BUSCADO
                 if (element.Contains("xbox")) return _sprForXbox[i];
@@ -101,7 +103,7 @@ public class InputManager : MonoBehaviour {
     // ---- CHANGE BINDING VISUAL ---- //
     public void ChangeGamepad(string action, int newPosition)
     {
-        for(int i = 0; i< _formatsToGamepad.Count; i++)
+        for(int i = 0; i < _formatsToGamepad.Count; i++)
         {
             if (action.Contains(_formatsToGamepad[i]))
             {
@@ -130,6 +132,5 @@ public class InputManager : MonoBehaviour {
         else _formatsToGamepad = values;
     }
 }
-
 // PARA EDITAR GAMEPAD EL ARRAY DE FORMATOS ESTÁ EN CONSTANTE CAMBIO DE POSICIONES
 // PARA EDITAR KEYBOARD EL ARRAY DE FORMATOS NO SE MODIFICA PERO SE CAMBIAN LOS VALORES DEL ARRAY DE INPUTS

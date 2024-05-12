@@ -45,23 +45,17 @@ public class EditorInputs : MonoBehaviour {
 
             _textConfirm.text = _textContent + "\n\n" + _timer.ToString("f0");
 
-            if (_timer < (_baseTimer - 0.5f))
-            {
-                if (Input.anyKeyDown)
-                {
-                    // DETECTAR TECLA O BOTON
-                    string controlName = "";
-                    foreach (KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
-                    {
-                        if (Input.GetKeyDown(keyCode))
-                        {
-                            controlName = keyCode.ToString();
-                            break;
-                        }
-                    }
 
-                    // CAMBIAR BINDING
-                    ChangeBinding(controlName);
+            if (Input.anyKeyDown)
+            {
+                foreach (KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
+                {
+                    if (Input.GetKeyDown(keyCode))
+                    {
+                        string controlName = keyCode.ToString();
+                        ChangeBinding(controlName);
+                        break;
+                    }
                 }
             }
 
@@ -92,15 +86,27 @@ public class EditorInputs : MonoBehaviour {
         else { if (!controlName.Contains("Joystick")) _cleanKey += controlName; }
 
         // ---- CHANGE BINDING IN *InputAction* ---- //
-        _inputActionReference[_positionChange].action.ChangeBinding(_cleanKey);
-        
+        _inputActionReference[_positionChange].action.ChangeBinding(controlName);
+
         // ---- CHANGE BINDING IN *InputManager* --- //
-        if(_schemeModifier == "Gamepad") _inputManager.ChangeGamepad(_inputActionReference[_positionChange].action.name, _positionChange);
+        if (_schemeModifier == "Gamepad") _inputManager.ChangeGamepad(_inputActionReference[_positionChange].action.name, _positionChange); ////////// REVISAR REVISAR REVISAR
         else _inputManager.ChangeKeyboard(_positionChange, _cleanKey);
 
-        // ---- RESET ONE SPECIFIC ELEMENT IN THE UI ---- //
-        if(_schemeModifier == "Gamepad") _inputManager.ResetOneElement(_contentGamepadUI[_positionChange]);
-        else _inputManager.ResetOneElement(_contentKeyboardUI[_positionChange]);
+        // ---- RESET ELEMENTS IN THE UI ---- //
+        if(_schemeModifier == "Gamepad")
+        {
+            for (int i = 0; i < _contentGamepadUI.Length; i++)
+            {
+                _inputManager.ResetOneElement(_contentGamepadUI[i]);
+            }
+        }
+        else
+        {
+            for(int i = 0; i < _contentKeyboardUI.Length; i++)
+            {
+                _inputManager.ResetOneElement(_contentKeyboardUI[i]);
+            }
+        }
 
         CloseConfirm();
     }
