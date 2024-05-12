@@ -11,9 +11,9 @@ public class InputManager : MonoBehaviour {
     [SerializeField] private Sprite[] _sprForPlayStation = new Sprite[12];
 
     [Header("Data for Inputs")]
-    [SerializeField] private string[] _keyboardInputs = new string[12]; // ARRAY DE INPUTS
-    [SerializeField] private string[] _formatsToGamepad = { "use", "attack", "dash", "staticAim", "skillOne", "skillTwo", "select", "pause" };
-    [SerializeField] private string[] _formatsToKeyboard = { "use", "attack", "dash", "staticAim", "skillOne", "skillTwo" ,"select", "pause" };
+    [SerializeField] private List<string> _keyboardInputs = new List<string>();
+    [SerializeField] private List<string> _formatsToGamepad = new List<string>();
+    [SerializeField] private List<string> _formatsToKeyboard = new List<string>();
 
     [Header("Private Data")]
     [SerializeField] private List<Image> _contentKey = new List<Image>();
@@ -34,14 +34,20 @@ public class InputManager : MonoBehaviour {
             {
                 _alListImages.Add(contentImage);
 
-                string[] data = contentImage.name.Split("[");
-                string[] subdata = data[1].Split("]");
+                string value = SeparateNameImage(contentImage);
 
-                _contentValue.Add(subdata[0]);
+                _contentValue.Add(value);
             }
         }
 
         _contentKey = _alListImages;
+    }
+    private string SeparateNameImage(Image img)
+    {
+        string[] data = img.name.Split("[");
+        string[] subdata = data[1].Split("]");
+
+        return subdata[0];
     }
     public void ChangeDetectValues()
     {
@@ -62,7 +68,7 @@ public class InputManager : MonoBehaviour {
     }
     private void ChangeTextForKeyboard(TextMeshProUGUI tmpro, string value)
     {
-        for(int i = 0; i < _formatsToKeyboard.Length; i++)
+        for(int i = 0; i < _formatsToKeyboard.Count; i++)
         {
             if (_formatsToKeyboard[i] == value)
             {
@@ -73,7 +79,7 @@ public class InputManager : MonoBehaviour {
     }
     public Sprite GetInput(string element, string use)
     {
-        for (int i = 0; i < _formatsToGamepad.Length; i++)
+        for (int i = 0; i < _formatsToGamepad.Count; i++)
         {
             if (_formatsToGamepad[i] == use)
             {
@@ -85,6 +91,43 @@ public class InputManager : MonoBehaviour {
         }
 
         return null;
+    }
+    public Sprite ResetOneElement(Image img)
+    {
+        string value = SeparateNameImage(img);
+
+        return GetInput(img.tag, value);
+    }
+    // ---- CHANGE BINDING VISUAL ---- //
+    public void ChangeGamepad(string action, int newPosition)
+    {
+        for(int i = 0; i< _formatsToGamepad.Count; i++)
+        {
+            if (action.Contains(_formatsToGamepad[i]))
+            {
+                string prevValue = _formatsToGamepad[i];
+
+                _formatsToGamepad[i] = _formatsToGamepad[newPosition];
+                _formatsToGamepad[newPosition] = prevValue;
+                break;
+            }
+        }
+    }
+    public void ChangeKeyboard(int position, string newInput)
+    {
+        _keyboardInputs[position] = newInput;
+    }
+    // ---- GETTERS ----------------- //
+    public List<string> GetInputsForControl(int control)
+    {
+        if(control == 0) return _keyboardInputs;
+        else return _formatsToGamepad;
+    }
+    // ---- SETTERS ----------------- //
+    public void SetInputsForControl(int control, List<string> values)
+    {
+        if (control == 0) _keyboardInputs = values;
+        else _formatsToGamepad = values;
     }
 }
 

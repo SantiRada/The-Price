@@ -9,6 +9,9 @@ TagManager:
   - Enemy
   - HUD
   - UI
+  - keyboard
+  - xbox
+  - play station
   layers:
   - Default
   - TransparentFX

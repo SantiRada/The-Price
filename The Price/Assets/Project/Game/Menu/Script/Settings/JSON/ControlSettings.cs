@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ControlSettings : MonoBehaviour {
 
     [SerializeField] private string _dataPlayer;
-    public SettingsPlayer settings = new SettingsPlayer();
+    public SettingsDataPlayer settings = new SettingsDataPlayer();
 
     [Header("Data Gameplay")]
     [SerializeField] private Toggle _shakeScreen;
@@ -30,16 +30,6 @@ public class ControlSettings : MonoBehaviour {
     [SerializeField] private Slider _musicSound;
     [SerializeField] private Slider _effectSound;
 
-    [Header("Data Controllers")]
-    [HideInInspector] public string[] _controlUse = new string[2];
-    [HideInInspector] public string[] _controlAttack = new string[2];
-    [HideInInspector] public string[] _controlDash = new string[2];
-    [HideInInspector] public string[] _controlSkillOne = new string[2];
-    [HideInInspector] public string[] _controlSkillTwo = new string[2];
-    [HideInInspector] public string[] _controlStats = new string[2];
-    [HideInInspector] public string[] _controlPause = new string[2];
-    [HideInInspector] public string[] _controlStaticAim = new string[2];
-
     private void Awake()
     {
         _dataPlayer = Application.dataPath + "/Settings.json";
@@ -51,7 +41,7 @@ public class ControlSettings : MonoBehaviour {
     // ---- JSON ---- //
     public void SaveData()
     {
-        SettingsPlayer newData = new SettingsPlayer()
+        SettingsDataPlayer newData = new SettingsDataPlayer()
         {
             shakeScreen = _shakeScreen.isOn,
             vibration = _vibration.isOn,
@@ -68,24 +58,7 @@ public class ControlSettings : MonoBehaviour {
             vSync = _vSync.isOn,
             generalSound = _generalSound.value,
             musicSound = _musicSound.value,
-            effectSound = _effectSound.value,
-            controlUse = _controlUse[0],
-            controlAttack = _controlAttack[0],
-            controlDash = _controlDash[0],
-            controlSkillOne = _controlSkillOne[0],
-            controlSkillTwo = _controlSkillTwo[0],
-            controlStats = _controlStats[0],
-            controlPause = _controlPause[0],
-            controlStaticAim = _controlStaticAim[0],
-            gamepadUse = _controlUse[1],
-            gamepadAttack = _controlAttack[1],
-            gamepadDash = _controlDash[1],
-            gamepadSkillOne = _controlSkillOne[1],
-            gamepadSkillTwo = _controlSkillTwo[1],
-            gamepadStats = _controlStats[1],
-            gamepadPause = _controlPause[1],
-            gamepadStaticAim = _controlStaticAim[1]
-
+            effectSound = _effectSound.value
         };
         string stringJSON = JsonUtility.ToJson(newData);
         File.WriteAllText(_dataPlayer, stringJSON);
@@ -95,12 +68,12 @@ public class ControlSettings : MonoBehaviour {
         if (File.Exists(_dataPlayer))
         {
             string contain = File.ReadAllText(_dataPlayer);
-            settings = JsonUtility.FromJson<SettingsPlayer>(contain);
+            settings = JsonUtility.FromJson<SettingsDataPlayer>(contain);
 
             ChangedData(settings);
         }
     }
-    private void ChangedData(SettingsPlayer settings)
+    private void ChangedData(SettingsDataPlayer settings)
     {
         // GENERAL
         _shakeScreen.isOn = settings.shakeScreen;
@@ -121,23 +94,5 @@ public class ControlSettings : MonoBehaviour {
         _generalSound.value = settings.generalSound;
         _musicSound.value = settings.musicSound;
         _effectSound.value = settings.effectSound;
-        // CONTROLES
-        _controlUse[0] = settings.controlUse;
-        _controlAttack[0] = settings.controlAttack;
-        _controlDash[0] = settings.controlDash;
-        _controlSkillOne[0] = settings.controlSkillOne;
-        _controlSkillTwo[0] = settings.controlSkillTwo;
-        _controlStats[0] = settings.controlStats;
-        _controlPause[0] = settings.controlPause;
-        _controlStaticAim[0] = settings.controlStaticAim;
-
-        _controlUse[1] = settings.gamepadUse;
-        _controlAttack[1] = settings.gamepadAttack;
-        _controlDash[1] = settings.gamepadDash;
-        _controlSkillOne[1] = settings.gamepadSkillOne;
-        _controlSkillTwo[1] = settings.gamepadSkillTwo;
-        _controlStats[1] = settings.gamepadStats;
-        _controlPause[1] = settings.gamepadPause;
-        _controlStaticAim[1] = settings.gamepadStaticAim;
     }
 }

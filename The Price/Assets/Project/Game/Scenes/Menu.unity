@@ -131,8 +131,8 @@ GameObject:
   - component: {fileID: 21685422}
   - component: {fileID: 21685421}
   m_Layer: 5
-  m_Name: 'Gamepad[StaticAim]'
-  m_TagString: Untagged
+  m_Name: 'Key[StaticAim]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1626,7 +1626,7 @@ GameObject:
   - component: {fileID: 191364980}
   m_Layer: 5
   m_Name: 'Key[Skill Two]'
-  m_TagString: Untagged
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1946,8 +1946,8 @@ GameObject:
   - component: {fileID: 228008512}
   - component: {fileID: 228008511}
   m_Layer: 5
-  m_Name: 'Gamepad[Dash]'
-  m_TagString: Untagged
+  m_Name: 'Key[Dash]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2022,7 +2022,7 @@ GameObject:
   - component: {fileID: 228737660}
   m_Layer: 5
   m_Name: 'Key[Pause]'
-  m_TagString: Untagged
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5327,8 +5327,8 @@ GameObject:
   - component: {fileID: 426632936}
   - component: {fileID: 426632935}
   m_Layer: 5
-  m_Name: 'Gamepad[Use]'
-  m_TagString: Untagged
+  m_Name: 'Key[Use]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5402,8 +5402,8 @@ GameObject:
   - component: {fileID: 437046312}
   - component: {fileID: 437046311}
   m_Layer: 5
-  m_Name: 'Gamepad[Attack]'
-  m_TagString: Untagged
+  m_Name: 'Key[Attack]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5668,7 +5668,7 @@ GameObject:
   - component: {fileID: 464212765}
   m_Layer: 5
   m_Name: 'Key[StaticAim]'
-  m_TagString: Untagged
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5742,8 +5742,8 @@ GameObject:
   - component: {fileID: 482232566}
   - component: {fileID: 482232565}
   m_Layer: 5
-  m_Name: 'Gamepad[StaticAim]'
-  m_TagString: Untagged
+  m_Name: 'Key[StaticAim]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8796,8 +8796,8 @@ GameObject:
   - component: {fileID: 727593479}
   - component: {fileID: 727593478}
   m_Layer: 5
-  m_Name: 'Gamepad[Stats]'
-  m_TagString: Untagged
+  m_Name: 'Key[Stats]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11063,9 +11063,9 @@ GameObject:
   m_Component:
   - component: {fileID: 931446476}
   - component: {fileID: 931446475}
-  - component: {fileID: 931446477}
   - component: {fileID: 931446479}
   - component: {fileID: 931446478}
+  - component: {fileID: 931446480}
   m_Layer: 0
   m_Name: LanguageSelector
   m_TagString: Untagged
@@ -11104,61 +11104,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &931446477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 931446474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a8d11ae83e043042b6743bc875dc3ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sprForKeyboard: {fileID: 68345609, guid: 79dd4ca709df4f54f8418f6aeb29f479, type: 3}
-  _dataForGamepad:
-  - <Gamepad>/buttonSouth
-  - <Gamepad>/buttonWest
-  - <Gamepad>/buttonNorth
-  - <Gamepad>/buttonEast
-  - <Gamepad>/leftShoulder
-  - <Gamepad>/rightShoulder
-  - <Gamepad>/leftTrigger
-  - <Gamepad>/rightTrigger
-  - <Gamepad>/select
-  - <Gamepad>/start
-  - <Gamepad>/leftStickPress
-  - <Gamepad>/rightStickPress
-  _sprForXbox:
-  - {fileID: 377755046, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
-  - {fileID: 1326078527, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
-  - {fileID: 916024815, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
-  - {fileID: 1130572671, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
-  - {fileID: 1270508539, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
-  - {fileID: -935260825, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
-  - {fileID: 1478228759, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
-  - {fileID: -341262657, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
-  - {fileID: 900292374, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
-  - {fileID: 557859750, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
-  - {fileID: 1941366922, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
-  - {fileID: 342919630, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
-  _sprForPlayStation:
-  - {fileID: -1077047832, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
-  - {fileID: -1524941593, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
-  - {fileID: 241362842, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
-  - {fileID: 1383939000, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
-  - {fileID: 1953342876, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
-  - {fileID: 1721211025, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
-  - {fileID: 1765899022, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
-  - {fileID: -1023827661, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
-  - {fileID: -585464286, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
-  - {fileID: -1959214326, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
-  - {fileID: 9947390, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
-  - {fileID: 5340362, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
-  _players: 01000000
-  _contentKey: []
-  _contentValue: []
 --- !u!114 &931446478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11201,7 +11146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02d8c6d081ecc224d988a4d82c6ae593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dataPlayer: 
   _inputActionReference:
   - {fileID: -1022064214346570349, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
   - {fileID: 8252427877954559611, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
@@ -11211,11 +11155,103 @@ MonoBehaviour:
   - {fileID: -1664690711104120689, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
   - {fileID: -5619805677398190125, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
   - {fileID: 6999888723692775931, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
-  keyboardData: []
-  gamepadData: []
   _sectionConfirm: {fileID: 1614373874}
   _textConfirm: {fileID: 2034851472}
   _timer: 4
+  _contentKeyboardUI:
+  - {fileID: 298410094}
+  - {fileID: 191362019}
+  - {fileID: 1147508429}
+  - {fileID: 1593814897}
+  - {fileID: 1001064976}
+  - {fileID: 339934392}
+  - {fileID: 565424635}
+  - {fileID: 1020997401}
+  _contentGamepadUI:
+  - {fileID: 748739931}
+  - {fileID: 1417693074}
+  - {fileID: 1421675967}
+  - {fileID: 758974345}
+  - {fileID: 786435794}
+  - {fileID: 1089863801}
+  - {fileID: 1326105460}
+  - {fileID: 1816595248}
+--- !u!114 &931446480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931446474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 164fa57bf20a0bc44b411ba8f2f9e826, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sprForKeyboard: {fileID: 68345609, guid: 79dd4ca709df4f54f8418f6aeb29f479, type: 3}
+  _sprForXbox:
+  - {fileID: -935260825, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 1326078527, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 377755046, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 1270508539, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 916024815, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 1130572671, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 900292374, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 557859750, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 1478228759, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: -341262657, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 1941366922, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  - {fileID: 342919630, guid: c4611d2a156c5044e8d78fe94900b0c7, type: 3}
+  _sprForPlayStation:
+  - {fileID: 1721211025, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: -1524941593, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: -1077047832, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: 1953342876, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: 241362842, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: 1383939000, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: -585464286, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: -1959214326, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: 1765899022, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: -1023827661, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: 9947390, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  - {fileID: 5340362, guid: 795464e8628c3f44fb10e61ff7942197, type: 3}
+  _keyboardInputs:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  _formatsToGamepad:
+  - use
+  - attack
+  - dash
+  - staticAim
+  - skillOne
+  - skillTwo
+  - select
+  - pause
+  - 
+  - 
+  - 
+  - 
+  _formatsToKeyboard:
+  - use
+  - attack
+  - dash
+  - staticAim
+  - skillOne
+  - skillTwo
+  - select
+  - pause
+  _contentKey: []
+  _contentValue: []
 --- !u!1 &951126026
 GameObject:
   m_ObjectHideFlags: 0
@@ -11378,8 +11414,8 @@ GameObject:
   - component: {fileID: 963139170}
   - component: {fileID: 963139169}
   m_Layer: 5
-  m_Name: 'Gamepad[Skill One]'
-  m_TagString: Untagged
+  m_Name: 'Key[Skill One]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12239,8 +12275,8 @@ GameObject:
   - component: {fileID: 1068161148}
   - component: {fileID: 1068161147}
   m_Layer: 5
-  m_Name: 'Gamepad[Pause]'
-  m_TagString: Untagged
+  m_Name: 'Key[Pause]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12315,7 +12351,7 @@ GameObject:
   - component: {fileID: 1071220943}
   m_Layer: 5
   m_Name: 'Key[Skill One]'
-  m_TagString: Untagged
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13185,6 +13221,7 @@ GameObject:
   - component: {fileID: 1154968834}
   - component: {fileID: 1154968833}
   - component: {fileID: 1154968835}
+  - component: {fileID: 1154968836}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -13389,6 +13426,46 @@ MonoBehaviour:
   _controlStats: []
   _controlPause: []
   _controlStaticAim: []
+--- !u!114 &1154968836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154968828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a70e1ba4f34b804490901c2aaff84cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dataPlayer: D:\Documentos\Unity\The Price\The Price\Assets\Project\Game\Menu
+  _inputs:
+    keyboardData:
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    gamepadData:
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
+    - 
 --- !u!1 &1158569984
 GameObject:
   m_ObjectHideFlags: 0
@@ -13917,7 +13994,7 @@ GameObject:
   - component: {fileID: 1202145366}
   m_Layer: 5
   m_Name: 'Key[Attack]'
-  m_TagString: Untagged
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15744,8 +15821,8 @@ GameObject:
   - component: {fileID: 1373153720}
   - component: {fileID: 1373153719}
   m_Layer: 5
-  m_Name: 'Gamepad[Skill Two]'
-  m_TagString: Untagged
+  m_Name: 'Key[Skill Two]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16648,8 +16725,8 @@ GameObject:
   - component: {fileID: 1453461626}
   - component: {fileID: 1453461625}
   m_Layer: 5
-  m_Name: 'Gamepad[Skill One]'
-  m_TagString: Untagged
+  m_Name: 'Key[Skill One]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19118,8 +19195,8 @@ GameObject:
   - component: {fileID: 1746841588}
   - component: {fileID: 1746841587}
   m_Layer: 5
-  m_Name: 'Gamepad[Use]'
-  m_TagString: Untagged
+  m_Name: 'Key[Use]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19346,8 +19423,8 @@ GameObject:
   - component: {fileID: 1752885015}
   - component: {fileID: 1752885014}
   m_Layer: 5
-  m_Name: 'Gamepad[Skill Two]'
-  m_TagString: Untagged
+  m_Name: 'Key[Skill Two]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19421,8 +19498,8 @@ GameObject:
   - component: {fileID: 1757998882}
   - component: {fileID: 1757998881}
   m_Layer: 5
-  m_Name: 'Gamepad[Use]'
-  m_TagString: Untagged
+  m_Name: 'Key[Use]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19708,7 +19785,7 @@ GameObject:
   - component: {fileID: 1771762977}
   m_Layer: 5
   m_Name: 'Key[Dash]'
-  m_TagString: Untagged
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19909,7 +19986,7 @@ GameObject:
   - component: {fileID: 1791658547}
   m_Layer: 5
   m_Name: 'Key[Use]'
-  m_TagString: Untagged
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20070,8 +20147,8 @@ GameObject:
   - component: {fileID: 1794938556}
   - component: {fileID: 1794938555}
   m_Layer: 5
-  m_Name: 'Gamepad[Pause]'
-  m_TagString: Untagged
+  m_Name: 'Key[Pause]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21391,8 +21468,8 @@ GameObject:
   - component: {fileID: 1886227620}
   - component: {fileID: 1886227619}
   m_Layer: 5
-  m_Name: 'Gamepad[Attack]'
-  m_TagString: Untagged
+  m_Name: 'Key[Attack]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21542,7 +21619,7 @@ GameObject:
   - component: {fileID: 1888717326}
   m_Layer: 5
   m_Name: 'Key[Stats]'
-  m_TagString: Untagged
+  m_TagString: keyboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21652,8 +21729,8 @@ GameObject:
   - component: {fileID: 1902242030}
   - component: {fileID: 1902242029}
   m_Layer: 5
-  m_Name: 'Gamepad[Dash]'
-  m_TagString: Untagged
+  m_Name: 'Key[Dash]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24570,8 +24647,8 @@ GameObject:
   - component: {fileID: 2062258294}
   - component: {fileID: 2062258293}
   m_Layer: 5
-  m_Name: 'Gamepad[Dash]'
-  m_TagString: Untagged
+  m_Name: 'Key[Dash]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25022,8 +25099,8 @@ GameObject:
   - component: {fileID: 2118362330}
   - component: {fileID: 2118362329}
   m_Layer: 5
-  m_Name: 'Gamepad[Stats]'
-  m_TagString: Untagged
+  m_Name: 'Key[Stats]'
+  m_TagString: xbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

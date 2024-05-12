@@ -1,11 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using System.Text.RegularExpressions;
 
 public class EditorInputs : MonoBehaviour {
 
     [Header("Reference Controls")]
-    [SerializeField] private string _dataPlayer;
     public InputActionReference[] _inputActionReference;
     private string _schemeModifier = "Gamepad";
     private int _positionChange;
@@ -18,6 +19,10 @@ public class EditorInputs : MonoBehaviour {
     private bool _inConfirm { get; set; }
     private string _textContent;
 
+    [Header("Data UI")]
+    [SerializeField] private Image[] _contentKeyboardUI;
+    [SerializeField] private Image[] _contentGamepadUI;
+
     [Header("Other Data")]
     private Settings _settings;
     private InputManager _inputManager;
@@ -28,10 +33,6 @@ public class EditorInputs : MonoBehaviour {
         _inputManager = GetComponent<InputManager>();
     }
     private void Start()
-    {
-        InitialValues();
-    }
-    private void InitialValues()
     {
         _baseTimer = _timer;
         _sectionConfirm.SetActive(false);
@@ -75,64 +76,31 @@ public class EditorInputs : MonoBehaviour {
 
         if (_schemeModifier == "Gamepad")
         {
-            if (controlName.Contains("Button0"))
-            {
-                _cleanKey += "buttonSouth";
-            }
-            if (controlName.Contains("Button1"))
-            {
-                _cleanKey += "buttonEast";
-            }
-            if (controlName.Contains("Button2"))
-            {
-                _cleanKey += "buttonWest";
-            }
-            if (controlName.Contains("Button3"))
-            {
-                _cleanKey += "buttonNorth";
-            }
-            if (controlName.Contains("Button4"))
-            {
-                _cleanKey += "leftShoulder";
-            }
-            if (controlName.Contains("Button5"))
-            {
-                _cleanKey += "rightShoulder";
-            }
-            if (controlName.Contains("Button6"))
-            {
-                _cleanKey += "select";
-            }
-            if (controlName.Contains("Button7"))
-            {
-                _cleanKey += "start";
-            }
-            if (controlName.Contains("Button8"))
-            {
-                _cleanKey += "leftStickPress";
-            }
-            if (controlName.Contains("Button9"))
-            {
-                _cleanKey += "rightStickPress";
-            }
-            if (controlName.Contains("Button10"))
-            {
-                _cleanKey += "leftTrigger";
-            }
-            if (controlName.Contains("Button11"))
-            {
-                _cleanKey += "rightTrigger";
-            }
+            if (Regex.IsMatch(controlName, @"Button0\b")) _cleanKey += "buttonSouth";
+            if (Regex.IsMatch(controlName, @"Button1\b")) _cleanKey += "buttonEast";
+            if (Regex.IsMatch(controlName, @"Button2\b")) _cleanKey += "buttonWest";
+            if (Regex.IsMatch(controlName, @"Button3\b")) _cleanKey += "buttonNorth";
+            if (Regex.IsMatch(controlName, @"Button4\b")) _cleanKey += "leftShoulder";
+            if (Regex.IsMatch(controlName, @"Button5\b")) _cleanKey += "rightShoulder";
+            if (Regex.IsMatch(controlName, @"Button6\b")) _cleanKey += "select";
+            if (Regex.IsMatch(controlName, @"Button7\b")) _cleanKey += "start";
+            if (Regex.IsMatch(controlName, @"Button8\b")) _cleanKey += "leftStickPress";
+            if (Regex.IsMatch(controlName, @"Button9\b")) _cleanKey += "rightStickPress";
+            if (Regex.IsMatch(controlName, @"Button10\b")) _cleanKey += "leftTrigger";
+            if (Regex.IsMatch(controlName, @"Button11\b")) _cleanKey += "rightTrigger";
         }
-        else
-        {
-            if (!controlName.Contains("Joystick")) _cleanKey += controlName;
-        }
+        else { if (!controlName.Contains("Joystick")) _cleanKey += controlName; }
 
+        // ---- CHANGE BINDING IN *InputAction* ---- //
         _inputActionReference[_positionChange].action.ChangeBinding(_cleanKey);
+        
+        // ---- CHANGE BINDING IN *InputManager* --- //
+        if(_schemeModifier == "Gamepad") _inputManager.ChangeGamepad(_inputActionReference[_positionChange].action.name, _positionChange);
+        else _inputManager.ChangeKeyboard(_positionChange, _cleanKey);
 
-        if(_schemeModifier == "Gamepad") _inputManager.GamepadData[_positionChange] = _cleanKey;
-        else _inputManager.KeyboardData[_positionChange] = _cleanKey;
+        // ---- RESET ONE SPECIFIC ELEMENT IN THE UI ---- //
+        if(_schemeModifier == "Gamepad") _inputManager.ResetOneElement(_contentGamepadUI[_positionChange]);
+        else _inputManager.ResetOneElement(_contentKeyboardUI[_positionChange]);
 
         CloseConfirm();
     }
@@ -151,14 +119,12 @@ public class EditorInputs : MonoBehaviour {
     public void EditGamepad(int position)
     {
         _schemeModifier = "Gamepad";
-        DetectScheme();
 
         Edit(position);
     }
     public void EditKeyboard(int position)
     {
         _schemeModifier = "Keyboard";
-        DetectScheme();
 
         Edit(position);
     }
