@@ -52,11 +52,7 @@ public class MenuUI : MonoBehaviour {
     }
     private void Update()
     {
-        if (_editorInputs.InConfirm)
-        {
-            Debug.Log("In Confirm");
-            return;
-        }
+        if (_editorInputs.InConfirm) return;
 
         // CERRAR SETTINGS Y VOLVER AL MENU BASE
         if ((Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.Escape)) && _posGeneral == 1)

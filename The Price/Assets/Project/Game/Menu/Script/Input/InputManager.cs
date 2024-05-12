@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +18,8 @@ public class InputManager : MonoBehaviour {
     [Header("Private Data")]
     [SerializeField] private List<Image> _contentKey = new List<Image>();
     [SerializeField] private List<string> _contentValue = new List<string>();
+
+    [SerializeField] private TypeController[] _players = new TypeController[4];
 
     private void Start()
     {
@@ -59,20 +59,17 @@ public class InputManager : MonoBehaviour {
         {
             _contentKey[i].sprite = GetInput(_contentKey[i].tag, _contentValue[i]);
 
-            if (_contentKey[i].sprite == _sprForKeyboard)
-            {
-                // KEYBOARD SPECIFIC DATA
-                TextMeshProUGUI tmKey = _contentKey[i].gameObject.GetComponentInChildren<TextMeshProUGUI>();
 
-                ChangeTextForKeyboard(tmKey, _contentValue[i]);
-            }
+            // KEYBOARD SPECIFIC DATA
+            TextMeshProUGUI tmKey = _contentKey[i].gameObject.GetComponentInChildren<TextMeshProUGUI>();
+            if(tmKey != null) ChangeTextForKeyboard(tmKey, _contentValue[i]);
         }
     }
     private void ChangeTextForKeyboard(TextMeshProUGUI tmpro, string value)
     {
         for(int i = 0; i < _formatsToKeyboard.Count; i++)
         {
-            if (_formatsToKeyboard[i] == value)
+            if (string.Compare(_formatsToKeyboard[i].ToLower(), value.ToLower()) == 0)
             {
                 tmpro.text = _keyboardInputs[i].ToString();
                 break;
@@ -85,10 +82,16 @@ public class InputManager : MonoBehaviour {
         {
             if (string.Compare(_formatsToGamepad[i].ToLower(), use.ToLower()) == 0)
             {
-                // ENCONTRÉ LA POSICION DEL PARAMETRO BUSCADO
-                if (element.Contains("xbox")) return _sprForXbox[i];
-                else if (element.Contains("board")) return _sprForKeyboard;
-                else return _sprForPlayStation[i];
+                for(int j = 0; j < _players.Length; j++)
+                {
+                    // ENCONTRÉ LA POSICION DEL PARAMETRO BUSCADO
+                    if (element.Contains("player" + j.ToString()))
+                    {
+                        if (_players[j] == TypeController.XBox) return _sprForXbox[i];
+                        else if (_players[j] == TypeController.PlayStation) return _sprForPlayStation[i];
+                        else return _sprForKeyboard;
+                    }
+                }
             }
         }
 
@@ -117,7 +120,9 @@ public class InputManager : MonoBehaviour {
     }
     public void ChangeKeyboard(int position, string newInput)
     {
-        _keyboardInputs[position] = newInput;
+        string[] separate = newInput.Split("/");
+
+        _keyboardInputs[position] = separate[1];
     }
     // ---- GETTERS ----------------- //
     public List<string> GetInputsForControl(int control)
