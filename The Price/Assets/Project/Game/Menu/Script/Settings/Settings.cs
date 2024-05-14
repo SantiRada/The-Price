@@ -11,8 +11,8 @@ public class Settings : MonoBehaviour {
     [SerializeField] private Image[] _allContent;
     [SerializeField] private Selectable[] _allContentSelectable;
     [Space]
-    [SerializeField] private Sprite _sprBase;
-    [SerializeField] private Sprite _sprSelect;
+    [SerializeField] private Color _unselectedColor;
+    [SerializeField] private Color _selectedColor;
 
     [Header("Settings")]
     [SerializeField] private TextMeshProUGUI[] _textTitles;
@@ -162,7 +162,7 @@ public class Settings : MonoBehaviour {
         _canMovement = false;
 
         // PINTAR DE NEGRO EL ELEMENTO ANTERIOR
-        _allContent[_prevPosInSettings].sprite = _sprBase;
+        _allContent[_prevPosInSettings].color = _unselectedColor;
 
         // CALCULAR POSICIONES SEGÚN LA SECCIÓN //
         TestToRestart(num);
@@ -178,7 +178,7 @@ public class Settings : MonoBehaviour {
         // ------------------------------------------ //
 
         // PINTAR DE GRIS EL NUEVO ELEMENTO
-        _allContent[_posInSettings].sprite = _sprSelect;
+        _allContent[_posInSettings].color = _selectedColor;
         _allContentSelectable[_posInSettings].Select();
 
         yield return new WaitForSeconds(_delayToMovementStick);
@@ -187,7 +187,7 @@ public class Settings : MonoBehaviour {
     // ---------- SETTINGS ---------- //
     public void MoveToSectionInSettings(int num)
     {
-        _allContent[_prevPosInSettings].sprite = _sprBase;
+        _allContent[_prevPosInSettings].color = _unselectedColor;
 
         _textTitles[_indexConfig].color = Color.gray;
         _sectorSettings[_indexConfig].SetActive(false);
@@ -198,7 +198,7 @@ public class Settings : MonoBehaviour {
         _textTitles[_indexConfig].color = Color.white;
         _sectorSettings[_indexConfig].SetActive(true);
 
-        _allContent[_posInSettings].sprite = _sprSelect;
+        _allContent[_posInSettings].color = _selectedColor;
         _allContentSelectable[_posInSettings].Select();
     }
     private void ResetPosition()

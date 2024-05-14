@@ -1,10 +1,10 @@
 ID,Español,Ingles
-0,The Price of Eternity,The Price of Eternity
-1,Jugar,Play
+0,Nueva Partida,New Game
+1,Continuar,Continue
 2,Ajustes,Settings
 3,Créditos,Credits
 4,Salir,Quit
-5,Configuraciones,Configuration
+5,Opciones,Options
 6,Juego,Gameplay
 7,Pantalla,Screen
 8,Audio,Audio
@@ -15,7 +15,7 @@ ID,Español,Ingles
 13,Temblor de Pantalla,Shake Screen
 14,Vibración,Vibration
 15,Asistencia de Apuntado,Aim Assistant
-16,Nivel de Asistencia,Level of Assistant
+16,-----------------------------,-----------------------------
 17,Indicadores de Jugador,Player Indicators
 18,Temporizador del Intento,Timer to Run
 19,Números de Daño,Damage Numbers
@@ -43,20 +43,20 @@ ID,Español,Ingles
 41,Teclado,Keyboard
 42,Gamepad,Gamepad
 43,Presiona la Tecla para Reasignar...,Press Key to Remap...
-44,,
-45,,
-46,,
-47,,
-48,,
+44,J1,P1
+45,J2,P2
+46,J3,P3
+47,J4,P4
+48,Nash,Nash
 49,Activa el temblor de la pantalla,Activate screen shaking
 50,Activa la vibración del mando,Activate the vibration of the controller
 51,Ayuda a apuntar con tus armas a distancia ajustando la mirilla al enemigo más cercano,Helps aim your weapons at range by adjusting the sight to the nearest enemy
-52,Nivel de ayuda de auto-apuntado,Level of auto-aim aid
-53,Muestra un indicador sobre la cabeza de los jugadores en las partidas multijugador,Displays an indicator above players' heads in multiplayer games
-54,Muestra el temporizador del intento actual,Shows the timer for the current run
-55,Muestra los números de daño sobre los jugadores y los enemigos,Shows damage numbers on players and enemies
-56,Muestra las barras de HP de los enemigos,Shows enemy HP bars
-57,Cambia el idioma del juego,Change the game language
+52,Muestra un indicador sobre la cabeza de los jugadores en las partidas multijugador,Displays an indicator above players' heads in multiplayer games
+53,Muestra el temporizador del intento actual,Shows the timer for the current run
+54,Muestra los números de daño sobre los jugadores y los enemigos,Shows damage numbers on players and enemies
+55,Muestra las barras de HP de los enemigos,Shows enemy HP bars
+56,Cambia el idioma del juego,Change the game language
+57,,
 58,Creado por,Created by
 59,Santiago Rada,Santiago Rada
 60,Producido por,Produced by

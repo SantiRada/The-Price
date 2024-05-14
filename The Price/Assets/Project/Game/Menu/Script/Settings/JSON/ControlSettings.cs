@@ -12,7 +12,6 @@ public class ControlSettings : MonoBehaviour {
     [SerializeField] private Toggle _shakeScreen;
     [SerializeField] private Toggle _vibration;
     [SerializeField] private Toggle _aimAssistant;
-    [SerializeField] private Slider _helpAssistant;
     [SerializeField] private Toggle _playerIndicators;
     [SerializeField] private Toggle _timerToRun;
     [SerializeField] private Toggle _DamageNumbers;
@@ -46,7 +45,6 @@ public class ControlSettings : MonoBehaviour {
             shakeScreen = _shakeScreen.isOn,
             vibration = _vibration.isOn,
             aimAssistant = _aimAssistant.isOn,
-            levelHelpAssistant = _helpAssistant.value,
             playerIndicators = _playerIndicators.isOn,
             timerToRun = _timerToRun.isOn,
             damageNumbers = _DamageNumbers.isOn,
@@ -79,7 +77,6 @@ public class ControlSettings : MonoBehaviour {
         _shakeScreen.isOn = settings.shakeScreen;
         _vibration.isOn = settings.vibration;
         _aimAssistant.isOn = settings.aimAssistant;
-        _helpAssistant.value = settings.levelHelpAssistant;
         _playerIndicators.isOn = settings.playerIndicators;
         _timerToRun.isOn = settings.timerToRun;
         _DamageNumbers.isOn = settings.damageNumbers;

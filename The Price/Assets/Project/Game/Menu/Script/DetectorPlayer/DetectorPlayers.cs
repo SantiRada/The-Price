@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,6 +14,10 @@ public class DetectorPlayers : MonoBehaviour {
 
     [Header("Data Visual")]
     [SerializeField] private Image[] _playersOn = new Image[4];
+    [SerializeField] private Sprite _selectedPlayerSPR;
+    [Space]
+    [SerializeField] private TextMeshProUGUI[] _playersInGame;
+    [SerializeField] private TextMeshProUGUI[] _namePlayers;
 
     [Header("Data Players")]
     [SerializeField] private List<string> _detectorPlayers = new List<string>();
@@ -21,10 +26,12 @@ public class DetectorPlayers : MonoBehaviour {
     {
         _timerToStartBase = _timerToStartGame;
 
-        _playersOn[0].color = Color.black;
-        _playersOn[1].color = Color.black;
-        _playersOn[2].color = Color.black;
-        _playersOn[3].color = Color.black;
+        for(int i = 0; i < _playersOn.Length; i++)
+        {
+            _playersOn[i].color = new Color(1, 1, 1, 0.1f);
+            _playersInGame[i].color = new Color(1, 1, 1, 0.1f);
+            _namePlayers[i].enabled = false;
+        }
     }
     private void LateUpdate()
     {
@@ -103,6 +110,10 @@ public class DetectorPlayers : MonoBehaviour {
         delayToClic = true;
         _timerToStartGame = _timerToStartBase;
         _detectorPlayers.Add(data);
-        _playersOn[_detectorPlayers.Count - 1].color = Color.gray;
+
+        _playersOn[_detectorPlayers.Count - 1].color = new Color(1, 1, 1, 0.4f);
+        _playersOn[_detectorPlayers.Count - 1].sprite = _selectedPlayerSPR;
+        _playersInGame[_detectorPlayers.Count - 1].color = new Color(1, 1, 1, 1);
+        _namePlayers[_detectorPlayers.Count - 1].enabled = true;
     }
 }
