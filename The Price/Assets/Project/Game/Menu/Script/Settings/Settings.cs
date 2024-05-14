@@ -23,6 +23,7 @@ public class Settings : MonoBehaviour {
     private int _localPosition = 0;
 
     [Header("Game")]
+    [SerializeField] private GameObject _sectorDescription;
     [SerializeField] private TextMeshProUGUI _descriptionSection;
 
     [Header("Function for Dropdown")]
@@ -168,14 +169,7 @@ public class Settings : MonoBehaviour {
         TestToRestart(num);
 
         // COLOCAR TEXTO DESCRIPTIVO SI VIENE AL CASO //
-        if (_indexConfig == 0)
-        {
-            int _space = _posInSettings + 49;
-
-            _descriptionSection.text = _languageManager.GetValue(_space);
-        }
-        else { _descriptionSection.text = ""; }
-        // ------------------------------------------ //
+        VerifyDescription();
 
         // PINTAR DE GRIS EL NUEVO ELEMENTO
         _allContent[_posInSettings].color = _selectedColor;
@@ -187,6 +181,8 @@ public class Settings : MonoBehaviour {
     // ---------- SETTINGS ---------- //
     public void MoveToSectionInSettings(int num)
     {
+        VerifyDescription();
+
         _allContent[_prevPosInSettings].color = _unselectedColor;
 
         _textTitles[_indexConfig].color = Color.gray;
@@ -233,12 +229,12 @@ public class Settings : MonoBehaviour {
         #region Vertical
         if(num != 0)
         {
-            if (_posInSettings == 23 || _posInSettings == 31)
+            if (_posInSettings == 22 || _posInSettings == 30)
             {
                 if (num < 0) _localPosition -= 8;
             }
 
-            if(_posInSettings == 16 || _posInSettings == 24)
+            if(_posInSettings == 15 || _posInSettings == 23)
             {
                 if (num > 0) _localPosition += 8;
             }
@@ -261,5 +257,20 @@ public class Settings : MonoBehaviour {
         }
 
         _prevPosInSettings = _posInSettings;
+    }
+    private void VerifyDescription()
+    {
+        if (_indexConfig == 0)
+        {
+            int _space = _posInSettings + 49;
+
+            _descriptionSection.text = _languageManager.GetValue(_space);
+            _sectorDescription.SetActive(true);
+        }
+        else
+        {
+            _sectorDescription.SetActive(false);
+            _descriptionSection.text = "";
+        }
     }
 }
