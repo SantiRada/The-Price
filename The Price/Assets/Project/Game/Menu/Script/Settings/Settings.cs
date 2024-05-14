@@ -47,7 +47,7 @@ public class Settings : MonoBehaviour {
     }
     private void Start()
     {
-        InitialValues();
+        Invoke("InitialValues", 0.25f);
     }
     private void InitialValues()
     {

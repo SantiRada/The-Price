@@ -21,13 +21,19 @@ public class PauseMenu : MonoBehaviour {
     private static bool inPause { get; set; }
 
     private Settings _settings;
+    private LanguageManager _language;
     private bool inConfig = false;
 
     private void Awake()
     {
         _settings = GetComponentInChildren<Settings>();
+        _language = FindAnyObjectByType<LanguageManager>();
     }
     private void Start()
+    {
+        Invoke("InitialValues", 0.5f);
+    }
+    private void InitialValues()
     {
         Pause = false;
         _pauseWindow.SetActive(inPause);
@@ -57,6 +63,7 @@ public class PauseMenu : MonoBehaviour {
 
         if (Pause)
         {
+            _language.UpdateLanguage(PlayerPrefs.GetInt("Language", 1));
             _menuObject.Select();
         }
     }

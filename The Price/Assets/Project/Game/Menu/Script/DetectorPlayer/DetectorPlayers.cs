@@ -11,7 +11,6 @@ public class DetectorPlayers : MonoBehaviour {
     [HideInInspector] public bool canDetect = false;
     private bool delayToClic = false;
 
-
     [Header("Data Visual")]
     [SerializeField] private Image[] _playersOn = new Image[4];
 

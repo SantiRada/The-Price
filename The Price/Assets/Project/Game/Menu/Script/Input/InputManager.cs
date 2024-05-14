@@ -19,7 +19,7 @@ public class InputManager : MonoBehaviour {
     [SerializeField] private List<Image> _contentKey = new List<Image>();
     [SerializeField] private List<string> _contentValue = new List<string>();
 
-    [SerializeField] private TypeController[] _players = new TypeController[4];
+    [SerializeField] private List<TypeController> _players;
 
     private void Start()
     {
@@ -90,12 +90,12 @@ public class InputManager : MonoBehaviour {
                 }
                 else
                 {
-                    for(int j = 0; j < _players.Length; j++)
+                    for(int j = 0; j < _players.Count; j++)
                     {
                         // ENCONTRÉ LA POSICION DEL PARAMETRO BUSCADO
                         if (element.Contains("player" + j.ToString()))
                         {
-                            if (_players[j] == TypeController.XBox) return _sprForXbox[i];
+                            if (_players[j] == TypeController.Xbox) return _sprForXbox[i];
                             else if (_players[j] == TypeController.PlayStation) return _sprForPlayStation[i];
                             else return _sprForKeyboard;
                         }
@@ -138,6 +138,10 @@ public class InputManager : MonoBehaviour {
     {
         if (control == 0) _keyboardInputs = values;
         else _formatsToGamepad = values;
+    }
+    public void SetTypeControllers(List<TypeController> types)
+    {
+        _players = types;
     }
 }
 // PARA EDITAR GAMEPAD EL ARRAY DE FORMATOS ESTÁ EN CONSTANTE CAMBIO DE POSICIONES

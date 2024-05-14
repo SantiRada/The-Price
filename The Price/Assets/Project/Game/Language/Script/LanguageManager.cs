@@ -68,6 +68,7 @@ public class LanguageManager : MonoBehaviour {
 
         for(int i = 0; i < _allText.Length; i++)
         {
+            Debug.Log("Updates");
             string[] dataText = _allText[i].name.Split('[');
             string[] dataFinal = dataText[1].Split(']');
 

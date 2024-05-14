@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 2451087}
   - component: {fileID: 2451086}
   m_Layer: 5
-  m_Name: txt_key
+  m_Name: txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11763,7 +11763,7 @@ GameObject:
   - component: {fileID: 911897022}
   - component: {fileID: 911897021}
   m_Layer: 5
-  m_Name: txt_key
+  m_Name: txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13735,7 +13735,7 @@ GameObject:
   - component: {fileID: 1087309944}
   - component: {fileID: 1087309943}
   m_Layer: 5
-  m_Name: txt_key
+  m_Name: txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14902,7 +14902,7 @@ GameObject:
   - component: {fileID: 1183102993}
   - component: {fileID: 1183102992}
   m_Layer: 5
-  m_Name: txt_key
+  m_Name: txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16381,7 +16381,7 @@ GameObject:
   - component: {fileID: 1335620856}
   - component: {fileID: 1335620855}
   m_Layer: 5
-  m_Name: txt_key
+  m_Name: txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17278,7 +17278,7 @@ GameObject:
   - component: {fileID: 1389177237}
   - component: {fileID: 1389177236}
   m_Layer: 5
-  m_Name: txt_key
+  m_Name: txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17763,7 +17763,7 @@ GameObject:
   - component: {fileID: 1429394717}
   - component: {fileID: 1429394716}
   m_Layer: 5
-  m_Name: txt_key
+  m_Name: txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21636,7 +21636,7 @@ GameObject:
   - component: {fileID: 1741558592}
   - component: {fileID: 1741558591}
   m_Layer: 5
-  m_Name: txt_key
+  m_Name: txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23192,6 +23192,7 @@ GameObject:
   - component: {fileID: 1841039795}
   - component: {fileID: 1841039799}
   - component: {fileID: 1841039800}
+  - component: {fileID: 1841039801}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: UI
@@ -23346,6 +23347,22 @@ MonoBehaviour:
   _generalSound: {fileID: 263704274}
   _musicSound: {fileID: 1256039635}
   _effectSound: {fileID: 1117255381}
+--- !u!114 &1841039801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841039794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a70e1ba4f34b804490901c2aaff84cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dataPlayer: D:\Documentos\Unity\The Price\The Price\Assets\Project\Game\Menu
+  _inputs:
+    keyboardData: []
+    gamepadData: []
 --- !u!1 &1855889478
 GameObject:
   m_ObjectHideFlags: 0
@@ -25514,7 +25531,7 @@ MonoBehaviour:
   _playerObj: {fileID: 3292636607405707172, guid: 705b11be53fdbde40be5fe20c87e1a6c, type: 3}
   _hudPlayer: {fileID: 2289373231361262201, guid: ea35dc23851d9454f9b7c31061cf8ad0, type: 3}
   _statsPlayer: {fileID: 4808162325149967613, guid: 9029cdb3ec3f8d24c8355b1449f09f94, type: 3}
-  _currentScene: 
+  _typeController: 
 --- !u!1 &2106738193
 GameObject:
   m_ObjectHideFlags: 0

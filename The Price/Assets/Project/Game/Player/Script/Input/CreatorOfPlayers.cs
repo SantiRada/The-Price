@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public enum TypeController { Keyboard, XBox, PlayStation }
+public enum TypeController { Keyboard, Xbox, PlayStation }
 public class CreatorOfPlayers : MonoBehaviour {
 
     [Header("Detector Players")]
@@ -12,14 +11,16 @@ public class CreatorOfPlayers : MonoBehaviour {
     [SerializeField] private GameObject _playerObj;
     [SerializeField] private GameObject _hudPlayer;
     [SerializeField] private GameObject _statsPlayer;
-    [HideInInspector] public string _currentScene;
+    [SerializeField] private List<TypeController> _typeController = new List<TypeController>();
 
+    private InputManager _inputManager;
+
+    private void Awake()
+    {
+        _inputManager = FindAnyObjectByType<InputManager>();
+    }
     private void Start()
     {
-        _currentScene = SceneManager.GetActiveScene().name;
-
-        if (_currentScene.Contains("Menu") || _currentScene.Contains("Testing")) return;
-
         string[] data = PlayerPrefs.GetString("dataPlayers", "Keyboard & Mouse").Split(',');
 
         for(int i = 0; i < PlayerPrefs.GetInt("countPlayers", 1); i++)
@@ -36,6 +37,18 @@ public class CreatorOfPlayers : MonoBehaviour {
 
         for (int i = 0; i < _players.Count; i++)
         {
+            if (_players[i].Contains("Keyboard"))
+            {
+                _typeController.Add(TypeController.Keyboard);
+            }
+            else
+            {
+                string[] data = _players[i].Split('k');
+                int lastCharacter = int.Parse(data[1]) - 1;
+                if (Input.GetJoystickNames()[lastCharacter].ToLower().Contains("xbox")) _typeController.Add(TypeController.Xbox);
+                else _typeController.Add(TypeController.PlayStation);
+            }
+
             // ---- PLAYER -------------------- //
             GameObject obj = Instantiate(_playerObj, new Vector3(i, 0, 0), Quaternion.identity);
             PlayerStats pj = obj.GetComponent<PlayerStats>();
@@ -69,6 +82,8 @@ public class CreatorOfPlayers : MonoBehaviour {
 
             pj.SetUI(objHUD, objStats, _players[i]);
         }
+
+        _inputManager.SetTypeControllers(_typeController);
     }
     private void ApplyAllTags(GameObject hud, GameObject stats, int i)
     {
