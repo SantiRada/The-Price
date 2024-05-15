@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class MenuUI : MonoBehaviour {
     private DetectorPlayers _detectorPlayers;
     private Settings _controlSettings;
     private EditorInputs _editorInputs;
+    private InputManager _inputManager;
 
     private void Awake()
     {
@@ -28,6 +30,7 @@ public class MenuUI : MonoBehaviour {
         _detectorPlayers = FindAnyObjectByType<DetectorPlayers>();
         _language = FindAnyObjectByType<LanguageManager>();
         _controlSettings = GetComponentInChildren<Settings>();
+        _inputManager = FindAnyObjectByType<InputManager>();
     }
     private void Start()
     {
@@ -71,6 +74,46 @@ public class MenuUI : MonoBehaviour {
         {
             if (Input.GetButton("Fire1")) _anim.speed = 4;
             if (Input.GetButtonUp("Fire1")) _anim.speed = 1;
+        }
+
+        DetectControl();
+    }
+    private void DetectControl()
+    {
+        if (Input.anyKeyDown)
+        {
+            foreach (KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKeyDown(keyCode))
+                {
+                    string controlName = keyCode.ToString();
+                    Debug.Log("Control: " + controlName);
+
+                    List<TypeController> listType = new List<TypeController>();
+
+                    if (controlName.ToLower().Contains("joystick"))
+                    {
+                        int value = 0;
+                        if (!controlName.ToLower().Contains("kb"))
+                        {
+                            // Es un número de joystick mayor a 0
+                            string[] data = controlName.Split('k');
+                            string[] subdata = data[1].Split('B');
+
+                            value = int.Parse(subdata[0]);
+                        }
+
+
+                        if (Input.GetJoystickNames()[value].ToLower().Contains("xbox")) listType.Add(TypeController.Xbox);
+                        else listType.Add(TypeController.PlayStation);
+                    }
+                    else { listType.Add(TypeController.Keyboard); }
+
+                    _inputManager.SetTypeControllers(listType);
+                    _inputManager.ChangeDetectValues();
+                    break;
+                }
+            }
         }
     }
     public void CloseCredits()

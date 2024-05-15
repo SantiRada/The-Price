@@ -27,8 +27,8 @@ public class DataPlayerHUD : MonoBehaviour {
         {
             string[] data = _inputs[i].name.Split('[');
             string[] subdata = data[1].Split("]");
-
             string _value = subdata[0];
+
             _inputs[i].sprite = _inputManager.GetInput(_inputs[i].tag, _value);
         }
     }

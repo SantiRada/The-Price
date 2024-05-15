@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour {
     private TrailRenderer _trailRenderer;
     private SpriteRenderer _spriteRenderer;
     private PlayerStats _playerStats;
+    private Transform _camera;
 
     private void Awake()
     {
@@ -28,6 +29,7 @@ public class PlayerMovement : MonoBehaviour {
         _trailRenderer = GetComponent<TrailRenderer>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _camera = FindAnyObjectByType<CameraMovement>().transform;
     }
     private void Update()
     {
@@ -37,6 +39,8 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (isDashing) return;
 
+        VerifyMoveForCamera();
+        Debug.Log(_moveInput);
         if (_canMove) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * _playerStats.Speed * Time.fixedDeltaTime);
         else _rigidbody2D.velocity = Vector2.zero;
     }
@@ -69,6 +73,24 @@ public class PlayerMovement : MonoBehaviour {
         isDashing = false;
         yield return new WaitForSeconds(_dashingCooldown);
         _canDash = true;
+    }
+    private void VerifyMoveForCamera()
+    {
+        Vector3 distance = Vector3.zero;
+        // ------------------------------ //
+        if (transform.position.x > _camera.position.x) distance = transform.position - _camera.position;
+        else distance = _camera.position - transform.position;
+        // ------------------------------ //
+        if (distance.x >= 7.5f)
+        {
+            if(transform.position.x > _camera.position.x) _moveInput.x = _moveInput.x > 0 ? 0 : _moveInput.x;
+            else _moveInput.x = _moveInput.x > 0 ? _moveInput.x : 0;
+        }
+        if(Mathf.Abs(distance.y) >= 4f)
+        {
+            if(transform.position.y < _camera.position.y) _moveInput.y = _moveInput.y < 0 ? 0 : _moveInput.y;
+            else _moveInput.y = _moveInput.y > 0 ? 0 : _moveInput.y;
+        }
     }
     // ---- SETTERS & GETTERS ---- //
     public void SetDirection(Vector2 values)

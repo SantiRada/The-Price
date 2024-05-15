@@ -12034,7 +12034,6 @@ GameObject:
   - component: {fileID: 931446476}
   - component: {fileID: 931446475}
   - component: {fileID: 931446479}
-  - component: {fileID: 931446478}
   - component: {fileID: 931446480}
   m_Layer: 0
   m_Name: LanguageSelector
@@ -12074,76 +12073,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &931446478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 931446474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
-  m_NotificationBehavior: 1
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6d2ce01f-9585-4ce3-afe8-9ad2dc338eb7
-    m_ActionName: 'Player/Move[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/leftStick]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a9774047-5a62-48f0-8d10-3b3a6e6e33ee
-    m_ActionName: 'Player/Use[/XInputControllerWindows/rightShoulder,/Keyboard/e]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 1139eb42-9f87-49b5-a149-8a6c02dd4e9c
-    m_ActionName: 'Player/Attack[/XInputControllerWindows/buttonWest,/XInputControllerWindows/rightTrigger,/Keyboard/numpad5,/Keyboard/ctrl,/Keyboard/numpad0]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c868c475-e9fc-472c-ac61-0ff62a3087b2
-    m_ActionName: 'Player/Dash[/XInputControllerWindows/buttonSouth,/Keyboard/space]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f8bdeaed-77c8-40da-bd5c-9d633b3db8b4
-    m_ActionName: 'Player/StaticAim[/XInputControllerWindows/leftShoulder,/Keyboard/f,/XInputControllerWindows/leftTrigger]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 4d516119-2f5b-40da-bbdb-997ade96a24a
-    m_ActionName: 'Player/Aim[/XInputControllerWindows/rightStick,/Keyboard/numpad8,/Keyboard/numpad2,/Keyboard/numpad4,/Keyboard/numpad6]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 31d098a6-bc28-441d-85ed-8a21d7425660
-    m_ActionName: 'Player/Stats[/XInputControllerWindows/select,/Keyboard/tab]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 83a9b8e1-68db-47ab-be14-8548f40069eb
-    m_ActionName: 'Player/Pause[/Keyboard/escape,/XInputControllerWindows/start]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9a756e8d-4d06-4994-b22c-e620d341de03
-    m_ActionName: 'Player/Skill One[/Keyboard/numpad7,/XInputControllerWindows/buttonNorth]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 17f0a20d-c929-471f-aa70-72c4f9d1dbdc
-    m_ActionName: 'Player/Skill Two[/Keyboard/numpad9,/XInputControllerWindows/buttonEast]'
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Gamepad
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!114 &931446479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16984,7 +16913,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -16998,7 +16927,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1316118349}
   m_FillRect: {fileID: 480629193}
   m_HandleRect: {fileID: 1316118348}

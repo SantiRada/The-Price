@@ -3277,6 +3277,9 @@ MonoBehaviour:
   _textCritical: {fileID: 8767835982599428091}
   _textTitleData: {fileID: 8770371731837914354}
   _textDescriptionData: {fileID: 2523932554644778869}
+  _inputs:
+  - {fileID: 3259795902841008164}
+  - {fileID: 6649560284206206079}
 --- !u!1 &5184641055309837626
 GameObject:
   m_ObjectHideFlags: 0

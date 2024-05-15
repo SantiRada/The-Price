@@ -6408,6 +6408,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 800184a019ae77e41ae664f7b57ea66c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _distanceForMovement: {x: 3.5, y: 2}
+  _delayMovement: 150
 --- !u!1 &521054778
 GameObject:
   m_ObjectHideFlags: 0
@@ -11015,6 +11017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _progressBar: {fileID: 1631171263}
+  _speedForLoad: 0.1
 --- !u!114 &855513685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21083,7 +21086,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -21097,7 +21100,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 216548488}
   m_FillRect: {fileID: 1217618153}
   m_HandleRect: {fileID: 216548487}
@@ -26459,7 +26462,6 @@ GameObject:
   - component: {fileID: 2104553011}
   - component: {fileID: 2104553010}
   - component: {fileID: 2104553009}
-  - component: {fileID: 2104553008}
   - component: {fileID: 2104553007}
   - component: {fileID: 2104553012}
   m_Layer: 0
@@ -26545,37 +26547,7 @@ MonoBehaviour:
   - Pause
   _contentKey: []
   _contentValue: []
-  _players: 00000000000000000000000000000000
---- !u!114 &2104553008
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2104553006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 4cd1488336139f5468bb04b6721a9a9f, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Gamepad
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  _players: 00000000
 --- !u!114 &2104553009
 MonoBehaviour:
   m_ObjectHideFlags: 0

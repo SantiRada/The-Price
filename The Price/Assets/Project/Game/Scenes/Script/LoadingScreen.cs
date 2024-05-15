@@ -7,6 +7,7 @@ public class LoadingScreen : MonoBehaviour {
 
     [Header("Elements of the UI")]
     [SerializeField] private Slider _progressBar;
+    [SerializeField] private float _speedForLoad = 1f;
 
     [Header("Static Elements")]
     private static bool _inLoading { get; set; }
@@ -52,7 +53,7 @@ public class LoadingScreen : MonoBehaviour {
 
             if (_progressBar.value >= _progressBar.maxValue) InLoading = false;
 
-            yield return new WaitForSeconds(Random.Range(0.1f, 1f));
+            yield return new WaitForSeconds(Random.Range(0.1f, _speedForLoad));
 
         } while (InLoading || CountElement < _countTotalElement);
     }
