@@ -48,7 +48,7 @@ public class Settings : MonoBehaviour {
     }
     private void Start()
     {
-        Invoke("InitialValues", 0.25f);
+        InitialValues();
     }
     private void InitialValues()
     {
@@ -65,10 +65,12 @@ public class Settings : MonoBehaviour {
         {
             _sectorSettings[i].SetActive(false);
         }
+
+        LoadingScreen.CountElement++;
     }
     private void Update()
     {
-        if (_inputs.InConfirm || !_inputs.canUseThatKey) return;
+        if (_inputs.InConfirm || !_inputs.canUseThatKey || LoadingScreen.InLoading) return;
 
         // MOVER HACIA ATRAS
         if (Input.GetButtonDown("LB") || Input.GetKeyDown(KeyCode.Q))

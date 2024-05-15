@@ -15,13 +15,19 @@ public class LanguageManager : MonoBehaviour {
     [SerializeField] private Text[] _allLabel;
     [HideInInspector] public int columnLanguage = 1;
 
-    private void Start()
+    private void OnEnable()
+    {
+        InitialValues();
+    }
+    private void InitialValues()
     {
         LoadCSV();
         LoadAllText();
 
         columnLanguage = PlayerPrefs.GetInt("Language", 1);
         UpdateLanguage(columnLanguage);
+
+        LoadingScreen.CountElement++;
     }
     private void LoadAllText()
     {
@@ -68,7 +74,6 @@ public class LanguageManager : MonoBehaviour {
 
         for(int i = 0; i < _allText.Length; i++)
         {
-            Debug.Log("Updates");
             string[] dataText = _allText[i].name.Split('[');
             string[] dataFinal = dataText[1].Split(']');
 

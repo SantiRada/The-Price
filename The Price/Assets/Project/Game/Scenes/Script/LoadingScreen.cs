@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class LoadingScreen : MonoBehaviour {
 
@@ -8,49 +9,52 @@ public class LoadingScreen : MonoBehaviour {
     [SerializeField] private Slider _progressBar;
 
     [Header("Static Elements")]
-    [SerializeField] private static bool _inLoading = true;
+    private static bool _inLoading { get; set; }
 
     [Header("Data for Scene")]
-    private string _currentScene;
     private static int _countElementInScene { get; set; }
+    private int _countTotalElement;
 
-    private SpriteRenderer _spr;
-
-    private void Awake()
-    {
-        _spr = GetComponent<SpriteRenderer>();
-    }
     private void Start()
     {
         InitialValues();
     }
     private void InitialValues()
     {
-        _inLoading = true;
-        _currentScene = SceneManager.GetActiveScene().name;
-        switch (_currentScene)
+        InLoading = true;
+
+        switch (SceneManager.GetActiveScene().name)
         {
-            case "Menu": CountElement = 5; break;
+            case "Menu": _countTotalElement = 5; break;
+            case "Game": _countTotalElement = 6; break;
         }
 
         _progressBar.value = 0;
-        _progressBar.maxValue = CountElement;
+        _progressBar.maxValue = 100;
+
+        StartCoroutine("ChangeValues");
     }
     private void Update()
     {
-        if(_progressBar.value >= _progressBar.maxValue) _inLoading = false;
-
-        _progressBar.value = CountElement;
-
-        if (!_inLoading)
-        {
-            _spr.color = Color.Lerp(Color.white, new Color(1, 1, 1, 0), 0.5f);
-            Invoke("DestroyElement", 1f);
-        }
+        if (!InLoading) Invoke("DestroyElement", 1f);
     }
     private void DestroyElement()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+    }
+    private IEnumerator ChangeValues()
+    {
+        int randomValue = 0;
+        do
+        {
+            randomValue = Random.Range(0, 25);
+            _progressBar.value += randomValue;
+
+            if (_progressBar.value >= _progressBar.maxValue) InLoading = false;
+
+            yield return new WaitForSeconds(Random.Range(0.1f, 1f));
+
+        } while (InLoading || CountElement < _countTotalElement);
     }
     // ---- SETTERS & GETTERS ---- //
     public static int CountElement
@@ -59,5 +63,10 @@ public class LoadingScreen : MonoBehaviour {
         set {
             _countElementInScene = value;
         }
+    }
+    public static bool InLoading
+    {
+        get { return _inLoading; }
+        set { _inLoading = value; }
     }
 }

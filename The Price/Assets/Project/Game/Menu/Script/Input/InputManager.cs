@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -21,9 +22,17 @@ public class InputManager : MonoBehaviour {
 
     [SerializeField] private List<TypeController> _players;
 
-    private void Start()
+    public static event Action _InitializateValues;
+
+    private void OnEnable()
+    {
+        InitialValues();
+    }
+    private void InitialValues()
     {
         ChangeDetectValues();
+
+        LoadingScreen.CountElement++;
     }
     // ---- SAVE/LOAD DATA ---------- //
     private void LoadAllPads()
@@ -77,7 +86,7 @@ public class InputManager : MonoBehaviour {
             if(tmKey != null) ChangeTextForKeyboard(tmKey, _contentValue[i]);
         }
     }
-    private Sprite GetInput(string element, string use)
+    public Sprite GetInput(string element, string use)
     {
         for (int i = 0; i < _formatsToGamepad.Count; i++)
         {
@@ -93,7 +102,7 @@ public class InputManager : MonoBehaviour {
                     for(int j = 0; j < _players.Count; j++)
                     {
                         // ENCONTRÉ LA POSICION DEL PARAMETRO BUSCADO
-                        if (element.Contains("player" + j.ToString()))
+                        if (element.Contains("player" + (j+1).ToString()) || element == ("player" + (j+1).ToString()))
                         {
                             if (_players[j] == TypeController.Xbox) return _sprForXbox[i];
                             else if (_players[j] == TypeController.PlayStation) return _sprForPlayStation[i];
@@ -142,6 +151,8 @@ public class InputManager : MonoBehaviour {
     public void SetTypeControllers(List<TypeController> types)
     {
         _players = types;
+
+        _InitializateValues?.Invoke();
     }
 }
 // PARA EDITAR GAMEPAD EL ARRAY DE FORMATOS ESTÁ EN CONSTANTE CAMBIO DE POSICIONES

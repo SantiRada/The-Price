@@ -24,18 +24,24 @@ public class DetectorPlayers : MonoBehaviour {
 
     private void Start()
     {
+        InitialValues();
+    }
+    private void InitialValues()
+    {
         _timerToStartBase = _timerToStartGame;
 
-        for(int i = 0; i < _playersOn.Length; i++)
+        for (int i = 0; i < _playersOn.Length; i++)
         {
             _playersOn[i].color = new Color(1, 1, 1, 0.1f);
             _playersInGame[i].color = new Color(1, 1, 1, 0.1f);
             _namePlayers[i].enabled = false;
         }
+
+        LoadingScreen.CountElement++;
     }
     private void LateUpdate()
     {
-        if (!canDetect) return;
+        if (!canDetect || LoadingScreen.InLoading) return;
 
         if (Input.anyKeyDown)
         {

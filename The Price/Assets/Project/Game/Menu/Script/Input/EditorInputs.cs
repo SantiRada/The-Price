@@ -35,10 +35,16 @@ public class EditorInputs : MonoBehaviour {
         _inputManager = GetComponent<InputManager>();
         _language = GetComponent<LanguageManager>();
     }
-    private void Start()
+    private void OnEnable()
+    {
+        InitialValues();
+    }
+    private void InitialValues()
     {
         _baseTimer = _timer;
         _sectionConfirm.SetActive(false);
+
+        LoadingScreen.CountElement++;
     }
     private void Update()
     {

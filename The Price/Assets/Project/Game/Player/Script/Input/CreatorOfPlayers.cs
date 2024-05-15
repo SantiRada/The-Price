@@ -21,14 +21,20 @@ public class CreatorOfPlayers : MonoBehaviour {
     }
     private void Start()
     {
+        InitialValues();
+    }
+    private void InitialValues()
+    {
         string[] data = PlayerPrefs.GetString("dataPlayers", "Keyboard & Mouse").Split(',');
 
-        for(int i = 0; i < PlayerPrefs.GetInt("countPlayers", 1); i++)
+        for (int i = 0; i < PlayerPrefs.GetInt("countPlayers", 1); i++)
         {
             _players.Add(data[i]);
         }
 
         CreatePlayersInScene();
+
+        LoadingScreen.CountElement++;
     }
     private void CreatePlayersInScene()
     {

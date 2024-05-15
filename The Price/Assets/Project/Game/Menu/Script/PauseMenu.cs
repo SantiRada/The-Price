@@ -31,7 +31,7 @@ public class PauseMenu : MonoBehaviour {
     }
     private void Start()
     {
-        Invoke("InitialValues", 0.5f);
+        InitialValues();
     }
     private void InitialValues()
     {
@@ -39,6 +39,8 @@ public class PauseMenu : MonoBehaviour {
         _pauseWindow.SetActive(inPause);
         _confirmWindow.SetActive(false);
         _settingsWindow.SetActive(false);
+
+        LoadingScreen.CountElement++;
     }
     private void Update()
     {

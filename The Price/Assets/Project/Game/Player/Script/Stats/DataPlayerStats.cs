@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DataPlayerStats : MonoBehaviour {
 
@@ -16,7 +17,33 @@ public class DataPlayerStats : MonoBehaviour {
     public TextMeshProUGUI _textTitleData;
     public TextMeshProUGUI _textDescriptionData;
 
-    public bool InStats{
+    [Header("Inputs")]
+    [SerializeField] private Image[] _inputs;
+
+    private InputManager _inputManager;
+
+    private void Awake()
+    {
+        _inputManager = FindAnyObjectByType<InputManager>();
+    }
+    private void OnEnable()
+    {
+        InputManager._InitializateValues += InitialValues;
+    }
+    private void InitialValues()
+    {
+        for (int i = 0; i < _inputs.Length; i++)
+        {
+            string[] data = _inputs[i].name.Split('[');
+            string[] subdata = data[1].Split("]");
+
+            string _value = subdata[0];
+            _inputs[i].sprite = _inputManager.GetInput(_inputs[i].tag, _value);
+        }
+    }
+    // SETTERS & GETTERS //
+    public bool InStats
+    {
         get { return _inStats; }
         set { _inStats = value; }
     }

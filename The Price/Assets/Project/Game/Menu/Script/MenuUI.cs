@@ -33,7 +33,7 @@ public class MenuUI : MonoBehaviour {
     {
         InitialValues();
     }
-    private void InitialValues()
+    public void InitialValues()
     {
         _posGeneral = 0;
 
@@ -49,10 +49,11 @@ public class MenuUI : MonoBehaviour {
             _sectioners[i].SetActive(false);
         }
 
+        LoadingScreen.CountElement++;
     }
     private void Update()
     {
-        if (_editorInputs.InConfirm || !_editorInputs.canUseThatKey) return;
+        if (_editorInputs.InConfirm || !_editorInputs.canUseThatKey || LoadingScreen.InLoading) return;
 
         // CERRAR SETTINGS Y VOLVER AL MENU BASE
         if ((Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.Escape)) && _posGeneral == 1)
