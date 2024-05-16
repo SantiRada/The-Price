@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class MenuUI : MonoBehaviour {
 
+    [SerializeField] private static string _versionOfGame = "0.0.1v";
+
     [Header("General Section")]
     [SerializeField] private GameObject[] _sectioners;
     [SerializeField] private Selectable _FirstElement;
@@ -87,7 +89,6 @@ public class MenuUI : MonoBehaviour {
                 if (Input.GetKeyDown(keyCode))
                 {
                     string controlName = keyCode.ToString();
-                    Debug.Log("Control: " + controlName);
 
                     List<TypeController> listType = new List<TypeController>();
 
@@ -155,5 +156,9 @@ public class MenuUI : MonoBehaviour {
     public void QuitGame()
     {
         Application.Quit();
+    }
+    public static string GetVersion()
+    {
+        return _versionOfGame;
     }
 }

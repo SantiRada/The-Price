@@ -112,9 +112,10 @@ public class Settings : MonoBehaviour {
         // CANCELAR MOVIMIENTO AL ABRIR UN DROPDOWN
         if (Input.GetButtonDown("Fire1"))
         {
+            Debug.Log("Fire");
             for (int i = 0; i < _dropdowns.Length; i++)
             {
-                if (_posInSettings == _dropdowns[i])
+                if ((_posInSettings + 1) == _dropdowns[i])
                 {
                     _canRun = false;
                     break;
@@ -152,6 +153,9 @@ public class Settings : MonoBehaviour {
         _sectorSettings[0].SetActive(true);
 
         _allContentSelectable[0].Select();
+
+        // COLOCAR TEXTO DESCRIPTIVO SI VIENE AL CASO //
+        VerifyDescription();
     }
     public void CloseConfig()
     {
@@ -183,8 +187,6 @@ public class Settings : MonoBehaviour {
     // ---------- SETTINGS ---------- //
     public void MoveToSectionInSettings(int num)
     {
-        VerifyDescription();
-
         _allContent[_prevPosInSettings].color = _unselectedColor;
 
         _textTitles[_indexConfig].color = Color.gray;
@@ -192,6 +194,7 @@ public class Settings : MonoBehaviour {
 
         _indexConfig = num;
         ResetPosition();
+        VerifyDescription();
 
         _textTitles[_indexConfig].color = Color.white;
         _sectorSettings[_indexConfig].SetActive(true);
@@ -271,8 +274,8 @@ public class Settings : MonoBehaviour {
         }
         else
         {
-            _sectorDescription.SetActive(false);
             _descriptionSection.text = "";
+            _sectorDescription.SetActive(false);
         }
     }
 }
