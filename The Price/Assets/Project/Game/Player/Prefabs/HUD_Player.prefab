@@ -490,6 +490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cbc77750a631fd40819a45dd397848a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _delayColor: 50
   healthBar: {fileID: 6550549183400817046}
   energyBar: {fileID: 4741360882822973246}
   skillsSpr:

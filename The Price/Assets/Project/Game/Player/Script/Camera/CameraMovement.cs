@@ -48,7 +48,7 @@ public class CameraMovement : MonoBehaviour {
             ultimatePosition.z = transform.position.z;
         }
 
-        ultimatePosition = new Vector3(Mathf.Clamp(ultimatePosition.x, minDistance.x, maxDistance.x),Mathf.Clamp(ultimatePosition.y, minDistance.y, maxDistance.y),0);
+        ultimatePosition = new Vector3(Mathf.Clamp(ultimatePosition.x, minDistance.x, maxDistance.x),Mathf.Clamp(ultimatePosition.y, minDistance.y, maxDistance.y), -10);
         transform.position = Vector3.Slerp(transform.position, ultimatePosition, _delayMovement * Time.deltaTime);
         _positionCam = transform.position;
     }
