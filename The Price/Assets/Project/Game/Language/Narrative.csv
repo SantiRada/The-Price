@@ -1,147 +1,159 @@
 ID,Español,Ingles
-0,Nueva Partida,New Game
-1,Continuar,Continue
-2,Ajustes,Settings
-3,Créditos,Credits
-4,Salir,Quit
-5,Opciones,Options
-6,Juego,Gameplay
-7,Pantalla,Screen
-8,Audio,Audio
-9,Controles,Controls
-10,Seleccionar,Select
-11,Predeterminado,Reset to Default
-12,Atrás,Back
-13,Temblor de Pantalla,Shake Screen
-14,Vibración,Vibration
-15,Asistencia de Apuntado,Aim Assistant
-16,-----------------------------,-----------------------------
-17,Indicadores de Jugador,Player Indicators
-18,Temporizador del Intento,Timer to Run
-19,Números de Daño,Damage Numbers
-20,Barras de HP de los Enemigos,Healthbar of Enemys
-21,Idioma,Language
-22,Español,Spanish
-23,Inglés,English
-24,Chino Tradicional,Traditional Chinese
-25,Resolución,Resolution
-26,Modo de Pantalla,Screen Mode
-27,Fijar Cursor,Lock Cursor
-28,VSync,VSync
-29,General,General
-30,Música,Music
-31,Efectos de Sonido,SFX
-32,Acción / Uso,Action / Use
-33,Ataque,Attack
-34,Esquivar / Evadir,Dodge
-35,Habilidad Principal,Skill 1
-36,Habilidad Secundaria,Skill 2
-37,Inventario,Inventory
-38,Apuntar Estático,Static Aim
-39,Pausa,Pause
-40,Editar Controles,Edit Controls
-41,Teclado,Keyboard
-42,Gamepad,Gamepad
-43,Presiona la Tecla para Reasignar...,Press Key to Remap...
-44,J1,P1
-45,J2,P2
-46,J3,P3
-47,J4,P4
-48,Nash,Nash
-49,Activa el temblor de la pantalla,Activate screen shaking
-50,Activa la vibración del mando,Activate the vibration of the controller
-51,Ayuda a apuntar con tus armas a distancia ajustando la mirilla al enemigo más cercano,Helps aim your weapons at range by adjusting the sight to the nearest enemy
-52,Muestra un indicador sobre la cabeza de los jugadores en las partidas multijugador,Displays an indicator above players' heads in multiplayer games
-53,Muestra el temporizador del intento actual,Shows the timer for the current run
-54,Muestra los números de daño sobre los jugadores y los enemigos,Shows damage numbers on players and enemies
-55,Muestra las barras de HP de los enemigos,Shows enemy HP bars
-56,Cambia el idioma del juego,Change the game language
-57,,
-58,Creado por,Created by
-59,Santiago Rada,Santiago Rada
-60,Producido por,Produced by
-61,Santiago Rada,Santiago Rada
-62,Pulsa una tecla para reasignar...,Press a key to reassign...
-63,HP,HP
-64,Energia,Energy
-65,Velocidad de Mov,Speed Movement
-66,Daño,Damage
-67,Daño de Hab.,Skill Damage
-68,Prob. Critico,Critical Chance
-69,PAUSA,PAUSE
-70,CONTINUAR,CONTINUE
-71,OPCIONES,SETTINGS
-72,MENU PRINCIPAL,BACK TO MENU
-73,SALIR DEL JUEGO,QUIT GAME
-74,¿Estás seguro que quieres volver al Menu Principal?,Are you sure you want to return to the Main Menu?
-75,Confirmar,Confirm
-76,Cancelar,Cancel
-77,,
-78,,
-79,,
-80,,
-81,,
-82,,
-83,,
-84,,
-85,,
-86,,
-87,,
-88,,
-89,,
-90,,
-91,,
-92,,
-93,,
-94,,
-95,,
-96,,
-97,,
-98,,
-99,,
-100,,
-101,,
-102,,
-103,,
-104,,
-105,,
-106,,
-107,,
-108,,
-109,,
-110,,
-111,,
-112,,
-113,,
-114,,
-115,,
-116,,
-117,,
-118,,
-119,,
-120,,
-121,,
-122,,
-123,,
-124,,
-125,,
-126,,
-127,,
-128,,
-129,,
-130,,
-131,,
-132,,
-133,,
-134,,
-135,,
-136,,
-137,,
-138,,
-139,,
-140,,
-141,,
-142,,
+Menu,Nueva Partida,New Game
+Menu,Continuar,Continue
+Menu,Ajustes,Settings
+Menu,Créditos,Credits
+Menu,Salir,Quit
+Menu,Opciones,Options
+Menu,Juego,Gameplay
+Menu,Pantalla,Screen
+Menu,Audio,Audio
+Menu,Controles,Controls
+Menu,Seleccionar,Select
+Menu,Predeterminado,Reset to Default
+Menu,Atrás,Back
+Menu,Temblor de Pantalla,Shake Screen
+Menu,Vibración,Vibration
+Menu,Asistencia de Apuntado,Aim Assistant
+Menu,-----------------------------,-----------------------------
+Menu,Indicadores de Jugador,Player Indicators
+Menu,Temporizador del Intento,Timer to Run
+Menu,Números de Daño,Damage Numbers
+Menu,Barras de HP de los Enemigos,Healthbar of Enemys
+Menu,Idioma,Language
+Menu,Español,Spanish
+Menu,Inglés,English
+Menu,Chino Tradicional,Traditional Chinese
+Menu,Resolución,Resolution
+Menu,Modo de Pantalla,Screen Mode
+Menu,Fijar Cursor,Lock Cursor
+Menu,VSync,VSync
+Menu,General,General
+Menu,Música,Music
+Menu,Efectos de Sonido,SFX
+Menu,Acción / Uso,Action / Use
+Menu,Ataque,Attack
+Menu,Esquivar / Evadir,Dodge
+Menu,Habilidad Principal,Skill 1
+Menu,Habilidad Secundaria,Skill 2
+Menu,Inventario,Inventory
+Menu,Apuntar Estático,Static Aim
+Menu,Pausa,Pause
+Menu,Editar Controles,Edit Controls
+Menu,Teclado,Keyboard
+Menu,Gamepad,Gamepad
+Menu,Presiona la Tecla para Reasignar...,Press Key to Remap...
+Menu,J1,P1
+Menu,J2,P2
+Menu,J3,P3
+Menu,J4,P4
+Menu,Nash,Nash
+Menu,Activa el temblor de la pantalla,Activate screen shaking
+Menu,Activa la vibración del mando,Activate the vibration of the controller
+Menu,Ayuda a apuntar con tus armas a distancia ajustando la mirilla al enemigo más cercano,Helps aim your weapons at range by adjusting the sight to the nearest enemy
+Menu,Muestra un indicador sobre la cabeza de los jugadores en las partidas multijugador,Displays an indicator above players' heads in multiplayer games
+Menu,Muestra el temporizador del intento actual,Shows the timer for the current run
+Menu,Muestra los números de daño sobre los jugadores y los enemigos,Shows damage numbers on players and enemies
+Menu,Muestra las barras de HP de los enemigos,Shows enemy HP bars
+Menu,Cambia el idioma del juego,Change the game language
+,,
+Créditos,Creado por,Created by
+Créditos,Santiago Rada,Santiago Rada
+Créditos,Producido por,Produced by
+Créditos,Santiago Rada,Santiago Rada
+Menu,Pulsa una tecla para reasignar...,Press a key to reassign...
+Stats,HP,HP
+Stats,Energia,Energy
+Stats,Velocidad de Mov,Speed Movement
+Stats,Daño,Damage
+Stats,Daño de Hab.,Skill Damage
+Stats,Prob. Critico,Critical Chance
+Pause Menu,PAUSA,PAUSE
+Pause Menu,CONTINUAR,CONTINUE
+Pause Menu,OPCIONES,SETTINGS
+Pause Menu,MENU PRINCIPAL,BACK TO MENU
+Pause Menu,SALIR DEL JUEGO,QUIT GAME
+Pause Menu,¿Estás seguro que quieres volver al Menu Principal?,Are you sure you want to return to the Main Menu?
+Pause Menu,Confirmar,Confirm
+Pause Menu,Cancelar,Cancel
+Tipo de Skill,Cobre,Copper
+Tipo de Skill,Titanio,Titanium
+Tipo de Skill,Tungsteno,Tungsten
+Tipo de Skill,Carbono,Carbon
+Nombre de Habilidad,Conductividad Arcana,
+Nombre de Habilidad,Escudo de Faraday,
+Nombre de Habilidad,Neuroestimulación Metálica,
+Nombre de Habilidad,Forja de la Resiliencia,
+Nombre de Habilidad,Carga Electromagnética,
+Nombre de Habilidad,Aleación de Plata,
+Nombre de Habilidad,Piel de Titanio,
+Nombre de Habilidad,Corte de Diamante,
+Nombre de Habilidad,Implantes de Titanio,
+Nombre de Habilidad,Explosión de Titanio,
+Nombre de Habilidad,Reflejo de Titanio,
+Nombre de Habilidad,Vórtice,
+Nombre de Habilidad,Mazo de Tungsteno,
+Nombre de Habilidad,Escudo de Tungsteno,
+Nombre de Habilidad,Filo de Tungsteno,
+Nombre de Habilidad,Proyectil de Tungsteno,
+Nombre de Habilidad,Fusión Térmica,
+Nombre de Habilidad,Camuflaje,
+Nombre de Habilidad,,
+Nombre de Habilidad,,
+Nombre de Habilidad,,
+Nombre de Habilidad,,
+Nombre de Habilidad,,
+Nombre de Habilidad,,
+Descripción de Habilidad,Permite absorber hechizos enemigos y convertirlos en poderosos ataques mágicos propios.,
+Descripción de Habilidad,"Permite crear un escudo defensivo de todo tipo de ataques electricos, recibiendo 0 de daño por 5 segundos.",
+Descripción de Habilidad,"Otorga un aumento de velocidad, reflejos y concentración por 5 segundos.",
+Descripción de Habilidad,"Moldea una armadura que aumenta el daño, reduce el daño recibido y genera daño de area por el daño recibido de ataques eléctricos.",
+Descripción de Habilidad,"Permite crear un campo magnético sobre un enemigo que atrae todos los elementos metálicos cercanos, como otros enemigos o sus armas.",
+Descripción de Habilidad,"Genera proyectiles con propiedades antimágicas, dejando inutilizables todos los ataques mágicos de la sala en los que sean forjadas.",
+Característica Utilizada,Alta conductividad eléctrica del cobre.,
+Característica Utilizada,El cobre bloquea campos electromagnéticos.,
+Característica Utilizada,El cobre mejora las transmisiones señales neuronales.,
+Característica Utilizada,"Aprovecha la maleabilidad del cobre, su alta conductividad y el bloqueo de campos magnéticos.",
+Característica Utilizada,Aprovecha la capacidad de manipular los campos electromagnéticos del cobre.,
+Característica Utilizada,Aprovecha las capacidades de aleación del cobre.,
+Descripción de Habilidad,Aumenta la resistencia del jugador a ataques enemigos en un 25% y en un 75% ante ataques de altas temperaturas.,Boosts player´s defense to enemy attacks in a 25% and a 75% before high-temperature attacks
+Descripción de Habilidad,"Rompe los escudos enemigos, evita los parry y causa un daño directo y potenciado sobre la vida de estos.","Breaks enemy shields, avoids enemy´s parry and makes direct damage "
+Descripción de Habilidad,Permite mejorar un aptitud del jugador de forma permanente consumiendo sus fragmentos actuales.,
+Descripción de Habilidad,Genera una onda de choque de poco daño pero que empuja a todos los enemigos (exceptos bosses) y stunea a los enemigos menores.,
+Descripción de Habilidad,Genera un escudo a tu alrededor el cuál refleja todo el daño recibido por altas temperaturas.,
+Descripción de Habilidad,Genera un vórtice de titanio en un punto específico atrayendo a todos los enemigos en un radio y desorintándolos. Stunea a enemigos menores.,
+Característica Utilizada,Alta resistencia y durabilidad del titanio.,
+Característica Utilizada,Alta resistencia del titanio.,
+Característica Utilizada,Aprovecha la biocompatibilidad del titanio.,
+Característica Utilizada,Capacidad violenta de reacción del titanio contra algunos químicos.,
+Característica Utilizada,Capacidad del titanio para reflejar luz y calor.,
+Característica Utilizada,Aprovecha la baja densidad y alta resistencia al magnetismo del titanio.,
+Descripción de Habilidad,"Crea un mazo como nueva arma por 10 segundos, este mazo rompe de un golpe cualquier cantidad de armadura.",
+Descripción de Habilidad,Genera un escudo que evita el 90% de los ataques cuerpo a cuerpo pero te vuelve un 10% vulnerable a los ataques a distancia.,
+Descripción de Habilidad,Mejora el filo de las armas cuerpo a cuerpo logrando que los ataques acertados dejen un modificador de sangrado en los enemigos.,
+Descripción de Habilidad,Lanza 3 proyectiles de tungsteno los cuales atraviesan a los enemigos dejando 2 marcas de sangrado y consumiento los fragmentos disponibles.,
+Descripción de Habilidad,"Carga de manera pasiva al ser atacado con habilidades de altas temperaturas, cuando se utilice lanza una onda expansiva dejando 1 marca de quema en todos los enemigos alcanzados y curá al jugador en la cantidad de daño que esta habilidad haya inflijido.",
+Descripción de Habilidad,"Te vuelve intangible por 2 segundos, al salir de dicho estado tienes un aumento de velocidad, daño y tu primer ataque generará 2 marcas de sangrado,",
+Característica Utilizada,Alta densidad del tungsteno para infligir daño contundente.,
+Característica Utilizada,Aprovecha la durabilidad del tungsteno.,
+Característica Utilizada,Dureza del tungsteno.,
+Característica Utilizada,Alta densidad del tungsteno.,
+Característica Utilizada,Aprovecha el alto punto de fusión del tungsteno.,
+Característica Utilizada,Aprovecha la capacidad reflectante del tungsteno.,
+Descripción de Habilidad,,
+Descripción de Habilidad,,
+Descripción de Habilidad,,
+Descripción de Habilidad,,
+Descripción de Habilidad,,
+Descripción de Habilidad,,
+Característica Utilizada,,
+Característica Utilizada,,
+Característica Utilizada,,
+Característica Utilizada,,
+Característica Utilizada,,
+Característica Utilizada,,
+141,Selector de Habilidades,Skills Selector
+142,Selector de Objetos,Objects Selector
 143,,
 144,,
 145,,
