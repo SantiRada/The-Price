@@ -18,6 +18,12 @@ public class LoadingScreen : MonoBehaviour {
     private static int _countElementInScene { get; set; }
     private int _countTotalElement;
 
+    private CollectableSelectable _collectable;
+
+    private void Awake()
+    {
+        _collectable = FindAnyObjectByType<CollectableSelectable>();
+    }
     private void Start()
     {
         InitialValues();
@@ -44,6 +50,7 @@ public class LoadingScreen : MonoBehaviour {
     }
     private void DestroyElement()
     {
+        if(_collectable != null) _collectable.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
     private IEnumerator ChangeValues()

@@ -7,7 +7,7 @@ public class LanguageManager : MonoBehaviour {
 
     [Header("Data CSV")]
     [SerializeField] private TextAsset csvFile;
-    private char delimiter = ',';
+    [SerializeField] private char delimiter = '-';
     private string[,] csvData;
 
     [Header("Data Result")]
@@ -56,7 +56,7 @@ public class LanguageManager : MonoBehaviour {
     private void LoadCSV()
     {
         string[] lines = csvFile.text.Split('\n');
-        csvData = new string[lines.Length, lines[0].Split(delimiter).Length];
+        csvData = new string[lines.Length, 3];
 
         for (int i = 0; i < lines.Length; i++)
         {
@@ -92,7 +92,6 @@ public class LanguageManager : MonoBehaviour {
     }
     public string GetValue(int rowIndex)
     {
-        if (csvData[(rowIndex + 1), columnLanguage] == null || csvData[(rowIndex + 1), columnLanguage] == "") return csvData[(rowIndex + 1), 1];
-        else return csvData[(rowIndex + 1), columnLanguage];
+        return csvData[(rowIndex-1), columnLanguage];
     }
 }
