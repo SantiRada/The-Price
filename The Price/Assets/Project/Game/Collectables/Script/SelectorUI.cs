@@ -6,6 +6,19 @@ using UnityEngine.UI;
 
 public class SelectorUI : MonoBehaviour {
 
+    [Header("Data UI")]
+    [SerializeField] private TextMeshProUGUI[] _name;
+    [SerializeField] private TextMeshProUGUI[] _description;
+
+    [Header("Data UI: Skills")]
+    [SerializeField] private TextMeshProUGUI[] _type;
+    [SerializeField] private GameObject[] _sectionLoaders;
+    [SerializeField] private TextMeshProUGUI[] _loaders;
+    [SerializeField] private GameObject[] _sectionFragments;
+    [SerializeField] private TextMeshProUGUI[] _fragments;
+    [SerializeField] private GameObject[] _sectionDamage;
+    [SerializeField] private TextMeshProUGUI[] _damage;
+
     [Header("Data Movement")]
     [SerializeField] private Image[] _cardSelector;
     [SerializeField] private Sprite[] _normalCard, _bronzeCard, _goldCard;
@@ -23,18 +36,13 @@ public class SelectorUI : MonoBehaviour {
     [Header("Private Data")]
     private List<Vector3> _cardPosition = new List<Vector3>();
     private int _posCurrent = 0, _prevPosition = 0;
-    private bool _canMove = true;
+    private bool _canMove = true, _canDetect = false;
     [HideInInspector] public List<string> _featuredPosition = new List<string>();
     [HideInInspector] public List<string> _infoPosition = new List<string>();
-    private LanguageManager _language;
 
     [Header("Selectioner")]
     private int _select = -1;
 
-    private void Awake()
-    {
-        _language = FindAnyObjectByType<LanguageManager>();
-    }
     private void Start()
     {
         InitialValues();
@@ -50,17 +58,39 @@ public class SelectorUI : MonoBehaviour {
         _cardSelector[0].sprite = _normalCard[1];
 
         _canMove = true;
+        _canDetect = false;
         _select = -1;
 
         _featuredAndInfoPosition[0] = _featuredUsedSector.transform.position;
         _featuredAndInfoPosition[1] = _infoExtraSector.transform.position;
     }
+    public void WaitForMove()
+    {
+        _canDetect = true;
+    }
     private void Update()
     {
-        if (LoadingScreen.InLoading || _select != -1) return;
+        if (LoadingScreen.InLoading || _select != -1 || !_canDetect) return;
 
         if(Input.GetAxis("Horizontal") != 0 && _canMove) StartCoroutine(Move(Input.GetAxis("Horizontal")));
 
+        MoveValues();
+
+        if (Input.GetButtonDown("Fire1") && _canDetect) SelectElement();
+    }
+    private void SelectElement()
+    {
+        _canMove = false;
+        _select = _posCurrent;
+
+        Debug.Log("Seleccionado: " + _select);
+    }
+    public int GetSelect()
+    {
+        return _select;
+    }
+    private void MoveValues()
+    {
         if (!_canMove)
         {
             Vector3 _elementPrev = _cardSelector[_prevPosition].gameObject.transform.position;
@@ -78,19 +108,6 @@ public class SelectorUI : MonoBehaviour {
             _featuredUsedSector.transform.position = Vector3.Lerp(_featuredUsedSector.transform.position, _featuredAndInfoPosition[0], _delayAnimation * Time.deltaTime);
             _infoExtraSector.transform.position = Vector3.Lerp(_infoExtraSector.transform.position, _featuredAndInfoPosition[1], _delayAnimation * Time.deltaTime);
         }
-
-        if (Input.GetButtonDown("Fire1")) SelectElement();
-    }
-    private void SelectElement()
-    {
-        _canMove = false;
-        _select = _posCurrent;
-
-        Debug.Log("Seleccionado: " + _select);
-    }
-    public int GetSelect()
-    {
-        return _select;
     }
     private IEnumerator Move(float dir)
     {
@@ -135,5 +152,27 @@ public class SelectorUI : MonoBehaviour {
 
         _featuredUsedSector.transform.position = (_featuredAndInfoPosition[0] - distance);
         _infoExtraSector.transform.position = (_featuredAndInfoPosition[1] - distance);
+    }
+    public void ShowInUI(List<string> values, int index)
+    {
+        _name[index].text = values[0];
+        _description[index].text = values[1];
+        _type[index].text = values[3];
+        _loaders[index].text = values[5];
+        if (values[6] == "1")
+        {
+            _sectionFragments[index].SetActive(true);
+            _fragments[index].text = values[7];
+        }
+        else { _sectionFragments[index].SetActive(false); }
+        if (values[8] != "0")
+        {
+            _sectionDamage[index].SetActive(true);
+            _damage[index].text = values[8].ToString();
+        }
+        else { _sectionDamage[index].SetActive(false); }
+
+        _featuredPosition.Add(values[2]);
+        _infoPosition.Add(values[9]);
     }
 }

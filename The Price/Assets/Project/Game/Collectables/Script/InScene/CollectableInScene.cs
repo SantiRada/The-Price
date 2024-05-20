@@ -1,15 +1,16 @@
 using UnityEngine;
 
+public enum TypeContent { BigContent, SmallContent }
 public abstract class CollectableInScene : MonoBehaviour {
 
-    [SerializeField] private TypeElement _typeElement;
+    public TypeElement _typeElement;
+    public TypeContent _typeContent;
     [HideInInspector] public CanvasGroup _windowAppear;
 
     private void Start()
     {
-        if(_typeElement == TypeElement.Skills) _windowAppear = GameObject.FindGameObjectWithTag("Collectable_Skill").GetComponent<CanvasGroup>();
-        else if(_typeElement == TypeElement.Aptitudes) _windowAppear = GameObject.FindGameObjectWithTag("Collectable_Aptitud").GetComponent<CanvasGroup>();
-        else _windowAppear = GameObject.FindGameObjectWithTag("Collectable_Object").GetComponent<CanvasGroup>();
+        if(_typeContent == TypeContent.BigContent) _windowAppear = GameObject.FindGameObjectWithTag("Collectable_Skill").GetComponent<CanvasGroup>();
+        else _windowAppear = GameObject.FindGameObjectWithTag("Collectable_Aptitud").GetComponent<CanvasGroup>();
 
         HideWindow();
         InitialValues();

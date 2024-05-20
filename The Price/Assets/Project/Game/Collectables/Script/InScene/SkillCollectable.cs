@@ -8,12 +8,12 @@ public class SkillCollectable : CollectableInScene {
     public SkillManager skill;
 
     [Header("Data UI")]
-    [SerializeField] private TextMeshProUGUI _name;
-    [SerializeField] private TextMeshProUGUI _description;
-    [SerializeField] private TextMeshProUGUI _damage;
-    [SerializeField] private TextMeshProUGUI _loaders;
-    [SerializeField] private GameObject _sectionDamage;
-    [SerializeField] private GameObject _sectionLoaders;
+    private TextMeshProUGUI _name;
+    private TextMeshProUGUI _description;
+    private TextMeshProUGUI _damage;
+    private TextMeshProUGUI _loaders;
+    private GameObject _sectionDamage;
+    private GameObject _sectionLoaders;
 
     public override void InitialValues()
     {

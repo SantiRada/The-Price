@@ -8,7 +8,6 @@ public class LoadingScreen : MonoBehaviour {
 
     [Header("Elements of the UI")]
     [SerializeField] private Slider _progressBar;
-    [SerializeField] private TextMeshProUGUI _textVersion;
     [SerializeField] private float _speedForLoad = 1f;
 
     [Header("Static Elements")]
@@ -30,7 +29,6 @@ public class LoadingScreen : MonoBehaviour {
     }
     private void InitialValues()
     {
-        _textVersion.text = MenuUI.GetVersion();
         InLoading = true;
 
         switch (SceneManager.GetActiveScene().name)
