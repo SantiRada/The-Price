@@ -8,12 +8,12 @@ public class LanguageManager : MonoBehaviour {
     [Header("Data CSV")]
     [SerializeField] private TextAsset csvFile;
     [SerializeField] private char delimiter = '-';
-    private string[,] csvData;
+    private static string[,] csvData;
 
     [Header("Data Result")]
     [SerializeField] private TextMeshProUGUI[] _allText;
     [SerializeField] private Text[] _allLabel;
-    [HideInInspector] public int columnLanguage = 1;
+    [HideInInspector] public static int columnLanguage = 1;
 
     private void OnEnable()
     {
@@ -90,7 +90,7 @@ public class LanguageManager : MonoBehaviour {
             _allLabel[i].text = GetValue(rowValue).ToString();
         }
     }
-    public string GetValue(int rowIndex)
+    public static string GetValue(int rowIndex)
     {
         return csvData[(rowIndex-1), columnLanguage];
     }

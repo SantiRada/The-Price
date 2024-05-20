@@ -37,14 +37,12 @@ public class Settings : MonoBehaviour {
 
     [Header("Calls")]
     private ControlSettings _controlSettings;
-    private LanguageManager _languageManager;
     private EditorInputs _inputs;
 
     private void Awake()
     {
         _inputs = FindAnyObjectByType<EditorInputs>();
         _controlSettings = GetComponentInParent<ControlSettings>();
-        _languageManager = FindAnyObjectByType<LanguageManager>();
     }
     private void Start()
     {
@@ -112,7 +110,6 @@ public class Settings : MonoBehaviour {
         // CANCELAR MOVIMIENTO AL ABRIR UN DROPDOWN
         if (Input.GetButtonDown("Fire1"))
         {
-            Debug.Log("Fire");
             for (int i = 0; i < _dropdowns.Length; i++)
             {
                 if ((_posInSettings + 1) == _dropdowns[i])
@@ -267,9 +264,9 @@ public class Settings : MonoBehaviour {
     {
         if (_indexConfig == 0)
         {
-            int _space = _posInSettings + 49;
+            int _space = _posInSettings + 51;
 
-            _descriptionSection.text = _languageManager.GetValue(_space);
+            _descriptionSection.text = LanguageManager.GetValue(_space);
             _sectorDescription.SetActive(true);
         }
         else

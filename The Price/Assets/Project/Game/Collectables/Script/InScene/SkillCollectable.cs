@@ -1,0 +1,53 @@
+using TMPro;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class SkillCollectable : CollectableInScene {
+
+    public SkillManager skill;
+
+    [Header("Data UI")]
+    [SerializeField] private TextMeshProUGUI _name;
+    [SerializeField] private TextMeshProUGUI _description;
+    [SerializeField] private TextMeshProUGUI _damage;
+    [SerializeField] private TextMeshProUGUI _loaders;
+    [SerializeField] private GameObject _sectionDamage;
+    [SerializeField] private GameObject _sectionLoaders;
+
+    public override void InitialValues()
+    {
+        TextMeshProUGUI[] _allText = _windowAppear.GetComponentsInChildren<TextMeshProUGUI>();
+        foreach (TextMeshProUGUI text in _allText)
+        {
+            if (text.name.Contains("Title")) _name = text;
+            if (text.name.Contains("Description")) _description = text;
+            if (text.name.Contains("Loaders")) _loaders = text;
+            if (text.name.Contains("Damage")) _damage = text;
+        }
+
+        _sectionLoaders = _loaders.GetComponentInParent<Image>().gameObject;
+        _sectionDamage = _damage.GetComponentInParent<Image>().gameObject;
+    }
+    public override void LoadData()
+    {
+        if (skill == null) return;
+        List<string> values = new List<string>();
+        values = skill.GetValuesUI();
+
+        _name.text = values[0];
+        _description.text = values[1];
+        _damage.text = values[8];
+        _loaders.text = values[5];
+
+        if (values[8] != "0") _sectionDamage.SetActive(true);
+        else _sectionDamage.SetActive(false);
+        
+        if (values[5] != "") _sectionLoaders.SetActive(true);
+        else _sectionLoaders.SetActive(false);
+    }
+    public override void Select()
+    {
+        Debug.Log("Seleccionaste la habilidad: " + name);
+    }
+}

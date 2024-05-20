@@ -24,8 +24,8 @@ public class SelectorUI : MonoBehaviour {
     private List<Vector3> _cardPosition = new List<Vector3>();
     private int _posCurrent = 0, _prevPosition = 0;
     private bool _canMove = true;
-    [HideInInspector] public List<int> _featuredPosition = new List<int>();
-    [HideInInspector] public List<int> _infoPosition = new List<int>();
+    [HideInInspector] public List<string> _featuredPosition = new List<string>();
+    [HideInInspector] public List<string> _infoPosition = new List<string>();
     private LanguageManager _language;
 
     [Header("Selectioner")]
@@ -122,11 +122,11 @@ public class SelectorUI : MonoBehaviour {
     }
     private void ChangesInExtra()
     {
-        _featuredUsed.text = _language.GetValue(_featuredPosition[_posCurrent]);
-        if (_infoPosition[_posCurrent] != 0)
+        _featuredUsed.text = _featuredPosition[_posCurrent];
+        if (_infoPosition[_posCurrent] != "")
         {
             _infoExtraSector.SetActive(true);
-            _infoExtra.text = _language.GetValue(_infoPosition[_posCurrent]);
+            _infoExtra.text = _infoPosition[_posCurrent];
         }
         else { _infoExtraSector.SetActive(false); }
 

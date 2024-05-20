@@ -27,13 +27,11 @@ public class EditorInputs : MonoBehaviour {
     [Header("Other Data")]
     private Settings _settings;
     private InputManager _inputManager;
-    private LanguageManager _language;
 
     private void Awake()
     {
         _settings = FindAnyObjectByType<Settings>();
         _inputManager = GetComponent<InputManager>();
-        _language = GetComponent<LanguageManager>();
     }
     private void OnEnable()
     {
@@ -52,7 +50,7 @@ public class EditorInputs : MonoBehaviour {
         {
             _timer -= Time.deltaTime;
 
-            _textConfirm.text = _language.GetValue(43) + "\n\n" + _timer.ToString("f0");
+            _textConfirm.text = LanguageManager.GetValue(43) + "\n\n" + _timer.ToString("f0");
 
             if (Input.anyKeyDown)
             {

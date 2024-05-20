@@ -23,17 +23,15 @@ public class CollectableSelectable : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI[] _damage;
 
     [Header("Data Extra")]
-    [SerializeField] private List<int> _featuredUsed = new List<int>();
-    [SerializeField] private List<int> _infoExtra = new List<int>();
+    [SerializeField] private List<string> _featuredUsed = new List<string>();
+    [SerializeField] private List<string> _infoExtra = new List<string>();
 
     [Header("Private Data")]
     List<SkillManager> _skills = new List<SkillManager>();
-    private LanguageManager _language;
     private SelectorUI _selector;
 
     private void Awake()
     {
-        _language = FindAnyObjectByType<LanguageManager>();
         _selector = GetComponent<SelectorUI>();
     }
     private void Start()
@@ -71,19 +69,15 @@ public class CollectableSelectable : MonoBehaviour {
         {
             case TypeElement.Skills:
 
-                List<int> values = new List<int>();
-                values.AddRange(_skills[pos].GetValuesUI());
+                List<string> values = _skills[index].GetValuesUI();
 
-                _name[index].text = _language.GetValue(values[0]);
-                _description[index].text = _language.GetValue(values[1]);
-                _type[index].text = _language.GetValue(86) + _language.GetValue(values[3]);
-                _loaders[index].text = _language.GetValue(85) + values[5];
-                if (values[6] == 1)
+                _loaders[index].text = LanguageManager.GetValue(85) + values[5];
+                if (values[6] == "1")
                 {
                     _sectionFragments[index].SetActive(true);
-                    _fragments[index].text = values[7].ToString();
+                    _fragments[index].text = values[7];
                 }
-                if (values[8] != 0)
+                if (values[8] != "0" && values[8] != "")
                 {
                     _sectionDamage[index].SetActive(true);
                     _damage[index].text = values[8].ToString();

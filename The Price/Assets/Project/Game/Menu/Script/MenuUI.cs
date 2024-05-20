@@ -19,7 +19,6 @@ public class MenuUI : MonoBehaviour {
 
     [Header("Private Data")]
     private Animator _anim;
-    private LanguageManager _language;
     private DetectorPlayers _detectorPlayers;
     private Settings _controlSettings;
     private EditorInputs _editorInputs;
@@ -30,7 +29,6 @@ public class MenuUI : MonoBehaviour {
         _anim = GetComponent<Animator>();
         _editorInputs = FindAnyObjectByType<EditorInputs>();
         _detectorPlayers = FindAnyObjectByType<DetectorPlayers>();
-        _language = FindAnyObjectByType<LanguageManager>();
         _controlSettings = GetComponentInChildren<Settings>();
         _inputManager = FindAnyObjectByType<InputManager>();
     }
@@ -44,10 +42,10 @@ public class MenuUI : MonoBehaviour {
 
         _FirstElement.Select();
 
-        _creditText.text += _language.GetValue(58) + "\n";
-        _creditText.text += _language.GetValue(59) + "\n\n";
-        _creditText.text += _language.GetValue(60) + "\n";
-        _creditText.text += _language.GetValue(61);
+        _creditText.text += LanguageManager.GetValue(60) + "\n";
+        _creditText.text += LanguageManager.GetValue(61) + "\n\n";
+        _creditText.text += LanguageManager.GetValue(62) + "\n";
+        _creditText.text += LanguageManager.GetValue(63);
 
         for(int i = 1; i < _sectioners.Length; i++)
         {
