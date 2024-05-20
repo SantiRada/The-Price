@@ -19,9 +19,12 @@ public class SelectorUI : MonoBehaviour {
     [SerializeField] private GameObject[] _sectionDamage;
     [SerializeField] private TextMeshProUGUI[] _damage;
 
+    [Header("Data Confirmation Skill")]
+    [SerializeField] private GameObject _windowConfirm;
+
     [Header("Data Movement")]
     [SerializeField] private Image[] _cardSelector;
-    [SerializeField] private Sprite[] _normalCard, _bronzeCard, _goldCard;
+    [SerializeField] private Sprite[] _normalCard, _goldCard;
     [SerializeField, Tooltip("Tiempo que se espera para poder volver a moverse")] private float _delayMovement;
     [SerializeField, Tooltip("Tiempo que tarda la animación de mover cada tarjeta")] private float _delayAnimation;
     [SerializeField] private Vector3 _distanceToCenter;
@@ -37,10 +40,12 @@ public class SelectorUI : MonoBehaviour {
     private List<Vector3> _cardPosition = new List<Vector3>();
     private int _posCurrent = 0, _prevPosition = 0;
     private bool _canMove = true, _canDetect = false;
-    [HideInInspector] public List<string> _featuredPosition = new List<string>();
-    [HideInInspector] public List<string> _infoPosition = new List<string>();
-
+    private List<string> _featuredPosition = new List<string>();
+    private List<string> _infoPosition = new List<string>();
+    
     [Header("Selectioner")]
+    private List<GameObject> _selectableObject = new List<GameObject>();
+    private ActionForControlPlayer _dataPlayer;
     private int _select = -1;
 
     private void Start()
@@ -76,14 +81,25 @@ public class SelectorUI : MonoBehaviour {
 
         MoveValues();
 
-        if (Input.GetButtonDown("Fire1") && _canDetect) SelectElement();
+        if (Input.GetButtonDown("Fire1") && _canDetect) Select();
+    }
+    private void Select()
+    {
+        _canMove = false;
+        _canDetect = false;
+        _select = _posCurrent;
+
+        _windowConfirm.SetActive(true);
     }
     private void SelectElement()
     {
-        _canMove = false;
-        _select = _posCurrent;
+        // Skills
+        GameObject obj = Instantiate(_selectableObject[_select], _dataPlayer.transform.position, Quaternion.identity, _dataPlayer.transform);
+        _dataPlayer.SetSkill(obj, true);
 
-        Debug.Log("Seleccionado: " + _select);
+        // Quitar la pausa y ocultar el elemento de UI
+        PauseMenu.inPause = false;
+        gameObject.SetActive(false);
     }
     public int GetSelect()
     {
@@ -153,7 +169,7 @@ public class SelectorUI : MonoBehaviour {
         _featuredUsedSector.transform.position = (_featuredAndInfoPosition[0] - distance);
         _infoExtraSector.transform.position = (_featuredAndInfoPosition[1] - distance);
     }
-    public void ShowInUI(List<string> values, int index)
+    public void ShowInUI(GameObject obj, List<string> values, int index, GameObject player)
     {
         _name[index].text = values[0];
         _description[index].text = values[1];
@@ -174,5 +190,8 @@ public class SelectorUI : MonoBehaviour {
 
         _featuredPosition.Add(values[2]);
         _infoPosition.Add(values[9]);
+
+        _selectableObject.Add(obj);
+        _dataPlayer = player.GetComponent<ActionForControlPlayer>();
     }
 }

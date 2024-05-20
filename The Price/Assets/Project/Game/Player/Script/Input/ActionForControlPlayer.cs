@@ -1,7 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
 
 public class ActionForControlPlayer : MonoBehaviour {
+
+    [Header("Data for Skills")]
+    [SerializeField] private List<SkillManager> _skills = new List<SkillManager>();
 
     [Header("Elements of Player")]
     private CrosshairData _crosshair;
@@ -47,6 +51,13 @@ public class ActionForControlPlayer : MonoBehaviour {
         }
         // ---------------- //
     }
+    public void SetSkill(GameObject dataSkill, bool isNew)
+    {
+        // FALTA DETERMINAR EN QUÉ POSICIÓN QUIERE CAMBIARLO
+
+        if (isNew) _skills.Add(dataSkill.GetComponent<SkillManager>());
+        else _skills[0] = dataSkill.GetComponent<SkillManager>();
+    }
     public void Dash()
     {
         if (_movement.GetCanDashing() && _movement.GetCanMove()) _movement.StartCoroutine("Roll");
@@ -76,6 +87,6 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void Pause()
     {
-        _pauseMenu.Pause = !_pauseMenu.Pause;
+        _pauseMenu.SetPause(!PauseMenu.inPause);
     }
 }

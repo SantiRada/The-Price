@@ -1,156 +1,58 @@
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+// Menu = 0, Options = 1, Gameplay = 2, Screen = 3, Audio = 4, Controls = 5, Accesibility = 6, SelectedPlayer = 7
 public class MenuUI : MonoBehaviour {
 
-    [Header("General Section")]
-    [SerializeField] private GameObject[] _sectioners;
-    [SerializeField] private Selectable _FirstElement;
-    private int _posGeneral;
+    private Animator anim;
+    private int _currentWindow = 0;
 
-    [Header("Credits")]
-    [SerializeField] private TextMeshProUGUI _creditText;
-    private bool _inCredit = false;
-    private bool _canChangeVelocity = false;
-
-    [Header("Private Data")]
-    private Animator _anim;
-    private DetectorPlayers _detectorPlayers;
-    private Settings _controlSettings;
-    private EditorInputs _editorInputs;
-    private InputManager _inputManager;
+    [SerializeField] private Selectable[] _selectableForSector;
 
     private void Awake()
     {
-        _anim = GetComponent<Animator>();
-        _editorInputs = FindAnyObjectByType<EditorInputs>();
-        _detectorPlayers = FindAnyObjectByType<DetectorPlayers>();
-        _controlSettings = GetComponentInChildren<Settings>();
-        _inputManager = FindAnyObjectByType<InputManager>();
+        anim = GetComponent<Animator>();
     }
     private void Start()
     {
-        InitialValues();
-    }
-    public void InitialValues()
-    {
-        _posGeneral = 0;
-
-        _FirstElement.Select();
-
-        _creditText.text += LanguageManager.GetValue(60) + "\n";
-        _creditText.text += LanguageManager.GetValue(61) + "\n\n";
-        _creditText.text += LanguageManager.GetValue(62) + "\n";
-        _creditText.text += LanguageManager.GetValue(63);
-
-        for(int i = 1; i < _sectioners.Length; i++)
-        {
-            _sectioners[i].SetActive(false);
-        }
-
-        LoadingScreen.CountElement++;
+        
     }
     private void Update()
     {
-        if (_editorInputs.InConfirm || !_editorInputs.canUseThatKey || LoadingScreen.InLoading) return;
+        if (LoadingScreen.InLoading) return;
 
-        // CERRAR SETTINGS Y VOLVER AL MENU BASE
-        if ((Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.Escape)) && _posGeneral == 1)
+        // FUNCTION BACK ----------------------------- >>>>>>>>>>
+        if (Input.GetButtonDown("Fire2"))
         {
-            _controlSettings.CloseConfig();
-
-            MoveToSection(0);
-        }
-
-        // CERRAR CRÉDITOS MANUALMENTE 
-        if (Input.GetButtonDown("Fire3") && _inCredit) CloseCredits();
-
-        // MANIPULAR VELOCIDAD DEL ANIMATOR
-        if (_inCredit && _canChangeVelocity)
-        {
-            if (Input.GetButton("Fire1")) _anim.speed = 4;
-            if (Input.GetButtonUp("Fire1")) _anim.speed = 1;
-        }
-
-        DetectControl();
-    }
-    private void DetectControl()
-    {
-        if (Input.anyKeyDown)
-        {
-            foreach (KeyCode keyCode in System.Enum.GetValues(typeof(KeyCode)))
+            int window = 0;
+            if(_currentWindow == 1 || _currentWindow == 7 || _currentWindow == 0)
             {
-                if (Input.GetKeyDown(keyCode))
+                if (_currentWindow == 0)
                 {
-                    string controlName = keyCode.ToString();
-
-                    List<TypeController> listType = new List<TypeController>();
-
-                    if (controlName.ToLower().Contains("joystick"))
-                    {
-                        int value = 0;
-                        if (!controlName.ToLower().Contains("kb"))
-                        {
-                            // Es un número de joystick mayor a 0
-                            string[] data = controlName.Split('k');
-                            string[] subdata = data[1].Split('B');
-
-                            value = int.Parse(subdata[0]);
-                        }
-
-
-                        if (Input.GetJoystickNames()[value].ToLower().Contains("xbox")) listType.Add(TypeController.Xbox);
-                        else listType.Add(TypeController.PlayStation);
-                    }
-                    else { listType.Add(TypeController.Keyboard); }
-
-                    _inputManager.SetTypeControllers(listType);
-                    _inputManager.ChangeDetectValues();
-                    break;
+                    QuitGame();
+                    return;
                 }
+                else { window = 0; }
             }
+            else { window = 1; }
+
+            SetDirection(window);
         }
     }
-    public void CloseCredits()
+    public void SetDirection(int window)
     {
-        _inCredit = false;
-        MoveToSection(0);
+        _currentWindow = window;
+
+        anim.SetInteger("Position", _currentWindow);
+
+        // Seleccionar el primer elemento de la sección en la que se acaba de entrar
+        _selectableForSector[_currentWindow].Select();
     }
-    // ---------- GENERAL ---------- //
-    public void MoveToSection(int num)
-    {
-        _sectioners[_posGeneral].SetActive(false);
-        _posGeneral = num;
-        _sectioners[_posGeneral].SetActive(true);
-
-        if (_posGeneral == 0) _FirstElement.Select();
-        else if (_posGeneral == 1) _controlSettings.OpenConfig();
-
-        if (num == 2)
-        {
-            _inCredit = true;
-
-            Invoke("CanChangeSpeedCredits", 0.5f);
-        }
-        else
-        {
-            _inCredit = false;
-        }
-
-        if(num == 3) _detectorPlayers.canDetect = true;
-        else _detectorPlayers.canDetect = false;
-
-        _anim.SetInteger("Screen", _posGeneral);
-        _anim.SetBool("Credits", _inCredit);
-    }
-    private void CanChangeSpeedCredits()
-    {
-        _canChangeVelocity = true;
-    }
+    public void StartCredits() { SceneManager.LoadScene("Credits"); }
     public void QuitGame()
     {
+        Debug.Log("Quit Game...");
         Application.Quit();
     }
 }

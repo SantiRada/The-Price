@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: be63164b536c22c42bab023fc186c536
+guid: d0ff7327abc5feb4bb46f39569799ca9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7600111886598777126
-    second: IMG example_0
+      213: -7303781504508871784
+    second: UI KIT Backgrounds_0
+  - first:
+      213: -8059919470917127098
+    second: UI KIT Backgrounds_1
+  - first:
+      213: -1017157504631645182
+    second: UI KIT Backgrounds_2
+  - first:
+      213: 7468276939925447864
+    second: UI KIT Backgrounds_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +55,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -110,7 +119,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: Windows Store Apps
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -123,7 +132,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: WebGL
+    buildTarget: Windows Store Apps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -139,22 +148,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: IMG example_0
+      name: UI KIT Backgrounds_0
       rect:
         serializedVersion: 2
-        x: 28
-        y: 18
-        width: 149
-        height: 169
+        x: 0
+        y: 895
+        width: 1919
+        height: 1079
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ad65e0a918af68690800000000000000
-      internalID: -7600111886598777126
+      spriteID: 0d3ee4c1cb58a8740af19798a91f5886
+      internalID: -339683978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI KIT Backgrounds_1
+      rect:
+        serializedVersion: 2
+        x: 1995
+        y: 1124
+        width: 1611
+        height: 850
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e1ad7ae89f81c24f87a8dce994934fd
+      internalID: 477189883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI KIT Backgrounds_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1608
+        height: 841
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c15a2a6820aab1644b7ae3d5739e7472
+      internalID: 1673694861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI KIT Backgrounds_3
+      rect:
+        serializedVersion: 2
+        x: 1695
+        y: 0
+        width: 1613
+        height: 850
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d6a49c9c7efacd4a8aab82140bd6492
+      internalID: 547506164
       vertices: []
       indices: 
       edges: []
@@ -162,7 +234,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 72f444380d87ddf4d8236ba893d88569
     internalID: 0
     vertices: []
     indices: 
@@ -170,7 +242,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      IMG example_0: -7600111886598777126
+      UI KIT Backgrounds_0: -339683978
+      UI KIT Backgrounds_1: 477189883
+      UI KIT Backgrounds_2: 1673694861
+      UI KIT Backgrounds_3: 547506164
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

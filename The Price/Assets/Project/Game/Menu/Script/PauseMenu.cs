@@ -18,7 +18,7 @@ public class PauseMenu : MonoBehaviour {
     [Header("Data Pause")]
     private float _timer = 0.3f;
     private bool _canChangePause = true;
-    private static bool inPause { get; set; }
+    public static bool inPause;
 
     private Settings _settings;
     private LanguageManager _language;
@@ -35,7 +35,7 @@ public class PauseMenu : MonoBehaviour {
     }
     private void InitialValues()
     {
-        Pause = false;
+        SetPause(false);
         _pauseWindow.SetActive(inPause);
         _confirmWindow.SetActive(false);
         _settingsWindow.SetActive(false);
@@ -63,7 +63,7 @@ public class PauseMenu : MonoBehaviour {
         _canChangePause = false;
         _timer = 0.3f;
 
-        if (Pause)
+        if (inPause)
         {
             _language.UpdateLanguage(PlayerPrefs.GetInt("Language", 1));
             _menuObject.Select();
@@ -72,7 +72,7 @@ public class PauseMenu : MonoBehaviour {
     // ---- BUTTONS ---- //
     public void ContinueGame()
     {
-        Pause = false;
+        SetPause(false);
     }
     // ----------------- //
     public void GoToSettings()
@@ -80,11 +80,11 @@ public class PauseMenu : MonoBehaviour {
         _settingsWindow.SetActive(true);
         
         inConfig = true;
-        _settings.OpenConfig();
+        // _settings.OpenConfig();
     }
     public void CloseSettings()
     {
-        _settings.CloseConfig();
+        // _settings.CloseConfig();
 
         inConfig = false;
         _settingsWindow.SetActive(false);
@@ -112,14 +112,11 @@ public class PauseMenu : MonoBehaviour {
         Application.Quit();
     }
     // ---- SETTERS Y GETTERS ---- //
-    public bool Pause
+    public void SetPause(bool value)
     {
-        get { return inPause; }
-        set {
-            if (!_canChangePause) return;
+        if (!_canChangePause) return;
 
-            inPause = value;
-            ChangePause();
-        }
+        inPause = value;
+        ChangePause();
     }
 }

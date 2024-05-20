@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEngine;
 
 public class CollectableSelectInScene : CollectableInScene {
 
@@ -20,9 +21,9 @@ public class CollectableSelectInScene : CollectableInScene {
             case TypeElement.Objects: _textContent.text = LanguageManager.GetValue(108); break;
         }
     }
-    public override void Select()
+    public override void Select(GameObject obj)
     {
         _collect.gameObject.SetActive(true);
-        _collect.RandomValues(3);
+        _collect.RandomValues(3, obj);
     }
 }

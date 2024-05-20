@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SkillCollectable : CollectableInScene {
 
-    public SkillManager skill;
+    public GameObject skill; // Es un GameObject de un Prefab de SkillManager
 
     [Header("Data UI")]
     private TextMeshProUGUI _name;
@@ -32,8 +32,9 @@ public class SkillCollectable : CollectableInScene {
     public override void LoadData()
     {
         if (skill == null) return;
+
         List<string> values = new List<string>();
-        values = skill.GetValuesUI();
+        values = skill.GetComponent<SkillManager>().GetValuesUI();
 
         _name.text = values[0];
         _description.text = values[1];
@@ -46,8 +47,9 @@ public class SkillCollectable : CollectableInScene {
         if (values[5] != "") _sectionLoaders.SetActive(true);
         else _sectionLoaders.SetActive(false);
     }
-    public override void Select()
+    public override void Select(GameObject obj)
     {
-        Debug.Log("Seleccionaste la habilidad: " + name);
+        GameObject skillData = Instantiate(skill, obj.transform.position, Quaternion.identity, obj.transform);
+        obj.GetComponent<ActionForControlPlayer>().SetSkill(skillData, true);
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Net;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour {
@@ -10,7 +9,7 @@ public class CameraMovement : MonoBehaviour {
     [SerializeField] private Vector2 minDistance, maxDistance;
 
     [Header("Info Players")]
-    private List<PlayerMovement> _players = new List<PlayerMovement>();
+    private static List<PlayerMovement> _players = new List<PlayerMovement>();
     private static Vector3 _positionCam;
 
     private void Start()
@@ -27,7 +26,7 @@ public class CameraMovement : MonoBehaviour {
     }
     private void Update()
     {
-        if (LoadingScreen.InLoading) return;
+        if (LoadingScreen.InLoading || PauseMenu.inPause) return;
 
         RepositionCamera();
     }
@@ -61,5 +60,9 @@ public class CameraMovement : MonoBehaviour {
     public static Vector3 GetPosition()
     {
         return _positionCam;
+    }
+    public static Transform GetPositionPlayer(int pos)
+    {
+        return _players[pos].transform;
     }
 }

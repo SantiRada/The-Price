@@ -31,14 +31,17 @@ public class PlayerMovement : MonoBehaviour {
     }
     private void Update()
     {
+        if (LoadingScreen.InLoading || PauseMenu.inPause) return;
+
         Movement();
     }
     private void FixedUpdate()
     {
+        if (LoadingScreen.InLoading) return;
         if (isDashing) return;
 
         VerifyMoveForCamera();
-        if (_canMove) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * _playerStats.Speed * Time.fixedDeltaTime);
+        if (_canMove && !PauseMenu.inPause) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * _playerStats.Speed * Time.fixedDeltaTime);
         else _rigidbody2D.velocity = Vector2.zero;
     }
     private void Movement()

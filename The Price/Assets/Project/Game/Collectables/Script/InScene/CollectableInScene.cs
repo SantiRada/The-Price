@@ -39,7 +39,7 @@ public abstract class CollectableInScene : MonoBehaviour {
     {
         if (collision.CompareTag("Player"))
         {
-            if (Input.GetButtonDown("Fire1")) Select();
+            if (Input.GetButtonDown("Fire1")) Select(collision.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -47,6 +47,6 @@ public abstract class CollectableInScene : MonoBehaviour {
         if (collision.CompareTag("Player")) HideWindow();
     }
     public abstract void InitialValues();
-    public abstract void Select();
+    public abstract void Select(GameObject obj);
     public abstract void LoadData();
 }
