@@ -28,7 +28,7 @@ public abstract class CollectableInScene : MonoBehaviour {
     }
     private void HideWindow()
     {
-        _windowAppear.alpha = 0f;
+        _windowAppear.alpha = 0.0f;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

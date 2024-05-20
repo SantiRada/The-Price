@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public enum TypeSkill { Cobre, Titanio, Tungsteno, Carbono }
 public abstract class SkillManager : MonoBehaviour {
@@ -41,19 +38,20 @@ public abstract class SkillManager : MonoBehaviour {
 
         int _fragmentsYesOrNo = _requiredFragments ? 1 : 0;
 
-        values[0] = LanguageManager.GetValue(_name);
-        values[1] = LanguageManager.GetValue(_description);
-        values[2] = LanguageManager.GetValue(_featuredUsed);
-        values[3] = LanguageManager.GetValue(86) + LanguageManager.GetValue(valueType);
-        values[4] = _countForLoad.ToString();
+        values.Add(LanguageManager.GetValue(_name));
+        values.Add(LanguageManager.GetValue(_description));
+        values.Add(LanguageManager.GetValue(_featuredUsed));
+        values.Add(LanguageManager.GetValue(86) + LanguageManager.GetValue(valueType));
+        values.Add(_countForLoad.ToString());
 
-        if (_numberOfLoads != 0) values[5] = LanguageManager.GetValue(85) + _numberOfLoads.ToString();
-        else values[5] = "";
+        if (_numberOfLoads != 0) values.Add(LanguageManager.GetValue(85) + _numberOfLoads.ToString());
+        else values.Add("");
 
-        values[6] = _fragmentsYesOrNo.ToString();
-        values[7] = _countFragments.ToString();
-        values[8] = _damage.ToString();
-        values[9] = LanguageManager.GetValue(_infoExtra);
+        values.Add(_fragmentsYesOrNo.ToString());
+        values.Add(_countFragments.ToString());
+        values.Add(_damage.ToString());
+        if (_infoExtra != 0) values.Add(LanguageManager.GetValue(_infoExtra));
+        else values.Add("");
 
         return values;
     }

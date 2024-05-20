@@ -27,7 +27,7 @@ public class DataPlayerHUD : MonoBehaviour {
     }
     private void OnEnable()
     {
-        InputManager._InitializateValues += InitialValues;
+        InitialValues();
     }
     private void InitialValues()
     {
