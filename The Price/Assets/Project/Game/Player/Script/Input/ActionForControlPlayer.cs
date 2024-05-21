@@ -14,9 +14,6 @@ public class ActionForControlPlayer : MonoBehaviour {
     private PlayerMovement _movement;
     private PlayerInput _playerInput;
 
-    [Header("Other Elements")]
-    private PauseMenu _pauseMenu;
-
     [Header("Crosshair")]
     private bool aimWithStick = false;
 
@@ -31,8 +28,6 @@ public class ActionForControlPlayer : MonoBehaviour {
         _movement = GetComponent<PlayerMovement>();
         _crosshair = GetComponentInChildren<CrosshairData>();
         _weaponSystem = GetComponentInChildren<WeaponSystem>();
-
-        _pauseMenu = FindAnyObjectByType<PauseMenu>();
     }
     private void Update()
     {
@@ -87,6 +82,6 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void Pause()
     {
-        _pauseMenu.SetPause(!PauseMenu.inPause);
+        PauseMenu.SetPause(!MenuController.inPause);
     }
 }

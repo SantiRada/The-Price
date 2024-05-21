@@ -1,122 +1,18 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class PauseMenu : MonoBehaviour {
+public class PauseMenu : MenuController {
 
-    [Header("Data UI")]
-    [SerializeField] private GameObject _pauseWindow;
-    [SerializeField] private Selectable _menuObject;
-
-    [Header("Confirmation")]
-    [SerializeField] private GameObject _confirmWindow;
-    [SerializeField] private Selectable _objConfirmation;
-
-    [Header("Settings")]
-    [SerializeField] private GameObject _settingsWindow;
-
-    [Header("Data Pause")]
-    private float _timer = 0.3f;
-    private bool _canChangePause = true;
-    public static bool inPause;
-
-    private Settings _settings;
-    private LanguageManager _language;
-    private bool inConfig = false;
-
-    private void Awake()
-    {
-        _settings = GetComponentInChildren<Settings>();
-        _language = FindAnyObjectByType<LanguageManager>();
-    }
-    private void Start()
-    {
-        InitialValues();
-    }
-    private void InitialValues()
-    {
-        SetPause(false);
-        _pauseWindow.SetActive(inPause);
-        _confirmWindow.SetActive(false);
-        _settingsWindow.SetActive(false);
-
-        LoadingScreen.CountElement++;
-    }
     private void Update()
     {
-        // CERRAR SETTINGS Y VOLVER AL MENU BASE
-        if ((Input.GetButtonDown("Fire2") || Input.GetKeyDown(KeyCode.Escape)) && inConfig)
-        {
-            CloseSettings();
-        }
+        if (!inPause) return;
 
-        if (!_canChangePause)
-        {
-            _timer -= Time.deltaTime;
-
-            if (_timer <= 0) _canChangePause = true;
-        }
-    }
-    private void ChangePause()
-    {
-        _pauseWindow.SetActive(inPause);
-        _canChangePause = false;
-        _timer = 0.3f;
-
-        if (inPause)
-        {
-            _language.UpdateLanguage(PlayerPrefs.GetInt("Language", 1));
-            _menuObject.Select();
-        }
+        if(Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Escape)) ChangeStateMenu(true);
     }
     // ---- BUTTONS ---- //
     public void ContinueGame()
     {
-        SetPause(false);
+        inPause = false;
+        ChangeStateMenu(false);
     }
-    // ----------------- //
-    public void GoToSettings()
-    {
-        _settingsWindow.SetActive(true);
-        
-        inConfig = true;
-        // _settings.OpenConfig();
-    }
-    public void CloseSettings()
-    {
-        // _settings.CloseConfig();
-
-        inConfig = false;
-        _settingsWindow.SetActive(false);
-        _menuObject.Select();
-    }
-    // ----------------- //
-    public void BackToMenu()
-    {
-        _confirmWindow.SetActive(true);
-        _objConfirmation.Select();
-    }
-    public void GoToMenu()
-    {
-        SceneManager.LoadScene(0);
-    }
-    public void CloseConfirmation()
-    {
-        _confirmWindow.SetActive(false);
-        _menuObject.Select();
-    }
-    // ----------------- //
-    public void QuitGame()
-    {
-        Debug.Log("Se cerró el juego :(");
-        Application.Quit();
-    }
-    // ---- SETTERS Y GETTERS ---- //
-    public void SetPause(bool value)
-    {
-        if (!_canChangePause) return;
-
-        inPause = value;
-        ChangePause();
-    }
+    public static void SetPause(bool pause) { inPause = pause; }
 }
