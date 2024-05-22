@@ -6,17 +6,6 @@ TagManager:
   tags:
   - Weapon
   - Crosshair
-  - Enemy
-  - HUD
-  - UI
-  - player1
-  - player2
-  - player3
-  - player4
-  - keyboard
-  - gamepad
-  - Collectable_Skill
-  - Collectable_Aptitud
   layers:
   - Default
   - TransparentFX

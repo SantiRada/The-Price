@@ -26,8 +26,6 @@ public class LanguageManager : MonoBehaviour {
 
         columnLanguage = PlayerPrefs.GetInt("Language", 1);
         UpdateLanguage(columnLanguage);
-
-        LoadingScreen.CountElement++;
     }
     private void LoadAllText()
     {
