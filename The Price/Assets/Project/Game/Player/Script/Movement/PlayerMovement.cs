@@ -30,13 +30,15 @@ public class PlayerMovement : MonoBehaviour {
     }
     private void Update()
     {
+        if (Pause._inPause) return;
+
         Movement();
     }
     private void FixedUpdate()
     {
         if (isDashing) return;
 
-        if (_canMove) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * _speed * Time.fixedDeltaTime);
+        if (_canMove && !Pause._inPause) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * _speed * Time.fixedDeltaTime);
         else _rigidbody2D.velocity = Vector2.zero;
     }
     private void Movement()

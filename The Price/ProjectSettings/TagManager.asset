@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Weapon
   - Crosshair
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -13,7 +14,7 @@ TagManager:
   - Unwalkable
   - Water
   - UI
-  - 
+  - Walkable
   - 
   - 
   - 

@@ -6,9 +6,10 @@ using UnityEngine.UI;
 public class LanguageManager : MonoBehaviour {
 
     [Header("Data CSV")]
-    [SerializeField] private TextAsset csvFile;
+    [SerializeField] private TextAsset _menuFile;
+    [SerializeField] private TextAsset _gameFile;
     [SerializeField] private char delimiter = '-';
-    private static string[,] csvData;
+    private static string[,] menuData, gameData;
 
     [Header("Data Result")]
     [SerializeField] private TextMeshProUGUI[] _allText;
@@ -53,16 +54,31 @@ public class LanguageManager : MonoBehaviour {
     }
     private void LoadCSV()
     {
-        string[] lines = csvFile.text.Split('\n');
-        csvData = new string[lines.Length, 3];
+        // SEPARA EL CSV DEL MENU
+        string[] linesMenu = _menuFile.text.Split('\n');
+        menuData = new string[linesMenu.Length, 3];
 
-        for (int i = 0; i < lines.Length; i++)
+        for (int i = 0; i < linesMenu.Length; i++)
         {
-            string[] columns = lines[i].Split(delimiter);
+            string[] columns = linesMenu[i].Split(delimiter);
 
             for (int j = 0; j < columns.Length; j++)
             {
-                csvData[i, j] = columns[j];
+                menuData[i, j] = columns[j];
+            }
+        }
+
+        // SEPARA EL CSV DE JUEGO
+        string[] linesGame = _gameFile.text.Split('\n');
+        gameData = new string[linesGame.Length, 3];
+
+        for (int i = 0; i < linesGame.Length; i++)
+        {
+            string[] columns = linesGame[i].Split(delimiter);
+
+            for (int j = 0; j < columns.Length; j++)
+            {
+                gameData[i, j] = columns[j];
             }
         }
     }
@@ -73,23 +89,30 @@ public class LanguageManager : MonoBehaviour {
         for(int i = 0; i < _allText.Length; i++)
         {
             string[] dataText = _allText[i].name.Split('[');
-            string[] dataFinal = dataText[1].Split(']');
+            string[] dataValues = dataText[1].Split(']');
+            string[] dataFinal = dataValues[0].Split(',');
+            // dataFinal[0] = "Menu" && dataFinal[1] = 1
 
-            int rowValue = int.Parse(dataFinal[0]);
-            _allText[i].text = GetValue(rowValue).ToString();
+            _allText[i].text = GetValue(dataFinal[0], int.Parse(dataFinal[1])).ToString();
         }
 
         for (int i = 0; i < _allLabel.Length; i++)
         {
             string[] dataText = _allLabel[i].name.Split('[');
-            string[] dataFinal = dataText[1].Split(']');
+            string[] dataValues = dataText[1].Split(']');
+            string[] dataFinal = dataValues[0].Split(',');
+            // dataFinal[0] = "Menu" && dataFinal[1] = 1
 
-            int rowValue = int.Parse(dataFinal[0]);
-            _allLabel[i].text = GetValue(rowValue).ToString();
+            _allLabel[i].text = GetValue(dataFinal[0], int.Parse(dataFinal[1])).ToString();
         }
     }
-    public static string GetValue(int rowIndex)
+    public static string GetValue(string list, int rowIndex)
     {
-        return csvData[(rowIndex-1), columnLanguage];
+        list = list.ToLower();
+        switch (list)
+        {
+            case "menu": return menuData[(rowIndex - 1), columnLanguage];
+            default: return gameData[(rowIndex - 1), columnLanguage];
+        }
     }
 }

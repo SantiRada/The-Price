@@ -23,6 +23,8 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     private void Update()
     {
+        if (Pause._inPause) return;
+
         _movement.SetDirection(_playerInput.actions["Move"].ReadValue<Vector2>());
 
         if (!aimWithStick) _crosshair.SetAimDirection(_playerInput.actions["Move"].ReadValue<Vector2>());
