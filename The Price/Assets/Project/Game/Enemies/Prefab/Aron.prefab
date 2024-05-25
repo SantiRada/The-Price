@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9099348379565776082}
   - component: {fileID: 8292429356743943822}
   - component: {fileID: 7687959389121995620}
+  - component: {fileID: -4217541532379578072}
   m_Layer: 0
   m_Name: Aron
   m_TagString: Enemy
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8582400382366229638}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.3122464, y: -1.4256673, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -104,7 +105,7 @@ MonoBehaviour:
   _weight: 1
   _probabilityOfAppearing: 100
   _speed: 6
-  speed: 0
+  speed: 3
 --- !u!50 &8292429356743943822
 Rigidbody2D:
   serializedVersion: 4
@@ -178,3 +179,16 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-4217541532379578072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8582400382366229638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2209edeb8e67bf4e820c63578e46bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nextWaypointDistance: 3

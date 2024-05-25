@@ -10,9 +10,9 @@ public class Node {
 
     public int fCost { get { return gCost + hCost; } }
 
-    public Node(Vector2Int _position, bool _isWalkable)
+    public Node(Vector2Int _position, TypeNode _isWalkable)
     {
         position = _position;
-        isWalkable = _isWalkable;
+        if (_isWalkable != TypeNode.undefined) isWalkable = _isWalkable == TypeNode.walkable ? true : false;
     }
 }

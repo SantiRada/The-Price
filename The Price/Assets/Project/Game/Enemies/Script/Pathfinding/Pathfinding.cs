@@ -8,8 +8,10 @@ public class Pathfinding : MonoBehaviour {
     private int height;
     private Node[,] grid;
 
-    public List<Node> FindPath(Vector2Int start, Vector2Int target, bool[,] walkableMap)
+    public List<Node> FindPath(Vector2Int start, Vector2Int target, TypeNode[,] walkableMap)
     {
+        Debug.Log("Start: (" + start.x + ", " + start.y + ") + End: (" + target.x + ", " + target.y + ")");
+
         width = walkableMap.GetLength(0);
         height = walkableMap.GetLength(1);
 

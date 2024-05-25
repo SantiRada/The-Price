@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float _dashingPower = 24f;
     [SerializeField] private float _dashingTime = 0.2f;
     [SerializeField] private float _dashingCooldown = 1f;
-    private bool isDashing = false;
+    [HideInInspector] public bool isDashing = false;
     private bool _canDash = true;
 
     [Header("Private Data")]

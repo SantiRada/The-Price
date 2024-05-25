@@ -3,55 +3,62 @@ using UnityEngine;
 
 public class FollowForPathfinding : MonoBehaviour {
 
-    [SerializeField, Tooltip("Distancia al siguiente punto de camino")] private float _nextWaypointDistance = 3f;
+    [SerializeField, Tooltip("Distancia al siguiente punto de camino")] private float _nextWaypointDistance = 1f;
 
     [Header("Private Data")]
     private int _currentWaypoint = 0;
-    private bool[,] _walkableMap;
-    [Space]
-    private Pathfinding _pathfinding;
+    private TypeNode[,] _walkableMap;
     private Transform _target;
-    private List<Node> _path;
     private Rigidbody2D _rb2d;
     private EnemyManager _enemyManager;
+    private List<Node> _path;
+    private Pathfinding _pathfinding;
 
-    private void Start()
+    private void Awake()
     {
         _rb2d = GetComponent<Rigidbody2D>();
         _enemyManager = GetComponent<EnemyManager>();
-
         _pathfinding = FindAnyObjectByType<Pathfinding>();
         _target = FindAnyObjectByType<PlayerMovement>().transform;
-        _walkableMap = FindAnyObjectByType<WalkableMapGenerator>().walkableMap;
-
+    }
+    private void Start()
+    {
         UpdatePath();
     }
     private void UpdatePath()
     {
-        Vector2Int start = ClampPositionToMap(new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y)));
-        Vector2Int end = ClampPositionToMap(new Vector2Int(Mathf.RoundToInt(_target.position.x), Mathf.RoundToInt(_target.position.y)));
+        var mapGenerator = FindAnyObjectByType<WalkableMapGenerator>();
+        _walkableMap = mapGenerator.walkableMap;
 
-        // Validación de coordenadas
-        if (start.x < 0 || start.x >= _walkableMap.GetLength(0) || start.y < 0 || start.y >= _walkableMap.GetLength(1) ||
-            end.x < 0 || end.x >= _walkableMap.GetLength(0) || end.y < 0 || end.y >= _walkableMap.GetLength(1))
-        {
-            Debug.LogError("Start or target position is out of bounds");
-            return;
-        }
+        Debug.Log("Start: (" + transform.position.x + ", " + transform.position.y + ")");
+        Vector2Int start = ClearIndexToMap(new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y)));
+        Debug.Log("End: (" + _target.position.x + ", " + _target.position.y + ")");
+        Vector2Int end = ClearIndexToMap(new Vector2Int(Mathf.RoundToInt(_target.position.x), Mathf.RoundToInt(_target.position.y)));
 
         _path = _pathfinding.FindPath(start, end, _walkableMap);
         _currentWaypoint = 0;
     }
-    private Vector2Int ClampPositionToMap(Vector2Int position)
+    private Vector2Int ClearIndexToMap(Vector2Int position)
     {
-        int clampedX = Mathf.Clamp(position.x, 0, _walkableMap.GetLength(0) - 1);
-        int clampedY = Mathf.Clamp(position.y, 0, _walkableMap.GetLength(1) - 1);
-        return new Vector2Int(clampedX, clampedY);
+        Debug.Log("Recibo: (" + position.x + ", " + position.y + ")");
+        int newX = Mathf.Abs((int)_pathfinding.transform.position.x) + position.x;
+        int newY = Mathf.Abs((int)_pathfinding.transform.position.y) + position.y;
+
+        position = new Vector2Int(newX, newY);
+        Debug.Log("Envio: (" + position.x + ", " + position.y + ")");
+        return position;
+    }
+    private Vector2Int RepositionToIndexMap(Vector2Int position)
+    {
+        position = new Vector2Int((int)_pathfinding.transform.position.x, (int)_pathfinding.transform.position.y) - ClearIndexToMap(position);
+
+        return position;
     }
     private void FixedUpdate()
     {
-        if (_path == null || _path.Count == 0)
-            return;
+        if (LoadingScreen.inLoading || Pause._inPause) return;
+
+        if (_path == null || _path.Count == 0) return;
 
         if (_currentWaypoint >= _path.Count)
         {
@@ -66,19 +73,26 @@ public class FollowForPathfinding : MonoBehaviour {
 
         float distance = Vector2.Distance(_rb2d.position, _path[_currentWaypoint].position);
 
-        if (distance < _nextWaypointDistance)
-        {
-            _currentWaypoint++;
-        }
+        if (distance < _nextWaypointDistance) _currentWaypoint++;
     }
     private void OnDrawGizmos()
     {
+        if (_walkableMap == null) return;
+
+        Vector2Int start = RepositionToIndexMap(new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y)));
+        Vector2Int end = RepositionToIndexMap(new Vector2Int(Mathf.RoundToInt(_target.position.x), Mathf.RoundToInt(_target.position.y)));
+
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawCube((Vector3Int)start, Vector3.one * 0.75f);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawCube((Vector3Int)end, Vector3.one * 0.75f);
+
         if (_path != null)
         {
             foreach (Node node in _path)
             {
                 Gizmos.color = Color.blue;
-                Gizmos.DrawCube((Vector3Int)node.position, Vector3.one * 0.5f);
+                Gizmos.DrawCube((Vector3Int)node.position, Vector3.one * 0.75f);
             }
         }
     }

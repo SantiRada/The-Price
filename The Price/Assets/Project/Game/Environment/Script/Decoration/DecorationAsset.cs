@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum TypeAsset { Trigger, Collision, Clicked }
+public enum TypeAsset { Trigger, Collision, Clicked, Gold }
 public class DecorationAsset : MonoBehaviour {
 
     [SerializeField] private TypeAsset _typeAsset;
@@ -28,8 +28,20 @@ public class DecorationAsset : MonoBehaviour {
     // ---- COLLISION ELEMENT ---- //
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player")) { if (_typeAsset == TypeAsset.Collision) { Activate(); } }
-        if (collision.gameObject.CompareTag("Weapon")) { Activate(); }
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if (_typeAsset == TypeAsset.Collision) Activate();
+
+            if(_typeAsset == TypeAsset.Gold || _typeAsset == TypeAsset.Clicked)
+            {
+                if (collision.gameObject.GetComponent<PlayerMovement>().isDashing) Activate();
+            }
+        }
+        if (collision.gameObject.CompareTag("Weapon"))
+        {
+            Activate();
+            if (_typeAsset == TypeAsset.Gold) ManagerGold.CreateGold(transform.position, CountGold.Small);
+        }
     }
     private void OnCollisionStay2D(Collision2D collision)
     {

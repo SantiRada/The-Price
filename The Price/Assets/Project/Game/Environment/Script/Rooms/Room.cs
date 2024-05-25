@@ -13,6 +13,10 @@ public class Room : MonoBehaviour {
     [SerializeField] private Vector2 minDistanceCam;
     [SerializeField] private Vector2 maxDistanceCam;
 
+    [Header("Map Data")]
+    public Vector2Int sizeMap;
+    public GameObject spawnMap;
+
     [Header("Private Data")]
     private RoomManager _roomManager;
     private bool _canAdvance = false;
@@ -28,7 +32,7 @@ public class Room : MonoBehaviour {
         _currentWeight = 0;
         CameraMovement.SetMinMax(minDistanceCam, maxDistanceCam);
 
-        CreateEnemies();
+        Invoke("CreateEnemies", 0.25f);
     }
     private void CreateEnemies()
     {
@@ -45,7 +49,7 @@ public class Room : MonoBehaviour {
 
             int selector = Random.Range(0, possibleEnemies.Count);
 
-            EnemyManager enemy = Instantiate(possibleEnemies[selector], _spawnEnemy[Random.Range(0, _spawnEnemy.Length)].transform.position, Quaternion.identity, transform);
+            EnemyManager enemy = Instantiate(possibleEnemies[selector], _spawnEnemy[Random.Range(0, _spawnEnemy.Length)].transform.position, Quaternion.identity);
             enemy.RoomCurrent = this;
 
             _livingEnemies.Add(enemy);
@@ -64,12 +68,13 @@ public class Room : MonoBehaviour {
     // ---- SETTERS && GETTERS ---- //
     public void SetLivingEnemies(EnemyManager enemy)
     {
+        Vector3 posEnemy = enemy.transform.position;
         if (_livingEnemies.Remove(enemy))
         {
             if (_livingEnemies.Count <= 0)
             {
                 _canAdvance = true;
-                _roomManager.Advance();
+                StartCoroutine(_roomManager.Advance(posEnemy));
             }
         }
     }

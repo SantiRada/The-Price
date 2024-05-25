@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7768905667153262397}
   - component: {fileID: -3433718670268626399}
   - component: {fileID: -6594617931977960231}
+  - component: {fileID: -8125893607972700021}
   m_Layer: 0
   m_Name: Thuren
   m_TagString: Enemy
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8412804806510805317}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.3122464, y: -1.4256673, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -104,7 +105,7 @@ MonoBehaviour:
   _weight: 2
   _probabilityOfAppearing: 85
   _speed: 5
-  speed: 0
+  speed: 2
 --- !u!50 &-3433718670268626399
 Rigidbody2D:
   serializedVersion: 4
@@ -178,3 +179,16 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-8125893607972700021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8412804806510805317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2209edeb8e67bf4e820c63578e46bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nextWaypointDistance: 3

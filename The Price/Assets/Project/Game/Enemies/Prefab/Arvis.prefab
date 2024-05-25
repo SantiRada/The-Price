@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3190129486399702023}
   - component: {fileID: 4074762899966224151}
   - component: {fileID: 8058777166754764752}
+  - component: {fileID: -6692062339687432684}
   m_Layer: 0
   m_Name: Arvis
   m_TagString: Enemy
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8525989409199966785}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.3122464, y: -1.4256673, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -104,7 +105,7 @@ MonoBehaviour:
   _weight: 1
   _probabilityOfAppearing: 50
   _speed: 5
-  speed: 0
+  speed: 3
 --- !u!61 &4074762899966224151
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -178,3 +179,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-6692062339687432684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8525989409199966785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2209edeb8e67bf4e820c63578e46bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nextWaypointDistance: 3

@@ -1,22 +1,20 @@
-using System.Collections;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
+public enum TypeNode { walkable, unwalkable, undefined }
 public class WalkableMapGenerator : MonoBehaviour {
 
     [Header("Map Data")]
     [SerializeField] private Vector2Int mapSize;
-    public bool[,] walkableMap; // Mapa de walkable
+    public TypeNode[,] walkableMap; // Mapa de walkable
     [Space]
     [SerializeField] private LayerMask walkableLayer;
     [SerializeField] private LayerMask unwalkableLayer;
 
     public void GenerateWalkableMap()
     {
-        StartCoroutine("CreateMap");
-    }
-    private IEnumerator CreateMap()
-    {
-        walkableMap = new bool[mapSize.x, mapSize.y];
+        if (walkableMap != null) walkableMap = null;
+        walkableMap = new TypeNode[mapSize.x, mapSize.y];
 
         for (int x = 0; x < mapSize.x; x++)
         {
@@ -24,40 +22,50 @@ public class WalkableMapGenerator : MonoBehaviour {
             {
                 Vector3 worldPoint = new Vector3((transform.position.x + x), (transform.position.y + y), 0);
 
-                if (Physics2D.OverlapPoint(worldPoint, unwalkableLayer))
+                // Inicializa las variables de detección
+                bool tilemapWalkable = false;
+                bool colliderWalkable = true;
+
+                // Realiza la detección de colisiones con los Tilemaps
+                Tilemap[] tilemaps = FindObjectsByType<Tilemap>(FindObjectsSortMode.None);
+                foreach (Tilemap tilemap in tilemaps)
                 {
-                    walkableMap[x, y] = false;
-                    Debug.Log("No Walkable");
+                    Vector3Int cellPosition = tilemap.WorldToCell(worldPoint);
+                    if (tilemap.HasTile(cellPosition))
+                    {
+                        if (((1 << tilemap.gameObject.layer) & walkableLayer) != 0) tilemapWalkable = true;
+                        break;
+                    }
                 }
-                else if (Physics2D.OverlapPoint(worldPoint, walkableLayer))
-                {
-                    walkableMap[x, y] = true;
-                    Debug.Log("Walkable");
-                }
-                else
-                {
-                    // Si no se encuentra ni en walkable ni en unwalkable, se considera no caminable
-                    walkableMap[x, y] = false;
-                    Debug.Log("Undefined");
-                }
-                Debug.Log("Corroborando: (" + worldPoint.x + ", " + worldPoint.y + ")");
-                yield return new WaitForSeconds(.2f);
+
+                // Realiza la detección de colisiones con el resto de objetos
+                if (Physics2D.OverlapPoint(worldPoint, unwalkableLayer)) { colliderWalkable = false; }
+
+                // Asigna el valor walkable basado en los resultados de la detección
+                if(tilemapWalkable) walkableMap[x, y] = TypeNode.walkable;
+                if(!tilemapWalkable || !colliderWalkable) walkableMap[x, y] = TypeNode.unwalkable;
             }
         }
     }
+    public Vector2Int SizeMap
+    {
+        get { return mapSize; }
+        set { mapSize = value; }
+    }
     private void OnDrawGizmos()
     {
-        if (walkableMap == null)
-            return;
-
-        for (int x = 0; x < mapSize.x; x++)
+        if (walkableMap == null) return;
+        
+        Gizmos.color = Color.red;
+        for (int x = 0; x < SizeMap.x; x++)
         {
-            for (int y = 0; y < mapSize.y; y++)
+            for (int y = 0; y < SizeMap.y; y++)
             {
                 Vector3 worldPoint = new Vector3((transform.position.x + x), (transform.position.y + y), 0);
-                Gizmos.color = walkableMap[x, y] ? Color.green : Color.red;
-                Gizmos.DrawCube(worldPoint, Vector3.one * 0.9f);
+
+                if (walkableMap[x,y] == TypeNode.unwalkable) Gizmos.DrawCube(worldPoint, new Vector3(0.9f, 0.9f, 0.9f));
             }
+
         }
     }
 }
