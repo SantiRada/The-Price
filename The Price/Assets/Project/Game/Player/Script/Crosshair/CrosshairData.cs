@@ -33,7 +33,7 @@ public class CrosshairData : MonoBehaviour {
     }
     private void Update()
     {
-        if (Pause._inPause) return;
+        if (Pause.inPause) return;
 
         Crosshair();
     }

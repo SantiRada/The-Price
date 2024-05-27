@@ -104,8 +104,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weight: 2
   _probabilityOfAppearing: 20
-  _speed: 5
-  speed: 2
+  _speed: 1
+  _distanceToJump: 4
+  _howFarDoJump: 4
+  _delayToMovement: 2
+  _delayToJump: 4
+  canJump: 1
+  inJump: 0
 --- !u!50 &7791945781549789695
 Rigidbody2D:
   serializedVersion: 4
@@ -163,7 +168,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -191,4 +196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2209edeb8e67bf4e820c63578e46bc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextWaypointDistance: 3
+  _nextWaypointDistance: 1
+  _repathDistance: 2
+  _pathUpdateInterval: 1

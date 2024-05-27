@@ -23,6 +23,9 @@ public class RoomManager : MonoBehaviour {
     [SerializeField] private List<EnemyManager> _enemyPool = new List<EnemyManager>();
     private List<int> _enemyWeights = new List<int>();
 
+    [Header("Reward Data")]
+    [SerializeField] private SkillPlacement _skillPlacement;
+
     [Header("Private Content")]
     private WalkableMapGenerator _walkableMap;
     private PlayerMovement _player;
@@ -31,6 +34,7 @@ public class RoomManager : MonoBehaviour {
     private void Awake()
     {
         _player = FindAnyObjectByType<PlayerMovement>();
+        _skillPlacement = FindAnyObjectByType<SkillPlacement>();
         _walkableMap = FindAnyObjectByType<WalkableMapGenerator>();
     }
     private void Start()
@@ -139,14 +143,18 @@ public class RoomManager : MonoBehaviour {
             _typeRooms[pos - 1] = type;
         }
     }
-    // ---------------------------- //
+    // ---- VERIFICA EL REWARD PARA OTORGARLO Y AVANZAR ---- //
     public IEnumerator Advance(Vector3 pos)
     {
         yield return new WaitForSeconds(0.25f);
         _advanceDataRoom.SetActive(true);
         yield return new WaitForSeconds(0.25f);
 
-        if (_typeRooms[_countRoomsComplete] == TypeRoom.Gold) ManagerGold.CreateGold(pos, CountGold.Big);
+        switch (_typeRooms[_countRoomsComplete])
+        {
+            case TypeRoom.Gold: ManagerGold.CreateGold(pos, CountGold.Big); break;
+            case TypeRoom.Skill: _skillPlacement.InitialValues(); break;
+        }
     }
     // ---- SETTERS && GETTERS ---- //
     public int WeightEnemiesForThisPlace

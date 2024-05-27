@@ -52,6 +52,8 @@ public class WalkableMapGenerator : MonoBehaviour {
         get { return mapSize; }
         set { mapSize = value; }
     }
+    #region Gizmos
+    /*
     private void OnDrawGizmos()
     {
         if (walkableMap == null) return;
@@ -68,4 +70,6 @@ public class WalkableMapGenerator : MonoBehaviour {
 
         }
     }
+    */
+    #endregion
 }

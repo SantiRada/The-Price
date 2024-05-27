@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
@@ -13,6 +14,9 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float _dashingCooldown = 1f;
     [HideInInspector] public bool isDashing = false;
     private bool _canDash = true;
+
+    [Header("Skills")]
+    public List<SkillManager> skills = new List<SkillManager>();
 
     [Header("Private Data")]
     private Vector2 _moveInput = Vector2.zero;
@@ -30,7 +34,7 @@ public class PlayerMovement : MonoBehaviour {
     }
     private void Update()
     {
-        if (Pause._inPause) return;
+        if (Pause.inPause) return;
 
         Movement();
     }
@@ -38,7 +42,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (isDashing) return;
 
-        if (_canMove && !Pause._inPause) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * _speed * Time.fixedDeltaTime);
+        if (_canMove && !Pause.inPause) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * _speed * Time.fixedDeltaTime);
         else _rigidbody2D.velocity = Vector2.zero;
     }
     private void Movement()

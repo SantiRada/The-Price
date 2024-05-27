@@ -10,18 +10,21 @@ public class Pathfinding : MonoBehaviour {
 
     public List<Node> FindPath(Vector2Int start, Vector2Int target, TypeNode[,] walkableMap)
     {
-        Debug.Log("Start: (" + start.x + ", " + start.y + ") + End: (" + target.x + ", " + target.y + ")");
-
         width = walkableMap.GetLength(0);
         height = walkableMap.GetLength(1);
 
         grid = new Node[width, height];
 
+        Vector2Int offset = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                grid[x, y] = new Node(new Vector2Int(x, y), walkableMap[x, y]);
+                int newX = offset.x + x;
+                int newY = offset.y + y;
+
+                grid[x, y] = new Node(new Vector2Int(newX, newY), walkableMap[x, y]);
             }
         }
 
@@ -93,6 +96,8 @@ public class Pathfinding : MonoBehaviour {
     {
         List<Node> neighbors = new List<Node>();
 
+        Vector2Int offset = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+
         for (int x = -1; x <= 1; x++)
         {
             for (int y = -1; y <= 1; y++)
@@ -100,8 +105,8 @@ public class Pathfinding : MonoBehaviour {
                 if (x == 0 && y == 0)
                     continue;
 
-                int checkX = node.position.x + x;
-                int checkY = node.position.y + y;
+                int checkX = node.position.x + x - offset.x;
+                int checkY = node.position.y + y - offset.y;
 
                 if (checkX >= 0 && checkX < width && checkY >= 0 && checkY < height)
                 {

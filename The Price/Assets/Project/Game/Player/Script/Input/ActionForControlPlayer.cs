@@ -23,7 +23,7 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     private void Update()
     {
-        if (Pause._inPause) return;
+        if (Pause.inPause) return;
 
         _movement.SetDirection(_playerInput.actions["Move"].ReadValue<Vector2>());
 

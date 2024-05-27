@@ -17,7 +17,7 @@ public class Gold : MonoBehaviour {
     {
         if (LoadingScreen.inLoading) return;
 
-        if (canMove && !Pause._inPause) transform.position = Vector3.Lerp(transform.position, target.position, _offsetToAnim * Time.fixedDeltaTime);
+        if (canMove && !Pause.inPause) transform.position = Vector3.Lerp(transform.position, target.position, _offsetToAnim * Time.fixedDeltaTime);
     }
     private IEnumerator InitAnimation()
     {
