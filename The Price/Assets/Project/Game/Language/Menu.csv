@@ -1,47 +1,56 @@
-ID,Español,Ingles
-2,Nueva Partida,New Game
-3,Continuar,Continue
-4,Opciones,Options
-5,Créditos,Credits
-6,Menu Principal,Back to Menu
-7,Salir del Juego,Quit Game
-8,Juego,Gameplay
-9,Pantalla,Screen
-10,Audio,Audio
-11,Controles,Controls
-12,Accesibilidad,Accesibility
-13,Temblor de Pantalla,Shake Screen
-14,Vibración,Vibration
-15,Asistencia de Apuntado,Aim Assistant
-16,Temporizador del Intento,Timer to Run
-17,Números de Daño,Damage Numbers
-18,Idioma,Language
-19,Resolución,Resolution
-20,Modo de Pantalla,Screen Mode
-21,Fijar Cursor,Lock Cursor
-22,VSync,VSync
-23,Limite de FPS,FPS Limit
-24,General,General
-25,Música,Music
-26,Efectos de Sonido,SFX
-27,Acción / Uso,Action / Use
-28,Ataque,Attack
-29,Esquivar / Evadir,Dodge
-30,Habilidad Principal,Skill 1
-31,Habilidad Secundaria,Skill 2
-32,Habilidad de Fragmentos,Fragment Skill
-33,Inventario,Inventory
-34,Pausa,Pause
-35,¡Sala Completada!,Room Complete!
-36,¡Sala Perfecta!,Perfect Room!
-37,Seleccionar,Select
-38,Predeterminado,Reset to Default
-39,Volver,Back
-40,Omitir,Skip
-41,¿Estás seguro que quieres volver al Menu Principal?,Are you sure you want to return to the Main Menu?
-42,Confirmar,Confirm
-43,Cancelar,Cancel
-44,,
-45,,
-46,,
-47,,
+ID-Español-Ingles
+2-Jugar-Play
+3-Nuevo archivo de guardado-New Save
+4-Borrar archivo de guardado-Delete Save
+5-Seleccionar-Select
+6-Atrás-Back
+7-Opciones-Settings
+8-Créditos-Credits
+9-Salir-Quit
+10-Juego-Gameplay
+11-Pantalla-Screen
+12-Audio-Audio
+13-Controles-Controls
+14-Accesibilidad-Accesibility
+15-Temblor de Pantalla-Shake Screen
+16-Vibración-Vibration
+17-Asistencia de Apuntado-Aim Assistant
+18-Temporizador del Intento-Timer to Run
+19-Números de Daño-Damage Numbers
+20-Idioma-Language
+21-Resolución-Resolution
+22-Modo de Pantalla-Screen Mode
+23-VSync-VSync
+24-Limite de FPS-FPS Limit
+25-General-General
+26-Música-Music
+27-Efectos de Sonido-SFX
+28-Acción / Uso-Action / Use
+29-Ataque-Attack
+30-Esquivar / Evadir-Dodge
+31-Habilidad Principal-Skill 1
+32-Habilidad Secundaria-Skill 2
+33-Habilidad de Fragmentos-Fragment Skill
+34-Inventario-Inventory
+35-Tamaño de texto-Text Size
+36-Texto de alto contraste-High contrast text
+37-Quitar estilo de texto-Remove text styling
+38-¿Seguro que quieres salir?-Are you sure you would like to quit?
+39-¿Seguro que quieres volver al Menu?-Are you sure you want to return to the Main Menu?
+40-Aceptar-Accept
+41-Menu Principal-Main Menu
+42-Continuar-Continue
+43-Predeterminado-Reset to Default
+44-Omitir-Skip
+45-Confirmar-Confirm
+46-Cancelar-Cancel
+47-¡Sala Completada!-Room Complete!
+48-¡Sala Perfecta!-Perfect Room!
+49--
+50--
+51--
+52--
+53--
+54--
+55--
+56--

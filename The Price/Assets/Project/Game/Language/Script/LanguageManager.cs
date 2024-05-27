@@ -8,8 +8,9 @@ public class LanguageManager : MonoBehaviour {
     [Header("Data CSV")]
     [SerializeField] private TextAsset _menuFile;
     [SerializeField] private TextAsset _gameFile;
-    [SerializeField] private char delimiter = '-';
-    private static string[,] menuData, gameData;
+    [SerializeField] private TextAsset _skillFile;
+    [SerializeField] private char _delimiter = ',';
+    private static string[,] _menuData, _gameData, _skillData;
 
     [Header("Data Result")]
     [SerializeField] private TextMeshProUGUI[] _allText;
@@ -56,29 +57,43 @@ public class LanguageManager : MonoBehaviour {
     {
         // SEPARA EL CSV DEL MENU
         string[] linesMenu = _menuFile.text.Split('\n');
-        menuData = new string[linesMenu.Length, 3];
+        _menuData = new string[linesMenu.Length, 3];
 
         for (int i = 0; i < linesMenu.Length; i++)
         {
-            string[] columns = linesMenu[i].Split(delimiter);
+            string[] columns = linesMenu[i].Split(_delimiter);
 
             for (int j = 0; j < columns.Length; j++)
             {
-                menuData[i, j] = columns[j];
+                _menuData[i, j] = columns[j];
             }
         }
 
         // SEPARA EL CSV DE JUEGO
         string[] linesGame = _gameFile.text.Split('\n');
-        gameData = new string[linesGame.Length, 3];
+        _gameData = new string[linesGame.Length, 3];
 
         for (int i = 0; i < linesGame.Length; i++)
         {
-            string[] columns = linesGame[i].Split(delimiter);
+            string[] columns = linesGame[i].Split(_delimiter);
 
             for (int j = 0; j < columns.Length; j++)
             {
-                gameData[i, j] = columns[j];
+                _gameData[i, j] = columns[j];
+            }
+        }
+
+        // SEPARA EL CSV DE SKILLS
+        string[] linesSkill = _skillFile.text.Split('\n');
+        _skillData = new string[linesSkill.Length, 3];
+
+        for (int i = 0; i < linesSkill.Length; i++)
+        {
+            string[] columns = linesSkill[i].Split(_delimiter);
+
+            for (int j = 0; j < columns.Length; j++)
+            {
+                _skillData[i, j] = columns[j];
             }
         }
     }
@@ -111,8 +126,10 @@ public class LanguageManager : MonoBehaviour {
         list = list.ToLower();
         switch (list)
         {
-            case "menu": return menuData[(rowIndex - 1), columnLanguage];
-            default: return gameData[(rowIndex - 1), columnLanguage];
+            case "menu": return _menuData[(rowIndex - 1), columnLanguage];
+            case "skill": return _skillData[(rowIndex - 1), columnLanguage];
+
+            default: return _gameData[(rowIndex - 1), columnLanguage];
         }
     }
 }

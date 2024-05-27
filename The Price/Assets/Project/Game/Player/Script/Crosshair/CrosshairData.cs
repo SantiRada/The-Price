@@ -33,7 +33,7 @@ public class CrosshairData : MonoBehaviour {
     }
     private void Update()
     {
-        if (Pause.inPause) return;
+        if (Pause.Comprobation(State.Game)) return;
 
         Crosshair();
     }

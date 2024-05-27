@@ -24,7 +24,7 @@ public class RoomManager : MonoBehaviour {
     private List<int> _enemyWeights = new List<int>();
 
     [Header("Reward Data")]
-    [SerializeField] private SkillPlacement _skillPlacement;
+    private SkillPlacement _skillPlacement;
 
     [Header("Private Content")]
     private WalkableMapGenerator _walkableMap;
@@ -153,7 +153,7 @@ public class RoomManager : MonoBehaviour {
         switch (_typeRooms[_countRoomsComplete])
         {
             case TypeRoom.Gold: ManagerGold.CreateGold(pos, CountGold.Big); break;
-            case TypeRoom.Skill: _skillPlacement.InitialValues(); break;
+            case TypeRoom.Skill: _skillPlacement.StartCoroutine("InitialValues"); break;
         }
     }
     // ---- SETTERS && GETTERS ---- //

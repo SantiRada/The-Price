@@ -23,7 +23,7 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     private void Update()
     {
-        if (Pause.inPause) return;
+        if (Pause.Comprobation(State.Game)) return;
 
         _movement.SetDirection(_playerInput.actions["Move"].ReadValue<Vector2>());
 
@@ -42,15 +42,21 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void Dash()
     {
+        if (Pause.Comprobation(State.Game)) return;
+
         if (_movement.GetCanDashing() && _movement.GetCanMove()) _movement.StartCoroutine("Roll");
     }
     public void StaticAim(InputAction.CallbackContext context)
     {
+        if (Pause.Comprobation(State.Game)) return;
+
         if (context.phase == InputActionPhase.Started) aimWithStick = true;
         else if (context.phase == InputActionPhase.Canceled) aimWithStick = false;
     }
     private void AimWithRightStick()
     {
+        if (Pause.Comprobation(State.Game)) return;
+
         _crosshair.SetAimDirection(_playerInput.actions["Aim"].ReadValue<Vector2>());
     }
 }
