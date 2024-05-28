@@ -1,13 +1,20 @@
-ID,Español,Ingles
-2,HP,HP
-3,Energia,Energy
-4,Velocidad de Mov,Speed Movement
-5,Daño,Damage
-6,Daño de Hab.,Skill Damage
-7,Prob. Critico,Critical Chance
-8,Cobre,Copper
-9,Titanio,Titanium
-10,Tungsteno,Tungsten
-11,Carbono,Carbon
-12,,
-13,,
+ID-Español-Ingles
+2-HP-HP
+3-Concentración-Concentración
+4-Velocidad de Mov-Speed Movement
+5-Daño-Damage
+6-Daño de Hab.-Skill Damage
+7-Prob. Critico-Critical Chance
+8-Robo de Vida-
+9-Cobre-Copper
+10-Titanio-Titanium
+11-Tungsteno-Tungsten
+12-Carbono-Carbon
+13-Sabio Astral-
+14-¡Quizás quieras ver que deparará tu destino!-
+15-¡Tranquilo! ¿No quieres conocer tu destino?-
+16-Solo puedes elegir una.-
+16-Elige con cuidado.-
+17-Interesante decisión-
+18-Veremos como afecta a tu camino.-
+19-¡Nos vemos!-

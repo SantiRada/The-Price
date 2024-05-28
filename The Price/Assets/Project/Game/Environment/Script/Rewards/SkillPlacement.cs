@@ -11,17 +11,17 @@ public class SkillPlacement : MonoBehaviour {
     private static List<SkillManager> _localPool = new List<SkillManager>();
 
     [Header("Content UI")]
-    [SerializeField] private GameObject _objSlot;
-    [SerializeField] private float _distanceToMove;
-    [SerializeField] private float _forceRotate;
-    [SerializeField] private float _forceMovePerCard;
+    public GameObject _objSlot;
+    public float _distanceToMove;
+    public float _forceRotate;
+    public float _forceMovePerCard;
     private List<GameObject> _slots = new List<GameObject>();
     private List<Image> _slotImage = new List<Image>();
 
     [Header("Selection")]
-    [SerializeField] private Sprite _card;
-    [SerializeField] private Sprite _cardHover;
-    [SerializeField] private Sprite _cardSelect;
+    public Sprite _card;
+    public Sprite _cardHover;
+    public Sprite _cardSelect;
     [Space]
     [SerializeField] private GameObject _skillSelector;
     [SerializeField] private TextMeshProUGUI _nameSkill;
@@ -29,9 +29,8 @@ public class SkillPlacement : MonoBehaviour {
     private bool _inSelect = false, _canDetect = true;
 
     [Header("Audio")]
-    [SerializeField] private AudioClip _dropCard;
-    [SerializeField] private AudioClip _rotateCard;
-    [SerializeField] private AudioClip[] _soundForTypeSkill;
+    public AudioClip _dropCard;
+    public AudioClip _rotateCard;
     private AudioSource _audio;
 
     [Header("Movement")]
@@ -46,12 +45,18 @@ public class SkillPlacement : MonoBehaviour {
     [Header("Private Content")]
     private HorizontalLayoutGroup _layoutGroup;
     private CanvasGroup _canvasGroup;
+    private PlayerMovement _player;
+
+    private static bool _startSkills = false;
+    private SkillManager _skillSelected;
 
     private void Awake()
     {
         _layoutGroup = GetComponent<HorizontalLayoutGroup>();
         _canvasGroup = GetComponent<CanvasGroup>();
         _audio = GetComponent<AudioSource>();
+
+        _player = FindAnyObjectByType<PlayerMovement>();
     }
     private void Start()
     {
@@ -60,8 +65,13 @@ public class SkillPlacement : MonoBehaviour {
         _skillSelector.SetActive(false);
         ChangeLayout(false);
     }
+    public static void StartSkillsSelector()
+    {
+        _startSkills = true;
+    }
     public IEnumerator InitialValues()
     {
+        _startSkills = false;
         _canDetect = false;
         _canvasGroup.alpha = 1;
         _canvasGroup.interactable = true;
@@ -148,6 +158,8 @@ public class SkillPlacement : MonoBehaviour {
     // ---- INITIAL ---- //
     private void Update()
     {
+        if (_startSkills) StartCoroutine("InitialValues");
+
         if (Pause.state != State.Interface || !_canDetect) return;
 
         if (_inSelect)
@@ -251,24 +263,18 @@ public class SkillPlacement : MonoBehaviour {
         {
             _slots[_index].transform.localScale = Vector3.Lerp(_slots[_index].transform.localScale, new Vector3(1.15f, 1.15f, 1), 0.6f);
             yield return new WaitForSeconds(0.05f);
-
-            if (Vector3.Distance(_slots[_index].transform.localScale, new Vector3(1.1f, 1.1f, 1.1f)) > 0.05f)
-            {
-                _audio.volume = 0.3f;
-                _audio.PlayOneShot(_soundForTypeSkill[0]);
-            }
         } while (Vector3.Distance(_slots[_index].transform.localScale, new Vector3(1.15f, 1.15f, 1)) > 0.05f);
         _slots[_index].transform.localScale = new Vector3(1.15f, 1.15f, 1);
 
-        SkillManager skill = CalculateSkill();
+        _skillSelected = CalculateSkill();
 
         // ESTILOS PARA SU PRESENTACIÓN ----- //
         _slots[_index].GetComponent<Animator>().enabled = true;
         _slots[_index].GetComponent<Animator>().SetBool("Active", true);
         // ---------------------------------- //
 
-        _nameSkill.text = LanguageManager.GetValue("Skill", skill._skillName);
-        _descSkill.text = LanguageManager.GetValue("Skill", skill._descName);
+        _nameSkill.text = LanguageManager.GetValue("Skill", _skillSelected._skillName);
+        _descSkill.text = LanguageManager.GetValue("Skill", _skillSelected._descName);
 
         yield return new WaitForSeconds(_deadTime);
         _canDetect = true;
@@ -285,6 +291,24 @@ public class SkillPlacement : MonoBehaviour {
     }
     private void SelectCard()
     {
-        Debug.Log("Seleccíonó una carta");
+        if(_player.skills.Count >= 2)
+        {
+            // CREO LA HABILIDAD EN EL SUELO
+        }
+        else
+        {
+            // AGREGO LA HABILIDAD AL JUGADOR
+            _player.skills.Add(_skillSelected);
+            Debug.Log("Skill Selected: " + LanguageManager.GetValue("Skill", _skillSelected._skillName));
+        }
+
+        _skillSelector.SetActive(false);
+        _canvasGroup.alpha = 0;
+        ChangeLayout(false);
+        _inSelect = false;
+        _canDetect = true;
+
+        Pause.StateChange = State.Game;
+
     }
 }
