@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public class LanguageManager : MonoBehaviour {
 
@@ -13,21 +15,24 @@ public class LanguageManager : MonoBehaviour {
     private static string[,] _menuData, _gameData, _skillData;
 
     [Header("Data Result")]
-    [SerializeField] private TextMeshProUGUI[] _allText;
-    [SerializeField] private Text[] _allLabel;
-    [HideInInspector] public static int columnLanguage = 1;
+    public static bool _styleTDAH;
+    private TextMeshProUGUI[] _allText;
+    private Text[] _allLabel;
+    [HideInInspector] public static int language = 1;
 
-    private void OnEnable()
+    private void Awake()
     {
         InitialValues();
     }
     private void InitialValues()
     {
+        // _styleTDAH = true;
+
         LoadCSV();
         LoadAllText();
 
-        columnLanguage = PlayerPrefs.GetInt("Language", 1);
-        UpdateLanguage(columnLanguage);
+        language = 1;
+        UpdateLanguage(language);
     }
     private void LoadAllText()
     {
@@ -53,7 +58,7 @@ public class LanguageManager : MonoBehaviour {
 
         _allLabel = labelElementsWithName.ToArray();
     }
-    private void LoadCSV()
+    public void LoadCSV()
     {
         // SEPARA EL CSV DEL MENU
         string[] linesMenu = _menuFile.text.Split('\n');
@@ -97,9 +102,9 @@ public class LanguageManager : MonoBehaviour {
             }
         }
     }
-    public void UpdateLanguage(int num)
+    public void UpdateLanguage(int pos)
     {
-        columnLanguage = num;
+        language = pos;
 
         for(int i = 0; i < _allText.Length; i++)
         {
@@ -123,13 +128,40 @@ public class LanguageManager : MonoBehaviour {
     }
     public static string GetValue(string list, int rowIndex)
     {
+        string data = "";
         list = list.ToLower();
         switch (list)
         {
-            case "menu": return _menuData[(rowIndex - 1), columnLanguage];
-            case "skill": return _skillData[(rowIndex - 1), columnLanguage];
-
-            default: return _gameData[(rowIndex - 1), columnLanguage];
+            case "menu":
+                if (_styleTDAH) data = _menuData[(rowIndex - 1), language];
+                else return _menuData[(rowIndex - 1), language];
+                break;
+            case "skill":
+                if(_styleTDAH) data = _skillData[(rowIndex - 1), language];
+                else return _skillData[(rowIndex - 1), language];
+                break;
+            default:
+                if(_styleTDAH) data = _gameData[(rowIndex - 1), language];
+                else return _gameData[(rowIndex - 1), language];
+                break;
         }
+
+        string pattern = @"(?<!^)(?=[A-Z])|(?<=\s)";
+        string[] words = Regex.Split(data, pattern);
+
+        string[] separate = data.Split(" ");
+        data = "";
+        for (int i = 0; i < separate.Length; i++)
+        {
+            if (!string.IsNullOrEmpty(words[i]))
+            {
+                if (separate[i].Length > 3) separate[i] = $"<b><color=white>{separate[i].Substring(0, 3)}</color></b>{separate[i].Substring(3)}";
+                else separate[i] = $"<b><color=white>{separate[i].Substring(0, 1)}</color></b>{separate[i].Substring(1)}";
+
+                data += separate[i];
+            }
+        }
+
+        return data;
     }
 }

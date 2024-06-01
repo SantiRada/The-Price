@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 805221545107481382}
   - component: {fileID: 5075012169309920882}
   - component: {fileID: 38001803431499541}
-  - component: {fileID: 4481989098819855098}
   - component: {fileID: -7292151834469117125}
+  - component: {fileID: 7878340038825951836}
+  - component: {fileID: 8264308406918515283}
   m_Layer: 0
   m_Name: SabioAstral _ Skill
   m_TagString: Untagged
@@ -135,27 +136,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 3, y: 3}
   m_EdgeRadius: 0
---- !u!114 &4481989098819855098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 170214609297621058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32149c4202e663641bfa0a65fc30acfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _content: 0
-  nameContent: 13
-  descContent: 14
-  attackContent: 15
-  _showSkills: 1
-  _useDialogueSystem: 0
-  _phrases: 
-  _counterForAngry: 3
-  _type: 2
 --- !u!50 &-7292151834469117125
 Rigidbody2D:
   serializedVersion: 4
@@ -183,3 +163,42 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7878340038825951836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170214609297621058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 882c7b5d80c14d14597f741167f02c8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  content: 3
+  typeContent: 1
+  nameContent: 13
+  descContent: 14
+  attackContent: 14
+  inSelect: 0
+  inTrigger: 0
+  _manager: {fileID: 0}
+--- !u!114 &8264308406918515283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170214609297621058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bcaad5e9efb7d341af06c69e5e02ed3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _typeDialogue: 1
+  _howToOpen: 1
+  whoSpeak: 13
+  whatSay: 0f0000001000000011000000
+  _dialogueStatic: 1
+  _repeatDialogue: 0
+  _showSkills: 1

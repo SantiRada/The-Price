@@ -34,12 +34,13 @@ public class FollowForPathfinding : MonoBehaviour {
     }
     private IEnumerator UpdatePathCoroutine()
     {
+
         UpdatePath();
 
         while (true)
         {
             yield return new WaitForSeconds(_pathUpdateInterval);
-            if (Vector2.Distance(_target.position, _lastTargetPosition) > _repathDistance)
+            if (Vector2.Distance(_target.position, _lastTargetPosition) > _repathDistance && Pause.state == State.Game)
             {
                 UpdatePath();
                 _lastTargetPosition = _target.position;
@@ -67,7 +68,7 @@ public class FollowForPathfinding : MonoBehaviour {
     }
     private void FixedUpdate()
     {
-        if (LoadingScreen.inLoading || Pause.inPause) return;
+        if (LoadingScreen.inLoading || Pause.state != State.Game) return;
 
         if (_path == null || _path.Count == 0) return;
 

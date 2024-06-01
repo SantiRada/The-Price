@@ -34,15 +34,15 @@ public abstract class EnemyManager : MonoBehaviour {
     }
     private void Update()
     {
-        if (LoadingScreen.inLoading || Pause.inPause || !_canMove)
+        if (LoadingScreen.inLoading || Pause.state != State.Game || !_canMove)
         {
             _rb2d.velocity = Vector2.zero;
             return;
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.CompareTag("Player")) Die();
+        if (collision.gameObject.CompareTag("Player") && Pause.state == State.Game) Die();
     }
     public void Die()
     {

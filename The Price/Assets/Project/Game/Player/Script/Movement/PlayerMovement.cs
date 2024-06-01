@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ActionForControlPlayer;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -67,6 +68,7 @@ public class PlayerMovement : MonoBehaviour {
         isDashing = false;
         yield return new WaitForSeconds(_dashingCooldown);
         _canDash = true;
+        PlayerActionStates.IsDashing = false;
     }
     // ---- SETTERS & GETTERS ---- //
     public void SetDirection(Vector2 values)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class RoomManager : MonoBehaviour {
     [SerializeField] private Room[] _roomPool;
     [SerializeField] private TypeRoom[] _typeRooms;
     private int _countRoomsComplete = -1;
+    public static event Action finishRoom;
 
     [Header("UI Content")]
     [SerializeField] private Animator _loadingSector;
@@ -74,7 +76,7 @@ public class RoomManager : MonoBehaviour {
     private void CreateRoom()
     {
         _countRoomsComplete++;
-        int rnd = Random.Range(0, _roomPool.Length);
+        int rnd = UnityEngine.Random.Range(0, _roomPool.Length);
 
         currentRoom = Instantiate(_roomPool[rnd], Vector3.zero, Quaternion.identity, transform);
 
@@ -113,7 +115,7 @@ public class RoomManager : MonoBehaviour {
         {
             if (_typeRooms[i] == TypeRoom.Null)
             {
-                _typeRooms[i] = Random.value < 0.5 ? TypeRoom.Gold : TypeRoom.Basic;
+                _typeRooms[i] = UnityEngine.Random.value < 0.5 ? TypeRoom.Gold : TypeRoom.Basic;
             }
         }
     }
@@ -127,11 +129,11 @@ public class RoomManager : MonoBehaviour {
                 disponibles.Add(pos);
             }
         }
-        int count = Random.Range(minCount, Mathf.Min(maxCount, disponibles.Count) + 1);
+        int count = UnityEngine.Random.Range(minCount, Mathf.Min(maxCount, disponibles.Count) + 1);
         List<int> seleccionadas = new List<int>();
         while (seleccionadas.Count < count)
         {
-            int randomIndex = Random.Range(0, disponibles.Count);
+            int randomIndex = UnityEngine.Random.Range(0, disponibles.Count);
             if (!seleccionadas.Contains(disponibles[randomIndex]))
             {
                 seleccionadas.Add(disponibles[randomIndex]);
@@ -148,6 +150,7 @@ public class RoomManager : MonoBehaviour {
         yield return new WaitForSeconds(0.25f);
         _advanceDataRoom.SetActive(true);
         yield return new WaitForSeconds(0.25f);
+        finishRoom?.Invoke();
 
         switch (_typeRooms[_countRoomsComplete])
         {

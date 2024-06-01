@@ -113,6 +113,7 @@ GameObject:
   - component: {fileID: 6686633407270618136}
   - component: {fileID: 8385875373981250499}
   - component: {fileID: 7862890231065333886}
+  - component: {fileID: 7510341761890864215}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -269,7 +270,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -284,7 +285,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_EdgeRadius: 0.1
 --- !u!96 &4711988884692414966
 TrailRenderer:
   serializedVersion: 3
@@ -416,6 +417,8 @@ MonoBehaviour:
   _dashingPower: 36
   _dashingTime: 0.12
   _dashingCooldown: 0.5
+  isDashing: 0
+  skills: []
 --- !u!114 &8385875373981250499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,9 +479,9 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8385875373981250499}
-        m_TargetAssemblyTypeName: InputController, Assembly-CSharp
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
         m_MethodName: Attack
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -512,9 +515,9 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8385875373981250499}
-        m_TargetAssemblyTypeName: InputController, Assembly-CSharp
-        m_MethodName: ChangeAppearanceStats
-        m_Mode: 1
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: Stats
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -526,11 +529,15 @@ MonoBehaviour:
     m_ActionId: 31d098a6-bc28-441d-85ed-8a21d7425660
     m_ActionName: 'Player/Stats[/XInputControllerWindows/select,/Keyboard/tab]'
   - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 83a9b8e1-68db-47ab-be14-8548f40069eb
+    m_ActionName: 'Player/Pause[/Keyboard/escape,/Keyboard/enter,/Keyboard/numpadEnter,/XInputControllerWindows/start]'
+  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8385875373981250499}
-        m_TargetAssemblyTypeName: InputController, Assembly-CSharp
-        m_MethodName: Pause
-        m_Mode: 1
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: Use
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -539,25 +546,98 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 83a9b8e1-68db-47ab-be14-8548f40069eb
-    m_ActionName: 'Player/Pause[/Keyboard/escape,/Keyboard/enter,/Keyboard/numpadEnter,/XInputControllerWindows/start]'
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: a9774047-5a62-48f0-8d10-3b3a6e6e33ee
     m_ActionName: 'Player/Use[/DualShock4GamepadHID/rightShoulder,/XInputControllerWindows/rightShoulder,/Keyboard/e]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: SkillOne
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 9a756e8d-4d06-4994-b22c-e620d341de03
     m_ActionName: 'Player/Skill One[/Keyboard/numpad7,/DualShock4GamepadHID/buttonNorth,/XInputControllerWindows/buttonNorth]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: SkillTwo
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 17f0a20d-c929-471f-aa70-72c4f9d1dbdc
     m_ActionName: 'Player/Skill Two[/Keyboard/numpad9,/DualShock4GamepadHID/buttonEast,/XInputControllerWindows/buttonEast]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: SkillFragment
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2bef7504-e301-472f-a279-44942a255229
+    m_ActionName: 'Player/Skill Fragment[/XInputControllerWindows/rightStickPress,/Keyboard/f]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &7510341761890864215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4722690422420631978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a177f7d158dab5e40845afdad240b46f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hp: 100
+  _concentration: 0
+  _speedMove: 14
+  _speedAttack: 1.1
+  _damage: 12
+  _subsequentDamage: 25
+  _criticChance: 7
+  _missChance: 3
+  _hpStealing: 0
+  _hpRegeneration: 0
+  _concentrationRegeneration: 0
+  _sanity: 0
+  statsWindow: {fileID: 0}
+  hpText: {fileID: 0}
+  concentrationText: {fileID: 0}
+  speedMoveText: {fileID: 0}
+  speedAttackText: {fileID: 0}
+  damageText: {fileID: 0}
+  subsequentDamageText: {fileID: 0}
+  criticChanceText: {fileID: 0}
+  missChanceText: {fileID: 0}
+  hpStealingText: {fileID: 0}
+  hpRegenerationText: {fileID: 0}
+  concentrationRegenerationText: {fileID: 0}
+  sanityText: {fileID: 0}
 --- !u!1 &7088614093564551266
 GameObject:
   m_ObjectHideFlags: 0

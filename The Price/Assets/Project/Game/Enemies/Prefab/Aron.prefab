@@ -105,11 +105,10 @@ MonoBehaviour:
   _weight: 1
   _probabilityOfAppearing: 100
   _speed: 1.5
+  canJump: 1
   _distanceToJump: 4
   _howFarDoJump: 5
-  _delayToMovement: 2
   _delayToJump: 2
-  canJump: 1
   inJump: 0
 --- !u!50 &8292429356743943822
 Rigidbody2D:
@@ -168,7 +167,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0

@@ -94,6 +94,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Skill Fragment",
+                    "type": "Button",
+                    "id": "2bef7504-e301-472f-a279-44942a255229",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -133,7 +142,7 @@
                 {
                     "name": "",
                     "id": "56a8827c-0cd0-45a8-9efb-7bfb02737465",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
@@ -385,17 +394,6 @@
                 },
                 {
                     "name": "",
-                    "id": "0fc7ead5-cc54-405f-b89c-3f419cb29087",
-                    "path": "<Keyboard>/numpad7",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Skill One",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "df9c59dc-5e48-48da-bf0d-17d39f02cb09",
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
@@ -407,12 +405,12 @@
                 },
                 {
                     "name": "",
-                    "id": "6af0f0d4-de57-4c9d-afea-044e83352230",
-                    "path": "<Keyboard>/numpad9",
+                    "id": "a6c2c5eb-51fc-4c5e-a4ee-0f47ca1da45c",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Skill Two",
+                    "action": "Skill One",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -423,6 +421,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Skill Two",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2e0454eb-5300-47fd-8260-b12c353632f2",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
                     "action": "Skill Two",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -473,34 +482,34 @@
                 },
                 {
                     "name": "",
-                    "id": "36fca4f9-2296-4b51-8556-80cd310079cd",
-                    "path": "<Keyboard>/numpad5",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8e6123e0-829e-4376-9234-3a02f0b8ab1f",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "a28f608b-8949-44af-8301-a127d6f99a53",
-                    "path": "<Keyboard>/numpad0",
+                    "path": "<Keyboard>/rightShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7bfe962e-ce39-4e7d-9f91-6836baff8a24",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Skill Fragment",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ec774868-f11a-4a7d-9205-5d7d4055013d",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Skill Fragment",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

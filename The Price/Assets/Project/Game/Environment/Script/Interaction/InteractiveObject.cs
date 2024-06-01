@@ -1,39 +1,56 @@
 using UnityEngine;
+using static ActionForControlPlayer;
 
-public enum ContentUI { bigContent, smallContent }
+public enum ContentUI { skillContent, bigContent, smallContent, dialogueContent }
+public enum ListContent { Menu, Game, Skill }
 public abstract class InteractiveObject : MonoBehaviour {
 
     [Header("Content for the UI")]
-    public ContentUI _content;
+    public ContentUI content;
+    public ListContent typeContent;
     public int nameContent;
     public int descContent;
     public int attackContent;
     protected bool _wasAttacked = false;
-    private bool inSelect = false;
+    [HideInInspector] public bool inSelect = false;
+    [HideInInspector] public bool inTrigger = false;
 
     [Header("Private Content")]
-    private InteractiveManager _manager;
+    [HideInInspector] public InteractiveManager _manager;
 
-    private void Start()
+    private void OnEnable()
     {
         _manager = FindAnyObjectByType<InteractiveManager>();
     }
-    private void OpenWindow()
+    protected void OpenWindow()
     {
-        if(_content == ContentUI.bigContent)
+        inTrigger = true;
+
+        if(content == ContentUI.bigContent)
         {
-            if (_wasAttacked) _manager.LoadBigInfo(nameContent, attackContent, transform.position);
-            else _manager.LoadBigInfo(nameContent, descContent, transform.position);
+            if (_wasAttacked) _manager.LoadInfo(0, attackContent, transform.position, nameContent, typeContent);
+            else _manager.LoadInfo(0, descContent, transform.position, nameContent, typeContent);
         }
-        else
+        else if (content == ContentUI.skillContent)
         {
-            if(_wasAttacked) _manager.LoadSmallInfo(attackContent, transform.position);
-            else _manager.LoadSmallInfo(descContent, transform.position);
+            _manager.LoadInfo(1, descContent, transform.position, nameContent, typeContent);
+            inSelect = true;
+        }
+        else if (content == ContentUI.smallContent || content == ContentUI.dialogueContent)
+        {
+            if(content == ContentUI.dialogueContent) if (gameObject.GetComponent<DialogueManager>()._howToOpen != HowToOpenDialogue.RequiredAction) return;
+
+            if (_wasAttacked) _manager.LoadInfo(2, attackContent, transform.position, nameContent, typeContent);
+            else _manager.LoadInfo(2, descContent, transform.position, nameContent, typeContent);
         }
     }
-    private void CloseWindow()
+    protected void CloseWindow()
     {
         _manager.CloseWindow();
+
+        inTrigger = false;
+
+        if(content == ContentUI.skillContent) inSelect = false;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -45,9 +62,10 @@ public abstract class InteractiveObject : MonoBehaviour {
     {
         if (collision.CompareTag("Player"))
         {
-            if (Input.GetButton("Fire1") && !inSelect)
+            if (PlayerActionStates.IsUse && !inSelect)
             {
                 inSelect = true;
+                Debug.Log("Select");
                 Select();
             }
         }

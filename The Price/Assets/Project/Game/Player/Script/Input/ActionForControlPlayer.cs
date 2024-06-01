@@ -1,22 +1,20 @@
-using UnityEngine.InputSystem;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ActionForControlPlayer : MonoBehaviour {
 
     [Header("Elements of Player")]
     private CrosshairData _crosshair;
     private PlayerMovement _movement;
+    private PlayerStats _stats;
     private PlayerInput _playerInput;
 
     [Header("Crosshair")]
     private bool aimWithStick = false;
 
-    [Header("Stats")]
-    private float timer = 0.3f;
-    private bool canChangeStats = true;
-
     private void Awake()
     {
+        _stats = GetComponent<PlayerStats>();
         _playerInput = GetComponent<PlayerInput>();
         _movement = GetComponent<PlayerMovement>();
         _crosshair = GetComponentInChildren<CrosshairData>();
@@ -29,34 +27,131 @@ public class ActionForControlPlayer : MonoBehaviour {
 
         if (!aimWithStick) _crosshair.SetAimDirection(_playerInput.actions["Move"].ReadValue<Vector2>());
         else AimWithRightStick();
-
-        // ---- SELECT ---- //
-        if (!canChangeStats) timer -= Time.deltaTime;
-
-        if (!canChangeStats && timer <= 0)
-        {
-            canChangeStats = true;
-            timer = 0.3f;
-        }
-        // ---------------- //
     }
+    private void CloseStats()
+    {
+        if (PlayerActionStates.InStats)
+        {
+            _stats.ShowStats();
+            PlayerActionStates.InStats = false;
+        }
+    }
+    // ----------------------------- //
     public void Dash()
     {
         if (Pause.Comprobation(State.Game)) return;
 
-        if (_movement.GetCanDashing() && _movement.GetCanMove()) _movement.StartCoroutine("Roll");
+        if (_movement.GetCanDashing() && _movement.GetCanMove())
+        {
+            _movement.StartCoroutine("Roll");
+            PlayerActionStates.IsDashing = true;
+        }
+    }
+    public void Attack(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.IsAttacking = true;
+        }
+        if(context.phase == InputActionPhase.Canceled)
+        {
+            PlayerActionStates.IsAttacking = false;
+        }
+    }
+    public void Use(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.IsUse = true;
+        }
+        if (context.phase == InputActionPhase.Canceled)
+        {
+            PlayerActionStates.IsUse = false;
+        }
+        if(context.phase == InputActionPhase.Disabled)
+        {
+            PlayerActionStates.IsUse = false;
+        }
+    }
+    public void SkillOne(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.IsSkillOne = true;
+        }
+        if (context.phase == InputActionPhase.Canceled)
+        {
+            PlayerActionStates.IsSkillOne = false;
+        }
+    }
+    public void SkillTwo(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.IsSkillTwo = true;
+
+            CloseStats();
+        }
+        if (context.phase == InputActionPhase.Canceled)
+        {
+            PlayerActionStates.IsSkillTwo = false;
+        }
+    }
+    public void SkillFragment(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.IsSkillFragment = true;
+        }
+        if (context.phase == InputActionPhase.Canceled)
+        {
+            PlayerActionStates.IsSkillFragment = false;
+        }
     }
     public void StaticAim(InputAction.CallbackContext context)
     {
         if (Pause.Comprobation(State.Game)) return;
 
-        if (context.phase == InputActionPhase.Started) aimWithStick = true;
-        else if (context.phase == InputActionPhase.Canceled) aimWithStick = false;
+        if (context.phase == InputActionPhase.Started)
+        {
+            aimWithStick = true;
+        }
+        else if (context.phase == InputActionPhase.Canceled)
+        {
+            aimWithStick = false;
+        }
+    }
+    public void Stats(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            _stats.ShowStats();
+            PlayerActionStates.InStats = true;
+        }
+    }
+    public void PauseAction(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Performed)
+        {
+            if (Pause.state == State.Game) Pause.StateChange = State.Interface;
+
+            CloseStats();
+        }
     }
     private void AimWithRightStick()
     {
         if (Pause.Comprobation(State.Game)) return;
 
         _crosshair.SetAimDirection(_playerInput.actions["Aim"].ReadValue<Vector2>());
+    }
+    public static class PlayerActionStates
+    {
+        public static bool IsDashing { get; set; }
+        public static bool IsAttacking { get; set; }
+        public static bool IsUse { get; set; }
+        public static bool IsSkillOne { get; set; }
+        public static bool IsSkillTwo { get; set; }
+        public static bool IsSkillFragment { get; set; }
+        public static bool InStats { get; set; }
     }
 }
