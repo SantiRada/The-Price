@@ -34,7 +34,6 @@ public class FollowForPathfinding : MonoBehaviour {
     }
     private IEnumerator UpdatePathCoroutine()
     {
-
         UpdatePath();
 
         while (true)

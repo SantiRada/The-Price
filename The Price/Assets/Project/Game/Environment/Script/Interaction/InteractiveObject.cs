@@ -65,7 +65,6 @@ public abstract class InteractiveObject : MonoBehaviour {
             if (PlayerActionStates.IsUse && !inSelect)
             {
                 inSelect = true;
-                Debug.Log("Select");
                 Select();
             }
         }

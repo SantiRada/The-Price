@@ -15,7 +15,7 @@ public class LanguageManager : MonoBehaviour {
     private static string[,] _menuData, _gameData, _skillData;
 
     [Header("Data Result")]
-    public static bool _styleTDAH;
+    public static bool _styleTDAH = false;
     private TextMeshProUGUI[] _allText;
     private Text[] _allLabel;
     [HideInInspector] public static int language = 1;
@@ -26,7 +26,7 @@ public class LanguageManager : MonoBehaviour {
     }
     private void InitialValues()
     {
-        // _styleTDAH = true;
+        _styleTDAH = false;
 
         LoadCSV();
         LoadAllText();

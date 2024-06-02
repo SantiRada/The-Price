@@ -83,4 +83,8 @@ public class PlayerMovement : MonoBehaviour {
     {
         return _canDash;
     }
+    public List<SkillManager> GetSkills()
+    {
+        return skills;
+    }
 }

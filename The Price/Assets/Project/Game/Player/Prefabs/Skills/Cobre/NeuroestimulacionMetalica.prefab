@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _typeSkill: 0
-  _skillName: 4
-  _descName: 10
-  _featureUsed: 16
+  icon: {fileID: 0}
+  skillName: 4
+  descName: 10
+  featureUsed: 16
   _timeToDetectPassive: 4

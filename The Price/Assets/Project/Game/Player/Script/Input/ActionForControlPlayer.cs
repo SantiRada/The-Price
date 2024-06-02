@@ -89,8 +89,6 @@ public class ActionForControlPlayer : MonoBehaviour {
         if (context.phase == InputActionPhase.Started)
         {
             PlayerActionStates.IsSkillTwo = true;
-
-            CloseStats();
         }
         if (context.phase == InputActionPhase.Canceled)
         {
@@ -125,8 +123,8 @@ public class ActionForControlPlayer : MonoBehaviour {
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            _stats.ShowStats();
             PlayerActionStates.InStats = true;
+            _stats.ShowStats();
         }
     }
     public void PauseAction(InputAction.CallbackContext context)

@@ -638,6 +638,18 @@ MonoBehaviour:
   hpRegenerationText: {fileID: 0}
   concentrationRegenerationText: {fileID: 0}
   sanityText: {fileID: 0}
+  _imgSkills:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _nameSkills:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _descSkills:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &7088614093564551266
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,9 +5,10 @@ public abstract class SkillManager : MonoBehaviour {
 
     [Header("Data Skill")]
     public TypeSkill _typeSkill;
-    public int _skillName;
-    public int _descName;
-    public int _featureUsed;
+    public Sprite icon;
+    public int skillName;
+    public int descName;
+    public int featureUsed;
 
     [Header("Passive")]
     public float _timeToDetectPassive = 4f;

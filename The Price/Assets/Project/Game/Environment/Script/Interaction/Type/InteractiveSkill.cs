@@ -1,4 +1,5 @@
 using UnityEngine;
+using static ActionForControlPlayer;
 
 public class InteractiveSkill : InteractiveObject {
 
@@ -7,20 +8,21 @@ public class InteractiveSkill : InteractiveObject {
     [Header("Private Content")]
     private SkillPlacement _placement;
     private PlayerMovement _player;
+    [HideInInspector] public bool isNew;
 
     private void Start()
     {
         _placement = FindAnyObjectByType<SkillPlacement>();
         _player = FindAnyObjectByType<PlayerMovement>();
-        
-        ChangeSkill(_placement.RandomPool());
+
+        if (isNew) ChangeSkill(_placement.RandomPool());
     }
     public void ChangeSkill(SkillManager sk)
     {
         _skill = sk;
 
-        nameContent = _skill._skillName;
-        descContent = _skill._descName;
+        nameContent = _skill.skillName;
+        descContent = _skill.descName;
     }
     // --------------------------- //
     private void Update()
@@ -28,16 +30,10 @@ public class InteractiveSkill : InteractiveObject {
         if (inSelect)
         {
             // CAMBIAR EN LA POSICIÓN DE TRIANGULO
-            if (Input.GetButtonDown("Fire4"))
-            {
-                ComprobationForPositionSkill(0);
-            }
+            if (Input.GetButtonDown("Fire4") || PlayerActionStates.IsSkillOne) ComprobationForPositionSkill(0);
 
             // CAMBIAR EN LA POSICIÓN DE CÍRCULO
-            if (Input.GetButtonDown("Fire2"))
-            {
-                ComprobationForPositionSkill(1);
-            }
+            if (Input.GetButtonDown("Fire2") || PlayerActionStates.IsSkillTwo) ComprobationForPositionSkill(1);
         }
     }
     private void ComprobationForPositionSkill(int pos)

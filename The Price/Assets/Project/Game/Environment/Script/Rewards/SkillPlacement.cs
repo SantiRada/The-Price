@@ -17,8 +17,8 @@ public class SkillPlacement : MonoBehaviour {
     public float _distanceToMove;
     public float _forceRotate;
     public float _forceMovePerCard;
-    [SerializeField] private List<GameObject> _slots = new List<GameObject>();
-    [SerializeField] private List<Image> _slotImage = new List<Image>();
+    private List<GameObject> _slots = new List<GameObject>();
+    private List<Image> _slotImage = new List<Image>();
 
     [Header("Selection")]
     public Sprite _card;
@@ -49,7 +49,7 @@ public class SkillPlacement : MonoBehaviour {
     private CanvasGroup _canvasGroup;
     private PlayerMovement _player;
 
-    private static bool _startSkills = false;
+    private static bool _startSkills = false, _initial = false;
     private SkillManager _skillSelected;
 
     private void Awake()
@@ -69,6 +69,7 @@ public class SkillPlacement : MonoBehaviour {
     public static void StartSkillsSelector()
     {
         _startSkills = true;
+        _initial = true;
     }
     public IEnumerator InitialValues()
     {
@@ -151,8 +152,8 @@ public class SkillPlacement : MonoBehaviour {
     // ---- INITIAL ---- //
     private void Update()
     {
-        if (_startSkills) StartCoroutine("InitialValues");
-        else return;
+        if (_startSkills && _initial) StartCoroutine("InitialValues");
+        else if(!_initial) return;
 
         if (Pause.state != State.Interface || !_canDetect) return;
 
@@ -264,8 +265,8 @@ public class SkillPlacement : MonoBehaviour {
         _slots[_index].GetComponent<Animator>().SetBool("Active", true);
         // ---------------------------------- //
 
-        _nameSkill.text = LanguageManager.GetValue("Skill", _skillSelected._skillName);
-        _descSkill.text = LanguageManager.GetValue("Skill", _skillSelected._descName);
+        _nameSkill.text = LanguageManager.GetValue("Skill", _skillSelected.skillName);
+        _descSkill.text = LanguageManager.GetValue("Skill", _skillSelected.descName);
 
         yield return new WaitForSeconds(_deadTime);
         _canDetect = true;
@@ -273,11 +274,22 @@ public class SkillPlacement : MonoBehaviour {
     }
     private SkillManager CalculateSkill()
     {
-        SkillManager skill = _localPool[_index];
+        SkillManager skill;
+        bool canAdvance = true;
+        do
+        {
+            skill = _localPool[_index];
+            for (int i = 0; i < _player.skills.Count; i++)
+            {
+                if (_player.skills[i] == _localPool[_index])
+                {
+                    canAdvance = false;
+                }
+            }
 
-        // COMPROBACIONES DE PREFERENCIA PARA AYUDAR AL JUGADOR
+            if(!canAdvance) _index = Random.Range(0, _localPool.Count);
+        } while (!canAdvance);
 
-        // RETORNA EL VALOR SELECCIONADO REALMENTE POR AHORA
         return skill;
     }
     private void SelectCard()
@@ -286,12 +298,14 @@ public class SkillPlacement : MonoBehaviour {
         {
             // CREO LA HABILIDAD EN EL SUELO
             InteractiveSkill sk = Instantiate(_objForScene.gameObject, _player.transform.position, Quaternion.identity).GetComponent<InteractiveSkill>();
+            sk.isNew = false;
             sk.ChangeSkill(_skillSelected);
         }
         else
         {
             // AGREGO LA HABILIDAD AL JUGADOR
             _player.skills.Add(_skillSelected);
+            _player.GetComponent<PlayerStats>().SetChangeSkills();
         }
 
         RestartContent();
@@ -314,6 +328,7 @@ public class SkillPlacement : MonoBehaviour {
         _canvasGroup.interactable = false;
 
         _startSkills = false;
+        _initial = false;
         _inSelect = false;
         _canDetect = false;
         _canMove = false;

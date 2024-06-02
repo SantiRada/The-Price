@@ -11,6 +11,7 @@ public class RoomManager : MonoBehaviour {
     [SerializeField] private TypeRoom[] _typeRooms;
     private int _countRoomsComplete = -1;
     public static event Action finishRoom;
+    public static event Action perfectRoom;
 
     [Header("UI Content")]
     [SerializeField] private Animator _loadingSector;
@@ -30,12 +31,16 @@ public class RoomManager : MonoBehaviour {
 
     [Header("Private Content")]
     private WalkableMapGenerator _walkableMap;
-    private PlayerMovement _player;
     private Room currentRoom;
+
+    [Header("Player Content")]
+    private PlayerMovement _player;
+    private PlayerStats _playerStats;
 
     private void Awake()
     {
         _player = FindAnyObjectByType<PlayerMovement>();
+        _playerStats = _player.GetComponent<PlayerStats>();
         _walkableMap = FindAnyObjectByType<WalkableMapGenerator>();
     }
     private void Start()
@@ -151,6 +156,8 @@ public class RoomManager : MonoBehaviour {
         _advanceDataRoom.SetActive(true);
         yield return new WaitForSeconds(0.25f);
         finishRoom?.Invoke();
+
+        // COMPROBAR SI FUE UNA SALA PERFECTA --------------------- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
         switch (_typeRooms[_countRoomsComplete])
         {

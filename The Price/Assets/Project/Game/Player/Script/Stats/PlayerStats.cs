@@ -1,24 +1,24 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour {
 
     [Header("General Values")]
-    [SerializeField] private uint _hp;
-    [SerializeField] private uint _concentration;
-    [SerializeField] private float _speedMove;
+    [SerializeField] private int _hp;
+    [SerializeField] private int _concentration;
+    [SerializeField] private int _speedMove;
     [SerializeField] private float _speedAttack;
-    [SerializeField] private uint _damage;
+    [SerializeField] private int _damage;
 
     [Header("Attack Values")]
-    [SerializeField] private float _subsequentDamage;
-    [SerializeField] private float _criticChance;
-    [SerializeField] private float _missChance;
+    [SerializeField] private int _subsequentDamage;
+    [SerializeField] private int _criticChance;
+    [SerializeField] private int _missChance;
 
     [Header("Modifiers")]
-    [SerializeField] private float _hpStealing;
-    [SerializeField] private float _hpRegeneration;
-    [SerializeField] private float _concentrationRegeneration;
+    [SerializeField] private int _hpStealing;
     [SerializeField] private int _sanity;
 
     [Header("Content UI")]
@@ -32,17 +32,35 @@ public class PlayerStats : MonoBehaviour {
     public TextMeshProUGUI criticChanceText;
     public TextMeshProUGUI missChanceText;
     public TextMeshProUGUI hpStealingText;
-    public TextMeshProUGUI hpRegenerationText;
-    public TextMeshProUGUI concentrationRegenerationText;
     public TextMeshProUGUI sanityText;
+    [Space]
+    public Image[] _imgSkills;
+    public TextMeshProUGUI[] _nameSkills;
+    public TextMeshProUGUI[] _descSkills;
 
+    [Header("Private Content")]
+    private PlayerMovement _movement;
+    private List<SkillManager> _skills = new List<SkillManager>();
+
+    private void Awake()
+    {
+        _movement = GetComponent<PlayerMovement>();
+    }
     private void Start()
     {
-        ChangeValue(-1);
+        for(int i = 0; i < _imgSkills.Length; i++)
+        {
+            _imgSkills[i].gameObject.SetActive(false);
+            _nameSkills[i].gameObject.SetActive(false);
+            _descSkills[i].gameObject.SetActive(false);
+        }
+
+        SetChangeSkills();
+        ChangeValueInUI(-1);
 
         statsWindow.SetActive(false);
     }
-    private void ChangeValue(int type)
+    private void ChangeValueInUI(int type)
     {
         if (type == 0 || type == -1) hpText.text = _hp.ToString();
         if (type == 1 || type == -1) concentrationText.text = _concentration.ToString();
@@ -53,9 +71,66 @@ public class PlayerStats : MonoBehaviour {
         if (type == 6 || type == -1) criticChanceText.text = _criticChance.ToString() + "%";
         if (type == 7 || type == -1) missChanceText.text = _missChance.ToString() + "%";
         if (type == 8 || type == -1) hpStealingText.text = _hpStealing.ToString() + "%";
-        if (type == 9 || type == -1) hpRegenerationText.text = _hpRegeneration.ToString() + "%";
-        if (type == 10 || type == -1) concentrationRegenerationText.text = _concentrationRegeneration.ToString() + "%";
-        if (type == 11 || type == -1) sanityText.text = _sanity.ToString();
+        if (type == 9 || type == -1) sanityText.text = _sanity.ToString();
+    }
+    public void SetValue(int type, float value, int modifier)
+    {
+        if(modifier == -1)
+        {
+            if (type == 0) _hp -= (int)value;
+            if (type == 1) _concentration -= (int)value;
+            if (type == 2) _speedMove -= (int)value;
+            if (type == 3) _speedAttack -= value;
+            if (type == 4) _damage -= (int)value;
+            if (type == 5) _subsequentDamage -= (int)value;
+            if (type == 6) _criticChance -= (int)value;
+            if (type == 7) _missChance -= (int)value;
+            if (type == 8) _hpStealing -= (int)value;
+            if (type == 9) _sanity -= (int)value;
+        }
+        else if(modifier == 0)
+        {
+            if (type == 0) _hp = (int)value;
+            if (type == 1) _concentration = (int)value;
+            if (type == 2) _speedMove = (int)value;
+            if (type == 3) _speedAttack = value;
+            if (type == 4) _damage = (int)value;
+            if (type == 5) _subsequentDamage = (int)value;
+            if (type == 6) _criticChance = (int)value;
+            if (type == 7) _missChance = (int)value;
+            if (type == 8) _hpStealing = (int)value;
+            if (type == 9) _sanity = (int)value;
+        }
+        else
+        {
+            if (type == 0) _hp += (int)value;
+            if (type == 1) _concentration += (int)value;
+            if (type == 2) _speedMove += (int)value;
+            if (type == 3) _speedAttack += value;
+            if (type == 4) _damage += (int)value;
+            if (type == 5) _subsequentDamage += (int)value;
+            if (type == 6) _criticChance += (int)value;
+            if (type == 7) _missChance += (int)value;
+            if (type == 8) _hpStealing += (int)value;
+            if (type == 9) _sanity += (int)value;
+        }
+
+        ChangeValueInUI(type);
+    }
+    public void SetChangeSkills()
+    {
+        _skills = _movement.GetSkills();
+
+        for(int i = 0; i < _skills.Count; i++)
+        {
+            _imgSkills[i].gameObject.SetActive(true);
+            _nameSkills[i].gameObject.SetActive(true);
+            _descSkills[i].gameObject.SetActive(true);
+
+            _imgSkills[i].sprite = _skills[i].icon;
+            _nameSkills[i].text = LanguageManager.GetValue("Skill", _skills[i].skillName);
+            _descSkills[i].text = LanguageManager.GetValue("Skill", _skills[i].descName);
+        }
     }
     public void ShowStats()
     {
@@ -71,19 +146,17 @@ public class PlayerStats : MonoBehaviour {
         }
     }
     // ---- SETTERS ---- //
-    public uint TakeDamage { set { _hp -= value; ChangeValue(0); } }
-    public uint HarvestConcentration { set { _concentration += value; ChangeValue(1); } }
+    public int TakeDamage { set { _hp -= value; ChangeValueInUI(0); } }
+    public int HarvestConcentration { set { _concentration += value; ChangeValueInUI(1); } }
     // ---- GETTERS ---- //
-    public uint HP { get { return _hp; } }
-    public uint Concentration { get { return _concentration; } }
-    public float SpeedMove { get {  return _speedMove; } }
+    public int HP { get { return _hp; } }
+    public int Concentration { get { return _concentration; } }
+    public int SpeedMove { get {  return _speedMove; } }
     public float SpeedAttack { get {  return _speedAttack; } }
-    public uint Damage { get { return _damage; } }
-    public float SubsequentDamage { get { return _subsequentDamage; } }
-    public float CriticChance { get {  return _criticChance; } }
-    public float MissChance {  get { return _missChance; } }
-    public float StealingHP { get { return _hpStealing; } }
-    public float RegenerationHP { get { return _hpRegeneration; } }
-    public float RegenerationConcentration { get { return _concentrationRegeneration; } }
+    public int Damage { get { return _damage; } }
+    public int SubsequentDamage { get { return _subsequentDamage; } }
+    public int CriticChance { get {  return _criticChance; } }
+    public int MissChance {  get { return _missChance; } }
+    public int StealingHP { get { return _hpStealing; } }
     public int Sanity { get { return _sanity; } }
 }
