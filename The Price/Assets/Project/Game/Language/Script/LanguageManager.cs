@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Windows;
 
 public class LanguageManager : MonoBehaviour {
 
@@ -11,8 +10,9 @@ public class LanguageManager : MonoBehaviour {
     [SerializeField] private TextAsset _menuFile;
     [SerializeField] private TextAsset _gameFile;
     [SerializeField] private TextAsset _skillFile;
+    [SerializeField] private TextAsset _objectFile;
     [SerializeField] private char _delimiter = ',';
-    private static string[,] _menuData, _gameData, _skillData;
+    private static string[,] _menuData, _gameData, _skillData, _objectData;
 
     [Header("Data Result")]
     public static bool _styleTDAH = false;
@@ -101,6 +101,20 @@ public class LanguageManager : MonoBehaviour {
                 _skillData[i, j] = columns[j];
             }
         }
+
+        // SEPARA EL CSV DE OBJECTS
+        string[] linesObject = _objectFile.text.Split('\n');
+        _objectData = new string[linesObject.Length, 3];
+
+        for (int i = 0; i < linesObject.Length; i++)
+        {
+            string[] columns = linesObject[i].Split(_delimiter);
+
+            for (int j = 0; j < columns.Length; j++)
+            {
+                _objectData[i, j] = columns[j];
+            }
+        }
     }
     public void UpdateLanguage(int pos)
     {
@@ -139,6 +153,10 @@ public class LanguageManager : MonoBehaviour {
             case "skill":
                 if(_styleTDAH) data = _skillData[(rowIndex - 1), language];
                 else return _skillData[(rowIndex - 1), language];
+                break;
+            case "object":
+                if (_styleTDAH) data = _objectData[(rowIndex - 1), language];
+                else return _objectData[(rowIndex - 1), language];
                 break;
             default:
                 if(_styleTDAH) data = _gameData[(rowIndex - 1), language];

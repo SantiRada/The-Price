@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6191464214516204338
+--- !u!1 &1393916413378030881
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3806350303284652650}
-  - component: {fileID: 2584560944855544486}
+  - component: {fileID: 1620803599404993659}
+  - component: {fileID: 1964473637632688881}
   m_Layer: 0
-  m_Name: ForjaDeLaResiliencia _ Cobre
+  m_Name: EscudoDeFaraday_Cobre
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3806350303284652650
+--- !u!4 &1620803599404993659
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6191464214516204338}
+  m_GameObject: {fileID: 1393916413378030881}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,21 +32,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2584560944855544486
+--- !u!114 &1964473637632688881
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6191464214516204338}
+  m_GameObject: {fileID: 1393916413378030881}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddb0d9b23b3cc7d409030f84920de4ce, type: 3}
+  m_Script: {fileID: 11500000, guid: c839aef98768c674995983ff68cdddfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _typeSkill: 0
   icon: {fileID: 0}
-  skillName: 5
-  descName: 11
-  featureUsed: 17
+  skillName: 3
+  descName: 9
+  featureUsed: 15
   _timeToDetectPassive: 4

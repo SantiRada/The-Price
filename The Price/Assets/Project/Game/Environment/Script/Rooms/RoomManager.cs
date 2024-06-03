@@ -18,6 +18,7 @@ public class RoomManager : MonoBehaviour {
     [SerializeField] private float _timeToLoad;
     [Space]
     [SerializeField] private GameObject _advanceDataRoom;
+    [SerializeField] private GameObject _textForPerfectRoom;
     [SerializeField] private float _delayToChange;
     [SerializeField] private float _timeToGenerateMap;
 
@@ -27,7 +28,8 @@ public class RoomManager : MonoBehaviour {
     private List<int> _enemyWeights = new List<int>();
 
     [Header("Reward Data")]
-    [SerializeField] private GameObject _skillObj;
+    [SerializeField] private GameObject _rewardSkill;
+    [SerializeField] private GameObject _rewardObject;
 
     [Header("Private Content")]
     private WalkableMapGenerator _walkableMap;
@@ -36,6 +38,7 @@ public class RoomManager : MonoBehaviour {
     [Header("Player Content")]
     private PlayerMovement _player;
     private PlayerStats _playerStats;
+    private int _lifePlayer;
 
     private void Awake()
     {
@@ -52,6 +55,7 @@ public class RoomManager : MonoBehaviour {
         SetTypeRoomForThisPlace();
 
         _loadingSector.SetBool("inLoading", false);
+        _textForPerfectRoom.SetActive(false);
         _advanceDataRoom.SetActive(false);
 
         // Create Weight For the Enemies
@@ -80,6 +84,9 @@ public class RoomManager : MonoBehaviour {
     }
     private void CreateRoom()
     {
+        // GUARDAR VIDA DEL JUGADOR AL INICIO DE LA SALA
+        _lifePlayer = _playerStats.HP;
+
         _countRoomsComplete++;
         int rnd = UnityEngine.Random.Range(0, _roomPool.Length);
 
@@ -157,12 +164,18 @@ public class RoomManager : MonoBehaviour {
         yield return new WaitForSeconds(0.25f);
         finishRoom?.Invoke();
 
-        // COMPROBAR SI FUE UNA SALA PERFECTA --------------------- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // COMPROBAR SI FUE UNA SALA PERFECTA -------------- //
+        if(_playerStats.HP == _lifePlayer)
+        {
+            perfectRoom?.Invoke();
+            _textForPerfectRoom.SetActive(true);
+        }
 
         switch (_typeRooms[_countRoomsComplete])
         {
             case TypeRoom.Gold: ManagerGold.CreateGold(pos, CountGold.Big); break;
-            case TypeRoom.Skill: Instantiate(_skillObj, Vector3.zero, Quaternion.identity); break;
+            case TypeRoom.Skill: Instantiate(_rewardSkill, currentRoom.posToReward, Quaternion.identity); break;
+            case TypeRoom.Object: Instantiate(_rewardObject, currentRoom.posToReward, Quaternion.identity); break;
         }
     }
     // ---- SETTERS && GETTERS ---- //

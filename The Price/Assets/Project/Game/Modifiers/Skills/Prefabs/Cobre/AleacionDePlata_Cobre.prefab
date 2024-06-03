@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7220630384680003702
+--- !u!1 &5560541573141124385
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1904417940909364006}
-  - component: {fileID: 3825355701972490162}
+  - component: {fileID: 1899267164461028290}
+  - component: {fileID: 5360867919295775688}
   m_Layer: 0
-  m_Name: CargaElectromagnetica _ Cobre
+  m_Name: AleacionDePlata_Cobre
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1904417940909364006
+--- !u!4 &1899267164461028290
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7220630384680003702}
+  m_GameObject: {fileID: 5560541573141124385}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,21 +32,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3825355701972490162
+--- !u!114 &5360867919295775688
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7220630384680003702}
+  m_GameObject: {fileID: 5560541573141124385}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3b8a68070bedef40880801f01e2015a, type: 3}
+  m_Script: {fileID: 11500000, guid: 4fb8516b8bac2474d9418d8c9778e052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _typeSkill: 0
   icon: {fileID: 0}
-  skillName: 6
-  descName: 12
-  featureUsed: 18
+  skillName: 7
+  descName: 13
+  featureUsed: 19
   _timeToDetectPassive: 4

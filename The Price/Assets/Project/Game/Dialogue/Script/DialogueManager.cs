@@ -15,6 +15,8 @@ public class DialogueManager : MonoBehaviour {
     public bool _dialogueStatic = false;
     public bool _repeatDialogue = true;
     public bool _showSkills = false;
+    public bool _showObject = false;
+    public bool _showAptitud = false;
     [Space]
     private bool _inDialogue = false;
     private int _index = 0;
@@ -79,6 +81,13 @@ public class DialogueManager : MonoBehaviour {
             if (_showSkills)
             {
                 SkillPlacement.StartSkillsSelector();
+
+                Destroy(gameObject, 1f);
+            }
+            // PARA MOSTRAR EL SELECTOR DE OBJETOS
+            if (_showObject)
+            {
+                ObjectPlacement.StartObjectSelector();
 
                 Destroy(gameObject, 1f);
             }

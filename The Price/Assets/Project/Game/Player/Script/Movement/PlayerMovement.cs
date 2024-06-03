@@ -16,8 +16,9 @@ public class PlayerMovement : MonoBehaviour {
     [HideInInspector] public bool isDashing = false;
     private bool _canDash = true;
 
-    [Header("Skills")]
+    [Header("Modifiers")]
     public List<SkillManager> skills = new List<SkillManager>();
+    public List<Object> objects = new List<Object>();
 
     [Header("Private Data")]
     private Vector2 _moveInput = Vector2.zero;
@@ -82,9 +83,5 @@ public class PlayerMovement : MonoBehaviour {
     public bool GetCanDashing()
     {
         return _canDash;
-    }
-    public List<SkillManager> GetSkills()
-    {
-        return skills;
     }
 }

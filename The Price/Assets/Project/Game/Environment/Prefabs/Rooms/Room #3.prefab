@@ -114,6 +114,7 @@ MonoBehaviour:
   spawnPlayer: {fileID: 8981151054266996021}
   minDistanceCam: {x: -1, y: 2}
   maxDistanceCam: {x: 5, y: 12}
+  posToReward: {x: 8, y: 7}
   sizeMap: {x: 24, y: 20}
   spawnMap: {fileID: 2909931157126747991}
 --- !u!61 &6150828499065074742

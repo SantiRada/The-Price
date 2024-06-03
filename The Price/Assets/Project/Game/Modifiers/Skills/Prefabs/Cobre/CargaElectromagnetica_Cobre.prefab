@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6125683631131746917
+--- !u!1 &7220630384680003702
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2691274027880868013}
-  - component: {fileID: 7689111299569318276}
+  - component: {fileID: 1904417940909364006}
+  - component: {fileID: 3825355701972490162}
   m_Layer: 0
-  m_Name: ConductividadArcana _ Cobre
+  m_Name: CargaElectromagnetica_Cobre
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2691274027880868013
+--- !u!4 &1904417940909364006
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6125683631131746917}
+  m_GameObject: {fileID: 7220630384680003702}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,21 +32,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7689111299569318276
+--- !u!114 &3825355701972490162
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6125683631131746917}
+  m_GameObject: {fileID: 7220630384680003702}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 769a816aac72a8748b8fd587ef7a4932, type: 3}
+  m_Script: {fileID: 11500000, guid: f3b8a68070bedef40880801f01e2015a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _typeSkill: 0
   icon: {fileID: 0}
-  skillName: 2
-  descName: 8
-  featureUsed: 14
+  skillName: 6
+  descName: 12
+  featureUsed: 18
   _timeToDetectPassive: 4
