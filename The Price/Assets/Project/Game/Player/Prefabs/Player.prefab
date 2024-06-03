@@ -114,6 +114,7 @@ GameObject:
   - component: {fileID: 8385875373981250499}
   - component: {fileID: 7862890231065333886}
   - component: {fileID: 7510341761890864215}
+  - component: {fileID: 1324836505429316149}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -418,7 +419,6 @@ MonoBehaviour:
   _dashingTime: 0.12
   _dashingCooldown: 0.5
   isDashing: 0
-  skills: []
 --- !u!114 &8385875373981250499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,26 +617,24 @@ MonoBehaviour:
   _concentration: 0
   _speedMove: 14
   _speedAttack: 1.1
+  _skillDamage: 0
   _damage: 12
   _subsequentDamage: 25
   _criticChance: 7
   _missChance: 3
   _hpStealing: 0
-  _hpRegeneration: 0
-  _concentrationRegeneration: 0
   _sanity: 0
   statsWindow: {fileID: 0}
   hpText: {fileID: 0}
   concentrationText: {fileID: 0}
   speedMoveText: {fileID: 0}
   speedAttackText: {fileID: 0}
+  skillDamageText: {fileID: 0}
   damageText: {fileID: 0}
   subsequentDamageText: {fileID: 0}
   criticChanceText: {fileID: 0}
   missChanceText: {fileID: 0}
   hpStealingText: {fileID: 0}
-  hpRegenerationText: {fileID: 0}
-  concentrationRegenerationText: {fileID: 0}
   sanityText: {fileID: 0}
   _imgSkills:
   - {fileID: 0}
@@ -650,6 +648,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  skills: []
+  objects: []
+--- !u!114 &1324836505429316149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4722690422420631978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dc91dc7736e8fa4180063a22158eb20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7088614093564551266
 GameObject:
   m_ObjectHideFlags: 0

@@ -85,7 +85,7 @@ public class RoomManager : MonoBehaviour {
     private void CreateRoom()
     {
         // GUARDAR VIDA DEL JUGADOR AL INICIO DE LA SALA
-        _lifePlayer = _playerStats.HP;
+        _lifePlayer = (int)_playerStats.GetterStats(0);
 
         _countRoomsComplete++;
         int rnd = UnityEngine.Random.Range(0, _roomPool.Length);
@@ -165,7 +165,7 @@ public class RoomManager : MonoBehaviour {
         finishRoom?.Invoke();
 
         // COMPROBAR SI FUE UNA SALA PERFECTA -------------- //
-        if(_playerStats.HP == _lifePlayer)
+        if((int)_playerStats.GetterStats(0) == _lifePlayer)
         {
             perfectRoom?.Invoke();
             _textForPerfectRoom.SetActive(true);

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public enum TypeObject { basic, epic, legendary, mythical }
-public enum TypeTrigger { finishRoom, perfectRoom, criticalAttack, criticalDeath, throwSkill }
+public enum TypeTrigger { perfectRoom }
 public abstract class Object : MonoBehaviour {
 
     [Header("Info Base")]
@@ -12,19 +12,17 @@ public abstract class Object : MonoBehaviour {
 
     [Header("Triggers")]
     public TypeTrigger trigger;
-    public TypePermanenceOfObject _typePermanence;
-    public float waitForPermanence;
+
+    [Header("0. PV\n1. Concentración\n2. Velocidad de Movimiento\n3. Velocidad de Ataque\n4. Daño de Habilidad\n5. Daño\n6. Daño Sucesivo\n7. Probabilidad de Crítico\n8. Probabilidad de Fallos\n9. Robo de Vida\n10. Cordura")]
+    [Space]
+    public float[] statsModifiable = new float[11];
+    public float[] statsMaxModifiable = new float[11];
+    protected int position = 0;
+    protected float value = 0;
 
     [Header("Player Content")]
     [HideInInspector] public PlayerStats playerStats;
 
     private void Awake() { playerStats = FindAnyObjectByType<PlayerStats>(); }
-    private void Start()
-    {
-        // ---- TRIGGERS ---- //
-        if (trigger == TypeTrigger.finishRoom) RoomManager.finishRoom += Use;
-        
-        if (trigger == TypeTrigger.perfectRoom) RoomManager.perfectRoom += Use;
-    }
     public abstract void Use();
 }

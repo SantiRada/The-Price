@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static ActionForControlPlayer;
 
@@ -15,10 +14,6 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float _dashingCooldown = 1f;
     [HideInInspector] public bool isDashing = false;
     private bool _canDash = true;
-
-    [Header("Modifiers")]
-    public List<SkillManager> skills = new List<SkillManager>();
-    public List<Object> objects = new List<Object>();
 
     [Header("Private Data")]
     private Vector2 _moveInput = Vector2.zero;

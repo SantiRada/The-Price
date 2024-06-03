@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7168982437909422325
+--- !u!1 &850072679272077812
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8350687040803189468}
-  - component: {fileID: 2324114045631080668}
+  - component: {fileID: 7421216396577255851}
+  - component: {fileID: 2659701050491522067}
   m_Layer: 0
-  m_Name: LaLuzDeMalina
+  m_Name: "Esp\xEDrituDelCarib\xFA"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8350687040803189468
+--- !u!4 &7421216396577255851
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7168982437909422325}
+  m_GameObject: {fileID: 850072679272077812}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,26 +32,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2324114045631080668
+--- !u!114 &2659701050491522067
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7168982437909422325}
+  m_GameObject: {fileID: 850072679272077812}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02efc729f7d238b4bbe60871b5db28e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  itemName: 4
-  description: 5
-  typeObject: 0
+  itemName: 8
+  description: 9
+  typeObject: 1
   trigger: 0
   statsModifiable:
   - 0
-  - 5
+  - 0
   - 0
   - 0
   - 0
@@ -70,7 +70,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  - 0
+  - -1
   - 0
   - 0
   playerStats: {fileID: 0}

@@ -34,7 +34,7 @@ public class ObjectPlacement : MonoBehaviour {
 
     [Header("Private Content")]
     private CanvasGroup _canvasGroup;
-    private PlayerMovement _player;
+    private PlayerStats _player;
 
     private static bool _startObject = false, _initial = false;
 
@@ -42,7 +42,7 @@ public class ObjectPlacement : MonoBehaviour {
     {
         _canvasGroup = GetComponent<CanvasGroup>();
 
-        _player = FindAnyObjectByType<PlayerMovement>();
+        _player = FindAnyObjectByType<PlayerStats>();
     }
     private void Start()
     {
@@ -119,9 +119,11 @@ public class ObjectPlacement : MonoBehaviour {
 
         } while (_objectCreated.Count < 3);*/
 
-        _objectCreated.AddRange(_poolBasic);
+        _objectCreated.Add(_poolBasic[0]);
+        _objectCreated.Add(_poolBasic[1]);
+        _objectCreated.Add(_poolBasic[2]);
 
-        for(int i = 0; i < _slots.Count; i++)
+        for (int i = 0; i < _slots.Count; i++)
         {
             _slots[i].gameObject.SetActive(true);
             _slots[i].sprite = cardBase;
@@ -201,7 +203,7 @@ public class ObjectPlacement : MonoBehaviour {
         yield return new WaitForSeconds(0.19f);
 
         // AGREGO EL OBJETO AL JUGADOR
-        _player.objects.Add(_objectCreated[_index]);
+        _player.AddObject(_objectCreated[_index]);
         // _player.GetComponent<PlayerStats>().SetChangeObject(); AUN NO EXISTE ESTA FUNCION
 
         RestartContent();

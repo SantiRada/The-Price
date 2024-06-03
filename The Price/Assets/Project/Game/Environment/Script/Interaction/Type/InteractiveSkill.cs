@@ -7,13 +7,13 @@ public class InteractiveSkill : InteractiveObject {
 
     [Header("Private Content")]
     private SkillPlacement _placement;
-    private PlayerMovement _player;
+    private PlayerStats _player;
     [HideInInspector] public bool isNew;
 
     private void Start()
     {
         _placement = FindAnyObjectByType<SkillPlacement>();
-        _player = FindAnyObjectByType<PlayerMovement>();
+        _player = FindAnyObjectByType<PlayerStats>();
 
         if (isNew) ChangeSkill(_placement.RandomPool());
     }

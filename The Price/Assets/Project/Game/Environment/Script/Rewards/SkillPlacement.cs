@@ -47,7 +47,7 @@ public class SkillPlacement : MonoBehaviour {
     [Header("Private Content")]
     private HorizontalLayoutGroup _layoutGroup;
     private CanvasGroup _canvasGroup;
-    private PlayerMovement _player;
+    private PlayerStats _player;
 
     private static bool _startSkills = false, _initial = false;
     private SkillManager _skillSelected;
@@ -58,7 +58,7 @@ public class SkillPlacement : MonoBehaviour {
         _canvasGroup = GetComponent<CanvasGroup>();
         _audio = GetComponent<AudioSource>();
 
-        _player = FindAnyObjectByType<PlayerMovement>();
+        _player = FindAnyObjectByType<PlayerStats>();
     }
     private void Start()
     {
@@ -305,7 +305,7 @@ public class SkillPlacement : MonoBehaviour {
         {
             // AGREGO LA HABILIDAD AL JUGADOR
             _player.skills.Add(_skillSelected);
-            _player.GetComponent<PlayerStats>().SetChangeSkills();
+            _player.GetComponent<PlayerStats>().SetChangeSkillsInUI();
         }
 
         RestartContent();

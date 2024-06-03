@@ -6,13 +6,13 @@ public class ObjectInRoom : InteractiveObject {
 
     [Header("Private Content")]
     private ObjectPlacement _placement;
-    private PlayerMovement _player;
+    private PlayerStats _player;
     [HideInInspector] public bool isNew;
 
     private void Start()
     {
         _placement = FindAnyObjectByType<ObjectPlacement>();
-        _player = FindAnyObjectByType<PlayerMovement>();
+        _player = FindAnyObjectByType<PlayerStats>();
 
         if (isNew) ChangeSkill(_placement.RandomPool());
     }
