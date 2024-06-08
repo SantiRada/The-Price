@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -8,47 +7,23 @@ using UnityEngine.UI;
 public class PlayerStats : MonoBehaviour {
 
     [Header("General Values")]
-    [SerializeField] private int _hpMax;
-    [SerializeField] private int _concentrationMax;
-    [SerializeField] private int _speedMoveMax;
-    [SerializeField] private float _speedAttackMax;
-    [SerializeField] private int _skillDamageMax;
-    [SerializeField] private int _damageMax;
-    private int _hp;
-    private int _concentration;
-    private int _speedMove;
-    private float _speedAttack;
-    private int _skillDamage;
-    private int _damage;
+    [SerializeField] private float[] _generalMaxStats;
+    private float[] _generalStats;
 
-    [Header("Attack Values")]
-    [SerializeField] private int _subsequentDamageMax;
-    [SerializeField] private int _criticChanceMax;
-    [SerializeField] private int _missChanceMax;
-    private int _subsequentDamage;
-    private int _criticChance;
-    private int _missChance;
-
-    [Header("Modifiers")]
-    [SerializeField] private int _hpStealingMax;
-    [SerializeField] private int _sanityMax;
-    private int _hpStealing;
-    private int _sanity;
+    [Header("More Stats")]
+    private int countKillsInRoom;
+    private int countKillsTotal;
+    private int countDamageInRoom;
+    private int countDamageTotal;
+    private int countDamageReceivedInRoom;
+    private int countDamageReceivedTotal;
 
     [Header("Content UI")]
     public GameObject statsWindow;
-    public TextMeshProUGUI hpText;
-    public TextMeshProUGUI concentrationText;
-    public TextMeshProUGUI speedMoveText;
-    public TextMeshProUGUI speedAttackText;
-    public TextMeshProUGUI skillDamageText;
-    public TextMeshProUGUI damageText;
-    public TextMeshProUGUI subsequentDamageText;
-    public TextMeshProUGUI criticChanceText;
-    public TextMeshProUGUI missChanceText;
-    public TextMeshProUGUI hpStealingText;
-    public TextMeshProUGUI sanityText;
-    [Space]
+    public TextMeshProUGUI[] textStats;
+    public Image[] _imgObject;
+
+    [Header("Content Skills UI")]
     public Image[] _imgSkills;
     public TextMeshProUGUI[] _nameSkills;
     public TextMeshProUGUI[] _descSkills;
@@ -56,107 +31,44 @@ public class PlayerStats : MonoBehaviour {
     [Header("Player Content")]
     public List<SkillManager> skills = new List<SkillManager>();
     public List<Object> objects = new List<Object>();
-    [HideInInspector] public event Action takeDamage;
-    private TriggeringObject _triggering;
+    private TriggeringObject triggering;
+
+    // EVENTOS
+    public static event Action takeDamage;
 
     private void Awake()
     {
-        _triggering = GetComponent<TriggeringObject>();
+        triggering = GetComponent<TriggeringObject>();
     }
     private void Start()
     {
-        InitialValues();
-    }
-    private void InitialValues()
-    {
+        #region InitialStats
+        _generalStats = new float[_generalMaxStats.Length];
+
+        for(int i = 0; i < _generalMaxStats.Length; i++)
+        {
+            _generalStats[i] = _generalMaxStats[i];
+        }
+        #endregion
+        // SETTEAR VALORES INICIALES PARA LA UI -------- //
+        SetChangeSkillsInUI();
+        ChangeValueInUI(-1);
+        // --------------------------------------------- //
+        #region OffElements
         for (int i = 0; i < _imgSkills.Length; i++)
         {
             _imgSkills[i].gameObject.SetActive(false);
             _nameSkills[i].gameObject.SetActive(false);
             _descSkills[i].gameObject.SetActive(false);
         }
-
-        #region Values Base for Stats
-        _hp = _hpMax;
-        _concentration = _concentrationMax;
-        _speedMove = _speedMoveMax;
-        _speedAttack = _speedAttackMax;
-        _skillDamage = _skillDamageMax;
-        _damage = _damageMax;
-        _subsequentDamage = _subsequentDamageMax;
-        _criticChance = _criticChanceMax;
-        _missChance = _missChanceMax;
-        _hpStealing = _hpStealingMax;
-        _sanity = _sanityMax;
+        statsWindow.SetActive(false);
         #endregion
 
-        SetChangeSkillsInUI();
-        ChangeValueInUI(-1);
-
-        statsWindow.SetActive(false);
+        ActionForControlPlayer.skillOne += () => LaunchedSkill(0);
+        ActionForControlPlayer.skillTwo += () => LaunchedSkill(1);
+        ActionForControlPlayer.skillFragments += () => LaunchedSkill(2);
     }
-    private void ChangeValueInUI(int type)
-    {
-        if (type == 0 || type == -1) hpText.text = _hp.ToString() + "/" + _hpMax.ToString();
-        if (type == 1 || type == -1) concentrationText.text = _concentration.ToString() + "/" + _concentrationMax.ToString();
-        if (type == 2 || type == -1) speedMoveText.text = _speedMove.ToString();
-        if (type == 3 || type == -1) speedAttackText.text = _speedAttack.ToString();
-        if (type == 4 || type == -1) skillDamageText.text = _skillDamage.ToString();
-        if (type == 5 || type == -1) damageText.text = _damage.ToString();
-        if (type == 6 || type == -1) subsequentDamageText.text = _subsequentDamage.ToString() + "%";
-        if (type == 7 || type == -1) criticChanceText.text = _criticChance.ToString() + "%";
-        if (type == 8 || type == -1) missChanceText.text = _missChance.ToString() + "%";
-        if (type == 9 || type == -1) hpStealingText.text = _hpStealing.ToString() + "%";
-        if (type == 10 || type == -1) sanityText.text = _sanity.ToString() + "/" + _sanityMax.ToString();
-    }
-    public void SetValue(int type, float value, int modifier)
-    {
-        if(modifier == -1)
-        {
-            if (type == 0) _hp -= (int)value;
-            if (type == 1) _concentration -= (int)value;
-            if (type == 2) _speedMove -= (int)value;
-            if (type == 3) _speedAttack -= value;
-            if (type == 4) _skillDamage -= (int)value;
-            if (type == 5) _damage -= (int)value;
-            if (type == 6) _subsequentDamage -= (int)value;
-            if (type == 7) _criticChance -= (int)value;
-            if (type == 8) _missChance -= (int)value;
-            if (type == 9) _hpStealing -= (int)value;
-            if (type == 10) _sanity -= (int)value;
-        }
-        else if(modifier == 0)
-        {
-            if (type == 0) _hp = (int)value;
-            if (type == 1) _concentration = (int)value;
-            if (type == 2) _speedMove = (int)value;
-            if (type == 3) _speedAttack = value;
-            if (type == 4) _skillDamage = (int)value;
-            if (type == 5) _damage = (int)value;
-            if (type == 6) _subsequentDamage = (int)value;
-            if (type == 7) _criticChance = (int)value;
-            if (type == 8) _missChance = (int)value;
-            if (type == 9) _hpStealing = (int)value;
-            if (type == 10) _sanity = (int)value;
-        }
-        else
-        {
-            if (type == 0) _hp += (int)value;
-            if (type == 1) _concentration += (int)value;
-            if (type == 2) _speedMove += (int)value;
-            if (type == 3) _speedAttack += value;
-            if (type == 4) _skillDamage += (int)value;
-            if (type == 5) _damage += (int)value;
-            if (type == 6) _subsequentDamage += (int)value;
-            if (type == 7) _criticChance += (int)value;
-            if (type == 8) _missChance += (int)value;
-            if (type == 9) _hpStealing += (int)value;
-            if (type == 10) _sanity += (int)value;
-        }
-
-        ChangeValueInUI(type);
-    }
-    public void ShowStats()
+    public void ShowWindowedStats()
     {
         if (Pause.state == State.Interface)
         {
@@ -170,11 +82,18 @@ public class PlayerStats : MonoBehaviour {
         }
     }
     // ---- SETTERS ---- //
+    public void SetValue(int type, float value, bool max = true)
+    {
+        if (max) _generalMaxStats[type] += value;
+        else _generalStats[type] += value;
+
+        ChangeValueInUI(type);
+    }
     public void TakeDamage(int dmg)
     {
         takeDamage?.Invoke();
 
-        _hp -= dmg;
+        SetValue(0, dmg, false);
     }
     public void SetChangeSkillsInUI()
     {
@@ -189,89 +108,69 @@ public class PlayerStats : MonoBehaviour {
             _descSkills[i].text = LanguageManager.GetValue("Skill", skills[i].descName);
         }
     }
-    public void SetterStats(int pos, float value)
-    {
-        switch (pos)
-        {
-            case 0: _hp = (int)value; break;
-            case 1: _concentration = (int)value; break;
-            case 2: _speedMove = (int)value; break;
-            case 3: _speedAttack = value; break;
-            case 4: _skillDamage = (int)value; break;
-            case 5: _damage = (int)value; break;
-            case 6: _subsequentDamage = (int)value; break;
-            case 7: _criticChance = (int)value; break;
-            case 8: _missChance = (int)value; break;
-            case 9: _hpStealing = (int)value; break;
-            case 10: _sanity = (int)value; break;
-        }
-
-        ChangeValueInUI(pos);
-    }
-    public void SetterMaxStats(int pos, float value)
-    {
-        switch (pos)
-        {
-            case 0: _hpMax = (int)value; break;
-            case 1: _concentrationMax = (int)value; break;
-            case 2: _speedMoveMax = (int)value; break;
-            case 3: _speedAttackMax = value; break;
-            case 4: _skillDamageMax = (int)value; break;
-            case 5: _damageMax = (int)value; break;
-            case 6: _subsequentDamageMax = (int)value; break;
-            case 7: _criticChanceMax = (int)value; break;
-            case 8: _missChanceMax = (int)value; break;
-            case 9: _hpStealingMax = (int)value; break;
-            case 10: _sanityMax = (int)value; break;
-        }
-
-        ChangeValueInUI(pos);
-    }
     // ---- GETTERS ---- //
-    public float GetterStats(int pos)
+    public float GetterStats(int pos, bool max = true)
     {
-        float value = 0;
-        switch (pos)
-        {
-            case 0: value = _hp; break;
-            case 1: value = _concentration; break;
-            case 2: value = _speedMove; break;
-            case 3: value = _speedAttack; break;
-            case 4: value = _skillDamage; break;
-            case 5: value = _damage; break;
-            case 6: value = _subsequentDamage; break;
-            case 7: value = _criticChance; break;
-            case 8: value = _missChance; break;
-            case 9: value = _hpStealing; break;
-            case 10: value = _sanity; break;
-        }
-
-        return value;
-    }
-    public float GetterMaxStats(int pos)
-    {
-        float value = 0;
-        switch (pos)
-        {
-            case 0: value = _hpMax; break;
-            case 1: value = _concentrationMax; break;
-            case 2: value = _speedMoveMax; break;
-            case 3: value = _speedAttackMax; break;
-            case 4: value = _skillDamageMax; break;
-            case 5: value = _damageMax; break;
-            case 6: value = _subsequentDamageMax; break;
-            case 7: value = _criticChanceMax; break;
-            case 8: value = _missChanceMax; break;
-            case 9: value = _hpStealingMax; break;
-            case 10: value = _sanityMax; break;
-        }
-
-        return value;
+        if(max) return _generalMaxStats[pos];
+        else return _generalStats[pos];
     }
     // ---- OBJECTS ---- //
     public void AddObject(Object obj)
     {
         objects.Add(obj);
-        _triggering.GetObjects();
+        triggering.SetObjects(objects);
+
+        _imgObject[objects.Count - 1].sprite = objects[objects.Count - 1].icon;
+        _imgObject[objects.Count - 1].color = Color.white;
+    }
+    // ---- SKILLS ---- //
+    private void LaunchedSkill(int pos)
+    {
+        if (skills.Count <= pos) return;
+
+        if (skills[pos].loadType == LoadTypeSkill.concentration)
+        {
+            if (_generalStats[1] >= skills[pos].amountFuel) CreateSkill(pos);
+        }
+
+        if (skills[pos].loadType == LoadTypeSkill.kills)
+        {
+            if (countKillsInRoom >= skills[pos].amountFuel) CreateSkill(pos);
+        }
+
+        if (skills[pos].loadType == LoadTypeSkill.receiveDamage)
+        {
+            if (countDamageReceivedInRoom >= skills[pos].amountFuel) CreateSkill(pos);
+        }
+
+        if (skills[pos].loadType == LoadTypeSkill.damage)
+        {
+            if (countDamageInRoom >= skills[pos].amountFuel) CreateSkill(pos);
+        }
+    }
+    private void CreateSkill(int id)
+    {
+        Vector3 position = Vector3.zero;
+        if (skills[id].typeShow == TypeShowSkill.created)
+        {
+            // CREAR ENCIMA DEL ENEMIGO AL QUE LE APUNTA EL JUGADOR
+        }
+
+        for(int i = 0; i < skills[id].countCreated; i++) { Instantiate(skills[id].gameObject, position, Quaternion.identity); }
+    }
+    // ---- FUNCION INTEGRA ---- //
+    private void ChangeValueInUI(int type)
+    {
+        if (type == -1) { for (int i = 0; i < _generalStats.Length; i++) { ChangeStatsInUI(i); } }
+        else { ChangeStatsInUI(type); }
+    }
+    protected void ChangeStatsInUI(int i)
+    {
+        if (i == 0 || i == 1 || i == 10)
+            textStats[i].text = _generalStats[i].ToString() + "/" + _generalMaxStats[i].ToString();
+        else if (i == 2 || i == 3 || i == 6 || i == 7 || i == 8 || i == 9)
+            textStats[i].text = _generalMaxStats[i].ToString() + "%";
+        else if (i == 4 || i == 5)
+            textStats[i].text = _generalMaxStats[i].ToString();
     }
 }

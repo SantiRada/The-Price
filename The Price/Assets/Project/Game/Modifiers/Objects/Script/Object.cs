@@ -2,13 +2,14 @@ using UnityEngine;
 
 public enum TypeObject { basic, epic, legendary, mythical }
 public enum TypeTrigger { perfectRoom }
-public abstract class Object : MonoBehaviour {
+public abstract class Object : ScriptableObject {
 
     [Header("Info Base")]
     public Sprite icon;
     public int itemName;
     public int description;
     public TypeObject typeObject;
+    public bool canGet = true;
 
     [Header("Triggers")]
     public TypeTrigger trigger;
@@ -17,12 +18,8 @@ public abstract class Object : MonoBehaviour {
     [Space]
     public float[] statsModifiable = new float[11];
     public float[] statsMaxModifiable = new float[11];
-    protected int position = 0;
-    protected float value = 0;
 
-    [Header("Player Content")]
     [HideInInspector] public PlayerStats playerStats;
 
-    private void Awake() { playerStats = FindAnyObjectByType<PlayerStats>(); }
     public abstract void Use();
 }

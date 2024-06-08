@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,6 +12,11 @@ public class ActionForControlPlayer : MonoBehaviour {
 
     [Header("Crosshair")]
     private bool aimWithStick = false;
+
+    // EVENTOS
+    public static event Action skillOne;
+    public static event Action skillTwo;
+    public static event Action skillFragments;
 
     private void Awake()
     {
@@ -32,7 +38,7 @@ public class ActionForControlPlayer : MonoBehaviour {
     {
         if (PlayerActionStates.InStats)
         {
-            _stats.ShowStats();
+            _stats.ShowWindowedStats();
             PlayerActionStates.InStats = false;
         }
     }
@@ -73,38 +79,17 @@ public class ActionForControlPlayer : MonoBehaviour {
             PlayerActionStates.IsUse = false;
         }
     }
-    public void SkillOne(InputAction.CallbackContext context)
+    public void SkillOne()
     {
-        if (context.phase == InputActionPhase.Started)
-        {
-            PlayerActionStates.IsSkillOne = true;
-        }
-        if (context.phase == InputActionPhase.Canceled)
-        {
-            PlayerActionStates.IsSkillOne = false;
-        }
+        skillOne?.Invoke();
     }
-    public void SkillTwo(InputAction.CallbackContext context)
+    public void SkillTwo()
     {
-        if (context.phase == InputActionPhase.Started)
-        {
-            PlayerActionStates.IsSkillTwo = true;
-        }
-        if (context.phase == InputActionPhase.Canceled)
-        {
-            PlayerActionStates.IsSkillTwo = false;
-        }
+        skillTwo?.Invoke();
     }
-    public void SkillFragment(InputAction.CallbackContext context)
+    public void SkillFragments()
     {
-        if (context.phase == InputActionPhase.Started)
-        {
-            PlayerActionStates.IsSkillFragment = true;
-        }
-        if (context.phase == InputActionPhase.Canceled)
-        {
-            PlayerActionStates.IsSkillFragment = false;
-        }
+        skillFragments?.Invoke();
     }
     public void StaticAim(InputAction.CallbackContext context)
     {
@@ -124,7 +109,7 @@ public class ActionForControlPlayer : MonoBehaviour {
         if (context.phase == InputActionPhase.Performed)
         {
             PlayerActionStates.InStats = true;
-            _stats.ShowStats();
+            _stats.ShowWindowedStats();
         }
     }
     public void PauseAction(InputAction.CallbackContext context)
@@ -146,10 +131,10 @@ public class ActionForControlPlayer : MonoBehaviour {
     {
         public static bool IsDashing { get; set; }
         public static bool IsAttacking { get; set; }
-        public static bool IsUse { get; set; }
         public static bool IsSkillOne { get; set; }
         public static bool IsSkillTwo { get; set; }
-        public static bool IsSkillFragment { get; set; }
+        public static bool IsSkillFragments { get; set; }
+        public static bool IsUse { get; set; }
         public static bool InStats { get; set; }
     }
 }

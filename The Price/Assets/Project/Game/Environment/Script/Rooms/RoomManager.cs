@@ -38,12 +38,14 @@ public class RoomManager : MonoBehaviour {
     [Header("Player Content")]
     private PlayerMovement _player;
     private PlayerStats _playerStats;
+    private TriggeringObject _triggering;
     private int _lifePlayer;
 
     private void Awake()
     {
         _player = FindAnyObjectByType<PlayerMovement>();
         _playerStats = _player.GetComponent<PlayerStats>();
+        _triggering = _player.GetComponent<TriggeringObject>();
         _walkableMap = FindAnyObjectByType<WalkableMapGenerator>();
     }
     private void Start()
@@ -93,6 +95,7 @@ public class RoomManager : MonoBehaviour {
         currentRoom = Instantiate(_roomPool[rnd], Vector3.zero, Quaternion.identity, transform);
 
         _player.transform.position = currentRoom.spawnPlayer.transform.position;
+        _triggering.SetUseNew();
 
         // Rezising, Reposition & Create
         _walkableMap.SizeMap = currentRoom.sizeMap;

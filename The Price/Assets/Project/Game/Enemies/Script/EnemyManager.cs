@@ -9,6 +9,7 @@ public abstract class EnemyManager : MonoBehaviour {
 
     [Header("Stats")]
     [SerializeField, Tooltip("Valor Promedio: 1.5"), Range(0f, 6f)] private float _speed;
+    [SerializeField] private int health;
     private bool _canMove { get; set; }
 
     [Header("Jump Data")]
@@ -40,6 +41,7 @@ public abstract class EnemyManager : MonoBehaviour {
             return;
         }
     }
+    public void TakeDamage(int dmg) { health -= dmg; }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && Pause.state == State.Game) Die();
