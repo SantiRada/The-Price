@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.PlayerSettings;
 
 public class PlayerStats : MonoBehaviour {
 
@@ -33,6 +32,9 @@ public class PlayerStats : MonoBehaviour {
     public List<SkillManager> skills = new List<SkillManager>();
     public List<Object> objects = new List<Object>();
     private TriggeringObject triggering;
+
+    [Header("Prevent Damage Per Type")]
+    public int[] countPrevent = new int[5];
 
     // EVENTOS
     public static event Action takeDamage;
@@ -83,9 +85,13 @@ public class PlayerStats : MonoBehaviour {
         }
     }
     // ---- SETTERS ---- //
+    public void PreventDamage(int[] count)
+    {
+        countPrevent = count;
+    }
     public void SetValue(int type, float value, bool max = true)
     {
-        if(value < 0) FloatTextManager.CreateText(transform.position, (TypeColor)type, ("-" + value.ToString()));
+        if(value < 0) FloatTextManager.CreateText(transform.position, (TypeColor)type, value.ToString());
         else FloatTextManager.CreateText(transform.position, (TypeColor)type, ("+" + value.ToString()));
 
         if (max) _generalMaxStats[type] += value;
@@ -93,11 +99,20 @@ public class PlayerStats : MonoBehaviour {
 
         ChangeValueInUI(type);
     }
-    public void TakeDamage(int dmg)
+    public void TakeDamage(int dmg, TypeEnemyAttack attacker)
     {
-        takeDamage?.Invoke();
+        //PREVIENE ATAQUES DE UN TIPO ESPECÍFICO
+        bool dmgPrevent = false;
+        if (attacker == TypeEnemyAttack.Energy) { dmg -= (dmg * (countPrevent[1] / 100)); dmgPrevent = true; }
+        if (attacker == TypeEnemyAttack.Fire) { dmg -= (dmg * (countPrevent[2] / 100)); dmgPrevent = true; }
+        if (attacker == TypeEnemyAttack.Cold) { dmg -= (dmg * (countPrevent[3] / 100)); dmgPrevent = true; }
+        if (attacker == TypeEnemyAttack.Fortify) { dmg -= (dmg * (countPrevent[4] / 100)); dmgPrevent = true; }
 
-        FloatTextManager.CreateText(transform.position, TypeColor.receivedDamage, ("-" + dmg.ToString()));
+        if(!dmgPrevent) dmg -= (dmg * (countPrevent[0] / 100));
+
+        if (dmg <= 0) return;
+
+        takeDamage?.Invoke();
 
         SetValue(0, dmg, false);
     }

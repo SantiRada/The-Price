@@ -1,8 +1,10 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum TypeShowSkill { abovePlayer, launched, created }
 public enum LoadTypeSkill { concentration, damage, kills, receiveDamage }
 public enum TypeDestroySkill { time, receiveDamage, finishRoom, collision }
+public enum TypeEnemyAttack { Base, Energy, Fire, Cold, Fortify }
 public abstract class SkillManager : MonoBehaviour {
 
     [Header("Data Skill")]
@@ -21,6 +23,10 @@ public abstract class SkillManager : MonoBehaviour {
     public LoadTypeSkill loadType;
     [SerializeField] private TypeDestroySkill destroyType;
     [SerializeField] private float timeToDestroy;
+
+    [Header("Prevent Damage")]
+    public bool preventDamage;
+    public int[] countPrevent = new int[5];
 
     [Header("Content")]
     protected PlayerStats _player;
@@ -43,6 +49,9 @@ public abstract class SkillManager : MonoBehaviour {
         if (destroyType == TypeDestroySkill.finishRoom) RoomManager.finishRoom += DestroySkill;
         else if (destroyType == TypeDestroySkill.receiveDamage) PlayerStats.takeDamage += DestroySkill;
 
+        // VERIFICA SI PREVIENE ALGUN TIPO DE DAÑO Y LO APLICA AL PLAYER
+        if (preventDamage) _player.PreventDamage(countPrevent);
+
         // ACTIVAR LA HABILIDAD Y LANZARLA
         isActive = true;
         TakeEffect();
@@ -50,6 +59,14 @@ public abstract class SkillManager : MonoBehaviour {
     protected abstract void TakeEffect();
     protected virtual void DestroySkill()
     {
+        // VERIFICA SI PREVIENE ALGUN TIPO DE DAÑO Y LO REMUEVE DEL PLAYER
+        
+        if (preventDamage)
+        {
+            int[] count = { 0, 0, 0, 0 };
+            _player.PreventDamage(count);
+        }
+
         Destroy(gameObject, 0.5f);
     }
     private void OnTriggerEnter2D(Collider2D collision)

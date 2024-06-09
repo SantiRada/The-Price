@@ -30,8 +30,6 @@ public class SkillModificador : SkillManager {
             _player.SetValue(index[i], -modification[index[i]], true);
         }
 
-        index.Clear();
-
-        Destroy(gameObject, 0.5f);
+        base.DestroySkill();
     }
 }
