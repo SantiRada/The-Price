@@ -584,7 +584,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8385875373981250499}
         m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
-        m_MethodName: SkillFragment
+        m_MethodName: SkillFragments
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -617,7 +617,7 @@ MonoBehaviour:
   - 75
   - 16
   - 14
-  - 6
+  - 12
   - 14
   - 10
   - 25
@@ -627,6 +627,21 @@ MonoBehaviour:
   - 80
   statsWindow: {fileID: 0}
   textStats:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _imgObject:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

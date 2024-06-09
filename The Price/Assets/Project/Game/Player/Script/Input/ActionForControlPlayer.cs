@@ -74,22 +74,30 @@ public class ActionForControlPlayer : MonoBehaviour {
         {
             PlayerActionStates.IsUse = false;
         }
-        if(context.phase == InputActionPhase.Disabled)
-        {
-            PlayerActionStates.IsUse = false;
-        }
     }
-    public void SkillOne()
+    public void SkillOne(InputAction.CallbackContext context)
     {
-        skillOne?.Invoke();
+        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsSkillOne = true;
+
+        if (context.phase == InputActionPhase.Performed) skillOne?.Invoke();
+
+        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsSkillOne = false;
     }
-    public void SkillTwo()
+    public void SkillTwo(InputAction.CallbackContext context)
     {
-        skillTwo?.Invoke();
+        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsSkillTwo = true;
+
+        if (context.phase == InputActionPhase.Performed) skillTwo?.Invoke();
+
+        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsSkillTwo = false;
     }
-    public void SkillFragments()
+    public void SkillFragments(InputAction.CallbackContext context)
     {
-        skillFragments?.Invoke();
+        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsSkillFragments = true;
+
+        if (context.phase == InputActionPhase.Performed) skillFragments?.Invoke();
+
+        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsSkillFragments = false;
     }
     public void StaticAim(InputAction.CallbackContext context)
     {

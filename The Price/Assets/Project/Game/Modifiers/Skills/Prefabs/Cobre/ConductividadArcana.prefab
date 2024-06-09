@@ -51,13 +51,14 @@ MonoBehaviour:
   skillName: 2
   descName: 8
   featureUsed: 14
-  amountFuel: 14
+  amountFuel: 8
   damage: 5
-  countCreated: 0
+  countCreated: 3
   typeShow: 1
   loadType: 0
   destroyType: 0
   timeToDestroy: 6
+  _disperser: 0.25
 --- !u!212 &1986590769455309835
 SpriteRenderer:
   m_ObjectHideFlags: 0

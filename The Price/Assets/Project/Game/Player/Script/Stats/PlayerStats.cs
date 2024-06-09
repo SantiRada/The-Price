@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
 
 public class PlayerStats : MonoBehaviour {
 
@@ -84,6 +85,9 @@ public class PlayerStats : MonoBehaviour {
     // ---- SETTERS ---- //
     public void SetValue(int type, float value, bool max = true)
     {
+        if(value < 0) FloatTextManager.CreateText(transform.position, (TypeColor)type, ("-" + value.ToString()));
+        else FloatTextManager.CreateText(transform.position, (TypeColor)type, ("+" + value.ToString()));
+
         if (max) _generalMaxStats[type] += value;
         else _generalStats[type] += value;
 
@@ -92,6 +96,8 @@ public class PlayerStats : MonoBehaviour {
     public void TakeDamage(int dmg)
     {
         takeDamage?.Invoke();
+
+        FloatTextManager.CreateText(transform.position, TypeColor.receivedDamage, ("-" + dmg.ToString()));
 
         SetValue(0, dmg, false);
     }
@@ -150,13 +156,23 @@ public class PlayerStats : MonoBehaviour {
     }
     private void CreateSkill(int id)
     {
-        Vector3 position = Vector3.zero;
+        Vector3 position = this.transform.position;
         if (skills[id].typeShow == TypeShowSkill.created)
         {
             // CREAR ENCIMA DEL ENEMIGO AL QUE LE APUNTA EL JUGADOR
         }
 
+        LessAmountPerSkill(id);
+
         for(int i = 0; i < skills[id].countCreated; i++) { Instantiate(skills[id].gameObject, position, Quaternion.identity); }
+    }
+    private void LessAmountPerSkill(int pos)
+    {
+        if (skills[pos].loadType == LoadTypeSkill.concentration) SetValue(1, -skills[pos].amountFuel, false);
+
+        if (skills[pos].loadType == LoadTypeSkill.damage) countDamageInRoom -= skills[pos].amountFuel;
+
+        if (skills[pos].loadType == LoadTypeSkill.receiveDamage) countDamageReceivedInRoom -= skills[pos].amountFuel;
     }
     // ---- FUNCION INTEGRA ---- //
     private void ChangeValueInUI(int type)

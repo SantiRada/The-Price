@@ -27,7 +27,7 @@ public abstract class SkillManager : MonoBehaviour {
 
     private void Awake()
     {
-        _player = GetComponentInParent<PlayerStats>();
+        _player = FindAnyObjectByType<PlayerStats>();
     }
     private void Start() { LaunchedSkill(); }
     private void Update()

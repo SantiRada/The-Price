@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public enum TypeDialogue { FullScreen, Window }
@@ -36,6 +37,19 @@ public class DialogueManager : MonoBehaviour {
     private void Start()
     {
         if(_howToOpen == HowToOpenDialogue.RequiredEndRoom) RoomManager.finishRoom += ChangeState;
+
+        if (_showSkills || _showObject) StartCoroutine("CrazyPeople");
+    }
+    private IEnumerator CrazyPeople()
+    {
+        string[] letter = { "E=mc?", "F=ma", "V=IR", "E=hf", "d=vt", "Q=It", "E=Vq", "w=fd", "c=nrt", "s=vt", "p=mv" };
+        int levelCrazy = Random.Range(1, 4);
+
+        while (true)
+        {
+            for (int i = 0; i < levelCrazy; i++) { FloatTextManager.CreateText(transform.position, TypeColor.Crazy, letter[Random.Range(0, letter.Length)], true); }
+            yield return new WaitForSeconds(0.75f);
+        }
     }
     public void ChangeState()
     {

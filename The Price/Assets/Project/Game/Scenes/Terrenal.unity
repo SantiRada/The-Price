@@ -6449,6 +6449,7 @@ GameObject:
   - component: {fileID: 794987596}
   - component: {fileID: 794987595}
   - component: {fileID: 794987599}
+  - component: {fileID: 794987600}
   m_Layer: 5
   m_Name: UI-WorldSpace
   m_TagString: Untagged
@@ -6570,6 +6571,35 @@ MonoBehaviour:
   - {fileID: 429397945}
   - {fileID: 292450162}
   colorNames: 3DFFC7
+--- !u!114 &794987600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794987594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a19d2e605e2a03499df25e205db65f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objPrefab: {fileID: 1735837433779681326, guid: be11dfe7589f54c48872bb13a0157d23, type: 3}
+  objCrazyPrefab: {fileID: 8900966802964950441, guid: b718cd4022402454195ca93c70e5666b, type: 3}
+  colorsPool:
+  - {r: 0.9622642, g: 0.23148806, b: 0.27003902, a: 1}
+  - {r: 0.8552924, g: 0.9137255, b: 0.066666685, a: 1}
+  - {r: 0.28315237, g: 0.9528302, b: 0.47261468, a: 1}
+  - {r: 1, g: 0.3227463, b: 0, a: 1}
+  - {r: 1, g: 0.019385792, b: 0, a: 1}
+  - {r: 1, g: 0, b: 0.7051306, a: 1}
+  - {r: 1, g: 0.83183765, b: 0, a: 1}
+  - {r: 0.51951075, g: 0.23113209, b: 1, a: 1}
+  - {r: 0.8018868, g: 0.36316195, b: 0.18534178, a: 1}
+  - {r: 1, g: 0.4009434, b: 0.4009434, a: 1}
+  - {r: 0.066666685, g: 0.9137255, b: 0.5231361, a: 1}
+  - {r: 0.006026864, g: 1, b: 0, a: 1}
+  - {r: 1, g: 0.11792451, b: 0.11792451, a: 1}
+  - {r: 0.57271266, g: 0.5486828, b: 0.8490566, a: 1}
 --- !u!1 &809475580
 GameObject:
   m_ObjectHideFlags: 0
@@ -15122,10 +15152,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1443328293}
     - target: {fileID: 7510341761890864215, guid: 705b11be53fdbde40be5fe20c87e1a6c, type: 3}
-      propertyPath: _imgObject.Array.size
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 7510341761890864215, guid: 705b11be53fdbde40be5fe20c87e1a6c, type: 3}
       propertyPath: 'textStats.Array.data[0]'
       value: 
       objectReference: {fileID: 203639428}
@@ -15261,22 +15287,6 @@ PrefabInstance:
       propertyPath: '_nameSkills.Array.data[2]'
       value: 
       objectReference: {fileID: 1989788080}
-    - target: {fileID: 7862890231065333886, guid: 705b11be53fdbde40be5fe20c87e1a6c, type: 3}
-      propertyPath: m_ActionEvents.Array.data[8].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7862890231065333886, guid: 705b11be53fdbde40be5fe20c87e1a6c, type: 3}
-      propertyPath: m_ActionEvents.Array.data[9].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7862890231065333886, guid: 705b11be53fdbde40be5fe20c87e1a6c, type: 3}
-      propertyPath: m_ActionEvents.Array.data[10].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7862890231065333886, guid: 705b11be53fdbde40be5fe20c87e1a6c, type: 3}
-      propertyPath: m_ActionEvents.Array.data[10].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SkillFragments
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
