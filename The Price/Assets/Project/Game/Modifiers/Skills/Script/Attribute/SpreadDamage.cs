@@ -11,6 +11,12 @@ public class SpreadDamage : MonoBehaviour {
     public TypeEnemyAttack typeAttackSpread;
     public float radioSpread;
     [Range(0, 0.25f), Tooltip("Valores menores equivalen a un crecimiento más rápido")] public float speedMovement;
+    public bool healthPlayer;
+
+    [Header("Data State")]
+    public bool hasState;
+    public TypeState state;
+    public int countOfLoads;
 
     private GameObject spread;
 
@@ -27,6 +33,12 @@ public class SpreadDamage : MonoBehaviour {
         }
 
         spread = Instantiate(objSpread, transform.position, Quaternion.identity);
+        
+        if (hasState)
+        {
+            spread.GetComponent<ObjectSpread>().state = state;
+            spread.GetComponent<ObjectSpread>().countOfLoads = countOfLoads;
+        }
 
         StartCoroutine("MoveSpread");
     }
@@ -37,6 +49,8 @@ public class SpreadDamage : MonoBehaviour {
             spread.transform.localScale += new Vector3(0.2f, 0.2f, 0);
             yield return new WaitForSeconds(speedMovement);
         }
+
+        if (healthPlayer) FindAnyObjectByType<PlayerStats>().SetValue(4, spread.GetComponent<ObjectSpread>().damageAffected);
 
         Destroy(spread);
         Destroy(gameObject);

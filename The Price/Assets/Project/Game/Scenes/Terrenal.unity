@@ -6280,9 +6280,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _skillPool:
+  - {fileID: 4810839337977162351, guid: db70d5dc683e1a344af978f75f55af62, type: 3}
+  - {fileID: 4426296261177806070, guid: d1ce06dd49c31954f8590cd8e4a59b27, type: 3}
+  - {fileID: 6343404457802757078, guid: bd8d7dc212654874c96b6d71e445942f, type: 3}
+  - {fileID: 4583996863956020501, guid: d9f6ddb5732dc524a875033758657c03, type: 3}
+  - {fileID: 1242574443573261368, guid: b7f5b7694e766964c8de4606f55ad420, type: 3}
+  - {fileID: 2022846567127507699, guid: ed9c2c36fa03441408c8cd46a876bbf6, type: 3}
   - {fileID: 6699857804643283947, guid: 569a2b4cb6304c845be021037ec84768, type: 3}
-  - {fileID: 6699857804643283947, guid: 569a2b4cb6304c845be021037ec84768, type: 3}
-  - {fileID: 6699857804643283947, guid: 569a2b4cb6304c845be021037ec84768, type: 3}
+  - {fileID: 158202609222781864, guid: b0f814f58e9fc66439ee677cfde58ac4, type: 3}
+  - {fileID: 16744426459306830, guid: dedcae649624bcd4bbd0dabdf858a730, type: 3}
+  - {fileID: 6115203071084512920, guid: fb9435bf0a2a38e4f8028b43d070f81f, type: 3}
+  - {fileID: 6620029387842005463, guid: 30df40ba54c32124580bebc3757fa1d8, type: 3}
+  - {fileID: 7010528681191478905, guid: 230b23e9b7fda854e826932d2eb01b57, type: 3}
+  - {fileID: 7708595572275818605, guid: 80b878cd738bd974bae8ab451f2db62e, type: 3}
+  - {fileID: 8621910495439206195, guid: dce3a094d01e53b4f99a72f0581558c8, type: 3}
   _objForScene: {fileID: 4533810831724761770, guid: 7494aa9185e9a27419d8af6c5d0a37e9, type: 3}
   _objSlot: {fileID: 7241741281065931152, guid: b06a352313c11a84582ac121e67d2f3b, type: 3}
   _distanceToMove: 200
@@ -15190,6 +15201,10 @@ PrefabInstance:
       propertyPath: 'textStats.Array.data[9]'
       value: 
       objectReference: {fileID: 1762602172}
+    - target: {fileID: 7510341761890864215, guid: 705b11be53fdbde40be5fe20c87e1a6c, type: 3}
+      propertyPath: whichReflect.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7510341761890864215, guid: 705b11be53fdbde40be5fe20c87e1a6c, type: 3}
       propertyPath: '_imgObject.Array.data[0]'
       value: 

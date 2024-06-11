@@ -15,7 +15,6 @@ public abstract class SkillManager : MonoBehaviour {
     [Tooltip("Cantidad de LoadType(fuel) necesaria para poder lanzar esta habilidad")] public int amountFuel;
     public int damage;
     [Tooltip("Cantidad de 'balas'(elementos) creados al lanzarse")] public int countCreated;
-    protected bool isActive = false;
 
     [Header("Content Info")]
     public TypeShowSkill typeShow;
@@ -24,8 +23,19 @@ public abstract class SkillManager : MonoBehaviour {
     [SerializeField] private float timeToDestroy;
 
     [Header("Prevent Damage")]
-    public bool preventDamage;
-    public int[] countPrevent = new int[5];
+    [Tooltip("Tildarlo significa que se prevendrá un % de daño por tipo de enemigo (fire, cold, etc)")] public bool preventDamagePerType;
+    [Tooltip("0 = base || 1 = energy || 2 = fire || 3 = cold || 4 = fortify")] public int[] countPrevent = new int[5];
+    [Tooltip("0 = base || 1 = energy || 2 = fire || 3 = cold || 4 = fortify")] public bool[] reflects = new bool[5];
+    [Space]
+    [Tooltip("Tildarlo significa que se prevendrá un % de daño por melee o distancia")] public bool preventDistanceDamage;
+    [Tooltip("0 = melee || 1 = distance")] public int[] preventDistance = new int[2];
+    [Tooltip("0 = melee || 1 = distance")] public bool[] reflectDistance = new bool[2];
+
+    [Header("Data State")]
+    public bool hasState;
+    public TypeState state;
+    public int countOfLoads;
+    public bool hasStatePerAttack;
 
     [Header("Content")]
     protected PlayerStats _player;
@@ -37,14 +47,23 @@ public abstract class SkillManager : MonoBehaviour {
     }
     private void Start()
     {
+        // APLICAR AFECCIÓN DE UN ESTADO EN LOS ATAQUES DEL PLAYER
+        if (hasStatePerAttack) _player.AddStatePerDamage(state, countOfLoads);
+
         LaunchedSkill();
     }
     private void Update()
     {
-        if (destroyType != TypeDestroySkill.time || !isActive) return;
+        // MANTENER LA SKILL EN LA POSICIÓN DEL PLAYER PARA "abovePlayer"
+        if (typeShow == TypeShowSkill.abovePlayer) transform.position = _player.transform.position;
 
+        if (destroyType != TypeDestroySkill.time) return;
         timeToDestroy -= Time.deltaTime;
-        if (timeToDestroy <= 0) DestroySkill();
+        if (timeToDestroy <= 0)
+        {
+            DestroySkill();
+            timeToDestroy = 1000;
+        }
     }
     protected void LaunchedSkill()
     {
@@ -53,30 +72,33 @@ public abstract class SkillManager : MonoBehaviour {
         else if (destroyType == TypeDestroySkill.receiveDamage) PlayerStats.takeDamage += DestroySkill;
 
         // VERIFICA SI PREVIENE ALGUN TIPO DE DAÑO Y LO APLICA AL PLAYER
-        if (preventDamage) _player.PreventDamage(countPrevent);
+        if (preventDamagePerType) { _player.PreventDamagePerType(countPrevent, reflects); }
+        if (preventDistanceDamage) { _player.PreventDamagePerDistance(preventDistance, reflectDistance); }
 
         // ACTIVAR LA HABILIDAD Y LANZARLA
-        isActive = true;
         TakeEffect();
     }
     protected abstract void TakeEffect();
     protected virtual void DestroySkill()
     {
         // VERIFICA SI PREVIENE ALGUN TIPO DE DAÑO Y LO REMUEVE DEL PLAYER
-        
-        if (preventDamage)
+        if (preventDamagePerType)
         {
             int[] count = { 0, 0, 0, 0, 0 };
-            _player.PreventDamage(count);
+            bool[] reflectFalse = { false, false, false, false, false };
+            _player.PreventDamagePerType(count, reflectFalse);
         }
 
         destroyElement?.Invoke();
 
-        Destroy(gameObject, 0.5f);
+        // QUITAR AFECCION DE ALGUN ESTADO EN EL ATAQUE DEL PLAYER
+        if (hasStatePerAttack) _player.AddStatePerDamage(TypeState.Null, 0);
+
+        Destroy(gameObject);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && isActive)
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             if(damage != 0) collision.GetComponent<EnemyManager>().TakeDamage(CalculateDamage());
 

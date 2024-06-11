@@ -35,4 +35,11 @@ public class SkillLaunched : SkillManager {
 
         return dir;
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            if(hasState) collision.GetComponent<EnemyManager>().AddState(state, countOfLoads);
+        }
+    }
 }

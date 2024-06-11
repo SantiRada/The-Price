@@ -113,6 +113,7 @@ MonoBehaviour:
   timeToDestroy: 3
   preventDamage: 1
   countPrevent: 0000000000000000640000000000000000000000
+  reflects: 0000010000
   modification:
   - 0
   - 0

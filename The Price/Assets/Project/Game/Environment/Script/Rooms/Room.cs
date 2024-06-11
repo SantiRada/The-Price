@@ -87,8 +87,7 @@ public class Room : MonoBehaviour {
             {
                 if (_livingEnemies[i].CanAttack != value)
                 {
-                    Debug.Log("Se inutilizaron los ataques de tipo: " + typeUseless.ToString());
-                    _livingEnemies[i].CanAttack = value;
+                    _livingEnemies[i].AddState(TypeState.Stun, 2);
                 }
             }
         }

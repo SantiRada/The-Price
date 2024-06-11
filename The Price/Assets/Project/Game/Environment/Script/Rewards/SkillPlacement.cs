@@ -276,18 +276,22 @@ public class SkillPlacement : MonoBehaviour {
     {
         SkillManager skill;
         bool canAdvance = true;
+        int value = Random.Range(0, _localPool.Count);
         do
         {
-            skill = _localPool[_index];
+            skill = _localPool[value];
             for (int i = 0; i < _player.skills.Count; i++)
             {
-                if (_player.skills[i] == _localPool[_index])
+                if (_player.skills[i] == skill)
                 {
                     canAdvance = false;
+                    break;
                 }
+
+                if (_player.skills[i] != skill && i >= (_player.skills.Count - 1)) canAdvance = true;
             }
 
-            if(!canAdvance) _index = Random.Range(0, _localPool.Count);
+            if(!canAdvance) value = Random.Range(0, _localPool.Count);
         } while (!canAdvance);
 
         return skill;

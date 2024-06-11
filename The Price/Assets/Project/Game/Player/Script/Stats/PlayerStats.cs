@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,11 +13,8 @@ public class PlayerStats : MonoBehaviour {
 
     [Header("More Stats")]
     private int countKillsInRoom;
-    private int countKillsTotal;
     private int countDamageInRoom;
-    private int countDamageTotal;
     private int countDamageReceivedInRoom;
-    private int countDamageReceivedTotal;
 
     [Header("Content UI")]
     public GameObject statsWindow;
@@ -35,6 +33,14 @@ public class PlayerStats : MonoBehaviour {
 
     [Header("Prevent Damage Per Type")]
     public int[] countPrevent = new int[5];
+    public bool[] whichReflect = new bool[5];
+    [Space]
+    public int[] preventDistance = new int[2];
+    public bool[] reflectDistance = new bool[2];
+
+    [Header("Data States")]
+    public TypeState state;
+    public int numberOfLoads;
 
     // EVENTOS
     public static event Action takeDamage;
@@ -85,12 +91,25 @@ public class PlayerStats : MonoBehaviour {
         }
     }
     // ---- SETTERS ---- //
-    public void PreventDamage(int[] count)
+    public void PreventDamagePerType(int[] count, bool[] reflects)
     {
         countPrevent = count;
+        whichReflect = reflects;
+    }
+    public void PreventDamagePerDistance(int[] count, bool[] reflects)
+    {
+        preventDistance = count;
+        reflectDistance = reflects;
+    }
+    public void AddStatePerDamage(TypeState st, int number)
+    {
+        state = st;
+        numberOfLoads = number;
     }
     public void SetValue(int type, float value, bool max = true)
     {
+        if (value == 0) return;
+
         if(value < 0) FloatTextManager.CreateText(transform.position, (TypeColor)type, value.ToString());
         else FloatTextManager.CreateText(transform.position, (TypeColor)type, ("+" + value.ToString()));
 
@@ -102,15 +121,10 @@ public class PlayerStats : MonoBehaviour {
     public void TakeDamage(GameObject obj, int dmg)
     {
         EnemyManager attacker = obj.GetComponent<EnemyManager>();
-        //PREVIENE ATAQUES DE UN TIPO ESPECÍFICO
-        bool dmgPrevent = false;
-        if (attacker.typeAttack == TypeEnemyAttack.Energy) { dmg -= (dmg * (countPrevent[1] / 100)); dmgPrevent = true; }
-        if (attacker.typeAttack == TypeEnemyAttack.Fire) { dmg -= (dmg * (countPrevent[2] / 100)); dmgPrevent = true; }
-        if (attacker.typeAttack == TypeEnemyAttack.Cold) { dmg -= (dmg * (countPrevent[3] / 100)); dmgPrevent = true; }
-        if (attacker.typeAttack == TypeEnemyAttack.Fortify) { dmg -= (dmg * (countPrevent[4] / 100)); dmgPrevent = true; }
+        // ---- REVISA SI DEBE REFLEJAR EL DAÑO AL ENEMIGO ---- //
 
-        if(!dmgPrevent) dmg -= (dmg * (countPrevent[0] / 100));
-
+        // ---- PREVIENE ATAQUES DE UN TIPO ESPECÍFICO ---- //
+        dmg = CalculateNewDamage(attacker, dmg);
         if (dmg <= 0) return;
 
         takeDamage?.Invoke();
@@ -204,5 +218,57 @@ public class PlayerStats : MonoBehaviour {
             textStats[i].text = _generalMaxStats[i].ToString() + "%";
         else if (i == 4 || i == 5)
             textStats[i].text = _generalMaxStats[i].ToString();
+    }
+    private int CalculateNewDamage(EnemyManager attacker, int dmg)
+    {
+        #region Verify Prevent & Reflect Damage Per Type
+        bool dmgPrevent = false;
+        if (attacker.typeAttack == TypeEnemyAttack.Energy)
+        {
+            if (whichReflect[1]) attacker.TakeDamage(dmg);
+            dmg -= (dmg * (countPrevent[1] / 100));
+            dmgPrevent = true;
+        }
+        if (attacker.typeAttack == TypeEnemyAttack.Fire)
+        {
+            if (whichReflect[2]) attacker.TakeDamage(dmg);
+            dmg -= (dmg * (countPrevent[2] / 100));
+            dmgPrevent = true;
+        }
+        if (attacker.typeAttack == TypeEnemyAttack.Cold)
+        {
+            if (whichReflect[3]) attacker.TakeDamage(dmg);
+            dmg -= (dmg * (countPrevent[3] / 100));
+            dmgPrevent = true;
+        }
+        if (attacker.typeAttack == TypeEnemyAttack.Fortify)
+        {
+            if (whichReflect[4]) attacker.TakeDamage(dmg);
+            dmg -= (dmg * (countPrevent[4] / 100));
+            dmgPrevent = true;
+        }
+        if (!dmgPrevent)
+        {
+            if (whichReflect[0]) attacker.TakeDamage(dmg);
+            dmg -= (dmg * (countPrevent[0] / 100));
+        }
+        #endregion
+
+        #region Verify Prevent & Reflect Damage Per Distance
+        // VERIFICACIÓN POR MELEE
+        if (!attacker.distanceAttack && preventDistance[0] != 0)
+        {
+            if (reflectDistance[0]) attacker.TakeDamage(dmg);
+            dmg -= (dmg * (preventDistance[0] / 100));
+        }
+        // VERIFICACIÓN POR DISTANCIA
+        if(attacker.distanceAttack && preventDistance[1] != 0)
+        {
+            if (reflectDistance[1]) attacker.TakeDamage(dmg);
+            dmg -= (dmg * (preventDistance[1] / 100));
+        }
+        #endregion
+
+        return dmg;
     }
 }

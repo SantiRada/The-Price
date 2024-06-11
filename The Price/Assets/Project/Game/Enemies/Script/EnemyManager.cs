@@ -9,6 +9,7 @@ public abstract class EnemyManager : MonoBehaviour {
     [Range(0, 100)] public int _probabilityOfAppearing;
 
     [Header("Attack Enemy")]
+    public bool distanceAttack;
     public TypeEnemyAttack typeAttack;
     protected bool _canAttack { get; set; }
 
@@ -47,7 +48,12 @@ public abstract class EnemyManager : MonoBehaviour {
             return;
         }
     }
-    public void TakeDamage(int dmg) { health -= dmg; }
+    public void TakeDamage(int dmg)
+    {
+        health -= dmg;
+
+        FloatTextManager.CreateText(transform.position, TypeColor.Damage, "-" + dmg.ToString());
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && Pause.state == State.Game) Die();
@@ -71,6 +77,18 @@ public abstract class EnemyManager : MonoBehaviour {
         yield return new WaitForSeconds(_delayToJump);
         canJump = true;
     }
+    // ---- MODIFICATORS ---- //
+    public void AddState(TypeState state, int numberOfLoads)
+    {
+        if(state == TypeState.Stun && numberOfLoads == 2)
+        {
+            if (Weight > 1) numberOfLoads = 1;
+        }
+
+        Debug.Log("Agregado el Affected State");
+        AffectedState st = gameObject.AddComponent<AffectedState>();
+        st.CreateState(state, numberOfLoads);
+    }
     // ---- SETTERS && GETTERS ---- //
     public Room RoomCurrent { set { _room = value; } }
     public int ProbabilityOfAppearing { get { return _probabilityOfAppearing; } }
@@ -78,7 +96,7 @@ public abstract class EnemyManager : MonoBehaviour {
     public int HowFarDoJump { get { return _howFarDoJump; } }
     // ---- SETTERS && GETTERS PER STATS ---- //
     public int Weight { get { return _weight; } }
-    public float Speed { get { return _speed; } }
+    public float Speed { get { return _speed; } set { _speed = value; } }
     public int Health { get { return health; } }
     public int Shield { get { return shield; } set { shield = value; } }
     // ---- SETTERS && GETTERS PER BOOLEAN ---- //
