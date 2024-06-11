@@ -1,15 +1,21 @@
 using System.Collections;
 using UnityEngine;
 
+public enum TypeEnemyAttack { Base, Energy, Fire, Cold, Fortify }
 public abstract class EnemyManager : MonoBehaviour {
 
     [Header("Initial Values")]
-    [SerializeField] private int _weight;
-    [SerializeField, Range(0, 100)] private int _probabilityOfAppearing;
+    public int _weight;
+    [Range(0, 100)] public int _probabilityOfAppearing;
+
+    [Header("Attack Enemy")]
+    public TypeEnemyAttack typeAttack;
+    protected bool _canAttack { get; set; }
 
     [Header("Stats")]
-    [SerializeField, Tooltip("Valor Promedio: 1.5"), Range(0f, 6f)] private float _speed;
     [SerializeField] private int health;
+    [SerializeField] private int shield;
+    [SerializeField, Tooltip("Valor Promedio: 1.5"), Range(0f, 6f)] private float _speed;
     private bool _canMove { get; set; }
 
     [Header("Jump Data")]
@@ -54,8 +60,9 @@ public abstract class EnemyManager : MonoBehaviour {
     public IEnumerator DelayToMovement()
     {
         CanMove = false;
-        yield return new WaitForSeconds(1.75f);
+        yield return new WaitForSeconds(1.5f);
         CanMove = true;
+        CanAttack = true;
     }
     public IEnumerator DelayToJump()
     {
@@ -66,10 +73,15 @@ public abstract class EnemyManager : MonoBehaviour {
     }
     // ---- SETTERS && GETTERS ---- //
     public Room RoomCurrent { set { _room = value; } }
-    public bool CanMove { get { return _canMove; } set { _canMove = value; } }
-    public int Weight { get { return _weight; } }
     public int ProbabilityOfAppearing { get { return _probabilityOfAppearing; } }
-    public float Speed { get { return _speed; } }
     public int DistanceToJump { get { return _distanceToJump; } }
     public int HowFarDoJump { get { return _howFarDoJump; } }
+    // ---- SETTERS && GETTERS PER STATS ---- //
+    public int Weight { get { return _weight; } }
+    public float Speed { get { return _speed; } }
+    public int Health { get { return health; } }
+    public int Shield { get { return shield; } set { shield = value; } }
+    // ---- SETTERS && GETTERS PER BOOLEAN ---- //
+    public bool CanMove { get { return _canMove; } set { _canMove = value; } }
+    public bool CanAttack { get { return _canAttack; } set { _canAttack = value; } }
 }

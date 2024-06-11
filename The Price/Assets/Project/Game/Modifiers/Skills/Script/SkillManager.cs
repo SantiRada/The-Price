@@ -1,10 +1,9 @@
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 
 public enum TypeShowSkill { abovePlayer, launched, created }
 public enum LoadTypeSkill { concentration, damage, kills, receiveDamage }
 public enum TypeDestroySkill { time, receiveDamage, finishRoom, collision }
-public enum TypeEnemyAttack { Base, Energy, Fire, Cold, Fortify }
 public abstract class SkillManager : MonoBehaviour {
 
     [Header("Data Skill")]
@@ -30,12 +29,16 @@ public abstract class SkillManager : MonoBehaviour {
 
     [Header("Content")]
     protected PlayerStats _player;
+    [HideInInspector] public event Action destroyElement;
 
     private void Awake()
     {
         _player = FindAnyObjectByType<PlayerStats>();
     }
-    private void Start() { LaunchedSkill(); }
+    private void Start()
+    {
+        LaunchedSkill();
+    }
     private void Update()
     {
         if (destroyType != TypeDestroySkill.time || !isActive) return;
@@ -63,9 +66,11 @@ public abstract class SkillManager : MonoBehaviour {
         
         if (preventDamage)
         {
-            int[] count = { 0, 0, 0, 0 };
+            int[] count = { 0, 0, 0, 0, 0 };
             _player.PreventDamage(count);
         }
+
+        destroyElement?.Invoke();
 
         Destroy(gameObject, 0.5f);
     }

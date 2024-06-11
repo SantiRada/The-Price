@@ -6280,10 +6280,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _skillPool:
-  - {fileID: 4426296261177806070, guid: d1ce06dd49c31954f8590cd8e4a59b27, type: 3}
-  - {fileID: 4426296261177806070, guid: d1ce06dd49c31954f8590cd8e4a59b27, type: 3}
-  - {fileID: 4426296261177806070, guid: d1ce06dd49c31954f8590cd8e4a59b27, type: 3}
-  - {fileID: 4426296261177806070, guid: d1ce06dd49c31954f8590cd8e4a59b27, type: 3}
+  - {fileID: 6699857804643283947, guid: 569a2b4cb6304c845be021037ec84768, type: 3}
+  - {fileID: 6699857804643283947, guid: 569a2b4cb6304c845be021037ec84768, type: 3}
+  - {fileID: 6699857804643283947, guid: 569a2b4cb6304c845be021037ec84768, type: 3}
   _objForScene: {fileID: 4533810831724761770, guid: 7494aa9185e9a27419d8af6c5d0a37e9, type: 3}
   _objSlot: {fileID: 7241741281065931152, guid: b06a352313c11a84582ac121e67d2f3b, type: 3}
   _distanceToMove: 200

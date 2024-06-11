@@ -104,6 +104,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weight: 1
   _probabilityOfAppearing: 50
+  typeAttack: 1
+  health: 50
+  shield: 50
   _speed: 1
   canJump: 1
   _distanceToJump: 4
@@ -180,8 +183,8 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &-6692062339687432684
 MonoBehaviour:

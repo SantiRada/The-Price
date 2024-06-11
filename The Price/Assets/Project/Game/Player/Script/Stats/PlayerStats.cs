@@ -99,14 +99,15 @@ public class PlayerStats : MonoBehaviour {
 
         ChangeValueInUI(type);
     }
-    public void TakeDamage(int dmg, TypeEnemyAttack attacker)
+    public void TakeDamage(GameObject obj, int dmg)
     {
+        EnemyManager attacker = obj.GetComponent<EnemyManager>();
         //PREVIENE ATAQUES DE UN TIPO ESPECÍFICO
         bool dmgPrevent = false;
-        if (attacker == TypeEnemyAttack.Energy) { dmg -= (dmg * (countPrevent[1] / 100)); dmgPrevent = true; }
-        if (attacker == TypeEnemyAttack.Fire) { dmg -= (dmg * (countPrevent[2] / 100)); dmgPrevent = true; }
-        if (attacker == TypeEnemyAttack.Cold) { dmg -= (dmg * (countPrevent[3] / 100)); dmgPrevent = true; }
-        if (attacker == TypeEnemyAttack.Fortify) { dmg -= (dmg * (countPrevent[4] / 100)); dmgPrevent = true; }
+        if (attacker.typeAttack == TypeEnemyAttack.Energy) { dmg -= (dmg * (countPrevent[1] / 100)); dmgPrevent = true; }
+        if (attacker.typeAttack == TypeEnemyAttack.Fire) { dmg -= (dmg * (countPrevent[2] / 100)); dmgPrevent = true; }
+        if (attacker.typeAttack == TypeEnemyAttack.Cold) { dmg -= (dmg * (countPrevent[3] / 100)); dmgPrevent = true; }
+        if (attacker.typeAttack == TypeEnemyAttack.Fortify) { dmg -= (dmg * (countPrevent[4] / 100)); dmgPrevent = true; }
 
         if(!dmgPrevent) dmg -= (dmg * (countPrevent[0] / 100));
 

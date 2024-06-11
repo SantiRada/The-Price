@@ -79,4 +79,25 @@ public class Room : MonoBehaviour {
             }
         }
     }
+    public void SetUselessEnemies(TypeEnemyAttack typeUseless, bool value = false)
+    {
+        for(int i = 0; i < _livingEnemies.Count; i++)
+        {
+            if (_livingEnemies[i].typeAttack == typeUseless)
+            {
+                if (_livingEnemies[i].CanAttack != value)
+                {
+                    Debug.Log("Se inutilizaron los ataques de tipo: " + typeUseless.ToString());
+                    _livingEnemies[i].CanAttack = value;
+                }
+            }
+        }
+    }
+    public void SetShieldToNull()
+    {
+        for(int i = 0; i < _livingEnemies.Count; i++)
+        {
+            _livingEnemies[i].Shield = 0;
+        }
+    }
 }

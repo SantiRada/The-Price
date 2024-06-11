@@ -89,6 +89,11 @@ public class RoomManager : MonoBehaviour {
         // GUARDAR VIDA DEL JUGADOR AL INICIO DE LA SALA
         _lifePlayer = (int)_playerStats.GetterStats(0);
 
+        // VERIFICA OBJETOS EN ESCENA PARA ELIMINARLOS ANTES DE LA CREACIÓN DE UNA NUEVA SALA
+        SkillManager[] skills = FindObjectsByType<SkillManager>(FindObjectsSortMode.None);
+        if(skills.Length > 0) { for(int i = 0; i < skills.Length; i++) { Destroy(skills[i].gameObject); } }
+        // ----------------------------------------------------------------------------------
+
         _countRoomsComplete++;
         int rnd = UnityEngine.Random.Range(0, _roomPool.Length);
 
