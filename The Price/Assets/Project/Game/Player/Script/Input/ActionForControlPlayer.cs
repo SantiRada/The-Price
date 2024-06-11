@@ -18,6 +18,8 @@ public class ActionForControlPlayer : MonoBehaviour {
     public static event Action skillTwo;
     public static event Action skillFragments;
 
+    public static bool detectClic = true;
+
     private void Awake()
     {
         _stats = GetComponent<PlayerStats>();
@@ -27,7 +29,7 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     private void Update()
     {
-        if (Pause.Comprobation(State.Game)) return;
+        if (!detectClic || Pause.Comprobation(State.Game)) return;
 
         _movement.SetDirection(_playerInput.actions["Move"].ReadValue<Vector2>());
 
@@ -42,9 +44,12 @@ public class ActionForControlPlayer : MonoBehaviour {
             PlayerActionStates.InStats = false;
         }
     }
+    public static void ChangeDetectClic(bool value) { detectClic = value; }
     // ----------------------------- //
     public void Dash()
     {
+        if (!detectClic) return;
+
         if (Pause.Comprobation(State.Game)) return;
 
         if (_movement.GetCanDashing() && _movement.GetCanMove())
@@ -55,6 +60,8 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void Attack(InputAction.CallbackContext context)
     {
+        if (!detectClic) return;
+
         if(context.phase == InputActionPhase.Started)
         {
             PlayerActionStates.IsAttacking = true;
@@ -66,6 +73,8 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void Use(InputAction.CallbackContext context)
     {
+        if (!detectClic) return;
+
         if (context.phase == InputActionPhase.Started)
         {
             PlayerActionStates.IsUse = true;
@@ -77,6 +86,8 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void SkillOne(InputAction.CallbackContext context)
     {
+        if (!detectClic) return;
+
         if (context.phase == InputActionPhase.Started) PlayerActionStates.IsSkillOne = true;
 
         if (context.phase == InputActionPhase.Performed) skillOne?.Invoke();
@@ -85,6 +96,8 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void SkillTwo(InputAction.CallbackContext context)
     {
+        if (!detectClic) return;
+
         if (context.phase == InputActionPhase.Started) PlayerActionStates.IsSkillTwo = true;
 
         if (context.phase == InputActionPhase.Performed) skillTwo?.Invoke();
@@ -93,6 +106,8 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void SkillFragments(InputAction.CallbackContext context)
     {
+        if (!detectClic) return;
+
         if (context.phase == InputActionPhase.Started) PlayerActionStates.IsSkillFragments = true;
 
         if (context.phase == InputActionPhase.Performed) skillFragments?.Invoke();
@@ -101,6 +116,8 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void StaticAim(InputAction.CallbackContext context)
     {
+        if (!detectClic) return;
+
         if (Pause.Comprobation(State.Game)) return;
 
         if (context.phase == InputActionPhase.Started)
@@ -114,6 +131,8 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void Stats(InputAction.CallbackContext context)
     {
+        if (!detectClic) return;
+
         if (context.phase == InputActionPhase.Performed)
         {
             PlayerActionStates.InStats = true;
@@ -122,7 +141,9 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void PauseAction(InputAction.CallbackContext context)
     {
-        if(context.phase == InputActionPhase.Performed)
+        if (!detectClic) return;
+
+        if (context.phase == InputActionPhase.Performed)
         {
             if (Pause.state == State.Game) Pause.StateChange = State.Interface;
 
@@ -131,6 +152,8 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     private void AimWithRightStick()
     {
+        if (!detectClic) return;
+
         if (Pause.Comprobation(State.Game)) return;
 
         _crosshair.SetAimDirection(_playerInput.actions["Aim"].ReadValue<Vector2>());

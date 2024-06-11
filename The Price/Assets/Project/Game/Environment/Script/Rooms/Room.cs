@@ -69,6 +69,8 @@ public class Room : MonoBehaviour {
     // ---- SETTERS && GETTERS ---- //
     public void SetLivingEnemies(EnemyManager enemy)
     {
+        _roomManager.AddKillsToPlayer();
+
         Vector3 posEnemy = enemy.transform.position;
         if (_livingEnemies.Remove(enemy))
         {

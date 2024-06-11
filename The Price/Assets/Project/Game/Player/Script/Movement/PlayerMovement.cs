@@ -20,12 +20,10 @@ public class PlayerMovement : MonoBehaviour {
 
     [Header("Element")]
     private Rigidbody2D _rigidbody2D;
-    private TrailRenderer _trailRenderer;
     private SpriteRenderer _spriteRenderer;
 
     private void Awake()
     {
-        _trailRenderer = GetComponent<TrailRenderer>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -58,9 +56,7 @@ public class PlayerMovement : MonoBehaviour {
 
         _rigidbody2D.velocity = new Vector2(_moveInput.x, _moveInput.y).normalized * _dashingPower;
 
-        _trailRenderer.emitting = true;
         yield return new WaitForSeconds(_dashingTime);
-        _trailRenderer.emitting = false;
         isDashing = false;
         yield return new WaitForSeconds(_dashingCooldown);
         _canDash = true;

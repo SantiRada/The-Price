@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,9 +11,9 @@ public class PlayerStats : MonoBehaviour {
     private float[] _generalStats;
 
     [Header("More Stats")]
-    private int countKillsInRoom;
-    private int countDamageInRoom;
-    private int countDamageReceivedInRoom;
+    [HideInInspector] public int countKillsInRoom;
+    [HideInInspector] public int countDamageInRoom;
+    [HideInInspector] public int countDamageReceivedInRoom;
 
     [Header("Content UI")]
     public GameObject statsWindow;

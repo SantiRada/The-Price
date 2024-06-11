@@ -1,13 +1,14 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewObject", menuName = "Object/PermanentObject")]
+[CreateAssetMenu(fileName = "NewObject", menuName = "Object/Permanent Object")]
 public class PermanentObject : Object {
 
     public override void Use()
     {
-        if (!canGet) return;
+        if (!canActive) return;
 
-        canGet = false;
+        if (hasCooling) canActive = false;
+
         bool canUse = false;
         for(int i = 0; i < statsModifiable.Length; i++)
         {
@@ -31,4 +32,5 @@ public class PermanentObject : Object {
 
         if (!canUse) Debug.Log("No se modificó ninguna estadística con este objeto...");
     }
+    public override void CancelContent() { Debug.Log("Este objeto no tiene cancelamiento."); }
 }

@@ -10,6 +10,7 @@ public class RoomManager : MonoBehaviour {
     [SerializeField] private Room[] _roomPool;
     [SerializeField] private TypeRoom[] _typeRooms;
     private int _countRoomsComplete = -1;
+    private bool isPerfectRoom = false;
     public static event Action finishRoom;
     public static event Action perfectRoom;
 
@@ -37,14 +38,11 @@ public class RoomManager : MonoBehaviour {
 
     [Header("Player Content")]
     private PlayerMovement _player;
-    private PlayerStats _playerStats;
     private TriggeringObject _triggering;
-    private int _lifePlayer;
 
     private void Awake()
     {
         _player = FindAnyObjectByType<PlayerMovement>();
-        _playerStats = _player.GetComponent<PlayerStats>();
         _triggering = _player.GetComponent<TriggeringObject>();
         _walkableMap = FindAnyObjectByType<WalkableMapGenerator>();
     }
@@ -59,6 +57,7 @@ public class RoomManager : MonoBehaviour {
         _loadingSector.SetBool("inLoading", false);
         _textForPerfectRoom.SetActive(false);
         _advanceDataRoom.SetActive(false);
+        PlayerStats.takeDamage += () => isPerfectRoom = false;
 
         // Create Weight For the Enemies
         for (int i = 0; i < _enemyPool.Count; i++)
@@ -84,15 +83,20 @@ public class RoomManager : MonoBehaviour {
         _loadingSector.SetBool("inLoading", false);
         Pause.SetPause(false);
     }
-    private void CreateRoom()
+    private void ResetValuesToNewRoom()
     {
-        // GUARDAR VIDA DEL JUGADOR AL INICIO DE LA SALA
-        _lifePlayer = (int)_playerStats.GetterStats(0);
-
         // VERIFICA OBJETOS EN ESCENA PARA ELIMINARLOS ANTES DE LA CREACIÓN DE UNA NUEVA SALA
         SkillManager[] skills = FindObjectsByType<SkillManager>(FindObjectsSortMode.None);
-        if(skills.Length > 0) { for(int i = 0; i < skills.Length; i++) { Destroy(skills[i].gameObject); } }
-        // ----------------------------------------------------------------------------------
+        if (skills.Length > 0) { for (int i = 0; i < skills.Length; i++) { Destroy(skills[i].gameObject); } }
+
+        ObjectSpread[] spread = FindObjectsByType<ObjectSpread>(FindObjectsSortMode.None);
+        if (spread.Length > 0) { for (int i = 0; i < spread.Length; i++) { Destroy(spread[i].gameObject); } }
+
+        isPerfectRoom = true;
+    }
+    private void CreateRoom()
+    {
+        ResetValuesToNewRoom();
 
         _countRoomsComplete++;
         int rnd = UnityEngine.Random.Range(0, _roomPool.Length);
@@ -100,7 +104,6 @@ public class RoomManager : MonoBehaviour {
         currentRoom = Instantiate(_roomPool[rnd], Vector3.zero, Quaternion.identity, transform);
 
         _player.transform.position = currentRoom.spawnPlayer.transform.position;
-        _triggering.SetUseNew();
 
         // Rezising, Reposition & Create
         _walkableMap.SizeMap = currentRoom.sizeMap;
@@ -173,7 +176,7 @@ public class RoomManager : MonoBehaviour {
         finishRoom?.Invoke();
 
         // COMPROBAR SI FUE UNA SALA PERFECTA -------------- //
-        if((int)_playerStats.GetterStats(0) == _lifePlayer)
+        if(isPerfectRoom)
         {
             perfectRoom?.Invoke();
             _textForPerfectRoom.SetActive(true);
@@ -194,4 +197,8 @@ public class RoomManager : MonoBehaviour {
     }
     public List<EnemyManager> EnemyPool { get { return _enemyPool; } }
     public List<int> EnemyWeights { get { return _enemyWeights; } }
+    public void AddKillsToPlayer()
+    {
+        _triggering.AddKills();
+    }
 }

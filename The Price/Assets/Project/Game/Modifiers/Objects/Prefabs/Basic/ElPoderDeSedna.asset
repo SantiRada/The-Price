@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02efc729f7d238b4bbe60871b5db28e2, type: 3}
-  m_Name: LaLuzDeMalina
+  m_Script: {fileID: 11500000, guid: 1b9e414e7a47dd54e980dd2afc08faa5, type: 3}
+  m_Name: ElPoderDeSedna
   m_EditorClassIdentifier: 
   icon: {fileID: -8386645779307496254, guid: 439074d73354ba74b94257f3c9b2f1d8, type: 3}
-  itemName: 4
-  description: 5
+  itemName: 2
+  description: 3
   typeObject: 0
   trigger: 0
-  typeCanceled: 0
+  typeCanceled: 1
   hasCooling: 0
   timerCooling: 0
   canActive: 1
@@ -27,7 +27,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  - 0
+  - 5
   - 0
   - 0
   - 0
@@ -35,14 +35,16 @@ MonoBehaviour:
   - 0
   statsMaxModifiable:
   - 0
+  - 0
+  - 0
+  - 0
+  - 0
   - 5
   - 0
   - 0
   - 0
   - 0
   - 0
-  - 0
-  - 0
-  - 0
-  - 0
   playerStats: {fileID: 0}
+  isActive: 0
+  timer: 3
