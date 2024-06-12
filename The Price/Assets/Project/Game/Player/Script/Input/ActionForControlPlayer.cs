@@ -8,6 +8,7 @@ public class ActionForControlPlayer : MonoBehaviour {
     private CrosshairData _crosshair;
     private PlayerMovement _movement;
     private PlayerStats _stats;
+    private WeaponSystem _weapon;
     private PlayerInput _playerInput;
 
     [Header("Crosshair")]
@@ -27,6 +28,7 @@ public class ActionForControlPlayer : MonoBehaviour {
         _movement = GetComponent<PlayerMovement>();
         _crosshair = GetComponentInChildren<CrosshairData>();
     }
+    private void Start() { _weapon = GetComponentInChildren<WeaponSystem>(); }
     private void Update()
     {
         if (!detectClic || Pause.Comprobation(State.Game)) return;
@@ -65,6 +67,11 @@ public class ActionForControlPlayer : MonoBehaviour {
         if(context.phase == InputActionPhase.Started)
         {
             PlayerActionStates.IsAttacking = true;
+        }
+        if(context.phase == InputActionPhase.Performed)
+        {
+            if (_weapon != null) _weapon.Attack();
+            else Debug.Log("El PJ no tiene Arma");
         }
         if(context.phase == InputActionPhase.Canceled)
         {

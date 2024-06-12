@@ -5988,7 +5988,7 @@ MonoBehaviour:
   - {fileID: 597184981}
   - {fileID: 1741108591}
   - {fileID: 1123320429}
-  selectedColor: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 1}
+  selectedColor: {r: 0.15294118, g: 0.15294118, b: 0.15294118, a: 1}
   unselectedColor: {r: 0.08627451, g: 0.08627451, b: 0.08627451, a: 1}
   contentUI:
   - {fileID: 1820707355}
@@ -18251,10 +18251,6 @@ PrefabInstance:
       propertyPath: 'textStats.Array.data[9]'
       value: 
       objectReference: {fileID: 1762602172}
-    - target: {fileID: 7510341761890864215, guid: 705b11be53fdbde40be5fe20c87e1a6c, type: 3}
-      propertyPath: whichReflect.Array.size
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 7510341761890864215, guid: 705b11be53fdbde40be5fe20c87e1a6c, type: 3}
       propertyPath: '_imgObject.Array.data[0]'
       value: 

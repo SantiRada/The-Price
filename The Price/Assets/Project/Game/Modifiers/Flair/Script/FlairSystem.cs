@@ -134,6 +134,14 @@ public class FlairSystem : MonoBehaviour {
         canMove = false;
         Debug.Log("Se seleccionó: " + types[index].ToString() + " + " + amountPerType[index] + "%");
 
+        // NUEVOS VALORES BASE
+        _player.SetValue((int)types[index], amountPerType[index], false, false);
+        _player.SetValue((int)types[index], amountPerType[index], true);
+
+        // NUEVOS VALORES AFECTADOS
+        _player.SetValue((int)typesAffected[index], -(int)(amountPerType[index] / 2), false, false);
+        _player.SetValue((int)typesAffected[index], -(int)(amountPerType[index] / 2), true);
+
         yield return new WaitForSeconds(0.25f);
 
         ResetValues();
@@ -173,7 +181,7 @@ public class FlairSystem : MonoBehaviour {
         {
             flair = (TypeFlair)Random.Range(0, 11);
 
-            if (flair != types[i]) canUse = true;
+            if (flair != types[i] && _player.GetterStats((int)flair, true) > amountPerType[i]) canUse = true;
         } while (!canUse);
 
         return flair;
@@ -207,9 +215,10 @@ public class FlairSystem : MonoBehaviour {
         int value = Random.Range(0, 100);
         int final;
 
-        if (value <= 60) final = 4;
-        else if (value > 60 && value < 90) final = 5;
-        else final = 10;
+        if (value <= 60) final = 5;
+        else if (value > 60 && value < 90) final = 10;
+        else if (value >= 90 && value < 97) final = 15;
+        else final = 20;
 
         return final;
     }

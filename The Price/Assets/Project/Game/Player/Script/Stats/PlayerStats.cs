@@ -25,21 +25,25 @@ public class PlayerStats : MonoBehaviour {
     public TextMeshProUGUI[] _nameSkills;
     public TextMeshProUGUI[] _descSkills;
 
+    [Header("Weapons")]
+    public WeaponSystem weapon;
+    public GameObject weaponParent;
+
     [Header("Player Content")]
-    public List<SkillManager> skills = new List<SkillManager>();
-    public List<Object> objects = new List<Object>();
+    [HideInInspector] public List<SkillManager> skills = new List<SkillManager>();
+    [HideInInspector] public List<Object> objects = new List<Object>();
     private TriggeringObject triggering;
 
     [Header("Prevent Damage Per Type")]
-    public int[] countPrevent = new int[5];
-    public bool[] whichReflect = new bool[5];
+    [HideInInspector] public int[] countPrevent = new int[5];
+    [HideInInspector] public bool[] whichReflect = new bool[5];
     [Space]
-    public int[] preventDistance = new int[2];
-    public bool[] reflectDistance = new bool[2];
+    [HideInInspector] public int[] preventDistance = new int[2];
+    [HideInInspector] public bool[] reflectDistance = new bool[2];
 
     [Header("Data States")]
-    public TypeState state;
-    public int numberOfLoads;
+    [HideInInspector] public TypeState state;
+    [HideInInspector] public int numberOfLoads;
 
     // EVENTOS
     public static event Action takeDamage;
@@ -57,6 +61,8 @@ public class PlayerStats : MonoBehaviour {
         {
             _generalStats[i] = _generalMaxStats[i];
         }
+
+        if (weapon != null) InitialWeapon();
         #endregion
         // SETTEAR VALORES INICIALES PARA LA UI -------- //
         SetChangeSkillsInUI();
@@ -105,12 +111,15 @@ public class PlayerStats : MonoBehaviour {
         state = st;
         numberOfLoads = number;
     }
-    public void SetValue(int type, float value, bool max = true)
+    public void SetValue(int type, float value, bool max = true, bool canShow = true)
     {
         if (value == 0) return;
 
-        if(value < 0) FloatTextManager.CreateText(transform.position, (TypeColor)type, value.ToString());
-        else FloatTextManager.CreateText(transform.position, (TypeColor)type, ("+" + value.ToString()));
+        if (canShow)
+        {
+            if (value < 0) FloatTextManager.CreateText(transform.position, (TypeColor)type, value.ToString());
+            else FloatTextManager.CreateText(transform.position, (TypeColor)type, ("+" + value.ToString()));
+        }
 
         if (max) _generalMaxStats[type] += value;
         else _generalStats[type] += value;
@@ -269,5 +278,9 @@ public class PlayerStats : MonoBehaviour {
         #endregion
 
         return dmg;
+    }
+    private void InitialWeapon()
+    {
+        Instantiate(weapon.gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform);
     }
 }

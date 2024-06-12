@@ -47,6 +47,8 @@ public abstract class EnemyManager : MonoBehaviour {
             _rb2d.velocity = Vector2.zero;
             return;
         }
+
+        if(health <= 0) Die();
     }
     public void TakeDamage(int dmg)
     {
@@ -54,10 +56,12 @@ public abstract class EnemyManager : MonoBehaviour {
 
         FloatTextManager.CreateText(transform.position, TypeColor.Damage, "-" + dmg.ToString());
     }
+    /////////////////////////////////////////////////////////////////////////// PROVISIONAL ///////////////////////////
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && Pause.state == State.Game) Die();
     }
+    /////////////////////////////////////////////////////////////////////////// PROVISIONAL ///////////////////////////
     public void Die()
     {
         _room?.SetLivingEnemies(this);

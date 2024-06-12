@@ -69,12 +69,14 @@ public class CrosshairData : MonoBehaviour {
         if (collision.tag == "Enemy") _posEnemy = Vector2.zero;
     }
     // ---- GETTERS ---- //
-    public Vector2 GetPosEnemy()
-    {
-        return _posEnemy;
-    }
+    public Vector2 GetPosEnemy() { return _posEnemy; }
     public void SetAimDirection(Vector2 direction)
     {
         _directionBase = direction;
     }
+    public Vector2 GetCurrentAimDirection()
+    {
+        return _direction;
+    }
+
 }

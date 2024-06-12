@@ -113,8 +113,8 @@ GameObject:
   - component: {fileID: 6686633407270618136}
   - component: {fileID: 8385875373981250499}
   - component: {fileID: 7862890231065333886}
-  - component: {fileID: 7510341761890864215}
   - component: {fileID: 1324836505429316149}
+  - component: {fileID: 7510341761890864215}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -601,6 +601,18 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1324836505429316149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4722690422420631978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dc91dc7736e8fa4180063a22158eb20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7510341761890864215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -625,6 +637,9 @@ MonoBehaviour:
   - 7
   - 0
   - 80
+  countKillsInRoom: 0
+  countDamageInRoom: 0
+  countDamageReceivedInRoom: 0
   statsWindow: {fileID: 0}
   textStats:
   - {fileID: 0}
@@ -665,20 +680,16 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  weapon: {fileID: 8470884268634836610, guid: 89852514b8bbfe14897cf1e1819129fa, type: 3}
+  weaponParent: {fileID: 7088614093564551266}
   skills: []
   objects: []
---- !u!114 &1324836505429316149
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4722690422420631978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dc91dc7736e8fa4180063a22158eb20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  countPrevent: 0000000000000000000000000000000000000000
+  whichReflect: 0000000000
+  preventDistance: 0000000000000000
+  reflectDistance: 0000
+  state: 0
+  numberOfLoads: 0
 --- !u!1 &7088614093564551266
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,7 +702,7 @@ GameObject:
   - component: {fileID: 5577573603885388122}
   m_Layer: 0
   m_Name: Crosshair
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
