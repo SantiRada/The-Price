@@ -92,19 +92,15 @@ public class DialogueManager : MonoBehaviour {
             _ui.hideDialogue();
 
             // PARA MOSTRAR EL SELECTOR DE HABILIDADES
-            if (_showSkills)
-            {
-                SkillPlacement.StartSkillsSelector();
+            if (_showSkills) SkillPlacement.StartSkillsSelector();
 
-                Destroy(gameObject, 1f);
-            }
             // PARA MOSTRAR EL SELECTOR DE OBJETOS
-            if (_showObject)
-            {
-                ObjectPlacement.StartObjectSelector();
+            if (_showObject) ObjectPlacement.StartObjectSelector();
 
-                Destroy(gameObject, 1f);
-            }
+            // PARA MOSTRAR EL SELECTOR DE INSTINTOS
+            if (_showAptitud) FlairSystem.StartFlairSelector();
+            
+            Destroy(gameObject, 0.65f);
         }
     }
 }

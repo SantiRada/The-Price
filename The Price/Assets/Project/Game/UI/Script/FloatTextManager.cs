@@ -25,6 +25,7 @@ public class FloatTextManager : MonoBehaviour {
         _transform = transform;
         colors = colorsPool;
     }
+    public static Color GetColor(TypeFlair type) { return colors[(int)type]; }
     public static void CreateText(Vector2 position, TypeColor type, string content, bool isCrazy = false)
     {
         TextMeshProUGUI text;

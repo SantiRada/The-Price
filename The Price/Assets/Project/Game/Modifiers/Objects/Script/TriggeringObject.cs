@@ -23,15 +23,21 @@ public class TriggeringObject : MonoBehaviour {
     private void Update()
     {
         // VERIFICA EL TIMER DE LOS OBJETOS QUE FUNCIONAN "PERTIME"
-        if(_objectsPerTime.Count != 0 && _objectsPerTime != null)
+        if(_objectsPerTime != null)
         {
-            for (int i = 0; i < _objectsPerTime.Count; i++) { if(_objectsPerTime[i].isActive) _objectsPerTime[i].Timer(); }
+            if(_objectsPerTime.Count != 0)
+            {
+                for (int i = 0; i < _objectsPerTime.Count; i++) { if (_objectsPerTime[i].isActive) _objectsPerTime[i].Timer(); }
+            }
         }
 
         // VERIFICA EL ENFRIAMIENTO DE LOS OBJETOS QUE LO TIENEN
-        if(_objects.Count != 0 && _objects != null)
+        if(_objects != null)
         {
-            for (int i = 0; i < _objects.Count; i++) { if (!_objects[i].canActive && _objects[i].hasCooling) { _objects[i].Cooling(); } }
+            if(_objects.Count != 0)
+            {
+                for (int i = 0; i < _objects.Count; i++) { if (!_objects[i].canActive && _objects[i].hasCooling) { _objects[i].Cooling(); } }
+            }
         }
     }
     public void SetObjects(List<Object> obj)

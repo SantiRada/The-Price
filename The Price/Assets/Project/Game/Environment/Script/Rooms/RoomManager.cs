@@ -31,6 +31,7 @@ public class RoomManager : MonoBehaviour {
     [Header("Reward Data")]
     [SerializeField] private GameObject _rewardSkill;
     [SerializeField] private GameObject _rewardObject;
+    [SerializeField] private GameObject _rewardFlair;
 
     [Header("Private Content")]
     private WalkableMapGenerator _walkableMap;
@@ -187,6 +188,7 @@ public class RoomManager : MonoBehaviour {
             case TypeRoom.Gold: ManagerGold.CreateGold(pos, CountGold.Big); break;
             case TypeRoom.Skill: Instantiate(_rewardSkill, currentRoom.posToReward, Quaternion.identity); break;
             case TypeRoom.Object: Instantiate(_rewardObject, currentRoom.posToReward, Quaternion.identity); break;
+            case TypeRoom.Aptitud: Instantiate(_rewardFlair, currentRoom.posToReward, Quaternion.identity); break;
         }
     }
     // ---- SETTERS && GETTERS ---- //
