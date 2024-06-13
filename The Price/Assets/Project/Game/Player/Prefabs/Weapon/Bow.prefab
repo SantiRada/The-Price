@@ -53,8 +53,20 @@ MonoBehaviour:
   countAttackPerCombo: 3
   countAttack: 0
   canAttack: 1
-  delayDetectionAttack: 0.15
-  delayBetweenAttack: 0.35
+  stats:
+  - 0
+  - 4
+  - 4
+  - 2
+  - 0
+  - 0
+  - 6
+  - 0
+  - 2
+  - 0
+  - 0
+  delayDetectionAttack: 0.65
+  delayBetweenAttack: 0.15
   delayDetectionBase: 0
   delayBetweenBase: 0
 --- !u!58 &6623633174615806392

@@ -4,20 +4,33 @@ using UnityEngine;
 public enum TypeEnemyAttack { Base, Energy, Fire, Cold, Fortify }
 public abstract class EnemyManager : MonoBehaviour {
 
+    [Header("UI Content")]
+    public GameObject uiObject;
+    public Vector2 offsetPositionUI;
+    private Canvas _worldPosition;
+    private EnemyUI _enemyUI;
+
     [Header("Initial Values")]
     public int _weight;
     [Range(0, 100)] public int _probabilityOfAppearing;
 
     [Header("Attack Enemy")]
-    public bool distanceAttack;
     public TypeEnemyAttack typeAttack;
+    public bool distanceAttack;
+    [Tooltip("Velocidad del Proyectil")] public float speedAttack;
+    [Tooltip("Distancia necesaria para atacar")] public float rangeAttack;
+    [Tooltip("Distancia del proyectil antes de ser destruido")] public float distanceToAttack;
+    [Tooltip("Tiempo entre ataques")] public float delayBetweenAttack;
     protected bool _canAttack { get; set; }
 
     [Header("Stats")]
-    [SerializeField] private int health;
-    [SerializeField] private int shield;
+    public float healthMax;
+    public float shieldMax;
+    public int damage;
     [SerializeField, Tooltip("Valor Promedio: 1.5"), Range(0f, 6f)] private float _speed;
-    private bool _canMove { get; set; }
+    [HideInInspector] public float shield;
+    protected float health;
+    protected bool _canMove { get; set; }
 
     [Header("Jump Data")]
     public bool canJump = true;
@@ -26,45 +39,84 @@ public abstract class EnemyManager : MonoBehaviour {
     [SerializeField, Tooltip("Tiempo que tarda en permitirse el salto nuevamente"), Range(0, 5)] private float _delayToJump;
     [HideInInspector] public bool inJump = false;
 
-    [Header("Private Content")]
+    [Header("Private Data")]
     protected Rigidbody2D _rb2d;
     protected SpriteRenderer _spr;
+    protected PlayerStats _player;
+    protected Animator _anim;
     private Room _room { get; set; }
+    [Space]
+    private float delayBase;
 
-    private void Awake()
-    {
-        _rb2d = GetComponent<Rigidbody2D>();
-        _spr = GetComponent<SpriteRenderer>();
-    }
     private void Start()
     {
+        _anim = GetComponent<Animator>();
+        _rb2d = GetComponent<Rigidbody2D>();
+        _spr = GetComponent<SpriteRenderer>();
+        _player = FindAnyObjectByType<PlayerStats>();
+        _worldPosition = FindAnyObjectByType<InteractiveManager>().GetComponent<Canvas>();
+
+        // ESTABLECER VALORES INICIALES
+        health = healthMax;
+        shield = shieldMax;
+
+        // CREAR UI PARA CADA ENEMIGO
+        _enemyUI = Instantiate(uiObject, ((Vector2)transform.position + offsetPositionUI), Quaternion.identity, _worldPosition.transform).GetComponent<EnemyUI>();
+        _enemyUI.SetInitialValues(gameObject, offsetPositionUI);
+
         StartCoroutine("DelayToMovement");
+
+        delayBase = delayBetweenAttack;
     }
     private void Update()
     {
-        if (LoadingScreen.inLoading || Pause.state != State.Game || !_canMove)
+        if (CanMove)
         {
-            _rb2d.velocity = Vector2.zero;
-            return;
+            if (_player.transform.position.x > transform.position.x) _spr.flipX = true;
+            else _spr.flipX = false;
+
+            if(_player.transform.position.y > transform.position.y) _anim.SetBool("Direction", false);
+            else _anim.SetBool("Direction", true);
         }
 
-        if(health <= 0) Die();
+        if (Vector3.Distance(_player.transform.position, transform.position) <= rangeAttack)
+        {
+            VerifyState(false);
+            if (CanAttack) Attack();
+        }
+        else { VerifyState(true); }
+
+        if (!CanAttack)
+        {
+            delayBetweenAttack -= Time.deltaTime;
+
+            if (delayBetweenAttack <= 0)
+            {
+                delayBetweenAttack = delayBase;
+                CanAttack = true;
+            }
+        }
+
+        if (health <= 0) Die();
     }
     public void TakeDamage(int dmg)
     {
-        health -= dmg;
+        if (shield > 0)
+        {
+            if (shield > dmg) shield -= dmg;
+            else shield = 0;
+        }
+        else { health -= dmg; }
+        _enemyUI.SetHealthbar(healthMax, health, shieldMax, shield);
 
         FloatTextManager.CreateText(transform.position, TypeColor.Damage, "-" + dmg.ToString());
     }
-    /////////////////////////////////////////////////////////////////////////// PROVISIONAL ///////////////////////////
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player") && Pause.state == State.Game) Die();
-    }
-    /////////////////////////////////////////////////////////////////////////// PROVISIONAL ///////////////////////////
+    public abstract void Attack();
     public void Die()
     {
         _room?.SetLivingEnemies(this);
+        
+        Destroy(_enemyUI.gameObject);
         Destroy(gameObject);
     }
     public IEnumerator DelayToMovement()
@@ -89,20 +141,22 @@ public abstract class EnemyManager : MonoBehaviour {
             if (Weight > 1) numberOfLoads = 1;
         }
 
-        Debug.Log("Agregado el Affected State");
         AffectedState st = gameObject.AddComponent<AffectedState>();
         st.CreateState(state, numberOfLoads);
+    }
+    public void VerifyState(bool value)
+    {
+        if (GetComponent<AffectedState>()) return;
+        else CanMove = value;
     }
     // ---- SETTERS && GETTERS ---- //
     public Room RoomCurrent { set { _room = value; } }
     public int ProbabilityOfAppearing { get { return _probabilityOfAppearing; } }
     public int DistanceToJump { get { return _distanceToJump; } }
-    public int HowFarDoJump { get { return _howFarDoJump; } }
     // ---- SETTERS && GETTERS PER STATS ---- //
     public int Weight { get { return _weight; } }
     public float Speed { get { return _speed; } set { _speed = value; } }
-    public int Health { get { return health; } }
-    public int Shield { get { return shield; } set { shield = value; } }
+    public int Shield { get { return (int)shield; } set { shield = value; } }
     // ---- SETTERS && GETTERS PER BOOLEAN ---- //
     public bool CanMove { get { return _canMove; } set { _canMove = value; } }
     public bool CanAttack { get { return _canAttack; } set { _canAttack = value; } }

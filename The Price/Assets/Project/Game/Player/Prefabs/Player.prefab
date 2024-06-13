@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3917327514093164555}
   - component: {fileID: 631481786061970340}
   - component: {fileID: 7745312185467084353}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AttackData
   m_TagString: Crosshair
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 7862890231065333886}
   - component: {fileID: 1324836505429316149}
   - component: {fileID: 7510341761890864215}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -414,9 +414,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b949ea2fcd1a92c40b1a850b7d9daa26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
-  _dashingPower: 36
-  _dashingTime: 0.12
+  _dashingPower: 28
+  _dashingTime: 0.14
   _dashingCooldown: 0.5
   isDashing: 0
 --- !u!114 &8385875373981250499
@@ -625,21 +624,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a177f7d158dab5e40845afdad240b46f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeToTakeDamage: 0.75
   _generalMaxStats:
   - 75
   - 16
-  - 14
-  - 12
+  - 5
+  - 10
   - 14
   - 10
   - 25
-  - 7
-  - 7
+  - 5
+  - 8
   - 0
   - 80
   countKillsInRoom: 0
   countDamageInRoom: 0
   countDamageReceivedInRoom: 0
+  dieUI: {fileID: 0}
   statsWindow: {fileID: 0}
   textStats:
   - {fileID: 0}
@@ -700,7 +701,7 @@ GameObject:
   m_Component:
   - component: {fileID: 634329528103286550}
   - component: {fileID: 5577573603885388122}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Crosshair
   m_TagString: Weapon
   m_Icon: {fileID: 0}

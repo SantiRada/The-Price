@@ -132,7 +132,6 @@ public class FlairSystem : MonoBehaviour {
     private IEnumerator Select()
     {
         canMove = false;
-        Debug.Log("Se seleccionó: " + types[index].ToString() + " + " + amountPerType[index] + "%");
 
         // NUEVOS VALORES BASE
         _player.SetValue((int)types[index], amountPerType[index], false, false);

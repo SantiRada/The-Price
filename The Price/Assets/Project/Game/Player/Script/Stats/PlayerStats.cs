@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,8 +8,10 @@ using UnityEngine.UI;
 public class PlayerStats : MonoBehaviour {
 
     [Header("General Values")]
+    [Tooltip("Tiempo que dura el color Rojo del 'Take Damage'")] public float timeToTakeDamage;
     [SerializeField] private float[] _generalMaxStats;
     private float[] _generalStats;
+    private bool _canReceivedDamage { get; set; }
 
     [Header("More Stats")]
     [HideInInspector] public int countKillsInRoom;
@@ -16,9 +19,11 @@ public class PlayerStats : MonoBehaviour {
     [HideInInspector] public int countDamageReceivedInRoom;
 
     [Header("Content UI")]
+    public GameObject dieUI;
     public GameObject statsWindow;
     public TextMeshProUGUI[] textStats;
     public Image[] _imgObject;
+    private HUD _hud;
 
     [Header("Content Skills UI")]
     public Image[] _imgSkills;
@@ -33,6 +38,8 @@ public class PlayerStats : MonoBehaviour {
     [HideInInspector] public List<SkillManager> skills = new List<SkillManager>();
     [HideInInspector] public List<Object> objects = new List<Object>();
     private TriggeringObject triggering;
+    private PlayerMovement _movement;
+    private SpriteRenderer _spr;
 
     [Header("Prevent Damage Per Type")]
     [HideInInspector] public int[] countPrevent = new int[5];
@@ -47,14 +54,22 @@ public class PlayerStats : MonoBehaviour {
 
     // EVENTOS
     public static event Action takeDamage;
+    public static event Action jumpBetween;
 
     private void Awake()
     {
         triggering = GetComponent<TriggeringObject>();
+        _movement = GetComponent<PlayerMovement>();
+        _spr = GetComponent<SpriteRenderer>();
+        _hud = FindAnyObjectByType<HUD>();
     }
     private void Start()
     {
+        dieUI.gameObject.SetActive(false);
+
         #region InitialStats
+        CanReceivedDamage = true;
+
         _generalStats = new float[_generalMaxStats.Length];
 
         for(int i = 0; i < _generalMaxStats.Length; i++)
@@ -82,81 +97,50 @@ public class PlayerStats : MonoBehaviour {
         ActionForControlPlayer.skillTwo += () => LaunchedSkill(1);
         ActionForControlPlayer.skillFragments += () => LaunchedSkill(2);
     }
-    public void ShowWindowedStats()
+    // -------------- DEAD -------------- //
+    private IEnumerator Die()
     {
-        if (Pause.state == State.Interface)
-        {
-            Pause.StateChange = State.Game;
-            statsWindow.SetActive(false);
-        }
-        else
-        {
-            Pause.StateChange = State.Interface;
-            statsWindow.SetActive(true);
-        }
-    }
-    // ---- SETTERS ---- //
-    public void PreventDamagePerType(int[] count, bool[] reflects)
-    {
-        countPrevent = count;
-        whichReflect = reflects;
-    }
-    public void PreventDamagePerDistance(int[] count, bool[] reflects)
-    {
-        preventDistance = count;
-        reflectDistance = reflects;
-    }
-    public void AddStatePerDamage(TypeState st, int number)
-    {
-        state = st;
-        numberOfLoads = number;
-    }
-    public void SetValue(int type, float value, bool max = true, bool canShow = true)
-    {
-        if (value == 0) return;
+        CameraMovement.Shake(0.05f, 0.45f);
+        yield return new WaitForSeconds(0.15f);
 
-        if (canShow)
-        {
-            if (value < 0) FloatTextManager.CreateText(transform.position, (TypeColor)type, value.ToString());
-            else FloatTextManager.CreateText(transform.position, (TypeColor)type, ("+" + value.ToString()));
-        }
+        CameraMovement.SetDie();
+        Pause.StateChange = State.Pause;
+        yield return new WaitForSeconds(0.5f);
 
-        if (max) _generalMaxStats[type] += value;
-        else _generalStats[type] += value;
-
-        ChangeValueInUI(type);
+        dieUI.gameObject.SetActive(true);
     }
+    // ---- FUNCIONES BASE ---- //
     public void TakeDamage(GameObject obj, int dmg)
     {
-        EnemyManager attacker = obj.GetComponent<EnemyManager>();
-        // ---- REVISA SI DEBE REFLEJAR EL DAÑO AL ENEMIGO ---- //
+        if (!_canReceivedDamage) return;
+
+        #region ComprobateEnemy
+        EnemyManager attacker;
+
+        if (obj.GetComponent<EnemyManager>()) { attacker = obj.GetComponent<EnemyManager>(); }
+        else { return; }
 
         // ---- PREVIENE ATAQUES DE UN TIPO ESPECÍFICO ---- //
-        dmg = CalculateNewDamage(attacker, dmg);
+        dmg = (attacker != null) ? CalculateNewDamage(attacker, dmg) : dmg;
         if (dmg <= 0) return;
+        #endregion
 
+        // EVENTO = RECIBIR DAÑO
         takeDamage?.Invoke();
 
-        SetValue(0, dmg, false);
-    }
-    public void SetChangeSkillsInUI()
-    {
-        for (int i = 0; i < skills.Count; i++)
-        {
-            _imgSkills[i].gameObject.SetActive(true);
-            _nameSkills[i].gameObject.SetActive(true);
-            _descSkills[i].gameObject.SetActive(true);
+        #region ApplyDamage
+        SetValue(0, -dmg, false);
+        _hud.SetHealthbar(_generalStats[0], _generalMaxStats[0]);
+        _spr.color = Color.red;
+        Invoke("ResetColor", timeToTakeDamage);
 
-            _imgSkills[i].sprite = skills[i].icon;
-            _nameSkills[i].text = LanguageManager.GetValue("Skill", skills[i].skillName);
-            _descSkills[i].text = LanguageManager.GetValue("Skill", skills[i].descName);
-        }
-    }
-    // ---- GETTERS ---- //
-    public float GetterStats(int pos, bool max = true)
-    {
-        if(max) return _generalMaxStats[pos];
-        else return _generalStats[pos];
+        _movement.SetValuesForcedMove(obj);
+
+        CanReceivedDamage = false;
+        #endregion
+
+        // VERIFICAR SI SIGUE VIVO
+        if (_generalStats[0] <= 0) StartCoroutine("Die");
     }
     // ---- OBJECTS ---- //
     public void AddObject(Object obj)
@@ -212,6 +196,77 @@ public class PlayerStats : MonoBehaviour {
 
         if (skills[pos].loadType == LoadTypeSkill.receiveDamage) countDamageReceivedInRoom -= skills[pos].amountFuel;
     }
+    // ---- FUNCIONES DE OTROS SCRIPT ---- //
+    public void ShowWindowedStats()
+    {
+        if (Pause.state == State.Interface)
+        {
+            Pause.StateChange = State.Game;
+            statsWindow.SetActive(false);
+        }
+        else
+        {
+            Pause.StateChange = State.Interface;
+            statsWindow.SetActive(true);
+        }
+    }
+    public void JumpBetweenAttack() { jumpBetween?.Invoke(); }
+    // ---- SETTERS ---- //
+    public void PreventDamagePerType(int[] count, bool[] reflects)
+    {
+        countPrevent = count;
+        whichReflect = reflects;
+    }
+    public void PreventDamagePerDistance(int[] count, bool[] reflects)
+    {
+        preventDistance = count;
+        reflectDistance = reflects;
+    }
+    public void AddStatePerDamage(TypeState st, int number)
+    {
+        state = st;
+        numberOfLoads = number;
+    }
+    public void SetValue(int type, float value, bool max = true, bool canShow = true)
+    {
+        if (value == 0) return;
+
+        if (canShow)
+        {
+            if (value < 0) FloatTextManager.CreateText(transform.position, (TypeColor)type, value.ToString());
+            else FloatTextManager.CreateText(transform.position, (TypeColor)type, ("+" + value.ToString()));
+        }
+
+        if (max) _generalMaxStats[type] += value;
+        else _generalStats[type] += value;
+
+        // CHANGE IN HUD
+        if (type == 1 && !max) _hud.SetConcentracion(_generalStats[1], _generalMaxStats[1]);
+
+        ChangeValueInUI(type);
+    }
+    public void SetChangeSkillsInUI()
+    {
+        for (int i = 0; i < skills.Count; i++)
+        {
+            _imgSkills[i].gameObject.SetActive(true);
+            _nameSkills[i].gameObject.SetActive(true);
+            _descSkills[i].gameObject.SetActive(true);
+
+            _imgSkills[i].sprite = skills[i].icon;
+            _nameSkills[i].text = LanguageManager.GetValue("Skill", skills[i].skillName);
+            _descSkills[i].text = LanguageManager.GetValue("Skill", skills[i].descName);
+
+            _hud.SetSkills(i, skills[i].icon);
+        }
+    }
+    // ---- GETTERS ---- //
+    public float GetterStats(int pos, bool max = true)
+    {
+        if (max) return _generalMaxStats[pos];
+        else return _generalStats[pos];
+    }
+    public bool CanReceivedDamage { get { return _canReceivedDamage; } set { _canReceivedDamage = value; } }
     // ---- FUNCION INTEGRA ---- //
     private void ChangeValueInUI(int type)
     {
@@ -282,5 +337,10 @@ public class PlayerStats : MonoBehaviour {
     private void InitialWeapon()
     {
         Instantiate(weapon.gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform);
+    }
+    private void ResetColor()
+    {
+        _spr.color = Color.white;
+        CanReceivedDamage = true;
     }
 }

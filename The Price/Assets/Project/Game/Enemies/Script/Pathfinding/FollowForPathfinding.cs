@@ -110,29 +110,4 @@ public class FollowForPathfinding : MonoBehaviour {
             _currentWaypoint++;
         }
     }
-    #region Gizmos
-    /*
-    private void OnDrawGizmo()
-    {
-        if (_walkableMap == null) return;
-
-        Vector2Int start = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
-        Vector2Int end = new Vector2Int(Mathf.RoundToInt(_target.position.x), Mathf.RoundToInt(_target.position.y));
-
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawCube((Vector3Int)start, Vector3.one * 0.75f);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawCube((Vector3Int)end, Vector3.one * 0.75f);
-
-        if (_path != null)
-        {
-            foreach (Node node in _path)
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawCube((Vector3Int)node.position, Vector3.one * 0.75f);
-            }
-        }
-    }
-    */
-    #endregion
 }

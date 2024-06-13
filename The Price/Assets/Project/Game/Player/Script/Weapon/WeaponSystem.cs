@@ -9,76 +9,85 @@ public class WeaponSystem : MonoBehaviour {
     public bool canTraverse;
 
     [Header("Attack System")]
-    public bool hasCombo;
-    public int countAttackPerCombo;
     [HideInInspector] public int countAttack = 0;
     [HideInInspector] public bool canAttack = true;
 
+    [Header("Modify Stats")]
+    public float[] stats = new float[11];
+
     [Header("Timers")]
-    [Range(0, 3), Tooltip("Tiempo de detección entre ataques para generar un Combo")] public float delayDetectionAttack;
     [Range(0, 3), Tooltip("Tiempo entre ataques")] public float delayBetweenAttack;
-    [HideInInspector] public float delayDetectionBase, delayBetweenBase;
+    [HideInInspector] public float delayBetweenBase;
+    private float delayDetect = 0.35f;
 
     [Header("Private Data")]
     private CrosshairData _crosshair;
-    private PlayerStats _stats;
+    private PlayerStats _player;
     private Animator anim;
 
     private void Start()
     {
-        _stats = GetComponentInParent<PlayerStats>();
+        _player = GetComponentInParent<PlayerStats>();
         _crosshair = FindAnyObjectByType<CrosshairData>();
+        anim = _player.GetComponent<Animator>();
 
-        anim = _stats.GetComponent<Animator>();
+        delayBetweenBase = delayBetweenAttack;
+
+        // MODIFICADOR DE STATS DE CADA WEAPON
+        for(int i = 0; i < stats.Length; i++)
+        {
+            _player.SetValue(i, stats[i], false, false);
+            _player.SetValue(i, stats[i], true, false);
+        }
+
+        PlayerStats.jumpBetween += () => countAttack = 0;
     }
     private void Update()
     {
+        delayDetect -= Time.deltaTime;
+        if (delayDetect <= 0) countAttack = 0;
+
         if (!canAttack)
         {
             delayBetweenAttack -= Time.deltaTime;
 
             if(delayBetweenAttack <= 0) canAttack = true;
         }
-
-        // FUNCIONAMIENTO DEL COMBO BASE
-        delayDetectionAttack -= Time.deltaTime;
-
-        if (delayDetectionAttack <= 0) countAttack = 0;
-
-        if(countAttack >= countAttackPerCombo) Combo();
-    }
-    private void Combo()
-    {
-        Debug.Log("Se ha activado el Combo");
     }
     public void Attack()
     {
         if (!canAttack) return;
 
-        // FUNCIONAMIENTO DEL DELAY PARA MANEJO DE COMBO
-        countAttack++;
-        delayDetectionAttack = delayDetectionBase;
-
         // FUNCIONAMIENTO DE DELAY ENTRE ATAQUES
         delayBetweenAttack = delayBetweenBase;
+        delayDetect = 0.35f;
         canAttack = false;
+
+        countAttack++;
+        anim.SetBool("Attack", true);
 
         if (distanceAttack)
         {
             CreateProjectile();
             return;
         }
-
-        anim.SetBool("Attack", true);
     }
     private void CreateProjectile()
     {
-        Debug.Log("Create Projectile");
         // ATAQUE A DISTANCIA
         Projectile pr = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
-        pr.SetterValues(distanceToAttack, (int)_stats.GetterStats(5, false), canTraverse, _crosshair.GetCurrentAimDirection());
+
+        // VERIFICAR DIFERENCIA ENTRE DAÑO-1 Y DAÑO SUCESIVO
+        int damage = (int)_player.GetterStats(5, false);
+        if (countAttack > 2) damage = (int)(_player.GetterStats(5, false) * (_player.GetterStats(6, false) / 100));
+
+        pr.SetterValues(gameObject, distanceToAttack, damage, canTraverse, _crosshair.GetCurrentAimDirection());
     }
     // ---- EVENTO DEL ANIMATOR ---- //
     public void MeleeAttack() { gameObject.tag = "Projectile"; }
-    public void FinishAttack() { gameObject.tag = "Weapon"; }
+    public void FinishAttack()
+    {
+        gameObject.tag = "Weapon";
+        anim.SetBool("Attack", false);
+    }
 }
