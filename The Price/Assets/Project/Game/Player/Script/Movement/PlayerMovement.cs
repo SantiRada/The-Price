@@ -22,33 +22,18 @@ public class PlayerMovement : MonoBehaviour {
     private SpriteRenderer _spriteRenderer;
     private PlayerStats _player;
 
-    private Vector2 direction;
-    private bool canMoveForced = false;
-    private float timerForced = 1.5f;
-
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         
         _player = GetComponent<PlayerStats>();
-
-        timerForced = 1.5f;
     }
     private void Update()
     {
         if (Pause.inPause || Pause.state != State.Game) return;
 
         Movement();
-
-        if (canMoveForced)
-        {
-            Debug.Log("Forced Movement!");
-            _rigidbody2D.AddForce(direction * 50 * Time.deltaTime, ForceMode2D.Impulse);
-            timerForced -= Time.deltaTime;
-
-            if (timerForced <= 0) canMoveForced = false;
-        }
     }
     private void FixedUpdate()
     {
@@ -60,6 +45,8 @@ public class PlayerMovement : MonoBehaviour {
     private void Movement()
     {
         if (!_canMove) return;
+
+        if(_rigidbody2D.velocity != Vector2.zero) _player.JumpBetweenAttack();
 
         #region Flip
         if (_moveInput.x > 0) _spriteRenderer.flipX = true;
@@ -104,13 +91,10 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (collision.CompareTag("EnemyAttack"))
         {
-            _player.TakeDamage(collision.GetComponentInParent<EnemyManager>().gameObject, collision.GetComponentInParent<EnemyManager>().damage);
+            EnemyManager enemy;
+            enemy = collision.GetComponentInParent<EnemyManager>();
+
+            if(enemy != null) _player.TakeDamage(enemy.gameObject, enemy.damage);
         }
-    }
-    public void SetValuesForcedMove(GameObject collision)
-    {
-        direction = -(collision.GetComponentInParent<EnemyManager>().transform.position - transform.position).normalized * 1.5f;
-        canMoveForced = true;
-        timerForced = 1.5f;
     }
 }

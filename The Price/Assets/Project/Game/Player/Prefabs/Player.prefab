@@ -180,7 +180,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 937805277
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -595,6 +595,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 2bef7504-e301-472f-a279-44942a255229
     m_ActionName: 'Player/Skill Fragment[/XInputControllerWindows/rightStickPress,/Keyboard/f]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: Heal
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 32c58127-3100-43cc-bba3-563e800f7685
+    m_ActionName: 'Player/Heal[/XInputControllerWindows/rightTrigger,/Keyboard/f]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player
@@ -624,11 +640,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a177f7d158dab5e40845afdad240b46f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToTakeDamage: 0.75
+  timeToTakeDamage: 0.5
+  timeToIntangible: 1.5
   _generalMaxStats:
   - 75
   - 16
-  - 5
+  - 3
   - 10
   - 14
   - 10
@@ -637,6 +654,8 @@ MonoBehaviour:
   - 8
   - 0
   - 80
+  changerPV: 0
+  changerConcentration: 0
   countKillsInRoom: 0
   countDamageInRoom: 0
   countDamageReceivedInRoom: 0

@@ -15,7 +15,7 @@ public class Gold : MonoBehaviour {
     }
     private void FixedUpdate()
     {
-        if (LoadingScreen.inLoading) return;
+        if (LoadingScreen.inLoading || Pause.state != State.Game) return;
 
         if (canMove && !Pause.inPause) transform.position = Vector3.Lerp(transform.position, target.position, _offsetToAnim * Time.fixedDeltaTime);
     }
@@ -25,6 +25,7 @@ public class Gold : MonoBehaviour {
         yield return new WaitForSeconds(delayToAnim);
         canMove = true;
         yield return new WaitForSeconds(2f);
+
         Destroy(gameObject);
     }
 }

@@ -99,7 +99,7 @@ public abstract class EnemyManager : MonoBehaviour {
 
         if (health <= 0) Die();
     }
-    public void TakeDamage(int dmg)
+    public void TakeDamage(int dmg, bool canShow = false)
     {
         if (shield > 0)
         {
@@ -109,7 +109,8 @@ public abstract class EnemyManager : MonoBehaviour {
         else { health -= dmg; }
         _enemyUI.SetHealthbar(healthMax, health, shieldMax, shield);
 
-        FloatTextManager.CreateText(transform.position, TypeColor.Damage, "-" + dmg.ToString());
+        // SOLO SE MUESTRA UN TEXTO ALREDEDOR SI SE ENVIA EL VALOR TRUE MANUALMENTE
+        if(canShow) FloatTextManager.CreateText(transform.position, TypeColor.Damage, "-" + dmg.ToString());
     }
     public abstract void Attack();
     public void Die()
@@ -117,7 +118,8 @@ public abstract class EnemyManager : MonoBehaviour {
         _room?.SetLivingEnemies(this);
         
         Destroy(_enemyUI.gameObject);
-        Destroy(gameObject);
+        Destroy(gameObject, 1f);
+        gameObject.SetActive(false);
     }
     public IEnumerator DelayToMovement()
     {

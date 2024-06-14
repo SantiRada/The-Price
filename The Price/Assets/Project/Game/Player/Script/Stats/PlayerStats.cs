@@ -9,26 +9,19 @@ public class PlayerStats : MonoBehaviour {
 
     [Header("General Values")]
     [Tooltip("Tiempo que dura el color Rojo del 'Take Damage'")] public float timeToTakeDamage;
+    [Tooltip("Tiempo de intangibilidad tras recibir daño")] public float timeToIntangible;
     [SerializeField] private float[] _generalMaxStats;
     private float[] _generalStats;
     private bool _canReceivedDamage { get; set; }
+
+    [Header("Changers")]
+    public float changerPV;
+    public float changerConcentration;
 
     [Header("More Stats")]
     [HideInInspector] public int countKillsInRoom;
     [HideInInspector] public int countDamageInRoom;
     [HideInInspector] public int countDamageReceivedInRoom;
-
-    [Header("Content UI")]
-    public GameObject dieUI;
-    public GameObject statsWindow;
-    public TextMeshProUGUI[] textStats;
-    public Image[] _imgObject;
-    private HUD _hud;
-
-    [Header("Content Skills UI")]
-    public Image[] _imgSkills;
-    public TextMeshProUGUI[] _nameSkills;
-    public TextMeshProUGUI[] _descSkills;
 
     [Header("Weapons")]
     public WeaponSystem weapon;
@@ -38,7 +31,7 @@ public class PlayerStats : MonoBehaviour {
     [HideInInspector] public List<SkillManager> skills = new List<SkillManager>();
     [HideInInspector] public List<Object> objects = new List<Object>();
     private TriggeringObject triggering;
-    private PlayerMovement _movement;
+    private StatsInUI _statsInUI;
     private SpriteRenderer _spr;
 
     [Header("Prevent Damage Per Type")]
@@ -59,38 +52,18 @@ public class PlayerStats : MonoBehaviour {
     private void Awake()
     {
         triggering = GetComponent<TriggeringObject>();
-        _movement = GetComponent<PlayerMovement>();
+        _statsInUI = FindAnyObjectByType<StatsInUI>();
         _spr = GetComponent<SpriteRenderer>();
-        _hud = FindAnyObjectByType<HUD>();
     }
     private void Start()
     {
-        dieUI.gameObject.SetActive(false);
-
         #region InitialStats
         CanReceivedDamage = true;
 
         _generalStats = new float[_generalMaxStats.Length];
-
-        for(int i = 0; i < _generalMaxStats.Length; i++)
-        {
-            _generalStats[i] = _generalMaxStats[i];
-        }
+        for(int i = 0; i < _generalMaxStats.Length; i++) { _generalStats[i] = _generalMaxStats[i]; }
 
         if (weapon != null) InitialWeapon();
-        #endregion
-        // SETTEAR VALORES INICIALES PARA LA UI -------- //
-        SetChangeSkillsInUI();
-        ChangeValueInUI(-1);
-        // --------------------------------------------- //
-        #region OffElements
-        for (int i = 0; i < _imgSkills.Length; i++)
-        {
-            _imgSkills[i].gameObject.SetActive(false);
-            _nameSkills[i].gameObject.SetActive(false);
-            _descSkills[i].gameObject.SetActive(false);
-        }
-        statsWindow.SetActive(false);
         #endregion
 
         ActionForControlPlayer.skillOne += () => LaunchedSkill(0);
@@ -107,7 +80,7 @@ public class PlayerStats : MonoBehaviour {
         Pause.StateChange = State.Pause;
         yield return new WaitForSeconds(0.5f);
 
-        dieUI.gameObject.SetActive(true);
+        _statsInUI.dieUI.gameObject.SetActive(true);
     }
     // ---- FUNCIONES BASE ---- //
     public void TakeDamage(GameObject obj, int dmg)
@@ -130,13 +103,17 @@ public class PlayerStats : MonoBehaviour {
 
         #region ApplyDamage
         SetValue(0, -dmg, false);
-        _hud.SetHealthbar(_generalStats[0], _generalMaxStats[0]);
+        _statsInUI.SetHUD(0, _generalStats[0], _generalMaxStats[0]);
+
+        // APLICAR ESTADO DE INTANGIBILIDAD
+        CanReceivedDamage = false;
+        // LIMITAR ATAQUE TRAS RECIBIR DAÑO
+        weapon.canAttack = false;
+        // CAMBIAR COLOR POR UN PEQUEÑO PERIODO DE TIEMPO
         _spr.color = Color.red;
         Invoke("ResetColor", timeToTakeDamage);
-
-        _movement.SetValuesForcedMove(obj);
-
-        CanReceivedDamage = false;
+        // QUITAR ESTADO DE INTANGIBILIDAD
+        Invoke("RemoveStateIntangible", timeToIntangible);
         #endregion
 
         // VERIFICAR SI SIGUE VIVO
@@ -148,8 +125,7 @@ public class PlayerStats : MonoBehaviour {
         objects.Add(obj);
         triggering.SetObjects(objects);
 
-        _imgObject[objects.Count - 1].sprite = objects[objects.Count - 1].icon;
-        _imgObject[objects.Count - 1].color = Color.white;
+        _statsInUI.AddObjectInUI();
     }
     // ---- SKILLS ---- //
     private void LaunchedSkill(int pos)
@@ -197,19 +173,6 @@ public class PlayerStats : MonoBehaviour {
         if (skills[pos].loadType == LoadTypeSkill.receiveDamage) countDamageReceivedInRoom -= skills[pos].amountFuel;
     }
     // ---- FUNCIONES DE OTROS SCRIPT ---- //
-    public void ShowWindowedStats()
-    {
-        if (Pause.state == State.Interface)
-        {
-            Pause.StateChange = State.Game;
-            statsWindow.SetActive(false);
-        }
-        else
-        {
-            Pause.StateChange = State.Interface;
-            statsWindow.SetActive(true);
-        }
-    }
     public void JumpBetweenAttack() { jumpBetween?.Invoke(); }
     // ---- SETTERS ---- //
     public void PreventDamagePerType(int[] count, bool[] reflects)
@@ -241,25 +204,12 @@ public class PlayerStats : MonoBehaviour {
         else _generalStats[type] += value;
 
         // CHANGE IN HUD
-        if (type == 1 && !max) _hud.SetConcentracion(_generalStats[1], _generalMaxStats[1]);
+        if (type == 1 && !max) _statsInUI.SetHUD(1, _generalStats[1], _generalMaxStats[1]);
 
-        ChangeValueInUI(type);
+        _statsInUI.ChangeValueInUI(type);
     }
-    public void SetChangeSkillsInUI()
-    {
-        for (int i = 0; i < skills.Count; i++)
-        {
-            _imgSkills[i].gameObject.SetActive(true);
-            _nameSkills[i].gameObject.SetActive(true);
-            _descSkills[i].gameObject.SetActive(true);
-
-            _imgSkills[i].sprite = skills[i].icon;
-            _nameSkills[i].text = LanguageManager.GetValue("Skill", skills[i].skillName);
-            _descSkills[i].text = LanguageManager.GetValue("Skill", skills[i].descName);
-
-            _hud.SetSkills(i, skills[i].icon);
-        }
-    }
+    public float ChangerPV { set { changerPV = value; } get { return changerPV; } }
+    public float ChangerConcentration { set { changerConcentration = value; } get { return changerConcentration; } }
     // ---- GETTERS ---- //
     public float GetterStats(int pos, bool max = true)
     {
@@ -268,22 +218,10 @@ public class PlayerStats : MonoBehaviour {
     }
     public bool CanReceivedDamage { get { return _canReceivedDamage; } set { _canReceivedDamage = value; } }
     // ---- FUNCION INTEGRA ---- //
-    private void ChangeValueInUI(int type)
-    {
-        if (type == -1) { for (int i = 0; i < _generalStats.Length; i++) { ChangeStatsInUI(i); } }
-        else { ChangeStatsInUI(type); }
-    }
-    protected void ChangeStatsInUI(int i)
-    {
-        if (i == 0 || i == 1 || i == 10)
-            textStats[i].text = _generalStats[i].ToString() + "/" + _generalMaxStats[i].ToString();
-        else if (i == 2 || i == 3 || i == 6 || i == 7 || i == 8 || i == 9)
-            textStats[i].text = _generalMaxStats[i].ToString() + "%";
-        else if (i == 4 || i == 5)
-            textStats[i].text = _generalMaxStats[i].ToString();
-    }
     private int CalculateNewDamage(EnemyManager attacker, int dmg)
     {
+        if (attacker == null) return 0;
+
         #region Verify Prevent & Reflect Damage Per Type
         bool dmgPrevent = false;
         if (attacker.typeAttack == TypeEnemyAttack.Energy)
@@ -334,13 +272,7 @@ public class PlayerStats : MonoBehaviour {
 
         return dmg;
     }
-    private void InitialWeapon()
-    {
-        Instantiate(weapon.gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform);
-    }
-    private void ResetColor()
-    {
-        _spr.color = Color.white;
-        CanReceivedDamage = true;
-    }
+    private void InitialWeapon() { Instantiate(weapon.gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform); }
+    private void ResetColor() { _spr.color = Color.white; weapon.canAttack = true; }
+    private void RemoveStateIntangible() { CanReceivedDamage = true; }
 }

@@ -8,6 +8,7 @@ public class TriggeringObject : MonoBehaviour {
     [Header("Data")]
     private List<Object> _objects;
     private PlayerStats _playerStats;
+    private HUD _hud;
 
     // EVENTS
     public event Action fourKills;
@@ -19,6 +20,10 @@ public class TriggeringObject : MonoBehaviour {
     private void OnEnable()
     {
         _playerStats = GetComponent<PlayerStats>();
+        _hud = FindAnyObjectByType<HUD>();
+
+        fourKills += ReloadConcentration;
+        RoomManager.finishRoom += () => _hud.HealPerRoom(_playerStats);
     }
     private void Update()
     {
@@ -79,6 +84,31 @@ public class TriggeringObject : MonoBehaviour {
         foreach (var obj in _objects)
         {
             obj.playerStats = _playerStats;
+        }
+    }
+    // ---- CHARGERS ---- //
+    public void ReloadPV()
+    {
+        if (_playerStats.GetterStats(0, false) < _playerStats.GetterStats(0, true))
+        {
+            // TIENE MENOS CONCENTRACIÓN QUE LA MÁXIMA
+            if (_playerStats.GetterStats(0, false) < (_playerStats.GetterStats(0, false) + _playerStats.changerPV))
+            {
+                _playerStats.SetValue(0, _playerStats.changerPV, false);
+            }
+            else { _playerStats.SetValue(0, (_playerStats.GetterStats(0, true) - _playerStats.GetterStats(0, false))); }
+        }
+    }
+    private void ReloadConcentration()
+    {
+        if (_playerStats.GetterStats(1, false) < _playerStats.GetterStats(1, true))
+        {
+            // TIENE MENOS CONCENTRACIÓN QUE LA MÁXIMA
+            if (_playerStats.GetterStats(1, false) < (_playerStats.GetterStats(1, false) + _playerStats.ChangerConcentration))
+            {
+                _playerStats.SetValue(1, _playerStats.changerConcentration, false);
+            }
+            else { _playerStats.SetValue(1, (_playerStats.GetterStats(1, true) - _playerStats.GetterStats(1, false))); }
         }
     }
 }

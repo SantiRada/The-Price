@@ -5,11 +5,14 @@ using UnityEngine.InputSystem;
 public class ActionForControlPlayer : MonoBehaviour {
 
     [Header("Elements of Player")]
-    private CrosshairData _crosshair;
+    private TriggeringObject _triggeringPlayer;
     private PlayerMovement _movement;
-    private PlayerStats _stats;
-    private WeaponSystem _weapon;
+    private CrosshairData _crosshair;
     private PlayerInput _playerInput;
+    private WeaponSystem _weapon;
+
+    [Header("UI Content")]
+    private StatsInUI _statsInUI;
 
     [Header("Crosshair")]
     private bool aimWithStick = false;
@@ -23,8 +26,9 @@ public class ActionForControlPlayer : MonoBehaviour {
 
     private void Awake()
     {
-        _stats = GetComponent<PlayerStats>();
+        _statsInUI = GetComponent<StatsInUI>();
         _playerInput = GetComponent<PlayerInput>();
+        _triggeringPlayer = GetComponent<TriggeringObject>();
         _movement = GetComponent<PlayerMovement>();
         _crosshair = GetComponentInChildren<CrosshairData>();
     }
@@ -42,7 +46,7 @@ public class ActionForControlPlayer : MonoBehaviour {
     {
         if (PlayerActionStates.InStats)
         {
-            _stats.ShowWindowedStats();
+            _statsInUI.ShowWindowedStats();
             PlayerActionStates.InStats = false;
         }
     }
@@ -59,6 +63,14 @@ public class ActionForControlPlayer : MonoBehaviour {
             _movement.StartCoroutine("Roll");
             PlayerActionStates.IsDashing = true;
         }
+    }
+    public void Heal(InputAction.CallbackContext context)
+    {
+        if (!detectClic) return;
+
+        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsHealing = true;
+        if (context.phase == InputActionPhase.Performed) _triggeringPlayer.ReloadPV();
+        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsHealing = false;
     }
     public void Attack(InputAction.CallbackContext context)
     {
@@ -143,7 +155,7 @@ public class ActionForControlPlayer : MonoBehaviour {
         if (context.phase == InputActionPhase.Performed)
         {
             PlayerActionStates.InStats = true;
-            _stats.ShowWindowedStats();
+            _statsInUI.ShowWindowedStats();
         }
     }
     public void PauseAction(InputAction.CallbackContext context)
@@ -157,6 +169,30 @@ public class ActionForControlPlayer : MonoBehaviour {
             CloseStats();
         }
     }
+    // ---- UI ACTIONS ------------- //
+    public void LeftInUI(InputAction.CallbackContext context)
+    {
+        if(context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.leftUI = true;
+        }
+        if (context.phase == InputActionPhase.Canceled)
+        {
+            PlayerActionStates.leftUI = false;
+        }
+    }
+    public void RightInUI(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.rightUI = true;
+        }
+        if (context.phase == InputActionPhase.Canceled)
+        {
+            PlayerActionStates.rightUI = false;
+        }
+    }
+    // ----------------------------- //
     private void AimWithRightStick()
     {
         if (!detectClic) return;
@@ -167,6 +203,7 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public static class PlayerActionStates
     {
+        public static bool IsHealing { get; set; }
         public static bool IsDashing { get; set; }
         public static bool IsAttacking { get; set; }
         public static bool IsSkillOne { get; set; }
@@ -174,5 +211,8 @@ public class ActionForControlPlayer : MonoBehaviour {
         public static bool IsSkillFragments { get; set; }
         public static bool IsUse { get; set; }
         public static bool InStats { get; set; }
+
+        public static bool leftUI { get; set; }
+        public static bool rightUI { get; set; }
     }
 }

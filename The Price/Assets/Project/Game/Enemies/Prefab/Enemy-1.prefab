@@ -169,7 +169,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.48958334
+  m_Radius: 0.45
 --- !u!95 &3834676372001479344
 Animator:
   serializedVersion: 7
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiObject: {fileID: 7401386086028397666, guid: f7b92249e1348ec47b06d3b034505367, type: 3}
   offsetPositionUI: {x: 0, y: 1}
-  _weight: 1
+  _weight: 3
   _probabilityOfAppearing: 100
   typeAttack: 1
   distanceAttack: 0
@@ -214,8 +214,8 @@ MonoBehaviour:
   rangeAttack: 1.5
   distanceToAttack: 1.5
   delayBetweenAttack: 1.25
-  healthMax: 150
-  shieldMax: 50
+  healthMax: 50
+  shieldMax: 25
   damage: 10
   _speed: 1.2
   shield: 0

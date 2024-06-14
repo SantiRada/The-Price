@@ -1,0 +1,239 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using static ActionForControlPlayer;
+
+public enum TypeUI { menu = 0, stats = 1, skills = 2, objects = 3, history = 4 }
+public class StatsInUI : MonoBehaviour {
+
+    [Header("Content UI")]
+    public GameObject dieUI;
+    public GameObject statsWindow;
+    public TextMeshProUGUI[] textStats;
+
+    [Header("Content Menu UI")]
+    public GameObject sectorMenu;
+    public Image[] menuOptions;
+    public Sprite selectSprite, unselectSprite;
+
+    [Header("Content Skills UI")]
+    public Image[] skillOptions;
+    public Image selectorSkill;
+    public Sprite[] loadType;
+    [Space]
+    public GameObject sectorSkills;
+    public TextMeshProUGUI[] _nameSkills;
+    public TextMeshProUGUI[] _descSkills;
+    public TextMeshProUGUI[] _loaderSkills;
+    public Image[] _loaderSkillsIcon;
+    [Space]
+    public Image _iconSkill;
+    public TextMeshProUGUI _titleSkillSelect;
+    public TextMeshProUGUI _descSkillSelect;
+    public TextMeshProUGUI _dataSkillSelect;
+
+    [Header("Content Objects UI")]
+    public GameObject sectorObject;
+    public Image selectorObj;
+    public Image[] _imgObject;
+    public TextMeshProUGUI _titleObject;
+    public TextMeshProUGUI _descObject;
+    public TextMeshProUGUI _dataObject;
+    public TextMeshProUGUI _temporalityObject;
+
+    [Header("Private Content")]
+    private PlayerStats _player;
+    private HUD _hud;
+    private CanvasGroup _group;
+
+    [Header("Movement in UI")]
+    private int _index = 0;
+    private int _prevIndex = 0;
+    private int _indexWindow = 0;
+    private bool _canMove = false;
+
+    private void Awake()
+    {
+        _hud = FindAnyObjectByType<HUD>();
+        _group = GetComponent<CanvasGroup>();
+        _player = FindAnyObjectByType<PlayerStats>();
+    }
+    private void Start() { InitialValues(); }
+    private void InitialValues()
+    {
+        dieUI.gameObject.SetActive(false);
+        SetChangeSkillsInUI(_player.skills);
+        ChangeValueInUI(-1);
+
+        #region OffElements
+        for (int i = 0; i < _nameSkills.Length; i++)
+        {
+            _nameSkills[i].gameObject.SetActive(false);
+            _descSkills[i].gameObject.SetActive(false);
+            _loaderSkills[i].gameObject.SetActive(false);
+            _loaderSkillsIcon[i].gameObject.SetActive(false);
+        }
+        statsWindow.SetActive(false);
+        #endregion
+    }
+    private void Update()
+    {
+        if (LoadingScreen.inLoading || Pause.state != State.Interface) return;
+
+        // MOVIMIENTO ENTRE VENTANAS --------- //
+        if (PlayerActionStates.leftUI) StartCoroutine(MoveSector(-1));
+        if (PlayerActionStates.rightUI) StartCoroutine(MoveSector(1));
+
+        // MOVIMIENTO INTERNO DE LA UI ------- //
+        if (Input.GetAxis("Vertical") != 0 && _canMove) StartCoroutine(Move(Input.GetAxis("Vertical")));
+    }
+    // ---- HUD ---- //
+    public void SetHUD(int pos, float value, float valueMax)
+    {
+        if(pos == 0) _hud.SetHealthbar(value, valueMax);
+        else _hud.SetConcentracion(value, valueMax);
+    }
+    // ---- WINDOW OBJECTS ---- //
+    public void AddObjectInUI()
+    {
+        _imgObject[_player.objects.Count - 1].sprite = _player.objects[_player.objects.Count - 1].icon;
+        _imgObject[_player.objects.Count - 1].color = Color.white;
+    }
+    // ---- WINDOW SKILLS ---- //
+    public void SetChangeSkillsInUI(List<SkillManager> skills)
+    {
+        for (int i = 0; i < skills.Count; i++)
+        {
+            _nameSkills[i].gameObject.SetActive(true);
+            _descSkills[i].gameObject.SetActive(true);
+            _loaderSkills[i].gameObject.SetActive(true);
+            _loaderSkillsIcon[i].gameObject.SetActive(true);
+
+            _nameSkills[i].text = LanguageManager.GetValue("Skill", skills[i].skillName);
+            _descSkills[i].text = LanguageManager.GetValue("Skill", skills[i].descName);
+            _loaderSkills[i].text = skills[i].amountFuel.ToString();
+
+            switch (skills[i].loadType)
+            {
+                case LoadTypeSkill.kills: _loaderSkillsIcon[i].sprite = loadType[0]; break;
+                case LoadTypeSkill.concentration: _loaderSkillsIcon[i].sprite = loadType[1]; break;
+                case LoadTypeSkill.damage: _loaderSkillsIcon[i].sprite = loadType[2]; break;
+                case LoadTypeSkill.receiveDamage: _loaderSkillsIcon[i].sprite = loadType[3]; break;
+            }
+
+            _hud.SetSkills(i, skills[i].icon);
+        }
+    }
+    // ---- WINDOW STATS ---- //
+    public void ShowWindowedStats()
+    {
+        if (Pause.state == State.Interface)
+        {
+            Pause.StateChange = State.Game;
+            CloseUI();
+        }
+        else
+        {
+            Pause.StateChange = State.Interface;
+            OpenUI(TypeUI.stats);
+        }
+    }
+    public void ChangeValueInUI(int type)
+    {
+        if (type == -1) { for (int i = 0; i < 11; i++) { ChangeStatsInUI(i, _player.GetterStats(i, false), _player.GetterStats(i, true)); } }
+        else { ChangeStatsInUI(type, _player.GetterStats(type, false), _player.GetterStats(type, true)); }
+    }
+    private void ChangeStatsInUI(int i, float value, float valueMax)
+    {
+        if (i == 0 || i == 1 || i == 10)
+            textStats[i].text = value.ToString() + "/" + valueMax.ToString();
+        else if (i == 2 || i == 3 || i == 6 || i == 7 || i == 8 || i == 9)
+            textStats[i].text = valueMax.ToString() + "%";
+        else if (i == 4 || i == 5)
+            textStats[i].text = valueMax.ToString();
+    }
+    // ---- MOVEMENT IN UI ---- //
+    private void OpenUI(TypeUI typeUI)
+    {
+        _group.alpha = 1;
+        _group.interactable = true;
+
+        LoadSector((int)typeUI);
+
+        _canMove = true;
+    }
+    private void LoadSector(int type, bool prevTypes = false)
+    {
+        if (prevTypes)
+        {
+            sectorMenu.SetActive(false);
+            sectorSkills.SetActive(false);
+            sectorObject.SetActive(false);
+        }
+
+        if(type == 0) sectorMenu.SetActive(true);
+        else if(type == 1) sectorSkills.SetActive(true);
+        else if(type == 2) sectorObject.SetActive(true);
+
+        _index = 0;
+        _prevIndex = 0;
+        _indexWindow = type;
+    }
+    private void CloseUI()
+    {
+        _group.alpha = 0;
+        _group.interactable = false;
+
+        sectorMenu.SetActive(false);
+        sectorSkills.SetActive(false);
+        sectorObject.SetActive(false);
+    }
+    // ------------------------ //
+    private IEnumerator Move(float dir)
+    {
+        _canMove = false;
+
+        #region Manager Move Per Direction Axis
+        if (dir > 0) _index++;
+        else _index--;
+
+        int limit = 0;
+        if (_indexWindow == 0 || _indexWindow == 1) limit = 3;
+        else if (_indexWindow == 2) limit = 36;
+
+        if (_index >= limit) _index = 0;
+        if (_index < 0) _index = (limit - 1);
+        #endregion
+
+        if (_indexWindow == 0)
+        {
+            menuOptions[_prevIndex].sprite = unselectSprite;
+            menuOptions[_index].sprite = selectSprite;
+        }
+        else if (_indexWindow == 1) { selectorSkill.transform.position = skillOptions[_index].transform.position; }
+        else if (_indexWindow == 2) { selectorObj.transform.position = _imgObject[_index].transform.position; }
+
+        _prevIndex = _index;
+
+        yield return new WaitForSeconds(0.19f);
+        _canMove = true;
+    }
+    private IEnumerator MoveSector(int dir)
+    {
+        _canMove = false;
+        if (dir > 0) _indexWindow++;
+        else _indexWindow--;
+
+        if (_indexWindow >= 5) _indexWindow = 0;
+        else if (_indexWindow < 0) _indexWindow = 4;
+
+        LoadSector(_indexWindow, true);
+
+        yield return new WaitForSeconds(0.15f);
+
+        _canMove = true;
+    }
+    // ------------------------ //
+}

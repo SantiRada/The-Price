@@ -309,7 +309,7 @@ public class SkillPlacement : MonoBehaviour {
         {
             // AGREGO LA HABILIDAD AL JUGADOR
             _player.skills.Add(_skillSelected);
-            _player.GetComponent<PlayerStats>().SetChangeSkillsInUI();
+            FindAnyObjectByType<StatsInUI>().SetChangeSkillsInUI(_player.skills);
         }
 
         RestartContent();

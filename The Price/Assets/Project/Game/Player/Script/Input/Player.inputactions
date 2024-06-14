@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Heal",
+                    "type": "Button",
+                    "id": "32c58127-3100-43cc-bba3-563e800f7685",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -394,6 +403,17 @@
                 },
                 {
                     "name": "",
+                    "id": "96554474-3812-42d2-a8ca-5527e67e34ba",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "df9c59dc-5e48-48da-bf0d-17d39f02cb09",
                     "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
@@ -493,6 +513,28 @@
                 },
                 {
                     "name": "",
+                    "id": "1a49d8a0-208d-484d-ac3f-7f7a53dbe504",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fe6d6bf6-ef57-4d38-9c7d-bc2ad61d2e3c",
+                    "path": "<Keyboard>/numpadEnter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "7bfe962e-ce39-4e7d-9f91-6836baff8a24",
                     "path": "<Gamepad>/rightStickPress",
                     "interactions": "",
@@ -505,11 +547,33 @@
                 {
                     "name": "",
                     "id": "ec774868-f11a-4a7d-9205-5d7d4055013d",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Skill Fragment",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1915061e-3ef0-4f99-81b6-fc2150219458",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Heal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "446d40f6-a59d-42f6-82a4-5600a5b18740",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Heal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
