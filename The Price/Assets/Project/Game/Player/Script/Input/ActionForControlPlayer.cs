@@ -26,10 +26,10 @@ public class ActionForControlPlayer : MonoBehaviour {
 
     private void Awake()
     {
-        _statsInUI = GetComponent<StatsInUI>();
         _playerInput = GetComponent<PlayerInput>();
-        _triggeringPlayer = GetComponent<TriggeringObject>();
         _movement = GetComponent<PlayerMovement>();
+        _statsInUI = FindAnyObjectByType<StatsInUI>();
+        _triggeringPlayer = GetComponent<TriggeringObject>();
         _crosshair = GetComponentInChildren<CrosshairData>();
     }
     private void Start() { _weapon = GetComponentInChildren<WeaponSystem>(); }
@@ -41,14 +41,6 @@ public class ActionForControlPlayer : MonoBehaviour {
 
         if (!aimWithStick) _crosshair.SetAimDirection(_playerInput.actions["Move"].ReadValue<Vector2>());
         else AimWithRightStick();
-    }
-    private void CloseStats()
-    {
-        if (PlayerActionStates.InStats)
-        {
-            _statsInUI.ShowWindowedStats();
-            PlayerActionStates.InStats = false;
-        }
     }
     public static void ChangeDetectClic(bool value) { detectClic = value; }
     // ----------------------------- //
@@ -64,13 +56,13 @@ public class ActionForControlPlayer : MonoBehaviour {
             PlayerActionStates.IsDashing = true;
         }
     }
-    public void Heal(InputAction.CallbackContext context)
+    public void Meditate(InputAction.CallbackContext context)
     {
         if (!detectClic) return;
 
-        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsHealing = true;
-        if (context.phase == InputActionPhase.Performed) _triggeringPlayer.ReloadPV();
-        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsHealing = false;
+        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsMeditate = true;
+        if (context.phase == InputActionPhase.Performed) Debug.Log("Meditar");
+        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsMeditate = false;
     }
     public void Attack(InputAction.CallbackContext context)
     {
@@ -119,7 +111,11 @@ public class ActionForControlPlayer : MonoBehaviour {
 
         if (context.phase == InputActionPhase.Started) PlayerActionStates.IsSkillTwo = true;
 
-        if (context.phase == InputActionPhase.Performed) skillTwo?.Invoke();
+        if (context.phase == InputActionPhase.Performed)
+        {
+            if (Pause.state == State.Interface) _statsInUI.CloseUI();
+            skillTwo?.Invoke();
+        }
 
         if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsSkillTwo = false;
     }
@@ -148,49 +144,45 @@ public class ActionForControlPlayer : MonoBehaviour {
             aimWithStick = false;
         }
     }
-    public void Stats(InputAction.CallbackContext context)
+    public void Stats()
     {
         if (!detectClic) return;
 
-        if (context.phase == InputActionPhase.Performed)
+        if(Pause.state == State.Interface)
+        {
+            _statsInUI.CloseUI();
+        }
+        else
         {
             PlayerActionStates.InStats = true;
             _statsInUI.ShowWindowedStats();
         }
     }
-    public void PauseAction(InputAction.CallbackContext context)
+    public void PauseAction()
     {
         if (!detectClic) return;
 
-        if (context.phase == InputActionPhase.Performed)
+        if(Pause.state == State.Game)
         {
-            if (Pause.state == State.Game) Pause.StateChange = State.Interface;
-
-            CloseStats();
+            PlayerActionStates.inPause = true;
+            _statsInUI.ShowWindowedPause();
+        }
+        else
+        {
+            PlayerActionStates.inPause = false;
+            _statsInUI.CloseUI();
         }
     }
     // ---- UI ACTIONS ------------- //
     public void LeftInUI(InputAction.CallbackContext context)
     {
-        if(context.phase == InputActionPhase.Started)
-        {
-            PlayerActionStates.leftUI = true;
-        }
-        if (context.phase == InputActionPhase.Canceled)
-        {
-            PlayerActionStates.leftUI = false;
-        }
+        if(context.phase == InputActionPhase.Started) PlayerActionStates.leftUI = true;
+        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.leftUI = false;
     }
     public void RightInUI(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started)
-        {
-            PlayerActionStates.rightUI = true;
-        }
-        if (context.phase == InputActionPhase.Canceled)
-        {
-            PlayerActionStates.rightUI = false;
-        }
+        if (context.phase == InputActionPhase.Started) PlayerActionStates.rightUI = true; 
+        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.rightUI = false;
     }
     // ----------------------------- //
     private void AimWithRightStick()
@@ -203,7 +195,7 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public static class PlayerActionStates
     {
-        public static bool IsHealing { get; set; }
+        public static bool IsMeditate { get; set; }
         public static bool IsDashing { get; set; }
         public static bool IsAttacking { get; set; }
         public static bool IsSkillOne { get; set; }
@@ -212,7 +204,9 @@ public class ActionForControlPlayer : MonoBehaviour {
         public static bool IsUse { get; set; }
         public static bool InStats { get; set; }
 
+        // ---- UI ACTIONS ---- //
         public static bool leftUI { get; set; }
         public static bool rightUI { get; set; }
+        public static bool inPause {  get; set; }
     }
 }

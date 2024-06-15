@@ -13,9 +13,11 @@ public class ManagerGold : MonoBehaviour {
 
     private Transform _cam;
     private Vector3 _initPos;
+    private HUD _hud;
 
     private void Start()
     {
+        _hud = FindAnyObjectByType<HUD>();
         _cam = FindAnyObjectByType<CameraMovement>().transform;
         _initPos = transform.position;
     }
@@ -34,7 +36,9 @@ public class ManagerGold : MonoBehaviour {
     private IEnumerator Creator(Vector3 position, int count)
     {
         _canCreate = false;
-        for(int i = 0; i < count; i++)
+
+        _hud.SetGold(_count);
+        for (int i = 0; i < count; i++)
         {
             Vector3 finalPos = new Vector3(Random.Range(position.x - 0.5f, position.x + 0.5f), Random.Range(position.y - 0.5f, position.y + 0.5f), 0);
 

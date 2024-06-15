@@ -105,7 +105,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Heal",
+                    "name": "Meditate",
                     "type": "Button",
                     "id": "32c58127-3100-43cc-bba3-563e800f7685",
                     "expectedControlType": "Button",
@@ -562,7 +562,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Heal",
+                    "action": "Meditate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -573,7 +573,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Heal",
+                    "action": "Meditate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

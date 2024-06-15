@@ -12,6 +12,7 @@ public class StatsInUI : MonoBehaviour {
     public GameObject dieUI;
     public GameObject statsWindow;
     public TextMeshProUGUI[] textStats;
+    public CanvasGroup[] sectioners;
 
     [Header("Content Menu UI")]
     public GameObject sectorMenu;
@@ -36,7 +37,7 @@ public class StatsInUI : MonoBehaviour {
 
     [Header("Content Objects UI")]
     public GameObject sectorObject;
-    public Image selectorObj;
+    public GameObject selectorObj;
     public Image[] _imgObject;
     public TextMeshProUGUI _titleObject;
     public TextMeshProUGUI _descObject;
@@ -77,17 +78,21 @@ public class StatsInUI : MonoBehaviour {
         }
         statsWindow.SetActive(false);
         #endregion
+
+        for(int i = 0; i < sectioners.Length; i++) { sectioners[i].alpha = 0.35f; }
+
+        CloseUI();
     }
     private void Update()
     {
-        if (LoadingScreen.inLoading || Pause.state != State.Interface) return;
+        if (LoadingScreen.inLoading || Pause.state != State.Interface || !_canMove) return;
 
         // MOVIMIENTO ENTRE VENTANAS --------- //
         if (PlayerActionStates.leftUI) StartCoroutine(MoveSector(-1));
         if (PlayerActionStates.rightUI) StartCoroutine(MoveSector(1));
 
         // MOVIMIENTO INTERNO DE LA UI ------- //
-        if (Input.GetAxis("Vertical") != 0 && _canMove) StartCoroutine(Move(Input.GetAxis("Vertical")));
+        if (Input.GetAxis("Vertical") != 0) StartCoroutine(Move(Input.GetAxis("Vertical")));
     }
     // ---- HUD ---- //
     public void SetHUD(int pos, float value, float valueMax)
@@ -100,6 +105,18 @@ public class StatsInUI : MonoBehaviour {
     {
         _imgObject[_player.objects.Count - 1].sprite = _player.objects[_player.objects.Count - 1].icon;
         _imgObject[_player.objects.Count - 1].color = Color.white;
+    }
+    private void SetDataObject()
+    {
+        if(_player.objects.Count <= _index)
+        {
+            _titleObject.text = "";
+            _descObject.text = "";
+            return;
+        }
+
+        _titleObject.text = LanguageManager.GetValue("Object", _player.objects[_index].itemName);
+        _descObject.text = LanguageManager.GetValue("Object", _player.objects[_index].description);
     }
     // ---- WINDOW SKILLS ---- //
     public void SetChangeSkillsInUI(List<SkillManager> skills)
@@ -126,8 +143,20 @@ public class StatsInUI : MonoBehaviour {
             _hud.SetSkills(i, skills[i].icon);
         }
     }
-    // ---- WINDOW STATS ---- //
-    public void ShowWindowedStats()
+    private void SetDataSkill()
+    {
+        if (_player.skills.Count <= _index)
+        {
+            _titleSkillSelect.text = "";
+            _descSkillSelect.text = "";
+            return;
+        }
+
+        _titleSkillSelect.text = LanguageManager.GetValue("Skill", _player.skills[_index].skillName);
+        _descSkillSelect.text = LanguageManager.GetValue("Skill", _player.skills[_index].descName);
+    }
+    // ---- WINDOW PAUSE ---- //
+    public void ShowWindowedPause()
     {
         if (Pause.state == State.Interface)
         {
@@ -137,8 +166,14 @@ public class StatsInUI : MonoBehaviour {
         else
         {
             Pause.StateChange = State.Interface;
-            OpenUI(TypeUI.stats);
+            OpenUI(TypeUI.menu);
         }
+    }
+    // ---- WINDOW STATS ---- //
+    public void ShowWindowedStats()
+    {
+        Pause.StateChange = State.Interface;
+        OpenUI(TypeUI.stats);
     }
     public void ChangeValueInUI(int type)
     {
@@ -160,6 +195,9 @@ public class StatsInUI : MonoBehaviour {
         _group.alpha = 1;
         _group.interactable = true;
 
+        ResetData();
+        sectioners[(int)typeUI].alpha = 1f;
+
         LoadSector((int)typeUI);
 
         _canMove = true;
@@ -169,26 +207,38 @@ public class StatsInUI : MonoBehaviour {
         if (prevTypes)
         {
             sectorMenu.SetActive(false);
+            statsWindow.SetActive(false);
             sectorSkills.SetActive(false);
             sectorObject.SetActive(false);
         }
 
         if(type == 0) sectorMenu.SetActive(true);
-        else if(type == 1) sectorSkills.SetActive(true);
-        else if(type == 2) sectorObject.SetActive(true);
+        else if(type == 1) statsWindow.SetActive(true);
+        else if(type == 2) sectorSkills.SetActive(true);
+        else if (type == 3) sectorObject.SetActive(true);
 
         _index = 0;
         _prevIndex = 0;
         _indexWindow = type;
+
+        SetDataSkill();
+        SetDataObject();
     }
-    private void CloseUI()
+    public void CloseUI()
     {
         _group.alpha = 0;
         _group.interactable = false;
+        _canMove = false;
 
         sectorMenu.SetActive(false);
+        statsWindow.SetActive(false);
         sectorSkills.SetActive(false);
         sectorObject.SetActive(false);
+        sectioners[0].alpha = 1f;
+
+        ResetData();
+
+        Pause.StateChange = State.Game;
     }
     // ------------------------ //
     private IEnumerator Move(float dir)
@@ -196,12 +246,12 @@ public class StatsInUI : MonoBehaviour {
         _canMove = false;
 
         #region Manager Move Per Direction Axis
-        if (dir > 0) _index++;
-        else _index--;
+        if (dir > 0) _index--;
+        else _index++;
 
         int limit = 0;
-        if (_indexWindow == 0 || _indexWindow == 1) limit = 3;
-        else if (_indexWindow == 2) limit = 36;
+        if (_indexWindow == 0 || _indexWindow == 2) limit = 3;
+        else if (_indexWindow == 3) limit = 36;
 
         if (_index >= limit) _index = 0;
         if (_index < 0) _index = (limit - 1);
@@ -212,8 +262,16 @@ public class StatsInUI : MonoBehaviour {
             menuOptions[_prevIndex].sprite = unselectSprite;
             menuOptions[_index].sprite = selectSprite;
         }
-        else if (_indexWindow == 1) { selectorSkill.transform.position = skillOptions[_index].transform.position; }
-        else if (_indexWindow == 2) { selectorObj.transform.position = _imgObject[_index].transform.position; }
+        else if (_indexWindow == 2)
+        {
+            selectorSkill.transform.position = skillOptions[_index].transform.position;
+            SetDataSkill();
+        }
+        else if (_indexWindow == 3)
+        {
+            selectorObj.transform.position = _imgObject[_index].transform.position;
+            SetDataObject();
+        }
 
         _prevIndex = _index;
 
@@ -222,18 +280,50 @@ public class StatsInUI : MonoBehaviour {
     }
     private IEnumerator MoveSector(int dir)
     {
+        #region Move
         _canMove = false;
         if (dir > 0) _indexWindow++;
         else _indexWindow--;
 
         if (_indexWindow >= 5) _indexWindow = 0;
         else if (_indexWindow < 0) _indexWindow = 4;
+        #endregion
 
         LoadSector(_indexWindow, true);
+
+        PlayerActionStates.leftUI = false;
+        PlayerActionStates.rightUI = false;
+        ResetData();
+
+        // MOSTRAR LA INFO DEL PRIMER OBJETO/SKILL
+        SetDataSkill();
+        SetDataObject();
+
+        // PINTAR LOS SECTIONERS SEGUN EL SECTOR ACTUAL
+        for (int i = 0; i < sectioners.Length; i++) { sectioners[i].alpha = 0.5f; }
+        sectioners[_indexWindow].alpha = 1f;
 
         yield return new WaitForSeconds(0.15f);
 
         _canMove = true;
     }
     // ------------------------ //
+    private void ResetData()
+    {
+        // SECTIONERS 
+        for (int i = 0; i < sectioners.Length; i++) { sectioners[i].alpha = 0.35f; }
+
+        // ---- MENU ---- //
+        menuOptions[0].sprite = selectSprite;
+        menuOptions[1].sprite = unselectSprite;
+        menuOptions[2].sprite = unselectSprite;
+        // ---- SKILLS ---- /
+        selectorSkill.transform.position = skillOptions[0].transform.position;
+        _titleSkillSelect.text = "";
+        _descSkillSelect.text = "";
+        // ---- OBJECTS ---- //
+        selectorObj.transform.position = _imgObject[0].transform.position;
+        _titleObject.text = "";
+        _descObject.text = "";
+    }
 }

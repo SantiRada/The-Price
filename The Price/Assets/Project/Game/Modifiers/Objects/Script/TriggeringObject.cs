@@ -87,18 +87,6 @@ public class TriggeringObject : MonoBehaviour {
         }
     }
     // ---- CHARGERS ---- //
-    public void ReloadPV()
-    {
-        if (_playerStats.GetterStats(0, false) < _playerStats.GetterStats(0, true))
-        {
-            // TIENE MENOS CONCENTRACIÓN QUE LA MÁXIMA
-            if (_playerStats.GetterStats(0, false) < (_playerStats.GetterStats(0, false) + _playerStats.changerPV))
-            {
-                _playerStats.SetValue(0, _playerStats.changerPV, false);
-            }
-            else { _playerStats.SetValue(0, (_playerStats.GetterStats(0, true) - _playerStats.GetterStats(0, false))); }
-        }
-    }
     private void ReloadConcentration()
     {
         if (_playerStats.GetterStats(1, false) < _playerStats.GetterStats(1, true))

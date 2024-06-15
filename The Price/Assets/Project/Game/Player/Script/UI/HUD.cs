@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,8 +10,12 @@ public class HUD : MonoBehaviour {
     public float speedMoveChanges;
     private bool healthChanges = false;
     private float delayBaseHealth;
+    [Space]
+    private int countGold = 0;
+    private int countFinishGold = 0;
 
     [Header("Content UI")]
+    public TextMeshProUGUI goldText;
     public Image delayBar;
     [Space]
     public Image healthbar;
@@ -25,6 +30,8 @@ public class HUD : MonoBehaviour {
     {
         delayBaseHealth = delayToLessHealth;
 
+        goldText.text = countGold.ToString();
+
         for (int i = 0; i < skills.Length; i++) { if (skills[i].sprite == null) { skills[i].gameObject.SetActive(false); } }
     }
     private void Update()
@@ -35,6 +42,23 @@ public class HUD : MonoBehaviour {
         delayBar.fillAmount = delayToLessHealth / delayBaseHealth;
 
         if (delayToLessHealth <= 0) { StartCoroutine("UpdateHealthFeedback"); }
+    }
+    public void SetGold(int gold)
+    {
+        countFinishGold += gold;
+
+        StartCoroutine("IncreaseGold");
+    }
+    private IEnumerator IncreaseGold()
+    {
+        yield return new WaitForSeconds(0.25f);
+
+        while (countGold < countFinishGold)
+        {
+            countGold++;
+            goldText.text = countGold.ToString();
+            yield return new WaitForSeconds(0.1f);
+        }
     }
     public void SetHealthbar(float health, float healthMax)
     {
@@ -69,6 +93,7 @@ public class HUD : MonoBehaviour {
             StartCoroutine("HealHealthbarBasePerRoom");
         }
     }
+    public int GetGold() { return countFinishGold; }
     private IEnumerator HealHealthbarBasePerRoom()
     {
         yield return new WaitForSeconds(0.25f);

@@ -494,8 +494,20 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8385875373981250499}
-        m_TargetAssemblyTypeName: InputController, Assembly-CSharp
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
         m_MethodName: StaticAim
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: LeftInUI
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -516,7 +528,7 @@ MonoBehaviour:
       - m_Target: {fileID: 8385875373981250499}
         m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
         m_MethodName: Stats
-        m_Mode: 0
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -528,7 +540,19 @@ MonoBehaviour:
     m_ActionId: 31d098a6-bc28-441d-85ed-8a21d7425660
     m_ActionName: 'Player/Stats[/XInputControllerWindows/select,/Keyboard/tab]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: PauseAction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 83a9b8e1-68db-47ab-be14-8548f40069eb
     m_ActionName: 'Player/Pause[/Keyboard/escape,/Keyboard/enter,/Keyboard/numpadEnter,/XInputControllerWindows/start]'
   - m_PersistentCalls:
@@ -536,6 +560,18 @@ MonoBehaviour:
       - m_Target: {fileID: 8385875373981250499}
         m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
         m_MethodName: Use
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: RightInUI
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -654,52 +690,11 @@ MonoBehaviour:
   - 8
   - 0
   - 80
-  changerPV: 0
-  changerConcentration: 0
+  changerPV: 2
+  changerConcentration: 2
   countKillsInRoom: 0
   countDamageInRoom: 0
   countDamageReceivedInRoom: 0
-  dieUI: {fileID: 0}
-  statsWindow: {fileID: 0}
-  textStats:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _imgObject:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _imgSkills:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _nameSkills:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _descSkills:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   weapon: {fileID: 8470884268634836610, guid: 89852514b8bbfe14897cf1e1819129fa, type: 3}
   weaponParent: {fileID: 7088614093564551266}
   skills: []

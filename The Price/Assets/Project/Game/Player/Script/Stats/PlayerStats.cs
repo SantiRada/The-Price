@@ -15,13 +15,13 @@ public class PlayerStats : MonoBehaviour {
     private bool _canReceivedDamage { get; set; }
 
     [Header("Changers")]
-    public float changerPV;
     public float changerConcentration;
 
     [Header("More Stats")]
     [HideInInspector] public int countKillsInRoom;
     [HideInInspector] public int countDamageInRoom;
     [HideInInspector] public int countDamageReceivedInRoom;
+    [HideInInspector] public int countGold = 0;
 
     [Header("Weapons")]
     public WeaponSystem weapon;
@@ -208,7 +208,6 @@ public class PlayerStats : MonoBehaviour {
 
         _statsInUI.ChangeValueInUI(type);
     }
-    public float ChangerPV { set { changerPV = value; } get { return changerPV; } }
     public float ChangerConcentration { set { changerConcentration = value; } get { return changerConcentration; } }
     // ---- GETTERS ---- //
     public float GetterStats(int pos, bool max = true)

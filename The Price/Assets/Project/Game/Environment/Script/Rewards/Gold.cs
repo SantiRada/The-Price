@@ -25,7 +25,6 @@ public class Gold : MonoBehaviour {
         yield return new WaitForSeconds(delayToAnim);
         canMove = true;
         yield return new WaitForSeconds(2f);
-
         Destroy(gameObject);
     }
 }
