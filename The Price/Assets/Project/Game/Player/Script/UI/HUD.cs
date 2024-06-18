@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class HUD : MonoBehaviour {
 
@@ -12,7 +13,7 @@ public class HUD : MonoBehaviour {
     private float delayBaseHealth;
     [Space]
     private int countGold = 0;
-    private int countFinishGold = 0;
+    [HideInInspector] public int countFinishGold = 0;
 
     [Header("Content UI")]
     public TextMeshProUGUI goldText;
@@ -25,7 +26,10 @@ public class HUD : MonoBehaviour {
     public Image concenFeedback;
     [Space]
     public Image[] skills;
+    
+    private PlayerStats _player;
 
+    private void Awake() { _player = FindAnyObjectByType<PlayerStats>(); }
     private void Start()
     {
         delayBaseHealth = delayToLessHealth;
@@ -46,6 +50,7 @@ public class HUD : MonoBehaviour {
     public void SetGold(int gold)
     {
         countFinishGold += gold;
+        _player.countGold = countFinishGold;
 
         StartCoroutine("IncreaseGold");
     }

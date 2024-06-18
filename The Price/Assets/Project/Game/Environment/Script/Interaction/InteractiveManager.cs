@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
+public enum ContentUI { bigContent, skillContent, dialogueContent, shopContent, smallContent }
+public enum ListContent { Menu, Game, Skill, Object }
 public class InteractiveManager : MonoBehaviour {
 
     [Header("Window")]
@@ -10,9 +13,10 @@ public class InteractiveManager : MonoBehaviour {
     [Space]
     public TextMeshProUGUI[] _nameContent;
     public TextMeshProUGUI[] _descContent;
+    public TextMeshProUGUI _goldContent;
 
     [Header("Style")]
-    public string colorNames;
+    public Color colorNames;
 
     [Header("Private Content")]
     private List<Vector3> _initPos = new List<Vector3>();
@@ -21,21 +25,45 @@ public class InteractiveManager : MonoBehaviour {
     {
         for(int i = 0; i < _windowThatWillOpen.Count; i++) { _initPos.Add(_windowThatWillOpen[i].transform.position); }
     }
-    public void LoadInfo(int index, int desc, Vector3 pos, int name, ListContent content)
+    public void LoadInfo(int index, string desc, Vector3 pos, string name, ListContent content, bool isFlair = false, string gold = "")
     {
         string cnt = content.ToString();
 
         _windowThatWillOpen[index].transform.position = (pos + _offset[index]);
 
-        if (index != 2) _nameContent[index].text = LanguageManager.GetValue(cnt, name);
+        if (!isFlair)
+        {
+            if (index != 2) _nameContent[index].text = LanguageManager.GetValue(cnt, int.Parse(name));
 
-        _descContent[index].text = LanguageManager.GetValue(cnt, desc);
+            _descContent[index].text = LanguageManager.GetValue(cnt, int.Parse(desc));
 
-        // AGREGAR NOMBRE DESPUÉS DE "HABLAR CON"
-        if(index == 2) _descContent[index].text += " <color=#" + colorNames + ">" + LanguageManager.GetValue(cnt, name) + "</color>";
+            // AGREGAR NOMBRE DESPUÉS DE "HABLAR CON"
+            if (index == 2) _descContent[index].text += " <color=#" + colorNames.ToHexString() + ">" + LanguageManager.GetValue(cnt, int.Parse(name)) + "</color>";
+        }
+        else
+        {
+            _nameContent[index].text = name;
+            _descContent[index].text = desc;
+        }
+
+        if (gold != "") _goldContent.text = gold;
     }
     public void CloseWindow()
     {
+        Interactive[] interac = FindObjectsByType<Interactive>(FindObjectsSortMode.None);
+        bool inTrigger = false;
+
+        for(int i = 0; i < interac.Length; i++)
+        {
+            if (interac[i].inTrigger)
+            {
+                inTrigger = true;
+                break;
+            }
+        }
+
+        if (inTrigger) return;
+
         for(int i = 0; i < _windowThatWillOpen.Count; i++) { _windowThatWillOpen[i].transform.position = _initPos[i]; }
     }
 }

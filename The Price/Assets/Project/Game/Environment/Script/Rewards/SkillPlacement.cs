@@ -302,8 +302,7 @@ public class SkillPlacement : MonoBehaviour {
         {
             // CREO LA HABILIDAD EN EL SUELO
             InteractiveSkill sk = Instantiate(_objForScene.gameObject, _player.transform.position, Quaternion.identity).GetComponent<InteractiveSkill>();
-            sk.isNew = false;
-            sk.ChangeSkill(_skillSelected);
+            sk.isNew = true;
         }
         else
         {

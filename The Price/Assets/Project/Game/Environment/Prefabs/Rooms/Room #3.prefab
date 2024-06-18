@@ -114,6 +114,7 @@ MonoBehaviour:
   spawnPlayer: {fileID: 8981151054266996021}
   minDistanceCam: {x: -1, y: 2}
   maxDistanceCam: {x: 5, y: 12}
+  posToShop: {x: -7, y: 12.25}
   posToReward: {x: 8, y: 7}
   sizeMap: {x: 24, y: 20}
   spawnMap: {fileID: 2909931157126747991}
@@ -3279,7 +3280,7 @@ Transform:
   m_GameObject: {fileID: 3694176644921698745}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7, y: 12, z: 0}
+  m_LocalPosition: {x: 2, y: 12, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3412,7 +3413,7 @@ Transform:
   m_GameObject: {fileID: 4048565343918975344}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 9.5, z: 0}
+  m_LocalPosition: {x: 0, y: 6.5, z: 0}
   m_LocalScale: {x: 8, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

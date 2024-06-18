@@ -1,33 +1,18 @@
 using UnityEngine;
 using static ActionForControlPlayer;
 
-public class InteractiveSkill : InteractiveObject {
+public class InteractiveSkill : Interactive {
 
-    public SkillManager _skill;
+    public SkillManager skill;
 
     [Header("Private Content")]
     private SkillPlacement _placement;
-    private PlayerStats _player;
-    [HideInInspector] public bool isNew;
-
-    private void Start()
-    {
-        _placement = FindAnyObjectByType<SkillPlacement>();
-        _player = FindAnyObjectByType<PlayerStats>();
-
-        if (isNew) ChangeSkill(_placement.RandomPool());
-    }
-    public void ChangeSkill(SkillManager sk)
-    {
-        _skill = sk;
-
-        nameContent = _skill.skillName;
-        descContent = _skill.descName;
-    }
+    
+    private void Start() { _placement = FindAnyObjectByType<SkillPlacement>(); }
     // --------------------------- //
     private void Update()
     {
-        if (inSelect)
+        if (inTrigger && !isShop)
         {
             // CAMBIAR EN LA POSICIÓN DE TRIANGULO
             if (Input.GetButtonDown("Fire4") || PlayerActionStates.IsSkillOne) ComprobationForPositionSkill(0);
@@ -38,24 +23,39 @@ public class InteractiveSkill : InteractiveObject {
     }
     private void ComprobationForPositionSkill(int pos)
     {
-        if (_player.skills.Count > 1) { _player.skills[pos] = _skill; }
+        if (_player.skills.Count > 1) { _player.skills[pos] = skill; }
         else if (_player.skills.Count == 1)
         {
-            if (pos == 0) _player.skills[0] = _skill;
-            else _player.skills.Add(_skill);
+            if (pos == 0) _player.skills[0] = skill;
+            else _player.skills.Add(skill);
         }
         else
         {
-            if(pos == 0) _player.skills.Add(_skill);
+            if(pos == 0) _player.skills.Add(skill);
 
             _player.skills.Add(null);
 
-            if(pos == 1) _player.skills.Add(_skill);
+            if(pos == 1) _player.skills.Add(skill);
         }
 
         inSelect = false;
         Destroy(gameObject);
     }
-    public override void TakeAttack() { Debug.Log("No ocurre nada ante el golpe"); }
-    public override void Select() { Debug.Log("No pasa nada al seleccionarlo"); }
+    public override void RandomPool()
+    {
+        skill = _placement.RandomPool();
+
+        nameContent = skill.skillName.ToString();
+        descContent = skill.descName.ToString();
+    }
+    public override void Select()
+    {
+        if (isShop)
+        {
+            Buy();
+            return;
+        }
+
+        Debug.Log("No pasa nada al seleccionar una Skill...");
+    }
 }

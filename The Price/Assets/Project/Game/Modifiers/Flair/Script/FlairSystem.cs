@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static ActionForControlPlayer;
 
-public enum TypeFlair { PV, Concentracion, VelocidadMovimiento, VelocidadAtaque, SkillDamage, Damage, DamageSubsequence, CriticalChance, MissChance, StealingPV, sanity }
+public enum TypeFlair { PV=0, Concentracion=1, VelocidadMovimiento=2, VelocidadAtaque=3, SkillDamage=4, Damage=5, DamageSubsequence=6, CriticalChance=7, MissChance=8, StealingPV=9, sanity=10 }
 public class FlairSystem : MonoBehaviour {
 
     [Header("Content Flair")]
@@ -71,7 +71,7 @@ public class FlairSystem : MonoBehaviour {
             types.Add(RandomFlairInSelector());
             amountPerType.Add(CalculateAmount());
 
-            typesAffected.Add(RandomAffectedFlair(i));
+            typesAffected.Add(RandomAffectedFlair(types[i]));
         }
 
         // CARGAR LA INFORMACIÓN DE LA UI
@@ -82,13 +82,7 @@ public class FlairSystem : MonoBehaviour {
             titleFlair[i].text = LanguageManager.GetValue("Game", 25) + " " + LanguageManager.GetValue("Game", (26 + (int)types[i]));
 
             // INFORMACIÓN DE LA DESCRIPCIÓN DE CADA INSTINTO
-            descFlair[i].text = ((int)types[i] != 8) ? LanguageManager.GetValue("Game", 37) : LanguageManager.GetValue("Game", 38);
-            descFlair[i].text += " <color=#" + FloatTextManager.GetColor(types[i]).ToHexString() + ">" + LanguageManager.GetValue("Game", (2 + (int)types[i])) + "</color> ";
-            descFlair[i].text += LanguageManager.GetValue("Game", 39) + " <color=green>" + (((int)types[i] != 8) ? "+" : "-") + amountPerType[i] + "</color> \n";
-
-            descFlair[i].text += ((int)typesAffected[i] != 8) ? LanguageManager.GetValue("Game", 38) : LanguageManager.GetValue("Game", 37);
-            descFlair[i].text += " <color=#" + FloatTextManager.GetColor(typesAffected[i]).ToHexString() + ">" + LanguageManager.GetValue("Game", (2 + (int)typesAffected[i])) + "</color> ";
-            descFlair[i].text += LanguageManager.GetValue("Game", 39) + " <color=red>" + (((int)typesAffected[i] != 8) ? "-" : "+") + (int)(amountPerType[i] / 2) + "</color>";
+            descFlair[i].text = CreateContentDescription(types[i], amountPerType[i], typesAffected[i]);
 
             dataFlair[i].text = LanguageManager.GetValue("Game", (2 + (int)types[i])) + " <color=green>" + _player.GetterStats((int)types[i], true) + " >> " + CalculateNewValue(types[i], amountPerType[i], true) + "</color>";
             dataAffectedFlair[i].text = LanguageManager.GetValue("Game", (2 + (int)typesAffected[i])) + " <color=red>" + _player.GetterStats((int)typesAffected[i], true) + " > " + CalculateNewValue(typesAffected[i], (int)(amountPerType[i] / 2), false) + "</color>";
@@ -129,7 +123,7 @@ public class FlairSystem : MonoBehaviour {
 
         canMove = true;
     }
-    private IEnumerator Select()
+    public IEnumerator Select()
     {
         canMove = false;
 
@@ -144,6 +138,58 @@ public class FlairSystem : MonoBehaviour {
         yield return new WaitForSeconds(0.25f);
 
         ResetValues();
+    }
+    public TypeFlair RandomAffectedFlair(TypeFlair type)
+    {
+        TypeFlair flair;
+        bool canUse = false;
+
+        do
+        {
+            flair = (TypeFlair)Random.Range(0, 11);
+
+            if (flair != type) canUse = true;
+        } while (!canUse);
+
+        return flair;
+    }
+    public TypeFlair RandomFlairInSelector()
+    {
+        TypeFlair flair;
+        bool canUse = true;
+
+        do
+        {
+            flair = (TypeFlair)Random.Range(0, 11);
+
+            if (types.Count > 0)
+            {
+                for (int i = 0; i < types.Count; i++)
+                {
+                    if (flair == types[i])
+                    {
+                        canUse = false;
+                        break;
+                    }
+
+                    if (flair != types[i] && i >= (types.Count - 1)) canUse = true;
+                }
+            }
+        } while (!canUse);
+
+        return flair;
+    }
+    public int CalculateAmount()
+    {
+        int value = Random.Range(0, 100);
+        int final;
+
+        if (value <= 60) final = 5;
+        else if (value > 60 && value < 90) final = 10;
+        else if (value >= 90 && value < 97) final = 15;
+        else final = 20;
+
+        return final;
     }
     // ---- FUNCIÓN INTEGRA ---- //
     private void ResetValues()
@@ -171,56 +217,6 @@ public class FlairSystem : MonoBehaviour {
             contentUI[i].color = unselectedColor;
         }
     }
-    private TypeFlair RandomAffectedFlair(int i)
-    {
-        TypeFlair flair;
-        bool canUse = false;
-
-        do
-        {
-            flair = (TypeFlair)Random.Range(0, 11);
-
-            if (flair != types[i] && _player.GetterStats((int)flair, true) > amountPerType[i]) canUse = true;
-        } while (!canUse);
-
-        return flair;
-    }
-    private TypeFlair RandomFlairInSelector()
-    {
-        TypeFlair flair;
-        bool canUse = true;
-
-        do
-        {
-            flair = (TypeFlair)Random.Range(0, 11);
-
-            for (int i = 0; i < types.Count; i++)
-            {
-                if (flair == types[i])
-                {
-                    canUse = false;
-                    break;
-                }
-
-                if (flair != types[i] && i >= (types.Count - 1)) canUse = true;
-            }
-
-        } while (!canUse);
-
-        return flair;
-    }
-    private int CalculateAmount()
-    {
-        int value = Random.Range(0, 100);
-        int final;
-
-        if (value <= 60) final = 5;
-        else if (value > 60 && value < 90) final = 10;
-        else if (value >= 90 && value < 97) final = 15;
-        else final = 20;
-
-        return final;
-    }
     private int CalculateNewValue(TypeFlair flair, int amount, bool increment)
     {
         int value;
@@ -237,5 +233,19 @@ public class FlairSystem : MonoBehaviour {
         }
 
         return value;
+    }
+    public string CreateContentDescription(TypeFlair flair, int amount, TypeFlair flairAffected)
+    {
+        string data;
+
+        data = ((int)flair != 8) ? LanguageManager.GetValue("Game", 37) : LanguageManager.GetValue("Game", 38);
+        data += " <color=#" + FloatTextManager.GetColor(flair).ToHexString() + ">" + LanguageManager.GetValue("Game", (2 + (int)flair)) + "</color> ";
+        data += LanguageManager.GetValue("Game", 39) + " <color=green>" + (((int)flair != 8) ? "+" : "-") + amount + "</color> \n";
+
+        data += ((int)flairAffected != 8) ? LanguageManager.GetValue("Game", 38) : LanguageManager.GetValue("Game", 37);
+        data += " <color=#" + FloatTextManager.GetColor(flairAffected).ToHexString() + ">" + LanguageManager.GetValue("Game", (2 + (int)flairAffected)) + "</color> ";
+        data += LanguageManager.GetValue("Game", 39) + " <color=red>" + (((int)flairAffected != 8) ? "-" : "+") + (int)(amount / 2) + "</color>";
+
+        return data;
     }
 }

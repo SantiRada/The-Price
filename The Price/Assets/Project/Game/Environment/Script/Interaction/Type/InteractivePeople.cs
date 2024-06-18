@@ -8,10 +8,7 @@ public class InteractivePeople : InteractiveObject {
     {
         _dialogue = GetComponent<DialogueManager>();
     }
-    public override void TakeAttack()
-    {
-
-    }
+    public override void RandomPool() { Debug.Log("No debo randomizar uun diálogo..."); }
     public override void Select()
     {
         if (_dialogue._howToOpen == HowToOpenDialogue.RequiredAction)

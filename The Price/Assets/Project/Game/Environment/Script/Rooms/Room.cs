@@ -14,6 +14,7 @@ public class Room : MonoBehaviour {
     [SerializeField] private Vector2 maxDistanceCam;
 
     [Header("Map Data")]
+    public Vector2 posToShop;
     public Vector2 posToReward;
     public Vector2Int sizeMap;
     public GameObject spawnMap;
