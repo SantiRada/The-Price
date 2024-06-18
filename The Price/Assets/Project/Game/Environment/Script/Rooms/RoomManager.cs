@@ -33,6 +33,7 @@ public class RoomManager : MonoBehaviour {
     [SerializeField] private GameObject _rewardObject;
     [SerializeField] private GameObject _rewardFlair;
     [SerializeField] private GameObject _shop;
+    private GameObject _rewardInScene;
 
     [Header("Private Content")]
     private WalkableMapGenerator _walkableMap;
@@ -93,6 +94,8 @@ public class RoomManager : MonoBehaviour {
 
         ObjectSpread[] spread = FindObjectsByType<ObjectSpread>(FindObjectsSortMode.None);
         if (spread.Length > 0) { for (int i = 0; i < spread.Length; i++) { Destroy(spread[i].gameObject); } }
+
+        if(_rewardInScene != null) Destroy(_rewardInScene.gameObject);
 
         isPerfectRoom = true;
     }
@@ -187,10 +190,10 @@ public class RoomManager : MonoBehaviour {
         switch (_typeRooms[_countRoomsComplete])
         {
             case TypeRoom.Gold: ManagerGold.CreateGold(pos, CountGold.Big); break;
-            case TypeRoom.Skill: Instantiate(_rewardSkill, currentRoom.posToReward, Quaternion.identity); break;
-            case TypeRoom.Object: Instantiate(_rewardObject, currentRoom.posToReward, Quaternion.identity); break;
-            case TypeRoom.Aptitud: Instantiate(_rewardFlair, currentRoom.posToReward, Quaternion.identity); break;
-            case TypeRoom.Shop: Instantiate(_shop, currentRoom.posToShop, Quaternion.identity); break;
+            case TypeRoom.Skill: _rewardInScene = Instantiate(_rewardSkill, currentRoom.posToReward, Quaternion.identity); break;
+            case TypeRoom.Object: _rewardInScene = Instantiate(_rewardObject, currentRoom.posToReward, Quaternion.identity); break;
+            case TypeRoom.Aptitud: _rewardInScene = Instantiate(_rewardFlair, currentRoom.posToReward, Quaternion.identity); break;
+            case TypeRoom.Shop: _rewardInScene = Instantiate(_shop, currentRoom.posToShop, Quaternion.identity); break;
         }
     }
     // ---- SETTERS && GETTERS ---- //

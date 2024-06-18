@@ -115,6 +115,8 @@ public class StatsInUI : MonoBehaviour {
             return;
         }
 
+        if (_player.objects[_index] == null) return;
+
         _titleObject.text = LanguageManager.GetValue("Object", _player.objects[_index].itemName);
         _descObject.text = LanguageManager.GetValue("Object", _player.objects[_index].description);
     }
@@ -151,6 +153,8 @@ public class StatsInUI : MonoBehaviour {
             _descSkillSelect.text = "";
             return;
         }
+
+        if (_player.skills[_index] == null) return;
 
         _titleSkillSelect.text = LanguageManager.GetValue("Skill", _player.skills[_index].skillName);
         _descSkillSelect.text = LanguageManager.GetValue("Skill", _player.skills[_index].descName);

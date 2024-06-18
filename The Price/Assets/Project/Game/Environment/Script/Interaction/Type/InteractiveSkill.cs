@@ -39,6 +39,9 @@ public class InteractiveSkill : Interactive {
         }
 
         inSelect = false;
+
+        CloseWindow(true);
+
         Destroy(gameObject);
     }
     public override void RandomPool()

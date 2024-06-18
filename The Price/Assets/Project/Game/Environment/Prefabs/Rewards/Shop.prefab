@@ -203,8 +203,8 @@ MonoBehaviour:
   - {fileID: 9183796492307889360}
   - {fileID: 5101982701561355721}
   - {fileID: 2390230586595811636}
-  chancesObject: 15
-  chancesFlair: 75
+  chancesObject: 5
+  chancesFlair: 10
 --- !u!1 &8912472058262187015
 GameObject:
   m_ObjectHideFlags: 0

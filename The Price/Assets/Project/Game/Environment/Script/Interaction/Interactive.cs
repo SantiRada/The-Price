@@ -36,9 +36,9 @@ public abstract class Interactive : MonoBehaviour {
 
         _manager.LoadInfo((int)content, descContent, transform.position, nameContent, typeContent, false, (priceInGold != 0) ? priceInGold.ToString() : "");
     }
-    protected void CloseWindow()
+    protected void CloseWindow(bool obligatory = false)
     {
-        _manager.CloseWindow();
+        _manager.CloseWindow(content, obligatory);
     }
     private void OnTriggerEnter2D(Collider2D collision) { if (collision.CompareTag("Player")) OpenWindow(); }
     private void OnTriggerStay2D(Collider2D collision)
@@ -58,7 +58,7 @@ public abstract class Interactive : MonoBehaviour {
         if (collision.CompareTag("Player"))
         {
             inTrigger = false;
-            Invoke("CloseWindow", 0.5f);
+            CloseWindow();
         }
     }
     public abstract void RandomPool();
@@ -76,6 +76,10 @@ public abstract class Interactive : MonoBehaviour {
             {
                 Bounce bn = gameObject.AddComponent<Bounce>();
                 bn.DoJump();
+
+                CloseWindow();
+                content = ContentUI.skillContent;
+                OpenWindow();
             }
             else { Select(); }
         }

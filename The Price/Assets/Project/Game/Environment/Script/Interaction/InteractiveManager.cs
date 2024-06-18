@@ -13,6 +13,9 @@ public class InteractiveManager : MonoBehaviour {
     [Space]
     public TextMeshProUGUI[] _nameContent;
     public TextMeshProUGUI[] _descContent;
+
+    [Header("Shop")]
+    public TextMeshProUGUI _typeContent;
     public TextMeshProUGUI _goldContent;
 
     [Header("Style")]
@@ -25,7 +28,7 @@ public class InteractiveManager : MonoBehaviour {
     {
         for(int i = 0; i < _windowThatWillOpen.Count; i++) { _initPos.Add(_windowThatWillOpen[i].transform.position); }
     }
-    public void LoadInfo(int index, string desc, Vector3 pos, string name, ListContent content, bool isFlair = false, string gold = "")
+    public void LoadInfo(int index, string desc, Vector3 pos, string name, ListContent content, bool isFlair = false, string gold = "", int type = -1)
     {
         string cnt = content.ToString();
 
@@ -46,24 +49,31 @@ public class InteractiveManager : MonoBehaviour {
             _descContent[index].text = desc;
         }
 
+        if (type != -1) _typeContent.text = LanguageManager.GetValue("Game", type);
         if (gold != "") _goldContent.text = gold;
     }
-    public void CloseWindow()
+    public void CloseWindow(ContentUI contentUI, bool obligatory = false)
     {
-        Interactive[] interac = FindObjectsByType<Interactive>(FindObjectsSortMode.None);
-        bool inTrigger = false;
-
-        for(int i = 0; i < interac.Length; i++)
+        if (!obligatory)
         {
-            if (interac[i].inTrigger)
+            Interactive[] interac = FindObjectsByType<Interactive>(FindObjectsSortMode.None);
+            bool inTrigger = false;
+
+            for(int i = 0; i < interac.Length; i++)
             {
-                inTrigger = true;
-                break;
+                if (interac[i].content == contentUI)
+                {
+                    if (interac[i].inTrigger)
+                    {
+                        inTrigger = true;
+                        break;
+                    }
+                }
             }
+
+            if (inTrigger) return;
         }
 
-        if (inTrigger) return;
-
-        for(int i = 0; i < _windowThatWillOpen.Count; i++) { _windowThatWillOpen[i].transform.position = _initPos[i]; }
+        _windowThatWillOpen[(int)contentUI].transform.position = _initPos[(int)contentUI];
     }
 }

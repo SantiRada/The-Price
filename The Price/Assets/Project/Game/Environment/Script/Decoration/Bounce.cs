@@ -9,9 +9,7 @@ public class Bounce : MonoBehaviour {
     private Vector3 initialPosition;
     private bool isJumping = false;
     private float jumpStartTime;
-    private Collider2D objectCollider;
 
-    private void Start() { objectCollider = GetComponent<Collider2D>(); }
     public void DoJump()
     {
         if (!isJumping)
@@ -19,7 +17,6 @@ public class Bounce : MonoBehaviour {
             initialPosition = transform.position;
             jumpStartTime = Time.time;
             isJumping = true;
-            objectCollider.isTrigger = true;
 
             Destroy(this, jumpDuration * 2);
         }
@@ -41,7 +38,6 @@ public class Bounce : MonoBehaviour {
             {
                 transform.position = new Vector3(initialPosition.x + jumpDistance, initialPosition.y, initialPosition.z);
                 isJumping = false;
-                objectCollider.isTrigger = false;
             }
         }
     }

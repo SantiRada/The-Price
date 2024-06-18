@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Proyectile
   - EnemyAttack
+  - Meditate
   layers:
   - Default
   - TransparentFX
