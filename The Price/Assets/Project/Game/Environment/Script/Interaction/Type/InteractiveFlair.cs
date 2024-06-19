@@ -10,7 +10,7 @@ public class InteractiveFlair : Interactive {
     private FlairSystem _flairSystem;
 
     private void Start() { _flairSystem = FindAnyObjectByType<FlairSystem>(); }
-    protected override void OpenWindow()
+    public override void OpenWindow()
     {
         inTrigger = true;
 

@@ -36,12 +36,12 @@ public class InteractiveManager : MonoBehaviour {
 
         if (!isFlair)
         {
-            if (index != 2) _nameContent[index].text = LanguageManager.GetValue(cnt, int.Parse(name));
+            string value = LanguageManager.GetValue(cnt, int.Parse(name));
 
             _descContent[index].text = LanguageManager.GetValue(cnt, int.Parse(desc));
-
-            // AGREGAR NOMBRE DESPUÉS DE "HABLAR CON"
-            if (index == 2) _descContent[index].text += " <color=#" + colorNames.ToHexString() + ">" + LanguageManager.GetValue(cnt, int.Parse(name)) + "</color>";
+            
+            if (index != 4) _nameContent[index].text = value;
+            else _descContent[index].text += " <color=#" + colorNames.ToHexString() + ">" + value + "</color>";
         }
         else
         {

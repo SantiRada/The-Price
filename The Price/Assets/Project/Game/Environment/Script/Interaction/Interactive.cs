@@ -27,7 +27,7 @@ public abstract class Interactive : MonoBehaviour {
 
         if (isNew && !isShop) RandomPool();
     }
-    protected virtual void OpenWindow()
+    public virtual void OpenWindow()
     {
         inTrigger = true;
 
@@ -36,10 +36,7 @@ public abstract class Interactive : MonoBehaviour {
 
         _manager.LoadInfo((int)content, descContent, transform.position, nameContent, typeContent, false, (priceInGold != 0) ? priceInGold.ToString() : "");
     }
-    protected void CloseWindow(bool obligatory = false)
-    {
-        _manager.CloseWindow(content, obligatory);
-    }
+    protected void CloseWindow() { _manager.CloseWindow(content, isShop); }
     private void OnTriggerEnter2D(Collider2D collision) { if (collision.CompareTag("Player")) OpenWindow(); }
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -74,8 +71,7 @@ public abstract class Interactive : MonoBehaviour {
 
             if (GetComponent<InteractiveSkill>())
             {
-                Bounce bn = gameObject.AddComponent<Bounce>();
-                bn.DoJump();
+                gameObject.AddComponent<Bounce>();
 
                 CloseWindow();
                 content = ContentUI.skillContent;

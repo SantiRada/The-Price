@@ -12,6 +12,8 @@ public class FloatText : MonoBehaviour {
     {
         anim = GetComponent<Animator>();
 
+        transform.SetAsFirstSibling();
+
         StartCoroutine("Movement");
     }
     private void Update()
@@ -22,10 +24,7 @@ public class FloatText : MonoBehaviour {
         timeInScreen -= Time.deltaTime;
         if (timeInScreen < 0) anim.SetBool("Destroy", true);
     }
-    public void DestroyObject()
-    {
-        Destroy(gameObject);
-    }
+    public void DestroyObject() { Destroy(gameObject); }
     private IEnumerator Movement()
     {
         while (true)

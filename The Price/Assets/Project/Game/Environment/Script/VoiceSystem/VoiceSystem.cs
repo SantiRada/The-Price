@@ -74,10 +74,7 @@ public class VoiceSystem : MonoBehaviour {
                 dialogue.sprite = dialogues[1];
             }
 
-            string gameContent = LanguageManager.GetValue("Game", message[index]);
-            Debug.Log(gameContent);
-
-            char[] values = gameContent.ToCharArray();
+            char[] values = LanguageManager.GetValue("Game", message[index]).ToCharArray();
             index++;
 
             for (int i = 0; i < values.Length; i++)

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4554965582156725335}
   - component: {fileID: 6720638332864867530}
   - component: {fileID: 7110726086717690460}
+  - component: {fileID: 7005218136114052145}
   m_Layer: 0
   m_Name: Gold
   m_TagString: Untagged
@@ -153,3 +154,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7005218136114052145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5559282056437364699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78e5541a53fb9144ba1bb27bc13b22ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpHeight: 1
+  jumpDistance: 1
+  jumpDuration: 0.65

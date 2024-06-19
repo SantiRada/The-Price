@@ -10,6 +10,7 @@ public class Bounce : MonoBehaviour {
     private bool isJumping = false;
     private float jumpStartTime;
 
+    private void Start() { DoJump(); }
     public void DoJump()
     {
         if (!isJumping)

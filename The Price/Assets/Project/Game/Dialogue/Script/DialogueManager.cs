@@ -26,17 +26,11 @@ public class DialogueManager : MonoBehaviour {
     [Header("Private Content")]
     private DialogueUI _ui;
 
-    private void Awake()
-    {
-        _ui = FindAnyObjectByType<DialogueUI>();
-    }
-    private void OnEnable()
-    {
-        if(_howToOpen == HowToOpenDialogue.RequiredStartRoom) ChangeState();
-    }
+    private void Awake() { _ui = FindAnyObjectByType<DialogueUI>(); }
+    private void OnEnable() { if (_howToOpen == HowToOpenDialogue.RequiredStartRoom) ChangeState(); }
     private void Start()
     {
-        if(_howToOpen == HowToOpenDialogue.RequiredEndRoom) RoomManager.finishRoom += ChangeState;
+        if (_howToOpen == HowToOpenDialogue.RequiredEndRoom) RoomManager.finishRoom += ChangeState;
 
         if (_showSkills || _showObject) StartCoroutine("CrazyPeople");
     }
@@ -81,11 +75,11 @@ public class DialogueManager : MonoBehaviour {
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player")) { if(_howToOpen == HowToOpenDialogue.RequiredTrigger) ChangeState(); }
+        if (collision.CompareTag("Player")) { if (_howToOpen == HowToOpenDialogue.RequiredTrigger) ChangeState(); }
     }
     private void ShowDialogue()
     {
-        if(whatSay.Length > _index) { _ui.ShowDialogue(transform.position, _typeDialogue, whoSpeak, whatSay[_index]); }
+        if (whatSay.Length > _index) { _ui.ShowDialogue(transform.position, _typeDialogue, whoSpeak, whatSay[_index]); }
         else
         {
             _inDialogue = false;
@@ -99,7 +93,7 @@ public class DialogueManager : MonoBehaviour {
 
             // PARA MOSTRAR EL SELECTOR DE INSTINTOS
             if (_showAptitud) FlairSystem.StartFlairSelector();
-            
+
             Destroy(gameObject, 0.65f);
         }
     }

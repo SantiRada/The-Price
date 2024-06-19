@@ -32,6 +32,7 @@ public class RoomManager : MonoBehaviour {
     [SerializeField] private GameObject _rewardSkill;
     [SerializeField] private GameObject _rewardObject;
     [SerializeField] private GameObject _rewardFlair;
+    [SerializeField] private GameObject _meditation;
     [SerializeField] private GameObject _shop;
     private GameObject _rewardInScene;
 
@@ -194,6 +195,7 @@ public class RoomManager : MonoBehaviour {
             case TypeRoom.Object: _rewardInScene = Instantiate(_rewardObject, currentRoom.posToReward, Quaternion.identity); break;
             case TypeRoom.Aptitud: _rewardInScene = Instantiate(_rewardFlair, currentRoom.posToReward, Quaternion.identity); break;
             case TypeRoom.Shop: _rewardInScene = Instantiate(_shop, currentRoom.posToShop, Quaternion.identity); break;
+            case TypeRoom.Lore: _rewardInScene = Instantiate(_meditation, currentRoom.posToShop, Quaternion.identity); break;
         }
     }
     // ---- SETTERS && GETTERS ---- //
