@@ -26,10 +26,11 @@ public class PlayerStats : MonoBehaviour {
     public GameObject weaponParent;
 
     [Header("Player Content")]
-    [HideInInspector] public List<SkillManager> skills = new List<SkillManager>();
-    [HideInInspector] public List<Object> objects = new List<Object>();
-    private TriggeringObject triggering;
+    public List<SkillManager> skills = new List<SkillManager>();
+    public List<Object> objects = new List<Object>();
+    
     [HideInInspector] public DeadSystem deadSystem;
+    private TriggeringObject triggering;
     private StatsInUI _statsInUI;
     private SpriteRenderer _spr;
 
@@ -57,17 +58,17 @@ public class PlayerStats : MonoBehaviour {
         deadSystem = GetComponent<DeadSystem>();
         _spr = GetComponent<SpriteRenderer>();
     }
-    private void Start()
+    private void OnEnable()
     {
-        #region InitialStats
         CanReceivedDamage = true;
 
         _generalStats = new float[_generalMaxStats.Length];
-        for(int i = 0; i < _generalMaxStats.Length; i++) { _generalStats[i] = _generalMaxStats[i]; }
+        for (int i = 0; i < _generalMaxStats.Length; i++) { _generalStats[i] = _generalMaxStats[i]; }
 
         if (weapon != null) InitialWeapon();
-        #endregion
-
+    }
+    private void Start()
+    {
         ActionForControlPlayer.skillOne += () => LaunchedSkill(0);
         ActionForControlPlayer.skillTwo += () => LaunchedSkill(1);
         ActionForControlPlayer.skillFragments += () => LaunchedSkill(2);
@@ -193,7 +194,7 @@ public class PlayerStats : MonoBehaviour {
         state = st;
         numberOfLoads = number;
     }
-    public void SetValue(int type, float value, bool max = true, bool canShow = true)
+    public void SetValue(int type, float value, bool max = true, bool canShow = true, bool equalValue = false)
     {
         if (value == 0) return;
 
@@ -203,8 +204,16 @@ public class PlayerStats : MonoBehaviour {
             else FloatTextManager.CreateText(transform.position, (TypeColor)type, ("+" + value.ToString()));
         }
 
-        if (max) _generalMaxStats[type] += value;
-        else _generalStats[type] += value;
+        if (equalValue)
+        {
+            if (max) _generalMaxStats[type] = value;
+            else _generalStats[type] = value;
+        }
+        else
+        {
+            if (max) _generalMaxStats[type] += value;
+            else _generalStats[type] += value;
+        }
 
         // CHANGE IN HUD
         if (type == 1 && !max) _statsInUI.SetHUD(1, _generalStats[1], _generalMaxStats[1]);

@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -60,14 +59,7 @@ public class ActionForControlPlayer : MonoBehaviour {
             PlayerActionStates.IsDashing = true;
         }
     }
-    public void Meditate(InputAction.CallbackContext context)
-    {
-        if (!detectClic) return;
-
-        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsMeditate = true;
-        if (context.phase == InputActionPhase.Performed) Debug.Log("Meditar");
-        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsMeditate = false;
-    }
+    // ----------------------------- //
     public void Attack(InputAction.CallbackContext context)
     {
         if (!detectClic) return;
@@ -89,6 +81,31 @@ public class ActionForControlPlayer : MonoBehaviour {
             PlayerActionStates.IsAttacking = false;
         }
     }
+    public void AttackTwo(InputAction.CallbackContext context)
+    {
+        if (!detectClic) return;
+
+        if (context.phase == InputActionPhase.Performed)
+        {
+            if (_weapon != null) _weapon.FinalAttack(1);
+            else Debug.Log("El PJ no tiene Arma");
+        }
+        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsAttackingTwo = true;
+        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsAttackingTwo = false;
+    }
+    public void AttackThree(InputAction.CallbackContext context)
+    {
+        if (!detectClic) return;
+
+        if (context.phase == InputActionPhase.Performed)
+        {
+            if (_weapon != null) _weapon.FinalAttack(2);
+            else Debug.Log("El PJ no tiene Arma");
+        }
+        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsAttackingThree = true;
+        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsAttackingThree = false;
+    }
+    // ----------------------------- //
     public void Use(InputAction.CallbackContext context)
     {
         if (!detectClic) return;
@@ -210,6 +227,8 @@ public class ActionForControlPlayer : MonoBehaviour {
         public static bool IsMeditate { get; set; }
         public static bool IsDashing { get; set; }
         public static bool IsAttacking { get; set; }
+        public static bool IsAttackingTwo { get; set; }
+        public static bool IsAttackingThree { get; set; }
         public static bool IsSkillOne { get; set; }
         public static bool IsSkillTwo { get; set; }
         public static bool IsSkillFragments { get; set; }

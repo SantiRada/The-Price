@@ -520,7 +520,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8385875373981250499}
         m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
-        m_MethodName: Meditate
+        m_MethodName: AttackTwo
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -530,8 +530,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 32c58127-3100-43cc-bba3-563e800f7685
-    m_ActionName: 'Player/Heal[/XInputControllerWindows/rightTrigger,/Keyboard/f]'
+    m_ActionId: 0e965f6a-87c6-441a-a135-93d1016decd5
+    m_ActionName: 'Player/Attack Two[/XInputControllerWindows/leftTrigger]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: AttackThree
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 682f7759-6a3d-46ac-a3da-48fb762a089e
+    m_ActionName: 'Player/Attack Three[/XInputControllerWindows/rightTrigger]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player
@@ -566,7 +582,7 @@ MonoBehaviour:
   _generalMaxStats:
   - 75
   - 16
-  - 3
+  - 7
   - 10
   - 14
   - 10
@@ -604,11 +620,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e184ff59d21c6d49b0476e77857983c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrenal: 0
-  celestial: 0
-  infernal: 0
-  astral: 0
-  inframundo: 0
+  wasInTerrenal: 0
+  wasInCielo: 0
+  wasInInfierno: 0
+  wasInAstral: 0
+  wasInInframundo: 0
+  deadInTerrenal: 0
+  deadInCielo: 0
+  deadInInfierno: 0
+  deadInInframundo: 0
+  killedMBoss_Terrenal: 0
+  killedMBoss_Cielo: 0
+  killedMBoss_Infierno: 0
+  killedMBoss_Inframundo: 0
+  killedBoss_Terrenal: 0
+  killedBoss_Cielo: 0
+  killedBoss_Infierno: 0
+  killedMaxBoss_Terrenal: 0
+  killedMaxBoss_Cielo: 0
+  killedMaxBoss_Infierno: 0
+  killedThanatos: 0
   currentWorld: 0
   nextWorld: 1
 --- !u!1 &7088614093564551266

@@ -105,9 +105,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Meditate",
+                    "name": "Attack Two",
                     "type": "Button",
-                    "id": "32c58127-3100-43cc-bba3-563e800f7685",
+                    "id": "0e965f6a-87c6-441a-a135-93d1016decd5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Attack Three",
+                    "type": "Button",
+                    "id": "682f7759-6a3d-46ac-a3da-48fb762a089e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -491,17 +500,6 @@
                 },
                 {
                     "name": "",
-                    "id": "e0e356ab-e0fa-420f-8c09-1e0136a19a52",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "a28f608b-8949-44af-8301-a127d6f99a53",
                     "path": "<Keyboard>/rightShift",
                     "interactions": "",
@@ -557,23 +555,23 @@
                 },
                 {
                     "name": "",
-                    "id": "1915061e-3ef0-4f99-81b6-fc2150219458",
-                    "path": "<Gamepad>/rightTrigger",
+                    "id": "920312db-4a80-4efa-95c4-8b0ae45d587a",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Meditate",
+                    "action": "Attack Two",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "446d40f6-a59d-42f6-82a4-5600a5b18740",
-                    "path": "<Keyboard>/f",
+                    "id": "cadcca19-e8b0-4135-9590-0bae080c3c4f",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Meditate",
+                    "groups": "Gamepad",
+                    "action": "Attack Three",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
