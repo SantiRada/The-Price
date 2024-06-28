@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Room : MonoBehaviour {
 
+    [Header("General Data")]
+    [Tooltip("Que sea CHILL significa que no habrá enemigos y se puede avanzar sin hacer nada")] public bool isChill = false;
+
     [Header("Enemies")]
     [SerializeField] private List<EnemyManager> _livingEnemies = new List<EnemyManager>();
     [SerializeField] private GameObject[] _spawnEnemy;
@@ -34,7 +37,8 @@ public class Room : MonoBehaviour {
         _currentWeight = 0;
         CameraMovement.SetMinMax(minDistanceCam, maxDistanceCam);
 
-        Invoke("CreateEnemies", 0.25f);
+        if (!isChill) Invoke("CreateEnemies", 0.25f);
+        else Advance();
     }
     private void CreateEnemies()
     {
@@ -77,10 +81,14 @@ public class Room : MonoBehaviour {
         {
             if (_livingEnemies.Count <= 0)
             {
-                _canAdvance = true;
-                StartCoroutine(_roomManager.Advance(posEnemy));
+                Advance();
             }
         }
+    }
+    private void Advance()
+    {
+        _canAdvance = true;
+        StartCoroutine(_roomManager.Advance());
     }
     public void SetUselessEnemies(TypeEnemyAttack typeUseless, bool value = false)
     {

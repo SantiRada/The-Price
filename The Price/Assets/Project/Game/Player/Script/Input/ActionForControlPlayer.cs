@@ -1,14 +1,15 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ActionForControlPlayer : MonoBehaviour {
 
     [Header("Elements of Player")]
-    private TriggeringObject _triggeringPlayer;
     private PlayerMovement _movement;
     private CrosshairData _crosshair;
     private PlayerInput _playerInput;
+    private PlayerStats _playerStats;
     private WeaponSystem _weapon;
 
     [Header("UI Content")]
@@ -27,9 +28,9 @@ public class ActionForControlPlayer : MonoBehaviour {
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
+        _playerStats = GetComponent<PlayerStats>();
         _movement = GetComponent<PlayerMovement>();
         _statsInUI = FindAnyObjectByType<StatsInUI>();
-        _triggeringPlayer = GetComponent<TriggeringObject>();
         _crosshair = GetComponentInChildren<CrosshairData>();
     }
     private void Start() { _weapon = GetComponentInChildren<WeaponSystem>(); }
@@ -46,6 +47,9 @@ public class ActionForControlPlayer : MonoBehaviour {
     // ----------------------------- //
     public void Dash()
     {
+        // ENVIAR A LA SIGUIENTE SALA AL CLIQUEAR ESTO SI ESTÁ MUERTO
+        if (_playerStats.isDead) _playerStats.deadSystem.DiePlayer();
+
         if (!detectClic) return;
 
         if (Pause.Comprobation(State.Game)) return;
@@ -74,6 +78,9 @@ public class ActionForControlPlayer : MonoBehaviour {
         }
         if(context.phase == InputActionPhase.Performed)
         {
+            // ENVIAR A LA SIGUIENTE SALA AL CLIQUEAR ESTO SI ESTÁ MUERTO
+            if (_playerStats.isDead) _playerStats.deadSystem.DiePlayer();
+
             if (_weapon != null) _weapon.Attack();
             else Debug.Log("El PJ no tiene Arma");
         }
@@ -89,6 +96,11 @@ public class ActionForControlPlayer : MonoBehaviour {
         if (context.phase == InputActionPhase.Started)
         {
             PlayerActionStates.IsUse = true;
+        }
+        if(context.phase == InputActionPhase.Performed)
+        {
+            // ENVIAR A LA SIGUIENTE SALA AL CLIQUEAR ESTO SI ESTÁ MUERTO
+            if (_playerStats.isDead) _playerStats.deadSystem.DiePlayer();
         }
         if (context.phase == InputActionPhase.Canceled)
         {

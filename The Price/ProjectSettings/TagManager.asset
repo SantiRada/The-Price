@@ -10,6 +10,7 @@ TagManager:
   - Proyectile
   - EnemyAttack
   - Meditate
+  - Door
   layers:
   - Default
   - TransparentFX

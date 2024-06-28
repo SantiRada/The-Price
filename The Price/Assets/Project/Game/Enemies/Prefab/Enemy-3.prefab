@@ -131,16 +131,16 @@ MonoBehaviour:
   delayBetweenAttack: 1.35
   healthMax: 25
   shieldMax: 5
-  damage: 10
+  damage: 15
   _speed: 1.15
   shield: 50
   canJump: 1
-  _distanceToJump: 5
-  _howFarDoJump: 3
-  _delayToJump: 2
+  _distanceToJump: 7
+  _howFarDoJump: 5
+  _delayToJump: 1
   inJump: 0
   objMelee: {fileID: 6998202307148566019}
-  distanceMelee: 0.85
+  distanceMelee: 0.9
 --- !u!50 &-8164110698866324934
 Rigidbody2D:
   serializedVersion: 4

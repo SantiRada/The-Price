@@ -1,24 +1,13 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using static ActionForControlPlayer;
 
-public enum Speaker { Nash, Thanatos }
 public class VoiceSystem : MonoBehaviour {
 
     [Header("Content UI")]
     public TextMeshProUGUI content;
-    public Image speaker;
-    public Image dialogue;
-    [Space]
-    public Sprite[] speakers;
-    public Sprite[] dialogues;
-
-    [Header("Content Show")]
-    public Speaker[] typeSpeaker;
-    public int[] message;
-    private int index = 0;
 
     [Header("Private Data")]
     private bool inDialogue = false;
@@ -26,12 +15,21 @@ public class VoiceSystem : MonoBehaviour {
     private float timer = 1.5f;
     private CanvasGroup _canvas;
 
+    [Header("Static Data")]
+    private static int indexDialogue;
+    public static Action eventDialogue;
+
     private void Awake() { _canvas = GetComponent<CanvasGroup>(); }
     private void Start()
     {
-        RoomManager.finishRoom += () => StartCoroutine("DialogueOn");
+        eventDialogue += () => StartCoroutine("DialogueOn");
 
         CloseDialogue();
+    }
+    public static void StartDialogue(int index)
+    {
+        indexDialogue = index;
+        eventDialogue?.Invoke();
     }
     private void Update()
     {
@@ -41,56 +39,35 @@ public class VoiceSystem : MonoBehaviour {
             {
                 timer -= Time.deltaTime;
 
-                if (PlayerActionStates.IsUse || PlayerActionStates.IsDashing || PlayerActionStates.IsAttacking)
-                {
-                    if(timer <= 0) CloseDialogue();
-                }
+                if (timer <= 0) CloseDialogue();
             }
             else { if (PlayerActionStates.IsUse || PlayerActionStates.IsDashing || PlayerActionStates.IsAttacking) Finish(); }
         }
     }
     public IEnumerator DialogueOn()
     {
-        yield return new WaitForSeconds(0.01f);
+        inDialogue = true;
+        finishDialogue = false;
+        content.text = "";
+        
+        timer = 1.5f;
+        _canvas.alpha = 1f;
 
-        if (index < typeSpeaker.Length)
+        char[] values = LanguageManager.GetValue("Game", indexDialogue).ToCharArray();
+
+        for (int i = 0; i < values.Length; i++)
         {
-            inDialogue = true;
-            finishDialogue = false;
-            content.text = "";
-            timer = 1.5f;
-
-            _canvas.interactable = true;
-            _canvas.alpha = 1f;
-
-            if (typeSpeaker[index] == Speaker.Nash)
-            {
-                speaker.sprite = speakers[0];
-                dialogue.sprite = dialogues[0];
-            }
-            else
-            {
-                speaker.sprite = speakers[1];
-                dialogue.sprite = dialogues[1];
-            }
-
-            char[] values = LanguageManager.GetValue("Game", message[index]).ToCharArray();
-            index++;
-
-            for (int i = 0; i < values.Length; i++)
-            {
-                content.text += values[i];
-                yield return new WaitForSeconds(0.05f);
-            }
-
-            Finish();
+            content.text += values[i];
+            yield return new WaitForSeconds(0.05f);
         }
+
+        Finish();
     }
     private void Finish()
     {
         StopCoroutine("DialogueOn");
 
-        content.text = LanguageManager.GetValue("Game", message[(index - 1)]);
+        content.text = LanguageManager.GetValue("Game", indexDialogue);
 
         finishDialogue = true;
     }
@@ -100,6 +77,5 @@ public class VoiceSystem : MonoBehaviour {
         finishDialogue = false;
 
         _canvas.alpha = 0f;
-        _canvas.interactable = false;
     }
 }

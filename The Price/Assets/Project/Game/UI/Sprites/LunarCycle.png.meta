@@ -142,12 +142,12 @@ TextureImporter:
       name: LunarCycle_0
       rect:
         serializedVersion: 2
-        x: 37
-        y: 1351
-        width: 355
-        height: 202
+        x: 0
+        y: 0
+        width: 600
+        height: 600
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -163,12 +163,12 @@ TextureImporter:
       name: LunarCycle_1
       rect:
         serializedVersion: 2
-        x: 37
-        y: 1126
-        width: 355
-        height: 202
+        x: 600
+        y: 0
+        width: 602
+        height: 600
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -184,19 +184,19 @@ TextureImporter:
       name: LunarCycle_2
       rect:
         serializedVersion: 2
-        x: 37
-        y: 901
-        width: 355
-        height: 202
+        x: 1200
+        y: 2
+        width: 598
+        height: 596
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 228a3c89b9f8e7c4cb33ed0ef5e57378
-      internalID: 1154866050
+      spriteID: 8e88a416370b28f4d93d1cdd2fa3761f
+      internalID: -1251178488
       vertices: []
       indices: 
       edges: []
@@ -205,82 +205,19 @@ TextureImporter:
       name: LunarCycle_3
       rect:
         serializedVersion: 2
-        x: 37
-        y: 676
-        width: 355
-        height: 202
+        x: 1800
+        y: 0
+        width: 600
+        height: 600
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7d0e966d12b077a449f3b29df88ce827
-      internalID: -1457483567
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: LunarCycle_4
-      rect:
-        serializedVersion: 2
-        x: 37
-        y: 451
-        width: 355
-        height: 202
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1c50f181cf5bf4044888e87152f12a42
-      internalID: -93910528
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: LunarCycle_5
-      rect:
-        serializedVersion: 2
-        x: 37
-        y: 226
-        width: 355
-        height: 202
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1ec313da4b7888e4b88e786ebb9b374a
-      internalID: 2005460109
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: LunarCycle_6
-      rect:
-        serializedVersion: 2
-        x: 37
-        y: 1
-        width: 355
-        height: 202
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4168c855be35e4146b28f6043323d445
-      internalID: 1532084386
+      spriteID: 46fbb905f9bebfb4ea58daf97754cb8b
+      internalID: -2073556646
       vertices: []
       indices: 
       edges: []
@@ -298,11 +235,8 @@ TextureImporter:
     nameFileIdTable:
       LunarCycle_0: 2751114512961703097
       LunarCycle_1: -772805003
-      LunarCycle_2: 1154866050
-      LunarCycle_3: -1457483567
-      LunarCycle_4: -93910528
-      LunarCycle_5: 2005460109
-      LunarCycle_6: 1532084386
+      LunarCycle_2: -1251178488
+      LunarCycle_3: -2073556646
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

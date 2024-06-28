@@ -29,8 +29,11 @@ public class PlayerStats : MonoBehaviour {
     [HideInInspector] public List<SkillManager> skills = new List<SkillManager>();
     [HideInInspector] public List<Object> objects = new List<Object>();
     private TriggeringObject triggering;
+    [HideInInspector] public DeadSystem deadSystem;
     private StatsInUI _statsInUI;
     private SpriteRenderer _spr;
+
+    [HideInInspector] public bool isDead = false;
 
     [Header("Prevent Damage Per Type")]
     [HideInInspector] public int[] countPrevent = new int[5];
@@ -51,6 +54,7 @@ public class PlayerStats : MonoBehaviour {
     {
         triggering = GetComponent<TriggeringObject>();
         _statsInUI = FindAnyObjectByType<StatsInUI>();
+        deadSystem = GetComponent<DeadSystem>();
         _spr = GetComponent<SpriteRenderer>();
     }
     private void Start()
@@ -74,6 +78,7 @@ public class PlayerStats : MonoBehaviour {
         CameraMovement.Shake(0.05f, 0.45f);
         yield return new WaitForSeconds(0.15f);
 
+        isDead = true;
         CameraMovement.SetDie();
         Pause.StateChange = State.Pause;
         yield return new WaitForSeconds(0.5f);
