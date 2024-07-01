@@ -1,7 +1,9 @@
+public enum ReasonSave { closeGame, deadSystem }
 [System.Serializable]
 public class SaveWorld
 {
     public bool passedTutorial = false;
+    public ReasonSave reasonSave;
     public int currentWorld = 0;
 
     public int wasInTerrenal;

@@ -1,7 +1,12 @@
+using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SaveLoadManager : MonoBehaviour {
+
+    [Header("Weapons")]
+    public List<WeaponSystem> weapons;
 
     [Header("Directions")]
     private string filePath;
@@ -13,35 +18,36 @@ public class SaveLoadManager : MonoBehaviour {
     [Header("Private Calls")]
     private PlayerStats _playerStats;
     private DeadSystem _deadSystem;
+    private HUD _hud;
 
     private void Awake()
     {
+        _hud = FindAnyObjectByType<HUD>();
         _playerStats = FindAnyObjectByType<PlayerStats>();
         _deadSystem = _playerStats.GetComponent<DeadSystem>();
     }
     private void Start()
     {
-        _player = new SavePlayer();
-        _world = new SaveWorld();
-
-        RoomManager.finishRoom += SaveData;
+        RoomManager.finishRoom += () => SaveData(ReasonSave.closeGame);
     }
-    public void SaveData()
+    public void SaveData(ReasonSave reason)
     {
+        if(_player == null) _player = new SavePlayer();
+        if(_world == null) _world = new SaveWorld();
+
         // ---- RELLENAR VALORES A GUARDAR ---- //
         RefillDataPlayer();
-        RefillDataWorld();
+        RefillDataWorld(reason);
 
         filePath = Path.Combine(Application.persistentDataPath, "Player.json");
         string jsonPlayer = JsonUtility.ToJson(_player);
         File.WriteAllText(filePath, jsonPlayer);
-        Debug.Log("Data saved to " + filePath);
+        Debug.Log(filePath);
 
 
         filePath = Path.Combine(Application.persistentDataPath, "World.json");
         string jsonWorld = JsonUtility.ToJson(_world);
         File.WriteAllText(filePath, jsonWorld);
-        Debug.Log("Data saved to " + filePath);
     }
     private void RefillDataPlayer()
     {
@@ -61,15 +67,32 @@ public class SaveLoadManager : MonoBehaviour {
         _player.concentracion = _playerStats.GetterStats(1, false);
         _player.sanity = _playerStats.GetterStats(10, false);
 
-        _player.gold = _playerStats.countGold;
+        _player.gold = _hud.GetGold();
 
-        _player.weaponInHand = _playerStats.weapon;
-        _player.objects = _playerStats.objects;
-        _player.skills = _playerStats.skills;
+        if(_playerStats.weapons != null)
+        {
+            List<int> weapons = new List<int>();
+            for(int i = 0; i< _playerStats.weapons.Length; i++)
+            {
+                weapons.Add(_playerStats.weapons[i].weaponID);
+            }
+
+            _player.weaponInHand = weapons;
+        }
+
+        List<int> objects = new List<int>();
+        for(int i = 0; i < _playerStats.objects.Count; i++) { objects.Add(_playerStats.objects[i].objectID); }
+        _player.objects = objects;
+
+        List<int> skills = new List<int>();
+        for (int i = 0; i < _playerStats.skills.Count; i++) { objects.Add(_playerStats.skills[i].skillID); }
+        _player.skills = skills;
     }
-    private void RefillDataWorld()
+    private void RefillDataWorld(ReasonSave reason)
     {
         _world.passedTutorial = (_deadSystem.wasInAstral > 0) ? true : false;
+
+        _world.reasonSave = reason;
         _world.currentWorld = (int)_deadSystem.currentWorld;
 
         _world.wasInTerrenal = _deadSystem.wasInTerrenal;
@@ -87,13 +110,18 @@ public class SaveLoadManager : MonoBehaviour {
     }
     public void LoadData()
     {
-        //// FUNCIONAMIENTO PARA PLAYER ----------------- ////
         filePath = Path.Combine(Application.persistentDataPath, "Player.json");
+        if(!File.Exists(filePath))
+        {
+            Debug.Log("No existen los archivos para cargar");
+            return;
+        }
+
+        //// FUNCIONAMIENTO PARA PLAYER ----------------- ////
         if (File.Exists(filePath))
         {
             string jsonPlayer = File.ReadAllText(filePath);
             _player = JsonUtility.FromJson<SavePlayer>(jsonPlayer);
-            Debug.Log("Data loaded from " + filePath);
 
             _playerStats.SetValue(0, _player.maxPV, true, false, true);
             _playerStats.SetValue(1, _player.maxConcentracion, true, false, true);
@@ -113,14 +141,13 @@ public class SaveLoadManager : MonoBehaviour {
             _playerStats.SetValue(1, _player.concentracion, false, false, true);
             _playerStats.SetValue(10, _player.sanity, false, false, true);
 
-            _playerStats.countGold = _player.gold;
+            _hud.SetGold(_player.gold);
 
-            _playerStats.weapon = _player.weaponInHand;
-            _playerStats.skills = _player.skills;
-            _playerStats.objects = _player.objects;
+            // _playerStats.weapons.AddRange(_player.weaponInHand);
+            
+            _playerStats.objects = LoadObjects(_player.objects);
+            _playerStats.skills = LoadSkills(_player.skills);
         }
-        else { Debug.LogWarning("No data file found"); }
-
 
         //// FUNCIONAMIENTO PARA WORLDS ----------------- ////
         filePath = Path.Combine(Application.persistentDataPath, "World.json");
@@ -128,10 +155,10 @@ public class SaveLoadManager : MonoBehaviour {
         if (File.Exists(filePath))
         {
             string jsonWorld = File.ReadAllText(filePath);
-            _player = JsonUtility.FromJson<SavePlayer>(jsonWorld);
-            Debug.Log("Data loaded from " + filePath);
+            _world = JsonUtility.FromJson<SaveWorld>(jsonWorld);
 
-            _deadSystem.currentWorld = (Worlds)_world.currentWorld;
+            if (_world.reasonSave == ReasonSave.closeGame) _deadSystem.currentWorld = Worlds.Astral;
+            else _deadSystem.currentWorld = (Worlds)_world.currentWorld;
 
             _deadSystem.wasInTerrenal = _world.wasInTerrenal;
             _deadSystem.wasInCielo = _world.wasInCielo;
@@ -144,12 +171,38 @@ public class SaveLoadManager : MonoBehaviour {
             _deadSystem.deadInInfierno = _world.deadInInfierno;
             _deadSystem.deadInInframundo = _world.deadInInframundo;
         }
-        else { Debug.LogWarning("No data file found"); }
+    }
+    // ---- INTEGRAS ---- //
+    private List<SkillManager> LoadSkills(List<int> skillsID)
+    {
+        SkillPlacement placement = FindAnyObjectByType<SkillPlacement>();
+        List<SkillManager> skills = new List<SkillManager>();
+
+        for(int i = 0; i < skillsID.Count; i++)
+        {
+            skills.Add(placement.GetSkillPerID(skillsID[i]));
+        }
+
+        return skills;
+    }
+    private List<Object> LoadObjects(List<int> objectID)
+    {
+        ObjectPlacement placement = FindAnyObjectByType<ObjectPlacement>();
+        List<Object> objects = new List<Object>();
+
+        for (int i = 0; i < objectID.Count; i++)
+        {
+            objects.Add(placement.GetObjectPerID(objectID[i]));
+        }
+
+        return objects;
     }
     // ---- GETTERS ---- //
     public SaveWorld GetWorldData()
     {
-        if (_world != null) return _world;
-        else return null;
+        filePath = Path.Combine(Application.persistentDataPath, "World.json");
+
+        if (File.Exists(filePath)) { return _world; }
+        else { return null; }
     }
 }

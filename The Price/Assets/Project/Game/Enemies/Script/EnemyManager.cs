@@ -135,6 +135,62 @@ public abstract class EnemyManager : MonoBehaviour {
         yield return new WaitForSeconds(_delayToJump);
         canJump = true;
     }
+    // ---- TRIGGERS -------- //
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Proyectile"))
+        {
+            int damage = 0;
+            
+            if (collision.GetComponent<WeaponSystem>())
+            {
+                WeaponSystem weapon = collision.GetComponent<WeaponSystem>();
+                damage = weapon.damage;
+
+                weapon.FinishAttack();
+            }
+            else if (collision.GetComponent<Projectile>())
+            {
+                Projectile pr = collision.GetComponent<Projectile>();
+                damage = pr.damage;
+
+                // VERIFICA QUE EL PROYECTIL HAYA SIDO LANZADO POR EL JUGADOR
+                if (pr.whoIsBoss != 0) return;
+
+                // DESTRUYE EL PROYECTIL SI ESTE NO PUEDE ATRAVESAR OBJETOS
+                if (!pr.canTraverse) Destroy(collision.gameObject);
+            }
+
+            TakeDamage(damage, false);
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Proyectile"))
+        {
+            int damage = 0;
+            if (collision.GetComponent<WeaponSystem>())
+            {
+                WeaponSystem weapon = collision.GetComponent<WeaponSystem>();
+                damage = weapon.damage;
+
+                weapon.FinishAttack();
+            }
+            else if (collision.GetComponent<Projectile>())
+            {
+                Projectile pr = collision.GetComponent<Projectile>();
+                damage = pr.damage;
+
+                // VERIFICA QUE EL PROYECTIL HAYA SIDO LANZADO POR EL JUGADOR
+                if (pr.whoIsBoss != 0) return;
+
+                // DESTRUYE EL PROYECTIL SI ESTE NO PUEDE ATRAVESAR OBJETOS
+                if (!pr.canTraverse) Destroy(collision.gameObject);
+            }
+
+            TakeDamage(damage, false);
+        }
+    }
     // ---- MODIFICATORS ---- //
     public void AddState(TypeState state, int numberOfLoads)
     {

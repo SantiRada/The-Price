@@ -21,8 +21,8 @@ public class SavePlayer
 
     public int gold;
 
-    public WeaponSystem weaponInHand;
+    public List<int> weaponInHand = new List<int>();
 
-    public List<SkillManager> skills;
-    public List<Object> objects;
+    public List<int> skills = new List<int>();
+    public List<int> objects = new List<int>();
 }

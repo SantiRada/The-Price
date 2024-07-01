@@ -22,7 +22,7 @@ public class PlayerStats : MonoBehaviour {
     [HideInInspector] public int countGold = 0;
 
     [Header("Weapons")]
-    public WeaponSystem weapon;
+    public WeaponSystem[] weapons = new WeaponSystem[3];
     public GameObject weaponParent;
 
     [Header("Player Content")]
@@ -65,7 +65,7 @@ public class PlayerStats : MonoBehaviour {
         _generalStats = new float[_generalMaxStats.Length];
         for (int i = 0; i < _generalMaxStats.Length; i++) { _generalStats[i] = _generalMaxStats[i]; }
 
-        if (weapon != null) InitialWeapon();
+        if (weapons != null) InitialWeapon();
     }
     private void Start()
     {
@@ -111,8 +111,6 @@ public class PlayerStats : MonoBehaviour {
 
         // APLICAR ESTADO DE INTANGIBILIDAD
         CanReceivedDamage = false;
-        // LIMITAR ATAQUE TRAS RECIBIR DAÑO
-        weapon.canAttack = false;
         // CAMBIAR COLOR POR UN PEQUEÑO PERIODO DE TIEMPO
         _spr.color = Color.red;
         Invoke("ResetColor", timeToTakeDamage);
@@ -283,7 +281,16 @@ public class PlayerStats : MonoBehaviour {
 
         return dmg;
     }
-    private void InitialWeapon() { Instantiate(weapon.gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform); }
-    private void ResetColor() { _spr.color = Color.white; weapon.canAttack = true; }
+    private void InitialWeapon()
+    {
+        if(weapons != null)
+        {
+            for(int i = 0; i < weapons.Length; i++)
+            {
+                Instantiate(weapons[i].gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform);
+            }
+        }
+    }
+    private void ResetColor() { _spr.color = Color.white; }
     private void RemoveStateIntangible() { CanReceivedDamage = true; }
 }

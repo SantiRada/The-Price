@@ -9,13 +9,17 @@ public class DoorSystem : MonoBehaviour {
     [Range(0f, 2f)] public float timerToLoadScene;
     public bool isActive = true;
 
+    private SaveLoadManager _saveLoad;
     private RoomManager _roomManager;
     private LunarCycle _lunarCycle;
+    private DeadSystem _deadSystem;
 
-    private void Start()
+    private void OnEnable()
     {
+        _saveLoad = FindAnyObjectByType<SaveLoadManager>();
         _roomManager = FindAnyObjectByType<RoomManager>();
         _lunarCycle = FindAnyObjectByType<LunarCycle>();
+        _deadSystem = FindAnyObjectByType<DeadSystem>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -30,11 +34,21 @@ public class DoorSystem : MonoBehaviour {
     }
     private IEnumerator ChangeScene()
     {
-        _lunarCycle.isActive = false;
-        _lunarCycle.StartCoroutine("AddRoom");
+        _lunarCycle.canvas.alpha = 0;
 
         _roomManager.loadingSector.SetBool("inLoading", true);
-        Pause.SetPause(true);
+
+        switch (_deadSystem.currentWorld)
+        {
+            case Worlds.Terrenal: _deadSystem.wasInTerrenal++; break;
+            case Worlds.Cielo: _deadSystem.wasInCielo++; break;
+            case Worlds.Infierno: _deadSystem.wasInInfierno++; break;
+            case Worlds.Astral: _deadSystem.wasInAstral++; break;
+            case Worlds.Inframundo: _deadSystem.wasInInframundo++; break;
+        }
+
+        _deadSystem.currentWorld = whereItTakesMe;
+        _saveLoad.SaveData(ReasonSave.deadSystem);
 
         yield return new WaitForSeconds(timerToLoadScene);
 

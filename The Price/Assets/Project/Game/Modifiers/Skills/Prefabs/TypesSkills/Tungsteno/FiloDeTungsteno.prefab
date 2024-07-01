@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eae565c7cb16f04c973c1006ef85ad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillID: 11
   icon: {fileID: -8386645779307496254, guid: 439074d73354ba74b94257f3c9b2f1d8, type: 3}
   skillName: 40
   descName: 46
@@ -110,9 +111,12 @@ MonoBehaviour:
   loadType: 0
   destroyType: 0
   timeToDestroy: 3
-  preventDamage: 0
+  preventDamagePerType: 0
   countPrevent: 0000000000000000000000000000000000000000
   reflects: 0000000000
+  preventDistanceDamage: 0
+  preventDistance: 0000000000000000
+  reflectDistance: 0000
   hasState: 0
   state: 2
   countOfLoads: 1

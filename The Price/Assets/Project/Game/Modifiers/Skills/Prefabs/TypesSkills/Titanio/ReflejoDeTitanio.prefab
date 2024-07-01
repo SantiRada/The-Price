@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eae565c7cb16f04c973c1006ef85ad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillID: 8
   icon: {fileID: 0}
   skillName: 24
   descName: 30
@@ -111,9 +112,16 @@ MonoBehaviour:
   loadType: 0
   destroyType: 0
   timeToDestroy: 3
-  preventDamage: 1
+  preventDamagePerType: 0
   countPrevent: 0000000000000000640000000000000000000000
   reflects: 0000010000
+  preventDistanceDamage: 0
+  preventDistance: 0000000000000000
+  reflectDistance: 0000
+  hasState: 0
+  state: 0
+  countOfLoads: 0
+  hasStatePerAttack: 0
   modification:
   - 0
   - 0
@@ -143,3 +151,7 @@ MonoBehaviour:
   typeAttackSpread: 0
   radioSpread: 4
   speedMovement: 0.05
+  healthPlayer: 0
+  hasState: 0
+  state: 0
+  countOfLoads: 0

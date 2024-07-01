@@ -24,15 +24,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack",
-                    "type": "Button",
-                    "id": "1139eb42-9f87-49b5-a149-8a6c02dd4e9c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Dash",
                     "type": "Button",
                     "id": "c868c475-e9fc-472c-ac61-0ff62a3087b2",
@@ -105,7 +96,16 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack Two",
+                    "name": "Melee",
+                    "type": "Button",
+                    "id": "1139eb42-9f87-49b5-a149-8a6c02dd4e9c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Distance",
                     "type": "Button",
                     "id": "0e965f6a-87c6-441a-a135-93d1016decd5",
                     "expectedControlType": "Button",
@@ -114,7 +114,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack Three",
+                    "name": "MiddleDistance",
                     "type": "Button",
                     "id": "682f7759-6a3d-46ac-a3da-48fb762a089e",
                     "expectedControlType": "Button",
@@ -424,7 +424,7 @@
                 {
                     "name": "",
                     "id": "df9c59dc-5e48-48da-bf0d-17d39f02cb09",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -446,7 +446,7 @@
                 {
                     "name": "",
                     "id": "673fbaaa-5330-4982-939f-895253bd7367",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -489,50 +489,6 @@
                 },
                 {
                     "name": "",
-                    "id": "29db875f-d771-413e-b381-c98de4ff10bb",
-                    "path": "<Gamepad>/buttonWest",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a28f608b-8949-44af-8301-a127d6f99a53",
-                    "path": "<Keyboard>/rightShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1a49d8a0-208d-484d-ac3f-7f7a53dbe504",
-                    "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "fe6d6bf6-ef57-4d38-9c7d-bc2ad61d2e3c",
-                    "path": "<Keyboard>/numpadEnter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "7bfe962e-ce39-4e7d-9f91-6836baff8a24",
                     "path": "<Gamepad>/rightStickPress",
                     "interactions": "",
@@ -556,22 +512,66 @@
                 {
                     "name": "",
                     "id": "920312db-4a80-4efa-95c4-8b0ae45d587a",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Attack Two",
+                    "action": "Distance",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "cadcca19-e8b0-4135-9590-0bae080c3c4f",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Attack Three",
+                    "action": "MiddleDistance",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "29db875f-d771-413e-b381-c98de4ff10bb",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Melee",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a28f608b-8949-44af-8301-a127d6f99a53",
+                    "path": "<Keyboard>/rightShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Melee",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1a49d8a0-208d-484d-ac3f-7f7a53dbe504",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Melee",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fe6d6bf6-ef57-4d38-9c7d-bc2ad61d2e3c",
+                    "path": "<Keyboard>/numpadEnter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Melee",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

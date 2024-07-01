@@ -6,6 +6,7 @@ public enum TypeCanceled { permanent, receivedDamage, perRoom, perTime }
 public abstract class Object : ScriptableObject {
 
     [Header("Info Base")]
+    public int objectID = 0;
     public Sprite icon;
     public int itemName;
     public int description;

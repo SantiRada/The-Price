@@ -1,50 +1,48 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class WeaponSystem : MonoBehaviour {
+public abstract class WeaponSystem : MonoBehaviour {
 
-    [Header("Distance")]
-    public bool distanceAttack;
-    public GameObject projectile;
-    public float distanceToAttack;
-    public bool canTraverse;
+    [Header("Info General")]
+    public int weaponID;
+    public int nameWeapon;
+    public int damageWeapon;
+    public int damageFinalHit;
+    [HideInInspector] public int damage;
 
     [Header("Attack System")]
     [HideInInspector] public int countAttack = 0;
     [HideInInspector] public bool canAttack = true;
 
-    [Header("Modify Stats")]
-    public float[] stats = new float[11];
-
     [Header("Timers")]
     [Range(0, 3), Tooltip("Tiempo entre ataques")] public float delayBetweenAttack;
-    [HideInInspector] public float delayBetweenBase;
-    private float delayDetect = 1.75f;
+    [Range(0, 3), Tooltip("Tiempo que tarda en dejarde detectar un combo")] public float delayDetect = 1.75f;
+    [Range(0, 2), Tooltip("Duración del ataque")] public float durationDamage = 0.35f;
+    private float _durationDamageBase;
+    private float _delayBetweenBase;
+    private float _delayDetectBase;
+    private bool _inAttack = false;
 
     [Header("Private Data")]
-    private CrosshairData _crosshair;
-    private PlayerStats _player;
+    protected PlayerStats _player;
     private Animator anim;
 
     private void OnEnable()
     {
         _player = GetComponentInParent<PlayerStats>();
-        _crosshair = FindAnyObjectByType<CrosshairData>();
         anim = _player.GetComponent<Animator>();
 
-        delayBetweenBase = delayBetweenAttack;
-
-        // MODIFICADOR DE STATS DE CADA WEAPON
-        for(int i = 0; i < stats.Length; i++)
-        {
-            _player.SetValue(i, stats[i], false, false);
-            _player.SetValue(i, stats[i], true, false);
-        }
+        _delayBetweenBase = delayBetweenAttack;
+        _durationDamageBase = durationDamage;
+        _delayDetectBase = delayDetect;
     }
     private void Update()
     {
         delayDetect -= Time.deltaTime;
-        if (delayDetect <= 0) countAttack = 0;
+        if (delayDetect <= 0)
+        {
+            countAttack = 0;
+            delayDetect = _delayDetectBase;
+        }
 
         if (!canAttack)
         {
@@ -52,70 +50,50 @@ public class WeaponSystem : MonoBehaviour {
 
             if(delayBetweenAttack <= 0) canAttack = true;
         }
-    }
-    // ---- COMBO ---- //
-    public void FinalAttack(int combo)
-    {
-        // if (countAttack <= 2) return;
 
-        Debug.Log("Ha tirao un combo with " + combo);
-
-        switch (combo)
+        if (_inAttack)
         {
-            case 0: CreateProjectile(0.35f, 3); break;
-            case 1: CreateProjectile(1.25f); break;
-            case 2: CreateProjectile(0.35f, 6); break;
-        }
+            durationDamage -= Time.deltaTime;
 
-        countAttack = 0;
+            if (durationDamage <= 0)
+            {
+                durationDamage = _durationDamageBase;
+                FinishAttack();
+            }
+        }
     }
-    public void Attack()
+    public void PrepareAttack()
     {
         if (!canAttack) return;
 
         // FUNCIONAMIENTO DE DELAY ENTRE ATAQUES
-        delayBetweenAttack = delayBetweenBase;
-        delayDetect = 1.75f;
-        canAttack = false;
+        delayBetweenAttack = _delayBetweenBase;
+        delayDetect = _delayDetectBase;
 
         countAttack++;
-        if (countAttack >= 3)
-        {
-            FinalAttack(0);
-            return;
-        }
-
         anim.SetBool("Attack", true);
+        _inAttack = true;
 
-        if (distanceAttack)
+        if(countAttack >= 3)
         {
-            CreateProjectile();
-            return;
+            delayBetweenAttack = (_delayBetweenBase * 1.5f);
+            countAttack = 0;
+            FinalHit();
         }
+        else { Attack(); }
+
+        canAttack = false;
     }
-    private void CreateProjectile(float size = 0.35f, int count = 1)
-    {
-        Vector3 target = _crosshair.GetCurrentAimDirection();
-
-        for (int i = 0; i < count; i++)
-        {
-            // ATAQUE A DISTANCIA
-            Projectile pr = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
-
-            pr.transform.localScale = new Vector3(size, size, size);
-
-            // VERIFICAR DIFERENCIA ENTRE DAÑO-1 Y DAÑO SUCESIVO
-            int damage = (int)_player.GetterStats(5, false);
-            if (countAttack > 2) damage = (int)(_player.GetterStats(5, false) * (_player.GetterStats(6, false) / 100));
-
-            pr.SetterValues(gameObject, distanceToAttack, damage, canTraverse, target);
-        }
-    }
+    public abstract void Attack();
+    public abstract void FinalHit();
     // ---- EVENTO DEL ANIMATOR ---- //
-    public void MeleeAttack() { gameObject.tag = "Projectile"; }
     public void FinishAttack()
     {
-        gameObject.tag = "Weapon";
         anim.SetBool("Attack", false);
+
+        gameObject.tag = "Weapon";
+        _inAttack = false;
+
+        _player.CanReceivedDamage = true;
     }
 }

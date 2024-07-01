@@ -9,7 +9,7 @@ public class ActionForControlPlayer : MonoBehaviour {
     private CrosshairData _crosshair;
     private PlayerInput _playerInput;
     private PlayerStats _playerStats;
-    private WeaponSystem _weapon;
+    private WeaponSystem[] _weapon;
 
     [Header("UI Content")]
     private StatsInUI _statsInUI;
@@ -32,7 +32,7 @@ public class ActionForControlPlayer : MonoBehaviour {
         _statsInUI = FindAnyObjectByType<StatsInUI>();
         _crosshair = GetComponentInChildren<CrosshairData>();
     }
-    private void Start() { _weapon = GetComponentInChildren<WeaponSystem>(); }
+    private void Start() { _weapon = GetComponentsInChildren<WeaponSystem>(); }
     private void Update()
     {
         if (!detectClic || Pause.Comprobation(State.Game)) return;
@@ -73,7 +73,7 @@ public class ActionForControlPlayer : MonoBehaviour {
             // ENVIAR A LA SIGUIENTE SALA AL CLIQUEAR ESTO SI ESTÁ MUERTO
             if (_playerStats.isDead) _playerStats.deadSystem.DiePlayer();
 
-            if (_weapon != null) _weapon.Attack();
+            if (_weapon != null) _weapon[0].PrepareAttack();
             else Debug.Log("El PJ no tiene Arma");
         }
         if(context.phase == InputActionPhase.Canceled)
@@ -87,7 +87,7 @@ public class ActionForControlPlayer : MonoBehaviour {
 
         if (context.phase == InputActionPhase.Performed)
         {
-            if (_weapon != null) _weapon.FinalAttack(1);
+            if (_weapon != null) _weapon[1].PrepareAttack();
             else Debug.Log("El PJ no tiene Arma");
         }
         if (context.phase == InputActionPhase.Started) PlayerActionStates.IsAttackingTwo = true;
@@ -99,7 +99,7 @@ public class ActionForControlPlayer : MonoBehaviour {
 
         if (context.phase == InputActionPhase.Performed)
         {
-            if (_weapon != null) _weapon.FinalAttack(2);
+            if (_weapon != null) _weapon[2].PrepareAttack();
             else Debug.Log("El PJ no tiene Arma");
         }
         if (context.phase == InputActionPhase.Started) PlayerActionStates.IsAttackingThree = true;

@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e72afceec1708941ac93fbcfd5536d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillID: 1
   icon: {fileID: -8386645779307496254, guid: 439074d73354ba74b94257f3c9b2f1d8, type: 3}
   skillName: 2
   descName: 8
@@ -58,6 +59,16 @@ MonoBehaviour:
   loadType: 3
   destroyType: 0
   timeToDestroy: 6
+  preventDamagePerType: 0
+  countPrevent: 0000000000000000000000000000000000000000
+  reflects: 0000000000
+  preventDistanceDamage: 0
+  preventDistance: 0000000000000000
+  reflectDistance: 0000
+  hasState: 0
+  state: 0
+  countOfLoads: 0
+  hasStatePerAttack: 0
   _disperser: 0.25
 --- !u!212 &1986590769455309835
 SpriteRenderer:

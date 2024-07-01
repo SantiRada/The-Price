@@ -7,6 +7,7 @@ public enum TypeDestroySkill { time, receiveDamage, finishRoom, collision }
 public abstract class SkillManager : MonoBehaviour {
 
     [Header("Data Skill")]
+    public int skillID = 0;
     public Sprite icon;
     public int skillName;
     public int descName;

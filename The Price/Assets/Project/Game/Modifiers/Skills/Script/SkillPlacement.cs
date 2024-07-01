@@ -351,4 +351,16 @@ public class SkillPlacement : MonoBehaviour {
     {
         return _localPool[Random.Range(0, _localPool.Count)];
     }
+    public SkillManager GetSkillPerID(int id)
+    {
+        for(int i = 0; i < _skillPool.Length; i++)
+        {
+            if (_skillPool[i].skillID == id)
+            {
+                return _skillPool[i];
+            }
+        }
+
+        return null;
+    }
 }

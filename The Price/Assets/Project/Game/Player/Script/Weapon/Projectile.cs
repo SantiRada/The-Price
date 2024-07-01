@@ -4,11 +4,14 @@ public class Projectile : MonoBehaviour {
 
     [Header("Data Projectile")]
     public float speedMovement;
-    private float _distanceToAttack;
-    private int _dmg;
-    private bool _canTraverse = false;
-    private int whoIsBoss = 0;
+    public GameObject spread;
+    [HideInInspector] public int damage;
+    [HideInInspector] public int whoIsBoss = 0;
+    [HideInInspector] public bool canTraverse = false;
+    [HideInInspector] public bool canAreaDamage = false;
+    [Space]
     private GameObject gameObj;
+    private float _distanceToAttack;
 
     private Vector2 _initPos;
     private Rigidbody2D _rb2d;
@@ -25,8 +28,8 @@ public class Projectile : MonoBehaviour {
     {
         gameObj = obj;
         _distanceToAttack = distance;
-        _dmg = damage;
-        _canTraverse = traverse;
+        this.damage = damage;
+        canTraverse = traverse;
         _target = target;
 
         if (speed != 0) speedMovement = speed;
@@ -47,16 +50,11 @@ public class Projectile : MonoBehaviour {
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy") && whoIsBoss == 0)
-        {
-            collision.GetComponent<EnemyManager>().TakeDamage(_dmg);
-
-            if (!_canTraverse) Destroy(gameObject);
-        }
+        if(collision.CompareTag("Enemy") && whoIsBoss == 0) { if (canAreaDamage) { Instantiate(spread, transform.position, Quaternion.identity); } }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && whoIsBoss == 1) collision.gameObject.GetComponent<PlayerStats>().TakeDamage(gameObj, _dmg);
+        if (collision.gameObject.CompareTag("Player") && whoIsBoss == 1) collision.gameObject.GetComponent<PlayerStats>().TakeDamage(gameObj, damage);
 
         Destroy(gameObject);
     }

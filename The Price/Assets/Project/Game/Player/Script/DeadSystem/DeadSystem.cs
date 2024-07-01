@@ -1,3 +1,5 @@
+using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,11 +7,11 @@ public enum Worlds { Terrenal, Cielo, Infierno, Astral, Inframundo }
 public class DeadSystem : MonoBehaviour {
 
     [Header("Prev Data")]
-    [HideInInspector] public int wasInTerrenal;
-    [HideInInspector] public int wasInCielo;
-    [HideInInspector] public int wasInInfierno;
-    [HideInInspector] public int wasInAstral;
-    [HideInInspector] public int wasInInframundo;
+    public int wasInTerrenal;
+    public int wasInCielo;
+    public int wasInInfierno;
+    public int wasInAstral;
+    public int wasInInframundo;
     [Space]
     [HideInInspector] public int deadInTerrenal;
     [HideInInspector] public int deadInCielo;
@@ -34,32 +36,48 @@ public class DeadSystem : MonoBehaviour {
 
     [Header("Current Data")]
     public Worlds currentWorld;
-    [HideInInspector] public Worlds nextWorld;
+    public Worlds nextWorld;
 
     private SaveLoadManager _saveLoad;
+    private bool isActive = false;
 
     private void Awake() { _saveLoad = FindAnyObjectByType<SaveLoadManager>(); }
-    private void Start()
+    private void Start() { StartCoroutine("LoadInfo"); }
+    private IEnumerator LoadInfo()
     {
-        _saveLoad.Invoke("LoadData", 0.35f);
+        yield return new WaitForSeconds(0.15f);
 
-        if (_saveLoad.GetWorldData() != null) if(_saveLoad.GetWorldData().currentWorld != (int)currentWorld) SceneManager.LoadScene(_saveLoad.GetWorldData().currentWorld);
+        _saveLoad.LoadData();
 
-        // ---- SUMAR UNA CANTIDAD DE ENTRADAS AL PLANO ACTUAL ---- //
-        switch (currentWorld)
+        yield return new WaitForSeconds(0.1f);
+
+        if(_saveLoad.GetWorldData() != null)
         {
-            case Worlds.Terrenal: wasInTerrenal++; break;
-            case Worlds.Cielo: wasInCielo++; break;
-            case Worlds.Infierno: wasInInfierno++; break;
-            case Worlds.Astral: wasInAstral++; break;
-            case Worlds.Inframundo: wasInInframundo++; break;
+            if (_saveLoad.GetWorldData().passedTutorial)
+            {
+                if (SceneManager.GetActiveScene().name != currentWorld.ToString()) SceneManager.LoadScene(currentWorld.ToString());
+            }
+            else
+            {
+                if (_saveLoad.GetWorldData().reasonSave == ReasonSave.closeGame)
+                {
+                    File.Delete(Application.persistentDataPath + "/World.json");
+                    File.Delete(Application.persistentDataPath + "/Player.json");
+
+                    SceneManager.LoadScene("Terrenal");
+                }
+            }
+
+            currentWorld = (Worlds)_saveLoad.GetWorldData().currentWorld;
         }
     }
     public void DiePlayer()
     {
+        if (isActive) return;
+
         int aligment = LunarCycle.CalculateNextWorld();
 
-        if(aligment != -1)
+        if (aligment != -1)
         {
             // ESTAS ALINEADO A UN PUNTO DEL CICLO LUNAR
             nextWorld = (Worlds)aligment;
@@ -68,30 +86,61 @@ public class DeadSystem : MonoBehaviour {
         {
             if (currentWorld == Worlds.Terrenal)
             {
+                wasInTerrenal++;
                 deadInTerrenal++;
                 nextWorld = Worlds.Cielo;
             }
-            if (currentWorld == Worlds.Cielo)
+            else if (currentWorld == Worlds.Cielo)
             {
+                wasInCielo++;
                 deadInCielo++;
                 nextWorld = Worlds.Infierno;
             }
-            if (currentWorld == Worlds.Infierno)
+            else if (currentWorld == Worlds.Infierno)
             {
+                wasInInfierno++;
                 deadInInfierno++;
                 nextWorld = Worlds.Inframundo;
             }
-            if (currentWorld == Worlds.Inframundo)
+            else if (currentWorld == Worlds.Inframundo)
             {
+                wasInInframundo++;
                 deadInInframundo++;
                 nextWorld = Worlds.Astral;
             }
+            else if (currentWorld == Worlds.Astral) { wasInAstral++; }
         }
 
-        currentWorld = nextWorld;
-        _saveLoad.SaveData();
+        isActive = true;
 
-        // SE SUMA 1 PARA SALTAR LA ESCENA DEL MENÚ
+        ApplyChanges();
+
         SceneManager.LoadScene(nextWorld.ToString());
+    }
+    private void ApplyChanges()
+    {
+        bool canChange = true;
+        if (_saveLoad.GetWorldData() != null)
+        {
+            if (!_saveLoad.GetWorldData().passedTutorial)
+            {
+                if (currentWorld == Worlds.Cielo)
+                {
+                    Debug.Log("ESTOY EN EL TUTORIAL");
+                    wasInAstral++;
+                    currentWorld = Worlds.Terrenal;
+                    nextWorld = Worlds.Astral;
+                    _saveLoad.SaveData(ReasonSave.closeGame);
+                    canChange = false;
+                }
+            }
+        }
+
+        if (canChange)
+        {
+            Debug.Log("Cambios diferentes");
+            currentWorld = nextWorld;
+            _saveLoad.SaveData(ReasonSave.deadSystem);
+        }
     }
 }

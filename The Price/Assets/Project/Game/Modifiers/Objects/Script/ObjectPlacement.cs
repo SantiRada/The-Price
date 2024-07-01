@@ -243,4 +243,37 @@ public class ObjectPlacement : MonoBehaviour {
         else if (rnd >= prioritiesForType[2] && rnd < prioritiesForType[1]) return _poolEpic[Random.Range(0, _poolEpic.Length)];
         else return _poolBasic[Random.Range(0, _poolBasic.Length)];
     }
+    public Object GetObjectPerID(int id)
+    {
+        for (int i = 0; i < _poolBasic.Length; i++)
+        {
+            if (_poolBasic[i].objectID == id)
+            {
+                return _poolBasic[i];
+            }
+        }
+        for (int i = 0; i < _poolEpic.Length; i++)
+        {
+            if (_poolEpic[i].objectID == id)
+            {
+                return _poolEpic[i];
+            }
+        }
+        for (int i = 0; i < _poolLegendary.Length; i++)
+        {
+            if (_poolLegendary[i].objectID == id)
+            {
+                return _poolLegendary[i];
+            }
+        }
+        for (int i = 0; i < _poolMythical.Length; i++)
+        {
+            if (_poolMythical[i].objectID == id)
+            {
+                return _poolMythical[i];
+            }
+        }
+
+        return null;
+    }
 }

@@ -3,20 +3,18 @@ using UnityEngine;
 
 public class ObjectSpread : MonoBehaviour {
 
+    [Header("Push")]
     public bool canPush;
     public float pushForce;
 
-    private PlayerStats _playerStats;
+    [Header("Content Damage")]
+    public int damage;
     [HideInInspector] public int damageAffected = 0;
 
     [Header("Data State")]
     [HideInInspector] public TypeState state;
     [HideInInspector] public int countOfLoads;
 
-    private void Start()
-    {
-        _playerStats = FindAnyObjectByType<PlayerStats>();
-    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
@@ -28,9 +26,9 @@ public class ObjectSpread : MonoBehaviour {
             if (state != TypeState.Null) collision.GetComponent<EnemyManager>().AddState(state, countOfLoads);
 
             // APLICAR DAÑO AL ENEMIGO COLISIONADO
-            collision.GetComponent<EnemyManager>().TakeDamage((int)_playerStats.GetterStats(4, false));
+            collision.GetComponent<EnemyManager>().TakeDamage(damage);
 
-            damageAffected += (int)(_playerStats.GetterStats(4, false));
+            damageAffected += damage;
         }
     }
     private IEnumerator PushEnemy(GameObject obj)
