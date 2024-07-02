@@ -44,7 +44,7 @@ public class Projectile : MonoBehaviour {
     {
         if (LoadingScreen.inLoading || Pause.state != State.Game) return;
 
-        if(_distanceToAttack != 0) if (Vector3.Distance(_initPos, transform.position) > _distanceToAttack) Destroy(gameObject);
+        if(_distanceToAttack != 0) if (Vector3.Distance(_initPos, transform.position) > _distanceToAttack) { Destroy(gameObject); }
 
         _rb2d.velocity = _target * speedMovement;
     }

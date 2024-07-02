@@ -37,12 +37,17 @@ public class ObjectSpread : MonoBehaviour {
 
         Vector2 direction = (obj.transform.position - transform.position).normalized;
 
+        float intensity = 1.15f;
+
         for (int i = 0; i < 20; i++)
         {
             if (enemyRigidbody != null)
             {
                 obj.GetComponent<EnemyManager>().AddState(TypeState.Stun, 2);
-                if (enemyRigidbody != null) enemyRigidbody.AddForce(direction * pushForce, ForceMode2D.Impulse);
+                enemyRigidbody.AddForce(direction * (intensity / 20), ForceMode2D.Impulse);
+
+                float maxVelocity = 10.0f;  // Adjust this value as needed
+                enemyRigidbody.velocity = Vector2.ClampMagnitude(enemyRigidbody.velocity, maxVelocity);
             }
             yield return new WaitForSeconds(0.05f);
         }

@@ -22,8 +22,9 @@ public class PlayerStats : MonoBehaviour {
     [HideInInspector] public int countGold = 0;
 
     [Header("Weapons")]
-    public WeaponSystem[] weapons = new WeaponSystem[3];
+    public List<WeaponSystem> weapons = new List<WeaponSystem>();
     public GameObject weaponParent;
+    private List<WeaponSystem> weaponInScene = new List<WeaponSystem>();
 
     [Header("Player Content")]
     public List<SkillManager> skills = new List<SkillManager>();
@@ -219,6 +220,16 @@ public class PlayerStats : MonoBehaviour {
         _statsInUI.ChangeValueInUI(type);
     }
     public float ChangerConcentration { set { changerConcentration = value; } get { return changerConcentration; } }
+    public void SetWeapon(int index, WeaponSystem weapon)
+    {
+        GameObject prevObject = weaponInScene[index].gameObject;
+
+        weapons[index] = weapon;
+
+        weaponInScene[index] = Instantiate(weapons[index].gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform).GetComponent<WeaponSystem>();
+
+        Destroy(prevObject);
+    }
     // ---- GETTERS ---- //
     public float GetterStats(int pos, bool max = true)
     {
@@ -285,9 +296,9 @@ public class PlayerStats : MonoBehaviour {
     {
         if(weapons != null)
         {
-            for(int i = 0; i < weapons.Length; i++)
+            for(int i = 0; i < weapons.Count; i++)
             {
-                Instantiate(weapons[i].gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform);
+                weaponInScene.Add(Instantiate(weapons[i].gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform).GetComponent<WeaponSystem>());
             }
         }
     }

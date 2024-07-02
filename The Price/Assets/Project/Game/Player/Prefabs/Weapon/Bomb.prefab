@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e308d9c4a561a42458ed964d052c5556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objSpread: {fileID: 0}
+  objSpread: {fileID: 2964849430218140206, guid: e842c2a448a9dd246b0755faf5c715a5, type: 3}
   typeSpread: 2
   typeAttackSpread: 0
   radioSpread: 4

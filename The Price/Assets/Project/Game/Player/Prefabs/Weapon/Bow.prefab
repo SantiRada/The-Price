@@ -93,10 +93,10 @@ MonoBehaviour:
   delayDetect: 1.5
   durationDamage: 0.35
   projectile: {fileID: 3546439524351028113, guid: 79259104cc8cfe344bab25ed6eb62b90, type: 3}
-  distanceAttack: 5
+  distanceAttack: 8
   speedProjectile: 5
   canTraverse: 1
-  typeFinalHit: 1
+  typeFinalHit: 2
 --- !u!212 &-104317291729646787
 SpriteRenderer:
   m_ObjectHideFlags: 0

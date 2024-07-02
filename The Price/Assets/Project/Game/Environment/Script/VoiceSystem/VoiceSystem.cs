@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using static ActionForControlPlayer;
@@ -17,20 +18,10 @@ public class VoiceSystem : MonoBehaviour {
 
     [Header("Static Data")]
     private static int indexDialogue;
-    public static Action eventDialogue;
 
     private void Awake() { _canvas = GetComponent<CanvasGroup>(); }
-    private void Start()
-    {
-        eventDialogue += () => StartCoroutine("DialogueOn");
-
-        CloseDialogue();
-    }
-    public static void StartDialogue(int index)
-    {
-        indexDialogue = index;
-        eventDialogue?.Invoke();
-    }
+    private void OnEnable() { CloseDialogue(); }
+    public static void StartDialogue(int index) { indexDialogue = index; }
     private void Update()
     {
         if (inDialogue)
@@ -43,6 +34,10 @@ public class VoiceSystem : MonoBehaviour {
             }
             else { if (PlayerActionStates.IsUse || PlayerActionStates.IsDashing || PlayerActionStates.IsAttacking) Finish(); }
         }
+        else
+        {
+            if(indexDialogue != -1) { StartCoroutine("DialogueOn"); }
+        }
     }
     public IEnumerator DialogueOn()
     {
@@ -53,13 +48,35 @@ public class VoiceSystem : MonoBehaviour {
         timer = 1.5f;
         _canvas.alpha = 1f;
 
-        char[] values = LanguageManager.GetValue("Game", indexDialogue).ToCharArray();
+        string dialogue = LanguageManager.GetValue("Game", indexDialogue);
+        StringBuilder visibleText = new StringBuilder();
+        StringBuilder fullText = new StringBuilder();
+        bool insideTag = false;
 
-        for (int i = 0; i < values.Length; i++)
+        for (int i = 0; i < dialogue.Length; i++)
         {
-            content.text += values[i];
-            yield return new WaitForSeconds(0.05f);
+            char c = dialogue[i];
+
+            if (c == '<') { insideTag = true; }
+
+            if (!insideTag)
+            {
+                visibleText.Append(c);
+                content.text = visibleText.ToString();
+                yield return new WaitForSeconds(0.05f);
+            }
+
+            fullText.Append(c);
+
+            if (c == '>')
+            {
+                content.text = fullText.ToString();
+                insideTag = false;
+            }
         }
+
+        // Asigna el texto completo (con etiquetas) al componente de texto
+        content.text = fullText.ToString();
 
         Finish();
     }
@@ -73,6 +90,7 @@ public class VoiceSystem : MonoBehaviour {
     }
     private void CloseDialogue()
     {
+        indexDialogue = -1;
         inDialogue = false;
         finishDialogue = false;
 

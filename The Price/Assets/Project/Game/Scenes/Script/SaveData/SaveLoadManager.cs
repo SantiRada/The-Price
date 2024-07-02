@@ -1,12 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SaveLoadManager : MonoBehaviour {
-
-    [Header("Weapons")]
-    public List<WeaponSystem> weapons;
 
     [Header("Directions")]
     private string filePath;
@@ -18,11 +14,13 @@ public class SaveLoadManager : MonoBehaviour {
     [Header("Private Calls")]
     private PlayerStats _playerStats;
     private DeadSystem _deadSystem;
+    private WeaponPool _weaponPool;
     private HUD _hud;
 
     private void Awake()
     {
         _hud = FindAnyObjectByType<HUD>();
+        _weaponPool = GetComponent<WeaponPool>();
         _playerStats = FindAnyObjectByType<PlayerStats>();
         _deadSystem = _playerStats.GetComponent<DeadSystem>();
     }
@@ -72,7 +70,7 @@ public class SaveLoadManager : MonoBehaviour {
         if(_playerStats.weapons != null)
         {
             List<int> weapons = new List<int>();
-            for(int i = 0; i< _playerStats.weapons.Length; i++)
+            for(int i = 0; i< _playerStats.weapons.Count; i++)
             {
                 weapons.Add(_playerStats.weapons[i].weaponID);
             }
@@ -111,11 +109,7 @@ public class SaveLoadManager : MonoBehaviour {
     public void LoadData()
     {
         filePath = Path.Combine(Application.persistentDataPath, "Player.json");
-        if(!File.Exists(filePath))
-        {
-            Debug.Log("No existen los archivos para cargar");
-            return;
-        }
+        if(!File.Exists(filePath)) { return; }
 
         //// FUNCIONAMIENTO PARA PLAYER ----------------- ////
         if (File.Exists(filePath))
@@ -123,6 +117,7 @@ public class SaveLoadManager : MonoBehaviour {
             string jsonPlayer = File.ReadAllText(filePath);
             _player = JsonUtility.FromJson<SavePlayer>(jsonPlayer);
 
+            #region Stats
             _playerStats.SetValue(0, _player.maxPV, true, false, true);
             _playerStats.SetValue(1, _player.maxConcentracion, true, false, true);
             _playerStats.SetValue(2, _player.speedMovement, true, false, true);
@@ -140,10 +135,11 @@ public class SaveLoadManager : MonoBehaviour {
 
             _playerStats.SetValue(1, _player.concentracion, false, false, true);
             _playerStats.SetValue(10, _player.sanity, false, false, true);
+            #endregion
 
             _hud.SetGold(_player.gold);
 
-            // _playerStats.weapons.AddRange(_player.weaponInHand);
+            _playerStats.weapons = LoadWeapons(_player.weaponInHand);
             
             _playerStats.objects = LoadObjects(_player.objects);
             _playerStats.skills = LoadSkills(_player.skills);
@@ -196,6 +192,24 @@ public class SaveLoadManager : MonoBehaviour {
         }
 
         return objects;
+    }
+    private List<WeaponSystem> LoadWeapons(List<int> weaponID)
+    {
+        List<WeaponSystem> weaponSystem = new List<WeaponSystem>();
+
+        for(int i = 0; i < _weaponPool.weapons.Count; i++)
+        {
+            for(int j = 0; j < weaponID.Count; j++)
+            {
+                if (_weaponPool.weapons[i].weaponID == weaponID[j])
+                {
+                    weaponSystem.Add(_weaponPool.weapons[i]);
+                    break;
+                }
+            }
+        }
+
+        return weaponSystem;
     }
     // ---- GETTERS ---- //
     public SaveWorld GetWorldData()

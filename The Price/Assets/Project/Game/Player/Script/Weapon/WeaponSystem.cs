@@ -4,7 +4,9 @@ public abstract class WeaponSystem : MonoBehaviour {
 
     [Header("Info General")]
     public int weaponID;
+    public Sprite spr;
     public int nameWeapon;
+    public int descWeapon;
     public int damageWeapon;
     public int damageFinalHit;
     [HideInInspector] public int damage;
@@ -76,11 +78,16 @@ public abstract class WeaponSystem : MonoBehaviour {
 
         if(countAttack >= 3)
         {
+            damage = damageFinalHit;
             delayBetweenAttack = (_delayBetweenBase * 1.5f);
             countAttack = 0;
             FinalHit();
         }
-        else { Attack(); }
+        else
+        {
+            damage = damageWeapon;
+            Attack();
+        }
 
         canAttack = false;
     }

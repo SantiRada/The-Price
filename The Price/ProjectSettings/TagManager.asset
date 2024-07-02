@@ -11,6 +11,7 @@ TagManager:
   - EnemyAttack
   - Meditate
   - Door
+  - Push
   layers:
   - Default
   - TransparentFX

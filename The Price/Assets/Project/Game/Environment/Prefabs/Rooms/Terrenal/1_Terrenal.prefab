@@ -466,6 +466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d30d28cd67930cb4aad219ea5876843a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isChill: 0
   _livingEnemies: []
   _spawnEnemy:
   - {fileID: 4913445496346706252}

@@ -18,7 +18,7 @@ public class SpreadDamage : MonoBehaviour {
     public TypeState state;
     public int countOfLoads;
 
-    private GameObject spread;
+    [HideInInspector] public GameObject spread;
 
     private void Start()
     {
@@ -48,6 +48,5 @@ public class SpreadDamage : MonoBehaviour {
         if (healthPlayer) FindAnyObjectByType<PlayerStats>().SetValue(4, spread.GetComponent<ObjectSpread>().damageAffected);
 
         Destroy(spread);
-        Destroy(gameObject);
     }
 }

@@ -42,20 +42,36 @@ public class DeadSystem : MonoBehaviour {
     private bool isActive = false;
 
     private void Awake() { _saveLoad = FindAnyObjectByType<SaveLoadManager>(); }
-    private void Start() { StartCoroutine("LoadInfo"); }
-    private IEnumerator LoadInfo()
+    private void Start() { LoadInfo(); }
+    private void LoadInfo()
     {
-        yield return new WaitForSeconds(0.15f);
-
         _saveLoad.LoadData();
 
-        yield return new WaitForSeconds(0.1f);
-
-        if(_saveLoad.GetWorldData() != null)
+        if (_saveLoad.GetWorldData() != null)
         {
             if (_saveLoad.GetWorldData().passedTutorial)
             {
-                if (SceneManager.GetActiveScene().name != currentWorld.ToString()) SceneManager.LoadScene(currentWorld.ToString());
+                if (_saveLoad.GetWorldData().reasonSave == ReasonSave.deadSystem)
+                {
+                    if (SceneManager.GetActiveScene().name != currentWorld.ToString())
+                    {
+                        _saveLoad.SaveData(ReasonSave.Null);
+                        SceneManager.LoadScene(currentWorld.ToString());
+                        return;
+                    }
+                }
+                else if (_saveLoad.GetWorldData().reasonSave == ReasonSave.closeGame)
+                {
+                    _saveLoad.SaveData(ReasonSave.Null);
+                    SceneManager.LoadScene("Astral");
+                    return;
+                }
+
+                if (_saveLoad.GetWorldData() != null)
+                {
+                    _saveLoad.SaveData(ReasonSave.closeGame);
+                    currentWorld = (Worlds)_saveLoad.GetWorldData().currentWorld;
+                }
             }
             else
             {
@@ -67,9 +83,8 @@ public class DeadSystem : MonoBehaviour {
                     SceneManager.LoadScene("Terrenal");
                 }
             }
-
-            currentWorld = (Worlds)_saveLoad.GetWorldData().currentWorld;
         }
+        else { _saveLoad.SaveData(ReasonSave.closeGame); }
     }
     public void DiePlayer()
     {
@@ -126,7 +141,6 @@ public class DeadSystem : MonoBehaviour {
             {
                 if (currentWorld == Worlds.Cielo)
                 {
-                    Debug.Log("ESTOY EN EL TUTORIAL");
                     wasInAstral++;
                     currentWorld = Worlds.Terrenal;
                     nextWorld = Worlds.Astral;
@@ -138,7 +152,6 @@ public class DeadSystem : MonoBehaviour {
 
         if (canChange)
         {
-            Debug.Log("Cambios diferentes");
             currentWorld = nextWorld;
             _saveLoad.SaveData(ReasonSave.deadSystem);
         }

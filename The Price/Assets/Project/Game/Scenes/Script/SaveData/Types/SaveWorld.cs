@@ -1,4 +1,4 @@
-public enum ReasonSave { closeGame, deadSystem }
+public enum ReasonSave { Null, closeGame, deadSystem }
 [System.Serializable]
 public class SaveWorld
 {

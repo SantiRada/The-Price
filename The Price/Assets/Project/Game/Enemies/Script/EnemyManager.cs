@@ -176,17 +176,6 @@ public abstract class EnemyManager : MonoBehaviour {
 
                 weapon.FinishAttack();
             }
-            else if (collision.GetComponent<Projectile>())
-            {
-                Projectile pr = collision.GetComponent<Projectile>();
-                damage = pr.damage;
-
-                // VERIFICA QUE EL PROYECTIL HAYA SIDO LANZADO POR EL JUGADOR
-                if (pr.whoIsBoss != 0) return;
-
-                // DESTRUYE EL PROYECTIL SI ESTE NO PUEDE ATRAVESAR OBJETOS
-                if (!pr.canTraverse) Destroy(collision.gameObject);
-            }
 
             TakeDamage(damage, false);
         }

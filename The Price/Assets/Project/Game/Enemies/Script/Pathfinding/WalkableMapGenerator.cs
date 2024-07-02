@@ -65,7 +65,16 @@ public class WalkableMapGenerator : MonoBehaviour {
             {
                 Vector3 worldPoint = new Vector3((transform.position.x + x), (transform.position.y + y), 0);
 
-                if (walkableMap[x,y] == TypeNode.unwalkable) Gizmos.DrawCube(worldPoint, new Vector3(0.9f, 0.9f, 0.9f));
+                if (walkableMap[x, y] == TypeNode.unwalkable)
+                {
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawCube(worldPoint, new Vector3(0.9f, 0.9f, 0.9f));
+                }
+                else if (walkableMap[x, y] == TypeNode.walkable)
+                {
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawCube(worldPoint, new Vector3(0.9f, 0.9f, 0.9f));
+                }
             }
 
         }

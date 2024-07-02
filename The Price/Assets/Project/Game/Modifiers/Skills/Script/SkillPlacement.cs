@@ -14,16 +14,17 @@ public class SkillPlacement : MonoBehaviour {
 
     [Header("Content UI")]
     public GameObject _objSlot;
-    public float _distanceToMove;
-    public float _forceRotate;
-    public float _forceMovePerCard;
+    public float timeBetweenMovePerCard;
+    public float distanceToMove;
+    public float forceRotate;
+    public float forceMovePerCard;
     private List<GameObject> _slots = new List<GameObject>();
     private List<Image> _slotImage = new List<Image>();
 
     [Header("Selection")]
-    public Sprite _card;
-    public Sprite _cardHover;
-    public Sprite _cardSelect;
+    public Sprite card;
+    public Sprite cardHover;
+    public Sprite cardSelect;
     [Space]
     [SerializeField] private GameObject _skillSelector;
     [SerializeField] private TextMeshProUGUI _nameSkill;
@@ -31,8 +32,8 @@ public class SkillPlacement : MonoBehaviour {
     private bool _inSelect = false, _canDetect = true;
 
     [Header("Audio")]
-    public AudioClip _dropCard;
-    public AudioClip _rotateCard;
+    public AudioClip dropCard;
+    public AudioClip rotateCard;
     private AudioSource _audio;
 
     [Header("Movement")]
@@ -89,7 +90,7 @@ public class SkillPlacement : MonoBehaviour {
             _slots.Add(obj);
             _slotImage.Add(obj.GetComponent<Image>());
 
-            _audio.PlayOneShot(_dropCard);
+            _audio.PlayOneShot(dropCard);
             
             if (j > (_skillPool.Length - 4)) obj.GetComponent<Animator>().enabled = false;
             yield return new WaitForSeconds(_delayBetweenCard);
@@ -102,20 +103,20 @@ public class SkillPlacement : MonoBehaviour {
         for (int i = 0; i < _slots.Count; i++)
         {
             #region Rotacion
-            float multiplierRotate = ((_slots.Count / 2) - i) * _forceRotate + _forceRotate;
+            float multiplierRotate = ((_slots.Count / 2) - i) * forceRotate + forceRotate;
             Quaternion rotation = Quaternion.Euler(_slots[i].transform.localRotation.x, _slots[i].transform.localRotation.y, multiplierRotate);
 
             StartCoroutine(ChangeRotation(i, rotation));
             #endregion
             #region Posicionamiento
-            float newY = _slots[i].transform.localPosition.y - Factorial((int)(_slots.Count / 2) - i) * _forceMovePerCard;
+            float newY = _slots[i].transform.localPosition.y - Factorial((int)(_slots.Count / 2) - i) * forceMovePerCard;
             Vector3 position = new Vector3(_slots[i].transform.localPosition.x, newY, _slots[i].transform.localPosition.z);
 
             StartCoroutine(ChangePosition(i, position));
             #endregion
         }
         
-        _audio.PlayOneShot(_rotateCard);
+        _audio.PlayOneShot(rotateCard);
 
         yield return new WaitForSeconds(_deadTime);
         _canDetect = true;
@@ -163,18 +164,19 @@ public class SkillPlacement : MonoBehaviour {
 
             return;
         }
+        else
+        {
+            if (Input.GetButtonDown("Fire1") || PlayerActionStates.IsUse) StartCoroutine("Selected");
+        }
 
         float h = Input.GetAxis("Horizontal");
         if (h != 0 && _canMove) StartCoroutine(MoveSlot(h));
 
         if (!_canMove)
         {
-            Vector3 newPos = new Vector3(_slots[_index].transform.localPosition.x, _slots[_index].gameObject.transform.localPosition.y + _distanceToMove, 0);
+            Vector3 newPos = new Vector3(_slots[_index].transform.localPosition.x, _slots[_index].gameObject.transform.localPosition.y + distanceToMove, 0);
             _slots[_index].gameObject.transform.localPosition = Vector3.Lerp(_slots[_index].transform.localPosition, newPos, 1f * Time.deltaTime);
         }
-
-        // SELECCIONAR UNA SKILL
-        if (Input.GetButtonDown("Fire1") || PlayerActionStates.IsUse) StartCoroutine("Selected");
     }
     private IEnumerator MoveSlot(float dir)
     {
@@ -184,7 +186,7 @@ public class SkillPlacement : MonoBehaviour {
         if(_prevPosition != Vector3.zero)
         {
             _slots[_prevIndex].gameObject.transform.localPosition = _prevPosition;
-            _slotImage[_prevIndex].sprite = _card;
+            _slotImage[_prevIndex].sprite = card;
         }
 
         if (dir > 0) _index++;
@@ -194,26 +196,32 @@ public class SkillPlacement : MonoBehaviour {
         else if (_index < 0) _index = (_slots.Count - 1);
 
         _prevPosition = _slots[_index].transform.localPosition;
-        _slotImage[_index].sprite = _cardHover;
+        _slotImage[_index].sprite = cardHover;
 
         _slots[_index].transform.SetAsLastSibling();
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(timeBetweenMovePerCard);
         _canMove = true;
     }
     private IEnumerator Selected()
     {
-        _inSelect = true;
         _canDetect = false;
+        yield return new WaitForSeconds(0.15f);
+
         // MOVER TODAS LAS CARTAS HACIA ABAJO EXCEPTO LA SELECCIONADA
         for(int i = 0; i < _slots.Count; i++)
         {
-            if(i != _index)
+            // ---- CORROBORACIONES DE SEGURIDAD ---- //
+            if (_index < 0) _index = 0;
+            if (_index >= _slots.Count) _index = (_slots.Count - 1);
+            // ---- CORROBORACIONES DE SEGURIDAD ---- //
+
+            if (i != _index)
             {
                 Vector3 targetPosition = _slots[i].transform.localPosition + new Vector3(0, -(Screen.height), 0);
 
                 _audio.volume = 0.1f;
-                _audio.PlayOneShot(_dropCard);
+                _audio.PlayOneShot(dropCard);
                 do
                 {
                     _slots[i].transform.localPosition = Vector3.Lerp(_slots[i].transform.localPosition, targetPosition, 0.75f);
@@ -249,7 +257,7 @@ public class SkillPlacement : MonoBehaviour {
         } while (Vector3.Distance(_slots[_index].transform.localScale, new Vector3(0, 1, 1)) > 0.05f);
 
         // CAMBIAR EL SPRITE DE LA CARTA SELECCIONADA
-        _slots[_index].GetComponent<Image>().sprite = _cardSelect;
+        _slots[_index].GetComponent<Image>().sprite = cardSelect;
 
         do
         {
@@ -270,6 +278,7 @@ public class SkillPlacement : MonoBehaviour {
 
         yield return new WaitForSeconds(_deadTime);
         _canDetect = true;
+        _inSelect = true;
 
     }
     private SkillManager CalculateSkill()

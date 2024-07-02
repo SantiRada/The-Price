@@ -177,7 +177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: 4
   typeContent: 1
-  nameContent: 13
+  nameContent: 41
   descContent: 14
   inSelect: 0
   inTrigger: 0
@@ -185,7 +185,6 @@ MonoBehaviour:
   isShop: 0
   priceInGold: 0
   _manager: {fileID: 0}
-  obj: {fileID: 0}
 --- !u!114 &378619141910269198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,8 +199,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _typeDialogue: 1
   _howToOpen: 1
-  whoSpeak: 13
-  whatSay: 0f000000
+  whoSpeak: 41
+  whatSay: 2a000000
   _dialogueStatic: 1
   _repeatDialogue: 0
   _showSkills: 0
