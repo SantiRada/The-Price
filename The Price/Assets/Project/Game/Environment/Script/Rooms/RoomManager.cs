@@ -14,6 +14,7 @@ public class RoomManager : MonoBehaviour {
     private bool isPerfectRoom = false;
     public static event Action finishRoom;
     public static event Action perfectRoom;
+    public static event Action advanceRoom;
 
     [Header("UI Content")]
     public Animator loadingSector;
@@ -30,6 +31,8 @@ public class RoomManager : MonoBehaviour {
     private List<int> _enemyWeights = new List<int>();
 
     [Header("Reward Data")]
+    [SerializeField] private GameObject _weaponPlacement;
+    [Range(0, 100), Tooltip("Porcentaje de probabilidad de que aparezca un arma en cada sala")] public float weaponChance;
     [SerializeField] private GameObject _rewardSkill;
     [SerializeField] private GameObject _rewardObject;
     [SerializeField] private GameObject _rewardFlair;
@@ -94,6 +97,8 @@ public class RoomManager : MonoBehaviour {
     }
     private void ResetValuesToNewRoom()
     {
+        advanceRoom?.Invoke();
+
         // VERIFICA OBJETOS EN ESCENA PARA ELIMINARLOS ANTES DE LA CREACIÓN DE UNA NUEVA SALA
         SkillManager[] skills = FindObjectsByType<SkillManager>(FindObjectsSortMode.None);
         if (skills.Length > 0) { for (int i = 0; i < skills.Length; i++) { Destroy(skills[i].gameObject); } }
@@ -102,6 +107,9 @@ public class RoomManager : MonoBehaviour {
         if (spread.Length > 0) { for (int i = 0; i < spread.Length; i++) { Destroy(spread[i].gameObject); } }
 
         if(_rewardInScene != null) Destroy(_rewardInScene.gameObject);
+
+        Interactive[] interactiveObj = FindObjectsByType<Interactive>(FindObjectsSortMode.None);
+        if(interactiveObj.Length > 0) { for(int i = 0; i < interactiveObj.Length; i++) { Destroy(interactiveObj[i].gameObject); } }
 
         isPerfectRoom = true;
     }
@@ -194,6 +202,13 @@ public class RoomManager : MonoBehaviour {
         {
             perfectRoom?.Invoke();
             _textForPerfectRoom.SetActive(true);
+        }
+
+        if (_typeRooms[_countRoomsComplete] != TypeRoom.Shop && _typeRooms[_countRoomsComplete] != TypeRoom.MiniBoss && _typeRooms[_countRoomsComplete] != TypeRoom.Boss && _typeRooms[_countRoomsComplete] != TypeRoom.MaxBoss)
+        {
+            int rnd = UnityEngine.Random.Range(0, 100);
+
+            if(rnd < weaponChance) Instantiate(_weaponPlacement.gameObject, _player.transform.position, Quaternion.identity);
         }
 
         switch (_typeRooms[_countRoomsComplete])

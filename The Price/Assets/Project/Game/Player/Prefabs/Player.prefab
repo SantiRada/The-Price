@@ -597,8 +597,8 @@ MonoBehaviour:
   countDamageReceivedInRoom: 0
   countGold: 0
   weapons:
-  - {fileID: 5869596726363329175, guid: 5bf65ad67d7155945858b5017e3edd74, type: 3}
   - {fileID: 8020630272338450110, guid: 89852514b8bbfe14897cf1e1819129fa, type: 3}
+  - {fileID: 5869596726363329175, guid: 5bf65ad67d7155945858b5017e3edd74, type: 3}
   - {fileID: 5912235016396145848, guid: a8ea58d9e4a63b441ac4a6634c3de604, type: 3}
   weaponParent: {fileID: 7088614093564551266}
   skills: []

@@ -83,7 +83,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponID: 0
+  spr: {fileID: 0}
   nameWeapon: 59
+  descWeapon: 1
   damageWeapon: 5
   damageFinalHit: 10
   damage: 0

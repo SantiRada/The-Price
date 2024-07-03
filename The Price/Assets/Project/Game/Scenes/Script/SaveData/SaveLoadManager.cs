@@ -14,13 +14,13 @@ public class SaveLoadManager : MonoBehaviour {
     [Header("Private Calls")]
     private PlayerStats _playerStats;
     private DeadSystem _deadSystem;
-    private WeaponPool _weaponPool;
+    private WeaponManagerUI _weaponManager;
     private HUD _hud;
 
     private void Awake()
     {
         _hud = FindAnyObjectByType<HUD>();
-        _weaponPool = GetComponent<WeaponPool>();
+        _weaponManager = FindAnyObjectByType<WeaponManagerUI>();
         _playerStats = FindAnyObjectByType<PlayerStats>();
         _deadSystem = _playerStats.GetComponent<DeadSystem>();
     }
@@ -197,13 +197,13 @@ public class SaveLoadManager : MonoBehaviour {
     {
         List<WeaponSystem> weaponSystem = new List<WeaponSystem>();
 
-        for(int i = 0; i < _weaponPool.weapons.Count; i++)
+        for(int i = 0; i < _weaponManager.weapons.Count; i++)
         {
             for(int j = 0; j < weaponID.Count; j++)
             {
-                if (_weaponPool.weapons[i].weaponID == weaponID[j])
+                if (_weaponManager.weapons[i].weaponID == weaponID[j])
                 {
-                    weaponSystem.Add(_weaponPool.weapons[i]);
+                    weaponSystem.Add(_weaponManager.weapons[i]);
                     break;
                 }
             }

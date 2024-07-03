@@ -220,15 +220,18 @@ public class PlayerStats : MonoBehaviour {
         _statsInUI.ChangeValueInUI(type);
     }
     public float ChangerConcentration { set { changerConcentration = value; } get { return changerConcentration; } }
-    public void SetWeapon(int index, WeaponSystem weapon)
+    public int SetWeapon(int index, WeaponSystem weapon)
     {
         GameObject prevObject = weaponInScene[index].gameObject;
+        int prevWeapon = weaponInScene[index].weaponID;
 
         weapons[index] = weapon;
 
         weaponInScene[index] = Instantiate(weapons[index].gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform).GetComponent<WeaponSystem>();
 
-        Destroy(prevObject);
+        Destroy(prevObject, 1f);
+
+        return prevWeapon;
     }
     // ---- GETTERS ---- //
     public float GetterStats(int pos, bool max = true)
