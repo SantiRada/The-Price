@@ -40,7 +40,7 @@ public class SaveLoadManager : MonoBehaviour {
         filePath = Path.Combine(Application.persistentDataPath, "Player.json");
         string jsonPlayer = JsonUtility.ToJson(_player);
         File.WriteAllText(filePath, jsonPlayer);
-        Debug.Log(filePath);
+        // Debug.Log(filePath);
 
 
         filePath = Path.Combine(Application.persistentDataPath, "World.json");

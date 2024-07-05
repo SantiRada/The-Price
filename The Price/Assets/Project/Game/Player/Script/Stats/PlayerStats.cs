@@ -95,11 +95,14 @@ public class PlayerStats : MonoBehaviour {
         #region ComprobateEnemy
         EnemyManager attacker;
 
-        if (obj.GetComponent<EnemyManager>()) { attacker = obj.GetComponent<EnemyManager>(); }
-        else { return; }
+        if (obj.GetComponent<EnemyManager>())
+        {
+            attacker = obj.GetComponent<EnemyManager>();
 
-        // ---- PREVIENE ATAQUES DE UN TIPO ESPECÍFICO ---- //
-        dmg = (attacker != null) ? CalculateNewDamage(attacker, dmg) : dmg;
+            // ---- PREVIENE ATAQUES DE UN TIPO ESPECÍFICO ---- //
+            dmg = (attacker != null) ? CalculateNewDamage(attacker, dmg) : dmg;
+        }
+
         if (dmg <= 0) return;
         #endregion
 

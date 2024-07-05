@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour {
 
         if (speed != 0) speedMovement = speed;
 
-        // BOSS = 0 = Lo envió el Player // BOSS = 1 = Lo envió un enemigo //
+        // BOSS = 0 = Lo envió el Player // BOSS = 1 = Lo envió un enemigo // = 2 Lo envió un Boss
         whoIsBoss = boss;
 
         if (boss == 1) _collider.isTrigger = false;
@@ -50,11 +50,12 @@ public class Projectile : MonoBehaviour {
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Enemy") && whoIsBoss == 0) { if (canAreaDamage) { Instantiate(spread, transform.position, Quaternion.identity); } }
+        if (collision.CompareTag("Enemy") && whoIsBoss == 0) { if (canAreaDamage) { Instantiate(spread, transform.position, Quaternion.identity); } }
+        if (collision.CompareTag("Boss") && whoIsBoss == 0) { if (canAreaDamage) { Instantiate(spread, transform.position, Quaternion.identity); } }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && whoIsBoss == 1) collision.gameObject.GetComponent<PlayerStats>().TakeDamage(gameObj, damage);
+        if (collision.gameObject.CompareTag("Player") && whoIsBoss != 0) collision.gameObject.GetComponent<PlayerStats>().TakeDamage(gameObj, damage);
 
         Destroy(gameObject);
     }

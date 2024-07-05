@@ -5,6 +5,7 @@ public class Room : MonoBehaviour {
 
     [Header("General Data")]
     [Tooltip("Que sea CHILL significa que no habrá enemigos y se puede avanzar sin hacer nada")] public bool isChill = false;
+    [Tooltip("Si es sala de Boss no crea enemigos")] public bool isBossRoom = false;
 
     [Header("Enemies")]
     [SerializeField] private List<EnemyManager> _livingEnemies = new List<EnemyManager>();
@@ -42,6 +43,8 @@ public class Room : MonoBehaviour {
     }
     private void CreateEnemies()
     {
+        if (isBossRoom) return;
+
         do
         {
             int rnd = Random.Range(0, 100);
@@ -49,8 +52,7 @@ public class Room : MonoBehaviour {
 
             for (int i = 0; i < _roomManager.EnemyPool.Count; i++)
             {
-                if (rnd <= _roomManager.EnemyPool[i].ProbabilityOfAppearing)
-                    possibleEnemies.Add(_roomManager.EnemyPool[i]);
+                if (rnd <= _roomManager.EnemyPool[i].ProbabilityOfAppearing) possibleEnemies.Add(_roomManager.EnemyPool[i]);
             }
 
             int selector = Random.Range(0, possibleEnemies.Count);
@@ -64,35 +66,24 @@ public class Room : MonoBehaviour {
 
         } while (_currentWeight < _roomManager.WeightEnemiesForThisPlace);
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player") && _canAdvance)
-        {
-            _roomManager.StartCoroutine("ChangeState");
-        }
-    }
+    private void OnTriggerEnter2D(Collider2D collision) { if (collision.CompareTag("Player") && _canAdvance) { _roomManager.StartCoroutine("ChangeState"); } }
     // ---- SETTERS && GETTERS ---- //
     public void SetLivingEnemies(EnemyManager enemy)
     {
+        if (isBossRoom) return;
+
         _roomManager.AddKillsToPlayer();
 
-        Vector3 posEnemy = enemy.transform.position;
-        if (_livingEnemies.Remove(enemy))
-        {
-            if (_livingEnemies.Count <= 0)
-            {
-                Advance();
-            }
-        }
+        if (_livingEnemies.Remove(enemy)) { if (_livingEnemies.Count <= 0) { Advance(); } }
     }
-    private void Advance()
+    public void Advance()
     {
         _canAdvance = true;
         StartCoroutine(_roomManager.Advance());
     }
     public void SetUselessEnemies(TypeEnemyAttack typeUseless, bool value = false)
     {
-        for(int i = 0; i < _livingEnemies.Count; i++)
+        for (int i = 0; i < _livingEnemies.Count; i++)
         {
             if (_livingEnemies[i].typeAttack == typeUseless)
             {
@@ -103,11 +94,5 @@ public class Room : MonoBehaviour {
             }
         }
     }
-    public void SetShieldToNull()
-    {
-        for(int i = 0; i < _livingEnemies.Count; i++)
-        {
-            _livingEnemies[i].Shield = 0;
-        }
-    }
+    public void SetShieldToNull() { for (int i = 0; i < _livingEnemies.Count; i++) { _livingEnemies[i].Shield = 0; } }
 }

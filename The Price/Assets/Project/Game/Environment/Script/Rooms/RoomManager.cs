@@ -7,8 +7,14 @@ public enum TypeRoom { Null, Basic, Gold, Skill, Aptitud, Object, Lore, Shop, Mi
 public class RoomManager : MonoBehaviour {
 
     [Header("Room Content")]
-    [SerializeField] private Room[] _roomPool;
-    [SerializeField] private Room _roomAstral;
+    public Room[] _roomPool;
+    public Room _roomAstral;
+
+    [Header("Boss Content")]
+    public Room _minBossRoom;
+    public BossSystem _minBoss;
+
+    [Header("Extra Room Content")]
     [SerializeField] private TypeRoom[] _typeRooms;
     private int _countRoomsComplete = -1;
     private bool isPerfectRoom = false;
@@ -121,8 +127,18 @@ public class RoomManager : MonoBehaviour {
         int rnd = UnityEngine.Random.Range(0, _roomPool.Length);
 
         // --- CREAR SALA SEGÚN ESPACIO ACTUAL --- //
-        if(_typeRooms[_countRoomsComplete] == TypeRoom.Astral) currentRoom = Instantiate(_roomAstral, Vector3.zero, Quaternion.identity, transform);
-        else currentRoom = Instantiate(_roomPool[rnd], Vector3.zero, Quaternion.identity, transform);
+        CameraMovement.SetSize(SizeCamera.normal);
+
+        if (_typeRooms[_countRoomsComplete] == TypeRoom.Astral) { currentRoom = Instantiate(_roomAstral, Vector3.zero, Quaternion.identity, transform); }
+        else if (_typeRooms[_countRoomsComplete] == TypeRoom.MiniBoss)
+        {
+            // CREAS LA SALA DEL MINI-BOSS Y LAS M-BOSS EN ELLA
+            currentRoom = Instantiate(_minBossRoom, Vector3.zero, Quaternion.identity, transform);
+            Instantiate(_minBoss.gameObject, currentRoom.posToReward, Quaternion.identity);
+
+            CameraMovement.SetSize(SizeCamera.boss);
+        }
+        else { currentRoom = Instantiate(_roomPool[rnd], Vector3.zero, Quaternion.identity, transform); }
         // --------------------------------------- //
 
         _player.transform.position = currentRoom.spawnPlayer.transform.position;

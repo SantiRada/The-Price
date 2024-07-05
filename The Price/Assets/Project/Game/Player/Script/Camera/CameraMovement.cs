@@ -1,5 +1,7 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
+public enum SizeCamera { normal, boss, specific }
 public class CameraMovement : MonoBehaviour {
 
     [Header("Content Move")]
@@ -20,6 +22,13 @@ public class CameraMovement : MonoBehaviour {
     private float decreaseFactor = 1.0f;
     private static Vector3 _originalPos;
     private static bool _shake = false;
+
+    [Header("Caller Camera")]
+    public static float speedCall = 5f;
+    private static Vector3 prevPosCamera;
+    private static Vector2 posCaller;
+    private static float timeToCall;
+    private static bool inCall = false;
 
     private void Awake()
     {
@@ -42,6 +51,24 @@ public class CameraMovement : MonoBehaviour {
     }
     private void Update()
     {
+        if (inCall)
+        {
+            if (timeToCall <= 0)
+            {
+                _cam.transform.position = Vector3.Lerp(_cam.transform.position, prevPosCamera, 0.5f * speedCall * Time.deltaTime);
+
+                if(Vector3.Distance(_cam.transform.position, prevPosCamera) <= 5) inCall = false;
+            }
+            else
+            {
+                timeToCall -= Time.deltaTime;
+
+                _cam.transform.position = Vector3.Lerp(_cam.transform.position, new Vector3(posCaller.x, posCaller.y, transform.position.z), 0.5f * speedCall * Time.deltaTime);
+            }
+
+            return;
+        }
+
         if (_shake)
         {
             if (shakeDuration > 0)
@@ -82,6 +109,22 @@ public class CameraMovement : MonoBehaviour {
             _shake = true;
             instance.shakeAmount = intensity;
             instance.shakeDuration = duration;
+        }
+    }
+    public static void CallCamera(Vector2 pos, float time)
+    {
+        prevPosCamera = _cam.transform.position;
+        timeToCall = time;
+        posCaller = pos;
+        inCall = true;
+    }
+    public static void SetSize(SizeCamera type)
+    {
+        switch (type)
+        {
+            case SizeCamera.specific: _cam.orthographicSize = 3; break;
+            case SizeCamera.normal: _cam.orthographicSize = 5; break;
+            case SizeCamera.boss: _cam.orthographicSize = 8; break;
         }
     }
 }

@@ -12,6 +12,7 @@ TagManager:
   - Meditate
   - Door
   - Push
+  - Boss
   layers:
   - Default
   - TransparentFX

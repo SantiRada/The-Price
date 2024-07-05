@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static ActionForControlPlayer;
@@ -137,7 +138,8 @@ public class WeaponManagerUI : MonoBehaviour {
     private void Select()
     {
         int prevWeapon = _playerStats.SetWeapon(_index, weapon);
-        weapon = weapons[prevWeapon];
+        
+        for(int i = 0; i < weapons.Count; i++) { if (weapons[i].weaponID == prevWeapon) { weapon = weapons[i]; break; } }
 
         Instantiate(interactiveObj.gameObject, _playerStats.transform.position, Quaternion.identity);
 
