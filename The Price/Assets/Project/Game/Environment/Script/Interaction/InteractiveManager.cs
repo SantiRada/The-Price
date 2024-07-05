@@ -38,10 +38,11 @@ public class InteractiveManager : MonoBehaviour {
         {
             string value = LanguageManager.GetValue(cnt, int.Parse(name));
 
-            _descContent[index].text = LanguageManager.GetValue(cnt, int.Parse(desc));
-            
+            if(int.Parse(desc) != -1) _descContent[index].text = LanguageManager.GetValue(cnt, int.Parse(desc));
+            else _descContent[index].text = value;
+
             if (index != 4) _nameContent[index].text = value;
-            else _descContent[index].text += " <color=#" + colorNames.ToHexString() + ">" + value + "</color>";
+            else if(int.Parse(desc) != -1) _descContent[index].text += " <color=#" + colorNames.ToHexString() + ">" + value + "</color>";
         }
         else
         {

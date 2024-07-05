@@ -169,10 +169,12 @@ public class BossSystem : MonoBehaviour {
 
         // anim.SetBool("Die", true);
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(3.5f);
 
         Pause.StateChange = State.Game;
         _room.Advance();
+
+        _bossUI.StartCoroutine("HideUI");
 
         Destroy(gameObject);
     }

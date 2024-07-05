@@ -24,13 +24,7 @@ public class BossUI : MonoBehaviour {
     {
         _canvas = GetComponent<CanvasGroup>();
 
-        #region InitialValues
-        _canvas.alpha = 0;
-        _canvas.interactable = false;
-        txtNameBoss.text = "";
-        healthbar.value = 0;
-        shieldbar.value = 0;
-        #endregion
+        InitialValues();
     }
     // ---- CALLERS PER BOSS ---- //
     public void StartUIPerBoss(int txt, int health, int shield)
@@ -44,6 +38,16 @@ public class BossUI : MonoBehaviour {
     public void SetStats(int health, int shield)
     {
         StartCoroutine(SetNewStats(health, shield));
+    }
+    public IEnumerator HideUI()
+    {
+        do
+        {
+            _canvas.alpha -= 0.1f;
+            yield return new WaitForSeconds(0.05f); // OneSecond
+        } while (_canvas.alpha < 1);
+
+        InitialValues();
     }
     // ---- FUNCION INTEGRA ---- //
     private IEnumerator StartUI()
@@ -100,5 +104,13 @@ public class BossUI : MonoBehaviour {
 
         healthbar.value = health;
         shieldbar.value = shield;
+    }
+    private void InitialValues()
+    {
+        _canvas.alpha = 0;
+        _canvas.interactable = false;
+        txtNameBoss.text = "";
+        healthbar.value = 0;
+        shieldbar.value = 0;
     }
 }

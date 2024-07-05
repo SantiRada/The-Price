@@ -132,7 +132,7 @@ public class RoomManager : MonoBehaviour {
         if (_typeRooms[_countRoomsComplete] == TypeRoom.Astral) { currentRoom = Instantiate(_roomAstral, Vector3.zero, Quaternion.identity, transform); }
         else if (_typeRooms[_countRoomsComplete] == TypeRoom.MiniBoss)
         {
-            // CREAS LA SALA DEL MINI-BOSS Y LAS M-BOSS EN ELLA
+            // CREAS LA SALA DEL MINI-BOSS Y AL M-BOSS EN ELLA
             currentRoom = Instantiate(_minBossRoom, Vector3.zero, Quaternion.identity, transform);
             Instantiate(_minBoss.gameObject, currentRoom.posToReward, Quaternion.identity);
 
@@ -220,6 +220,7 @@ public class RoomManager : MonoBehaviour {
             _textForPerfectRoom.SetActive(true);
         }
 
+        // INSTANCIA UN ARMA SOLO SI NO ES SALA DE BOSSES NI TIENDA
         if (_typeRooms[_countRoomsComplete] != TypeRoom.Shop && _typeRooms[_countRoomsComplete] != TypeRoom.MiniBoss && _typeRooms[_countRoomsComplete] != TypeRoom.Boss && _typeRooms[_countRoomsComplete] != TypeRoom.MaxBoss)
         {
             int rnd = UnityEngine.Random.Range(0, 100);
@@ -235,6 +236,7 @@ public class RoomManager : MonoBehaviour {
             case TypeRoom.Aptitud: _rewardInScene = Instantiate(_rewardFlair, currentRoom.posToReward, Quaternion.identity); break;
             case TypeRoom.Shop: _rewardInScene = Instantiate(_shop, currentRoom.posToShop, Quaternion.identity); break;
             case TypeRoom.Lore: _rewardInScene = Instantiate(_meditation, currentRoom.posToShop, Quaternion.identity); break;
+            case TypeRoom.MiniBoss: Debug.Log("Has eliminado al Mini-Boss"); break;
         }
     }
     // ---- SETTERS && GETTERS ---- //

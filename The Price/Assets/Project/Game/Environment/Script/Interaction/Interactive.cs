@@ -79,6 +79,5 @@ public abstract class Interactive : MonoBehaviour {
             }
             else { Select(); }
         }
-        else { Debug.Log("Este artículo no alcanza"); }
     }
 }

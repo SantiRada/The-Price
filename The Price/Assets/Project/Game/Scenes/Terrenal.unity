@@ -2472,7 +2472,7 @@ MonoBehaviour:
   - {fileID: 7484381886495951026, guid: e63a36760a5f1a5448d221c1d8311934, type: 3}
   - {fileID: 2573253389498148231, guid: 97fedf8303be1f640be5e2965b508788, type: 3}
   _weaponPlacement: {fileID: 6887158637832582068, guid: 00db5f6acbb462b44a25e3256573900c, type: 3}
-  weaponChance: 80
+  weaponChance: 15
   _rewardSkill: {fileID: 170214609297621058, guid: c02cc1b3021859b4eba4fd5159de1e84, type: 3}
   _rewardObject: {fileID: 938988099827242372, guid: fb558217ea4d3314f83253152e0fac24, type: 3}
   _rewardFlair: {fileID: 7750842796134514293, guid: 88df31a13d0aac14e93e808edee22710, type: 3}
@@ -22960,7 +22960,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1555809508}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 668795302f9bd884a805bc64655d34ef, type: 3}
   m_Name: 

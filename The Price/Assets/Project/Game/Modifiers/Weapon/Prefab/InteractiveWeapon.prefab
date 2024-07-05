@@ -101,9 +101,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: 4
-  typeContent: 0
-  nameContent: 0
-  descContent: 0
+  typeContent: 1
+  nameContent: 46
+  descContent: -1
   inSelect: 0
   inTrigger: 0
   isNew: 0

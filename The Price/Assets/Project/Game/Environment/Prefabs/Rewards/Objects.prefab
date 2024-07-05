@@ -178,14 +178,13 @@ MonoBehaviour:
   content: 4
   typeContent: 1
   nameContent: 22
-  descContent: 23
+  descContent: 14
   inSelect: 0
-  inTrigger: 0
+  inTrigger: 1
   isNew: 0
   isShop: 0
   priceInGold: 0
   _manager: {fileID: 0}
-  obj: {fileID: 0}
 --- !u!114 &3675939511509220483
 MonoBehaviour:
   m_ObjectHideFlags: 0
