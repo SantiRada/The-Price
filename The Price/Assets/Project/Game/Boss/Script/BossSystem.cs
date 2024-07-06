@@ -7,44 +7,47 @@ public class BossSystem : MonoBehaviour {
 
     [Header("Manager Content")]
     public int countPhase;
-    [Tooltip("Este BOSS cambia de fase por cantidad de vida (o por tiempo)")] public bool changePhasePerLife;
-    [Tooltip("Cantidad de vida o tiempo para cambiar de fase")] public List<int> limiterPerPhase = new List<int>();
-    [Tooltip("Cantidad de ataques que hace en cada fase")] public List<int> countAttacksPerPhase = new List<int>();
-    public List<AttackBoss> attacks = new List<AttackBoss>();
+    [Tooltip("Este BOSS cambia de fase por cantidad de vida (o por tiempo).")] public bool changePhasePerLife;
+    [Tooltip("Cantidad de vida o tiempo para cambiar de fase.")] public List<int> limiterPerPhase = new List<int>();
+    [Tooltip("Cantidad de ataques que hace en cada fase.")] public List<int> countAttacksPerPhase = new List<int>();
+    [Tooltip("Lista total de Ataques.")] public List<AttackBoss> attacks = new List<AttackBoss>();
     private int indexPhase = 0;
 
-    [Header("Stats")]
+    [Header("General Stats")]
     public int nameBoss;
-    [Tooltip("Unicamente sirve para el JSON de guardado de muertes")] public TypeBoss typeBoss;
+    [Tooltip("Unicamente sirve para el JSON de guardado de muertes.")] public TypeBoss typeBoss;
     public int health;
     public int shield;
     public int damageMultiplier;
     public float speed;
     public float sanity;
-    [Tooltip("Tiempo que tenes que colisionar para que te aplique daño")] public float timeToDetectCollision;
-    private float detectCollisionBase;
     private float sanityBase;
 
+    [Header("Collision")]
+    [Tooltip("Tiempo que tenes que colisionar para que te aplique daño.")] public float timeToDetectCollision;
+    private float detectCollisionBase;
+
     [Header("Move & Attack")]
-    public float timeBetweenAttacks;
-    public float timeBetweenMovement;
-    private float timerMovementBase;
-    private float timerAttackBase;
-    [Space]
-    public bool inMove;
-    public bool canMove;
-    public bool inAttack;
-    public bool canAttack;
-    public bool canTakeDamage;
-    public bool canInitial = false;
-    [Space]
-    private List<TypeMovement> _typeMovement = new List<TypeMovement>();
-    private List<AttackBoss> _typeAttacks = new List<AttackBoss>();
+    [Range(0, 3)] public float delayBetweenMovement;
+    [Range(0, 5)] public float delayBetweenAttack;
+    [Tooltip("Si lo es, tiene más probabilidad de atacar que de moverse por el mapa.")] public bool isAggressive;
+    [Tooltip("Si es TRUE, en fases posteriores incluye todos los ataques de fases previas.")] public bool includeAllAttacks;
+
+    [Header("Private Content for Move & Attack")]
+    private bool canTakeDamage;
+    private bool inMove, canMove;
+    private bool inAttack, canAttack;
+    private float maxDistance, minDistance;
+    private int indexMin;
 
     [Header("Private Content")]
     private PlayerStats _playerStats;
-    private Room _room;
     private BossUI _bossUI;
+    private Room _room;
+
+    [Header("List")]
+    private List<TypeMovement> _typeMovement = new List<TypeMovement>();
+    private List<AttackBoss> _typeAttacks = new List<AttackBoss>();
 
     private void OnEnable()
     {
@@ -58,10 +61,6 @@ public class BossSystem : MonoBehaviour {
     {
         // TIMERS INICIALES
         detectCollisionBase = timeToDetectCollision;
-        timerMovementBase = timeBetweenMovement;
-        timerAttackBase = timeBetweenAttacks;
-        timeBetweenAttacks = 0;
-        timeBetweenMovement = 0;
         sanityBase = sanity;
 
         // ATTACKERS
@@ -69,14 +68,13 @@ public class BossSystem : MonoBehaviour {
         {
             _typeAttacks.Add(Instantiate(attacks[i].gameObject, transform.position, Quaternion.identity, transform).GetComponent<AttackBoss>());
         }
+        ComprobateDistanceToPlayer();
 
         StartCoroutine("Presentation");
     }
     private void Update()
     {
         if (Pause.state != State.Game || LoadingScreen.inLoading) return;
-
-        if (!canInitial) return;
 
         #region Sanity
         if (sanity < sanityBase)
@@ -87,59 +85,35 @@ public class BossSystem : MonoBehaviour {
         if(sanity <= 0) { StartCoroutine("ApplyEffect"); }
         #endregion
 
-        if (canAttack)
-        {
-            Debug.Log("Puede atacarte...");
-            timeBetweenAttacks -= Time.deltaTime;
-
-            if (timeBetweenAttacks <= 0)
-            {
-                Attack();
-                timeBetweenAttacks = timerAttackBase;
-            }
-        }
-
         if (canMove)
         {
-            timeBetweenMovement -= Time.deltaTime;
-
-            if(timeBetweenMovement <= 0)
+            if (!canAttack)
             {
                 Movement();
-                timeBetweenMovement = timerMovementBase;
+                return;
+            }
+
+            if(Vector3.Distance(transform.position, _playerStats.transform.position) > maxDistance) { Movement(); }
+            else if(Vector3.Distance(transform.position, _playerStats.transform.position) < minDistance) { Attack(indexMin); }
+            else
+            {
+                int rnd = Random.Range(0, 100);
+
+                if (isAggressive)
+                {
+                    if(rnd < 70) { Attack(); }
+                    else { Movement(); }
+                }
+                else
+                {
+                    if (rnd < 70) { Movement(); }
+                    else { Attack(); }
+                }
             }
         }
+        else if (canAttack) { Attack(); }
     }
     // ---- STOPPERS ---- //
-    private IEnumerator Presentation()
-    {
-        yield return new WaitForSeconds(2f);
-
-        // INICIA LA UI DEL BOSS
-        _bossUI.StartUIPerBoss(nameBoss, health, shield);
-
-        indexPhase = 0;
-        inMove = false;
-        canMove = false;
-        inAttack = false;
-        canAttack = false;
-        canInitial = false;
-        canTakeDamage = false;
-        Pause.StateChange = State.Pause;
-        CameraMovement.CallCamera(transform.position, 2f);
-
-        // anim.SetBool("Presentation", true);
-
-        yield return new WaitForSeconds(3.5f);
-
-        // anim.SetBool("Presentation", false);
-
-        Pause.StateChange = State.Game;
-        canTakeDamage = true;
-        canInitial = true;
-        canAttack = true;
-        canMove = true;
-    }
     private IEnumerator ChangePhase()
     {
         inMove = false;
@@ -159,12 +133,45 @@ public class BossSystem : MonoBehaviour {
         canAttack = true;
         canTakeDamage = true;
     }
+    private IEnumerator Presentation()
+    {
+        yield return new WaitForSeconds(2f);
+
+        // INICIA LA UI DEL BOSS
+        _bossUI.StartUIPerBoss(nameBoss, health, shield);
+
+        indexPhase = 0;
+        inMove = false;
+        canMove = false;
+        inAttack = false;
+        canAttack = false;
+        canTakeDamage = false;
+        Pause.StateChange = State.Pause;
+        CameraMovement.CallCamera(transform.position, 2f);
+
+        // anim.SetBool("Presentation", true);
+
+        yield return new WaitForSeconds(3.5f);
+
+        // anim.SetBool("Presentation", false);
+
+        Pause.StateChange = State.Game;
+        canTakeDamage = true;
+        canAttack = true;
+        canMove = true;
+    }
     private IEnumerator Die()
     {
         canMove = false;
         canAttack = false;
         canTakeDamage = false;
         Pause.StateChange = State.Pause;
+
+        StartCoroutine("CancelMove");
+        StartCoroutine("CancelAttack");
+
+        yield return new WaitForSeconds(0.5f);
+
         CameraMovement.CallCamera(transform.position, 3f);
 
         // anim.SetBool("Die", true);
@@ -217,29 +224,26 @@ public class BossSystem : MonoBehaviour {
 
         _typeMovement[rnd].Move(speed);
     }
-    private void Attack()
+    private void Attack(int index = -1)
     {
-        if (inMove) { CancelMove(); }
+        if (inMove) { StartCoroutine("CancelMove"); }
 
-        Debug.Log("Éstá pensando su ataque");
+        #region CalculateTypeAttack
+        int minValue;
 
-        int rnd = Random.Range((indexPhase > 0 ? countAttacksPerPhase[(indexPhase - 1)] : 0), countAttacksPerPhase[indexPhase]);
+        if (includeAllAttacks) minValue = 0;
+        else minValue = (indexPhase > 0 ? countAttacksPerPhase[(indexPhase - 1)] : 0);
 
-        if (DistanceToPlayer(_typeAttacks[rnd].distanceToAttack))
-        {
+        int rnd = Random.Range(minValue, countAttacksPerPhase[indexPhase]);
 
-            Debug.Log("El Jefe te atacará");
-            _typeAttacks[rnd].bossParent = this;
-            _typeAttacks[rnd].StartCoroutine("Attack");
+        if (index != -1) rnd = index;
+        #endregion
 
-            canAttack = false;
-            inAttack = true;
-        }
-        else
-        {
-            Debug.LogWarning("No puede atacarte, estás muy lejos");
-            Movement();
-        }
+        _typeAttacks[rnd].bossParent = this;
+        _typeAttacks[rnd].StartCoroutine("Attack");
+
+        canAttack = false;
+        inAttack = true;
     }
     private IEnumerator ApplyEffect()
     {
@@ -257,21 +261,43 @@ public class BossSystem : MonoBehaviour {
         canMove = true;
         canAttack = true;
     }
+    // ---- FUNCION INTEGRA ---- //
+    private void ComprobateDistanceToPlayer()
+    {
+        minDistance = 1000;
+        maxDistance = 0;
+
+        for (int i = 0; i < _typeAttacks.Count; i++)
+        {
+            // GUARDA EL ATAQUE DE MÍNIMA DISTANCIA
+            if (_typeAttacks[i].distanceToAttack < minDistance)
+            {
+                minDistance = _typeAttacks[i].distanceToAttack;
+                indexMin = i;
+            }
+
+            // GUARDA EL ATAQUE DE MÁXIMA DISTANCIA
+            if (_typeAttacks[i].distanceToAttack > maxDistance) { maxDistance = _typeAttacks[i].distanceToAttack; }
+        }
+    }
     // ---- SETTERS && GETTERS ---- //
-    private bool DistanceToPlayer(float value)
+    public IEnumerator CancelMove()
     {
-        if (Vector3.Distance(transform.position, _playerStats.transform.position) <= value) { return true; }
-        else { return false; }
-    }
-    public void CancelMove()
-    {
+        for(int i = 0; i< _typeMovement.Count; i++) { _typeMovement[i].CancelMove(); }
+
         inMove = false;
-        canMove = true;
+
+        yield return new WaitForSeconds(delayBetweenMovement);
+
+        if(health > 0) canMove = true;
     }
-    public void CancelAttack()
+    public IEnumerator CancelAttack()
     {
         inAttack = false;
-        canAttack = true;
+
+        yield return new WaitForSeconds(delayBetweenAttack);
+
+        if (health > 0) canAttack = true;
     }
     // ---- TRIGGERS ---- //
     private void OnTriggerEnter2D(Collider2D collision)

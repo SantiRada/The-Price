@@ -17685,6 +17685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 3292636608798116308}
   offset: 5
+  zoomSpeed: 1.5
 --- !u!114 &1187205339
 MonoBehaviour:
   m_ObjectHideFlags: 0

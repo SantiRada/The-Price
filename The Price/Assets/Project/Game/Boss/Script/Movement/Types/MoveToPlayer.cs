@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class MoveToPlayer : TypeMovement {
 
-    private bool inMove = false;
     private float speedMove = 0;
     private float timeToCancel;
 

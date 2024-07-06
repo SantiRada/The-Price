@@ -30,6 +30,10 @@ public class CameraMovement : MonoBehaviour {
     private static float timeToCall;
     private static bool inCall = false;
 
+    [Header("Battle System")]
+    [Tooltip("Velocidad del cambio de tamaño de la cámara cuando el jugador se aleja o acerca al enemigo")] public float zoomSpeed;
+    private static BossSystem _boss;
+
     private void Awake()
     {
         if (instance == null)
@@ -87,8 +91,28 @@ public class CameraMovement : MonoBehaviour {
 
         if (_diePlayer) return;
 
-        Vector3 newPos = new Vector3(Mathf.Clamp(target.transform.position.x, min.x, max.x), Mathf.Clamp(target.transform.position.y, min.y, max.y), _initialPos.z);
-        transform.position = Vector3.Lerp(transform.position, newPos, offset * Time.deltaTime);
+        if (_boss == null)
+        {
+            Vector3 newPos = new Vector3(Mathf.Clamp(target.transform.position.x, min.x, max.x), Mathf.Clamp(target.transform.position.y, min.y, max.y), _initialPos.z);
+            transform.position = Vector3.Slerp(transform.position, newPos, offset * Time.deltaTime);
+        }
+        else
+        {
+            // Calcular el punto medio
+            Vector3 middlePoint = (target.transform.position + _boss.transform.position) / 2f;
+            middlePoint.z = transform.position.z; // Mantener la posición z de la cámara
+
+            Vector3 newPos = new Vector3(Mathf.Clamp(middlePoint.x, min.x, max.x), Mathf.Clamp(middlePoint.y, min.y, max.y), middlePoint.z);
+            transform.position = Vector3.Slerp(transform.position, newPos, offset * Time.deltaTime);
+
+            // Calcular la distancia entre el jugador y el jefe
+            float distance = Vector3.Distance(target.transform.position, _boss.transform.position);
+
+            // Ajustar el tamaño de la cámara según la distancia
+            float targetSize = Mathf.Clamp(distance, 7, 10);
+            _cam.orthographicSize = Mathf.Lerp(_cam.orthographicSize, targetSize, Time.deltaTime * zoomSpeed);
+        }
+            
     }
     public static void SetMinMax(Vector2 minValues, Vector2 maxValues)
     {
@@ -124,7 +148,7 @@ public class CameraMovement : MonoBehaviour {
         {
             case SizeCamera.specific: _cam.orthographicSize = 3; break;
             case SizeCamera.normal: _cam.orthographicSize = 5; break;
-            case SizeCamera.boss: _cam.orthographicSize = 8; break;
+            case SizeCamera.boss: _boss = FindAnyObjectByType<BossSystem>(); break;
         }
     }
 }

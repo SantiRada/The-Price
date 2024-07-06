@@ -23,7 +23,6 @@ public class Distance : WeaponSystem {
     {
         Projectile pr = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
         Vector3 direction = _crosshair.GetCurrentAimDirection();
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         if (isFinalHit)
         {
@@ -32,8 +31,6 @@ public class Distance : WeaponSystem {
                 for (int i = 0; i < 2; i++)
                 {
                     Projectile proyectil = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
-
-                    proyectil.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
                     proyectil.SetterValues(_player.gameObject, distanceAttack, damage, canTraverse, direction, 0, speedProjectile);
                 }
             }
@@ -44,7 +41,6 @@ public class Distance : WeaponSystem {
             else if(typeFinalHit == DistanceFinalHit.generateAreaDamage) { pr.canAreaDamage = true; }
         }
 
-        pr.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
         pr.SetterValues(_player.gameObject, distanceAttack, damage, canTraverse, _crosshair.GetCurrentAimDirection(), 0, speedProjectile);
     }
 }
