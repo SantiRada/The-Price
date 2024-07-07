@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum TypeBoss { minBoss, Boss, maxBoss }
@@ -35,8 +36,8 @@ public class BossSystem : MonoBehaviour {
 
     [Header("Private Content for Move & Attack")]
     private bool canTakeDamage;
-    private bool inMove, canMove;
-    private bool inAttack, canAttack;
+    public bool inMove, canMove;
+    public bool inAttack, canAttack;
     private float maxDistance, minDistance;
     private int indexMin;
 
@@ -121,7 +122,7 @@ public class BossSystem : MonoBehaviour {
         inAttack = false;
         canAttack = false;
         canTakeDamage = false;
-        indexPhase++;
+        if((countAttacksPerPhase.Count - 1) > indexPhase) indexPhase++;
 
         // anim.SetBool("ChangePhase", true);
 
@@ -207,7 +208,7 @@ public class BossSystem : MonoBehaviour {
 
         if (health <= limiterPerPhase[indexPhase])
         {
-            if (indexPhase < (limiterPerPhase.Count - 1)) StartCoroutine("ChangePhase");
+            if (indexPhase < countPhase) StartCoroutine("ChangePhase");
         }
 
         if (health <= 0) { StartCoroutine("Die"); }

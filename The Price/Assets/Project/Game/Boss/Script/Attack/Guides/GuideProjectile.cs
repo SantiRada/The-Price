@@ -4,12 +4,22 @@ public class GuideProjectile : MonoBehaviour {
 
     public Transform visualGuide;
 
-    public void SetSize(Vector3 target, float size)
+    public void SetSize(Vector3 target, float size, bool changeSize = false)
     {
-        float angle = Mathf.Atan2(target.y, target.x) * Mathf.Rad2Deg;
+        // Calcula la dirección hacia el objetivo
+        Vector3 direction = target - transform.position;
+
+        // Calcula el ángulo en radianes y luego convierte a grados
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        // Aplica la rotación
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
-        visualGuide.localPosition = new Vector3((size / 2), visualGuide.localPosition.y, visualGuide.localPosition.z);
-        visualGuide.localScale = new Vector3(size, visualGuide.localScale.y, visualGuide.localScale.z);
+
+        if (changeSize)
+        {
+            visualGuide.localPosition = new Vector3((size / 2), visualGuide.localPosition.y, visualGuide.localPosition.z);
+            visualGuide.localScale = new Vector3(size, visualGuide.localScale.y, visualGuide.localScale.z);
+        }
     }
 }

@@ -2453,7 +2453,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _roomPool:
-  - {fileID: 5854295519522549537, guid: 972dd7754d3016c4ead128bf7ba2fd62, type: 3}
   - {fileID: 5518100554475225977, guid: 254615d95f24324459e6703ac3726f94, type: 3}
   - {fileID: 4145148836245654239, guid: 726d3e7b8d16b0f4bab9298e9defe0e3, type: 3}
   _roomAstral: {fileID: 7192305730043495907, guid: 3fe31296330ceec4981b6d4540149c22, type: 3}

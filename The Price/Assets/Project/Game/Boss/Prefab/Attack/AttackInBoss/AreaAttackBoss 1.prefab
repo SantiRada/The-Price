@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6870992537151876014
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6035417468126659699}
+  - component: {fileID: 6370981291506861122}
+  m_Layer: 0
+  m_Name: AreaAttackBoss 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6035417468126659699
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6870992537151876014}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6370981291506861122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6870992537151876014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ad55d956602c64d82d83fb12c3f54f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualAttack: {fileID: 5149103519136635771, guid: 2d2181aaef2024847866da715ab13e46, type: 3}
+  damage: 12
+  distanceToAttack: 8
+  timeToDestroy: 2.5
+  countCreated: 1
+  timeBetweenCreated: 1
+  isParabolic: 0
+  parabolicObj: {fileID: 0}
+  guideObj: {fileID: 131738650842790984, guid: 11b95d22155fa27498f3ff3bd809dd2a, type: 3}
+  timeToGuide: 1.2
+  bossParent: {fileID: 0}
+  posInPlayer: 0

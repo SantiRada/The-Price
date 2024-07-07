@@ -48,6 +48,11 @@ MonoBehaviour:
   damage: 10
   distanceToAttack: 4
   timeToDestroy: 2
+  countCreated: 1
+  timeBetweenCreated: 1
+  isParabolic: 1
+  parabolicObj: {fileID: 8545451829422390905, guid: 98b5280f3b4383146ae498e026c8250c, type: 3}
   guideObj: {fileID: 8141251484000843000, guid: a30dc2e19ebbbda4cbb3546b769c68df, type: 3}
-  timeToGuide: 1.25
+  timeToGuide: 1
   bossParent: {fileID: 0}
+  posInPlayer: 1

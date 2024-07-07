@@ -138,26 +138,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4db289956851324bb6cf371c38d5f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countPhase: 3
+  countPhase: 2
   changePhasePerLife: 1
-  limiterPerPhase: 4b000000
-  countAttacksPerPhase: 03000000
+  limiterPerPhase: f40100002c010000
+  countAttacksPerPhase: 0300000005000000
   attacks:
   - {fileID: 1136640752146106191, guid: 9b5c4d81d09cb8740a28b61fd9640a97, type: 3}
-  - {fileID: 9013041314036842757, guid: ec1670a80dcc8f24cbb4dffa8d6f65ba, type: 3}
+  - {fileID: 2537552435112229831, guid: 4f9dcd34087924c42a3b459ba235225c, type: 3}
   - {fileID: 806258577112852410, guid: ad0dc949a00e5004b94267f4b825d3e0, type: 3}
+  - {fileID: 3890488785821167363, guid: fc2b564671ed7bd49bfdd7fb868dc41a, type: 3}
+  - {fileID: 9013041314036842757, guid: ec1670a80dcc8f24cbb4dffa8d6f65ba, type: 3}
+  - {fileID: 6370981291506861122, guid: 24f80519847a181409bff6fbeb26c22f, type: 3}
   nameBoss: 43
   typeBoss: 0
-  health: 100
-  shield: 25
-  damageMultiplier: 10
+  health: 600
+  shield: 150
+  damageMultiplier: 15
   speed: 1.1
-  sanity: 10
-  timeToDetectCollision: 1
-  delayBetweenMovement: 3
-  delayBetweenAttack: 1.5
+  sanity: 14
+  timeToDetectCollision: 0.75
+  delayBetweenMovement: 2.65
+  delayBetweenAttack: 2
   isAggressive: 1
-  includeAllAttacks: 1
+  includeAllAttacks: 0
 --- !u!114 &1011478350328863812
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -46,11 +46,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualAttack: {fileID: 8012781927902638323, guid: 932f004f074421641856333138094e41, type: 3}
   damage: 15
-  distanceToAttack: 6
+  distanceToAttack: 8
   timeToDestroy: 3
+  countCreated: 1
+  timeBetweenCreated: 1
   guideObj: {fileID: 4703553652369985285, guid: c889662b1f0b49c4788540de7bdd9912, type: 3}
   timeToGuide: 0.75
   bossParent: {fileID: 0}
   distanceProjectile: 7
-  speedProjectile: 3.5
+  speedProjectile: 1.75
   canTraverse: 1
