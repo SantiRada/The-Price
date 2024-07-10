@@ -8,13 +8,11 @@ public class ObjectPerDamage : MonoBehaviour {
     private float timer;
 
     [Header("Private Content")]
-    private BossSystem bossParent;
     private Collider2D _col2D;
 
     private void Start() { _col2D = GetComponent<Collider2D>(); }
-    public void SetValues(BossSystem boss, int dmg, float time)
+    public void SetValues(int dmg, float time)
     {
-        bossParent = boss;
         damage = dmg;
         timer = time;
 
@@ -24,7 +22,7 @@ public class ObjectPerDamage : MonoBehaviour {
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerStats>().TakeDamage(bossParent.gameObject, damage);
+            collision.gameObject.GetComponent<PlayerStats>().TakeDamage(gameObject, damage);
 
             if (!canRemain) { Destroy(gameObject); }
             else { _col2D.enabled = false; }

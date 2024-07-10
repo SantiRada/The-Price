@@ -11,14 +11,14 @@ public class MultipleGroundAttackBoss : AttackBoss {
         index = 1;
         guideInScene.GetComponent<GuideProjectile>().SetSize(GetPlayerPosition(), distanceToAttack, false);
     }
-    protected override Vector3 GetPosition() { return bossParent.transform.position; }
+    protected override Vector3 GetPosition() { return enemyParent.transform.position; }
     protected override IEnumerator LaunchedAttack()
     {
         index = 0;
         for (int i = 0; i < countCreated; i++)
         {
             ObjectPerDamage obj = Instantiate(visualAttack.gameObject, CalculatePos(), Quaternion.identity).GetComponent<ObjectPerDamage>();
-            obj.SetValues(bossParent, GetDamage(), timeToDestroy);
+            obj.SetValues(GetDamage(), timeToDestroy);
             yield return new WaitForSeconds(timeBetweenCreated);
         }
     }

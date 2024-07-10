@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7105337657330464152}
   - component: {fileID: 1011478350328863812}
   - component: {fileID: 1380473012032805492}
+  - component: {fileID: -3842517137492939018}
   m_Layer: 0
   m_Name: MinBoss_Terrenal
   m_TagString: Boss
@@ -151,16 +152,20 @@ MonoBehaviour:
   - {fileID: 6370981291506861122, guid: 24f80519847a181409bff6fbeb26c22f, type: 3}
   nameBoss: 43
   typeBoss: 0
-  health: 600
-  shield: 150
+  health: 450
+  shield: 100
   damageMultiplier: 15
   speed: 1.1
   sanity: 14
   timeToDetectCollision: 0.75
-  delayBetweenMovement: 2.65
-  delayBetweenAttack: 2
+  delayBetweenMovement: 3
+  delayBetweenAttack: 5
   isAggressive: 1
-  includeAllAttacks: 0
+  includeAllAttacks: 1
+  inMove: 0
+  canMove: 0
+  inAttack: 0
+  canAttack: 0
 --- !u!114 &1011478350328863812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,7 +178,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f8fababada627e428e327ead5a1d71e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeToCancel: 5
+  speedMove: 0
   inMove: 0
+  minDistanceToPlayer: 5
 --- !u!50 &1380473012032805492
 Rigidbody2D:
   serializedVersion: 4
@@ -201,3 +209,19 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-3842517137492939018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4127154019616426257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87c97ef1f5fdf74b8e04a12ed7bfa38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToCancel: 8
+  speedMove: 0.35
+  inMove: 0
+  intensity: 45

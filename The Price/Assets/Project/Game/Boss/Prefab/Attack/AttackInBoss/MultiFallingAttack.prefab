@@ -47,9 +47,9 @@ MonoBehaviour:
   visualAttack: {fileID: 2947727244816598691, guid: ef06a32f184a4cd4fb42c2b9d401e1be, type: 3}
   damage: 8
   distanceToAttack: 4
-  timeToDestroy: 1.5
+  timeToDestroy: 0.1
   countCreated: 3
-  timeBetweenCreated: 0.2
+  timeBetweenCreated: 0.35
   isParabolic: 1
   parabolicObj: {fileID: 8545451829422390905, guid: 98b5280f3b4383146ae498e026c8250c, type: 3}
   guideObj: {fileID: 1478314309484297350, guid: ad7fcdffc0d201048b5d78172bce35c9, type: 3}

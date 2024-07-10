@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6035417468126659699}
   - component: {fileID: 6370981291506861122}
   m_Layer: 0
-  m_Name: AreaAttackBoss 1
+  m_Name: AreaAttackBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

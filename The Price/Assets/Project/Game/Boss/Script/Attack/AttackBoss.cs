@@ -26,7 +26,7 @@ public abstract class AttackBoss : MonoBehaviour {
     protected GameObject guideInScene;
     protected event Action guideCreated;
 
-    [HideInInspector] public BossSystem bossParent;
+    [HideInInspector] public EnemyBase enemyParent;
     protected PlayerStats _player;
     private Vector3 _playerPosition;
 
@@ -49,7 +49,7 @@ public abstract class AttackBoss : MonoBehaviour {
 
         StartCoroutine("LaunchedAttack");
 
-        bossParent.StartCoroutine("CancelAttack");
+        enemyParent.StartCoroutine("CancelAttack");
     }
     private void CreateGuide(Vector2 pos)
     {
@@ -61,7 +61,7 @@ public abstract class AttackBoss : MonoBehaviour {
         Destroy(guideInScene, timeToGuide);
     }
     // --- FUNCION INTEGRA ---- //
-    protected int GetDamage() { return (damage + bossParent.damageMultiplier); }
+    protected int GetDamage() { return (damage + enemyParent.damage); }
     // ---- FUNCION ABSTRACT ---- //
     protected abstract IEnumerator LaunchedAttack();
     protected abstract Vector3 GetPosition();

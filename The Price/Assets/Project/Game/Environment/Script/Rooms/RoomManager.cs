@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public enum TypeRoom { Null, Basic, Gold, Skill, Aptitud, Object, Lore, Shop, MiniBoss, Boss, Astral, MaxBoss }
 public class RoomManager : MonoBehaviour {
@@ -15,6 +16,7 @@ public class RoomManager : MonoBehaviour {
     public BossSystem _minBoss;
 
     [Header("Extra Room Content")]
+    public TextMeshProUGUI textNextRoom;
     [SerializeField] private TypeRoom[] _typeRooms;
     private int _countRoomsComplete = -1;
     private bool isPerfectRoom = false;
@@ -109,17 +111,28 @@ public class RoomManager : MonoBehaviour {
         SkillManager[] skills = FindObjectsByType<SkillManager>(FindObjectsSortMode.None);
         if (skills.Length > 0) { for (int i = 0; i < skills.Length; i++) { Destroy(skills[i].gameObject); } }
 
+        // ELIMINAR TODOS LOS OBJETOS SPREAD
         ObjectSpread[] spread = FindObjectsByType<ObjectSpread>(FindObjectsSortMode.None);
         if (spread.Length > 0) { for (int i = 0; i < spread.Length; i++) { Destroy(spread[i].gameObject); } }
 
+        // ELIMINA EL REWARD
         if(_rewardInScene != null) Destroy(_rewardInScene.gameObject);
 
+        // ELIMINA EL OBJETO INTERACTIVE
         Interactive[] interactiveObj = FindObjectsByType<Interactive>(FindObjectsSortMode.None);
         if(interactiveObj.Length > 0) { for(int i = 0; i < interactiveObj.Length; i++) { Destroy(interactiveObj[i].gameObject); } }
 
+        // ELIMINA TODOS LOS PROYECTILES
+        Projectile[] pr = FindObjectsByType<Projectile>(FindObjectsSortMode.None);
+        if(pr.Length > 0) for(int i = 0; i< pr.Length; i++) { Destroy(pr[i].gameObject); }
+
+        // ELIMINA TODOS LOS OBJETOS DE DAÑO
+        ObjectPerDamage[] objDamage = FindObjectsByType<ObjectPerDamage>(FindObjectsSortMode.None);
+        if (objDamage.Length > 0) for (int i = 0; i < objDamage.Length; i++) { Destroy(objDamage[i].gameObject); }
+
         isPerfectRoom = true;
     }
-    private void CreateRoom()
+    private void CreateRoom()   
     {
         ResetValuesToNewRoom();
 
@@ -140,6 +153,12 @@ public class RoomManager : MonoBehaviour {
         }
         else { currentRoom = Instantiate(_roomPool[rnd], Vector3.zero, Quaternion.identity, transform); }
         // --------------------------------------- //
+
+        #region TEXT PER ROOM
+        string nextRoom = (_countRoomsComplete + 1) < (_typeRooms.Length - 1) ? _typeRooms[(_countRoomsComplete++)].ToString() : "";
+        textNextRoom.text = "Sala Actual: " + _typeRooms[_countRoomsComplete].ToString() + "\n";
+        textNextRoom.text += "Siguiente Sala: " + nextRoom;
+        #endregion
 
         _player.transform.position = currentRoom.spawnPlayer.transform.position;
 

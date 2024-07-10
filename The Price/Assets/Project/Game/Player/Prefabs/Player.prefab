@@ -48,8 +48,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _distanceCursor: 0.62
   _rotationSpeed: 5
-  _levelHelp: 4
+  _levelHelp: 6
   active: 1
+  enemies: []
 --- !u!61 &7745312185467084353
 BoxCollider2D:
   m_ObjectHideFlags: 0

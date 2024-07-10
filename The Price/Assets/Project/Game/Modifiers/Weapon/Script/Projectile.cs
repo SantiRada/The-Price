@@ -13,15 +13,16 @@ public class Projectile : MonoBehaviour {
     private GameObject gameObj;
     private float _distanceToAttack;
 
+    private Vector2 _target;
     private Vector2 _initPos;
     private Rigidbody2D _rb2d;
     private Collider2D _collider;
-    private Vector2 _target;
 
     private void OnEnable()
     {
         _collider = GetComponent<Collider2D>();
         _rb2d = GetComponent<Rigidbody2D>();
+
         _initPos = transform.position;
     }
     public void SetterValues(GameObject obj, float distance, int damage, bool traverse, Vector2 target, int boss = 0, float speed = 0)
@@ -37,9 +38,8 @@ public class Projectile : MonoBehaviour {
         // BOSS = 0 = Lo envió el Player // BOSS = 1 = Lo envió un enemigo // = 2 Lo envió un Boss
         whoIsBoss = boss;
 
-        if (boss != 0) _collider.isTrigger = false;
-        else _collider.isTrigger = true;
-
+        if (boss != 0) { _collider.isTrigger = false; }
+        else { _collider.isTrigger = true; }
 
         float angle = Mathf.Atan2(target.y, target.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));

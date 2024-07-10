@@ -52,13 +52,13 @@ public class Room : MonoBehaviour {
 
             for (int i = 0; i < _roomManager.EnemyPool.Count; i++)
             {
-                if (rnd <= _roomManager.EnemyPool[i].ProbabilityOfAppearing) possibleEnemies.Add(_roomManager.EnemyPool[i]);
+                if (rnd <= _roomManager.EnemyPool[i].probabilityOfAppearing) possibleEnemies.Add(_roomManager.EnemyPool[i]);
             }
 
             int selector = Random.Range(0, possibleEnemies.Count);
 
             EnemyManager enemy = Instantiate(possibleEnemies[selector], _spawnEnemy[Random.Range(0, _spawnEnemy.Length)].transform.position, Quaternion.identity);
-            enemy.RoomCurrent = this;
+            enemy.CurrentRoom = this;
 
             _livingEnemies.Add(enemy);
 
@@ -94,5 +94,5 @@ public class Room : MonoBehaviour {
             }
         }
     }
-    public void SetShieldToNull() { for (int i = 0; i < _livingEnemies.Count; i++) { _livingEnemies[i].Shield = 0; } }
+    public void SetShieldToNull() { for (int i = 0; i < _livingEnemies.Count; i++) { _livingEnemies[i].shield = 0; } }
 }

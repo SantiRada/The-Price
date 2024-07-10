@@ -2,26 +2,12 @@ using UnityEngine;
 
 public class MoveToPlayer : TypeMovement {
 
-    private float speedMove = 0;
-    private float timeToCancel;
+    [Tooltip("Distancia máxima hasta dónde puede acercarse")] public float minDistanceToPlayer;
 
-    private void Start() { inMove = false; }
-    private void Update()
+    public override void DataMove()
     {
-        if (inMove)
-        {
-            timeToCancel -= Time.deltaTime;
+        transform.position = Vector3.Lerp(transform.position, _playerStats.transform.position, 0.5f * speedMove * Time.deltaTime);
 
-            if (timeToCancel <= 0) _boss.CancelMove();
-
-            transform.position = Vector3.Lerp(transform.position, _playerStats.transform.position, 0.5f * speedMove * Time.deltaTime);
-
-            if(Vector3.Distance(transform.position, _playerStats.transform.position) < 2f) { inMove = false; }
-        }
-    }
-    public override void Move(float speed)
-    {
-        speedMove = speed;
-        inMove = true;
+        if (Vector3.Distance(transform.position, _playerStats.transform.position) < minDistanceToPlayer) { inMove = false; }
     }
 }

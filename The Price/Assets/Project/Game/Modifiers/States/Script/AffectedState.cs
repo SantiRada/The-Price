@@ -53,7 +53,7 @@ public class AffectedState : MonoBehaviour {
             {
                 // VERIFICACIONES DEL ESTADO "STUN"
                 if (numberOfLoads > 1) enemy.CanMove = false;
-                else if (numberOfLoads == 1) enemy.Speed = (enemy.Speed / 2);
+                else if (numberOfLoads == 1) enemy.speed = (enemy.speed / 2);
             }
             yield return new WaitForSeconds(whenTakeEffect);
         }
@@ -69,7 +69,7 @@ public class AffectedState : MonoBehaviour {
         if (state == TypeState.Stun)
         {
             if (!enemy.CanMove) enemy.CanMove = true;
-            else enemy.Speed = (enemy.Speed * 2);
+            else enemy.speed = (enemy.speed * 2);
         }
 
         // RESTABLECER EL TIMER PARA LA SIGUIENTE ITERACION

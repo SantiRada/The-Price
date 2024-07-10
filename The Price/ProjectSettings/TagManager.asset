@@ -13,6 +13,7 @@ TagManager:
   - Door
   - Push
   - Boss
+  - Unwalkable
   layers:
   - Default
   - TransparentFX

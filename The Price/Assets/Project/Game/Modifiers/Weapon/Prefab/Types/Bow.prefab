@@ -95,8 +95,8 @@ MonoBehaviour:
   delayDetect: 1.5
   durationDamage: 0.35
   projectile: {fileID: 3546439524351028113, guid: 79259104cc8cfe344bab25ed6eb62b90, type: 3}
-  distanceAttack: 8
-  speedProjectile: 5
+  distanceAttack: 10
+  speedProjectile: 14
   canTraverse: 1
   typeFinalHit: 2
 --- !u!212 &-104317291729646787
@@ -150,6 +150,6 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0

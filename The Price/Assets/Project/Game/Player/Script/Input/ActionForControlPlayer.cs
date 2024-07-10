@@ -222,6 +222,7 @@ public class ActionForControlPlayer : MonoBehaviour {
 
         _crosshair.SetAimDirection(_playerInput.actions["Aim"].ReadValue<Vector2>());
     }
+    public Vector2 RightStick() { return _playerInput.actions["Aim"].ReadValue<Vector2>(); }
     public static class PlayerActionStates
     {
         public static bool IsMeditate { get; set; }

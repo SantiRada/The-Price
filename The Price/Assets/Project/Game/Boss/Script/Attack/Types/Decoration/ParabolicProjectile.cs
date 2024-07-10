@@ -36,10 +36,6 @@ public class ParabolicProjectile : MonoBehaviour {
         _rb2d.velocity += Vector2.up * gravity * Time.deltaTime;
 
         // Verifica la distancia al objetivo
-        if (Vector2.Distance(transform.position, target) < distanceToTarget)
-        {
-            Debug.Log("Objetivo alcanzado!");
-            Destroy(gameObject);
-        }
+        if (Vector2.Distance(transform.position, target) < distanceToTarget) { Destroy(gameObject); }
     }
 }

@@ -69,17 +69,20 @@ public class BossUI : MonoBehaviour {
     private IEnumerator SetInitialStats()
     {
         healthbar.maxValue = health;
+
+        float between = 2 / health;
+
         for(int i = 0; i < health; i++)
         {
             healthbar.value += 1;
-            yield return new WaitForSeconds(timeBetweenLoadBars);
+            yield return new WaitForSeconds(between);
         }
 
         shieldbar.maxValue = shield;
         for (int i = 0; i < shield; i++)
         {
             shieldbar.value += 1;
-            yield return new WaitForSeconds(timeBetweenLoadBars);
+            yield return new WaitForSeconds(between);
         }
     }
     private IEnumerator SetNewStats(int health, int shield)

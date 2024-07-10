@@ -18,12 +18,12 @@ public class FollowForPathfinding : MonoBehaviour {
 
     [Header("Components")]
     private Rigidbody2D _rb2d;
-    private EnemyManager _enemyManager;
+    private EnemyBase _enemyManager;
 
     private void Awake()
     {
         _rb2d = GetComponent<Rigidbody2D>();
-        _enemyManager = GetComponent<EnemyManager>();
+        _enemyManager = GetComponent<EnemyBase>();
         _pathfinding = FindAnyObjectByType<Pathfinding>();
         _target = FindAnyObjectByType<PlayerMovement>().transform;
     }
@@ -83,31 +83,13 @@ public class FollowForPathfinding : MonoBehaviour {
     }
     private void MoveEnemy()
     {
-        Vector2 newPosition;
-        if (_path.Count > _enemyManager.DistanceToJump && _enemyManager.canJump)
-        {
-            // SALTO UNICAMENTE SI SUPERA LA DISTANCIA MÍNIMA DE SALTO
-            Vector2 newTarget = (Vector2)_path[_enemyManager.DistanceToJump].position;
-            newTarget.y += 1.5f;
-            newPosition = Vector2.MoveTowards(_rb2d.position, newTarget, (_enemyManager.Speed * 2) * Time.fixedDeltaTime);
-            _enemyManager.inJump = true;
-        }
-        else
-        {
-            // MOVIMIENTO NORMAL
-            newPosition = Vector2.MoveTowards(_rb2d.position, (Vector2)_path[_currentWaypoint].position, _enemyManager.Speed * Time.fixedDeltaTime);
-        }
+        Vector2 newPosition = Vector2.MoveTowards(_rb2d.position, (Vector2)_path[_currentWaypoint].position, _enemyManager.speed * Time.fixedDeltaTime);
 
         // APLICAR EL MOVIMIENTO
         _rb2d.MovePosition(newPosition);
 
-        if (_enemyManager.inJump) _enemyManager.StartCoroutine("DelayToJump");
-
         // CALCULAR LA DISTANCIA AL SIGUIENTE POINT DEL PATH
         float distance = Vector2.Distance(_rb2d.position, _path[_currentWaypoint].position);
-        if (distance < _nextWaypointDistance)
-        {
-            _currentWaypoint++;
-        }
+        if (distance < _nextWaypointDistance) { _currentWaypoint++; }
     }
 }

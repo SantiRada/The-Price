@@ -86,15 +86,4 @@ public class PlayerMovement : MonoBehaviour {
     {
         return _canDash;
     }
-    // ---- TRIGGERS && COLLISIONS ---- //
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("EnemyAttack"))
-        {
-            EnemyManager enemy;
-            enemy = collision.GetComponentInParent<EnemyManager>();
-
-            if(enemy != null) _player.TakeDamage(enemy.gameObject, enemy.damage);
-        }
-    }
 }
