@@ -28,6 +28,7 @@ public class DialogueUI : MonoBehaviour {
     private bool inLoad = false;
     [HideInInspector] public bool finishText = false;
 
+    private void Start() { contentUI.gameObject.SetActive(false); }
     private void Update()
     {
         if (inLoad)

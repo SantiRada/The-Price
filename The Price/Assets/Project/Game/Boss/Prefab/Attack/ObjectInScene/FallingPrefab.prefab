@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5656479988799755258}
   - component: {fileID: 5035217921651775786}
   - component: {fileID: 1308256741091103022}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FallingPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}

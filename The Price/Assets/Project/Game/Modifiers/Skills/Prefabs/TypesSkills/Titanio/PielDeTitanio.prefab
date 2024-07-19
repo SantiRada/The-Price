@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 663014189700985264}
   - component: {fileID: 5160335116163911113}
   - component: {fileID: 158202609222781864}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PielDeTitanio
   m_TagString: Untagged
   m_Icon: {fileID: 0}

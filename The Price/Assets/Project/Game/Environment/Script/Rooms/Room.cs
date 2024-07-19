@@ -8,7 +8,7 @@ public class Room : MonoBehaviour {
     [Tooltip("Si es sala de Boss no crea enemigos")] public bool isBossRoom = false;
 
     [Header("Enemies")]
-    [SerializeField] private List<EnemyManager> _livingEnemies = new List<EnemyManager>();
+    public List<EnemyManager> _livingEnemies = new List<EnemyManager>();
     [SerializeField] private GameObject[] _spawnEnemy;
     private int _currentWeight = 0;
 
@@ -66,7 +66,14 @@ public class Room : MonoBehaviour {
 
         } while (_currentWeight < _roomManager.WeightEnemiesForThisPlace);
     }
-    private void OnTriggerEnter2D(Collider2D collision) { if (collision.CompareTag("Player") && _canAdvance) { _roomManager.StartCoroutine("ChangeState"); } }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player") && _canAdvance)
+        {
+            if (_roomManager.madeInteraction) _roomManager.StartCoroutine("ChangeState");
+            else _roomManager.CreateInteraction();
+        }
+    }
     // ---- SETTERS && GETTERS ---- //
     public void SetLivingEnemies(EnemyManager enemy)
     {

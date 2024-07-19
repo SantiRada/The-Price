@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6273879305525340155}
   - component: {fileID: 2672590202466261571}
   - component: {fileID: 5594382310682093474}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PushSpreadOBJ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,3 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canPush: 1
   pushForce: 25
+  damage: 0
+  damageAffected: 0
+  state: 0
+  countOfLoads: 0

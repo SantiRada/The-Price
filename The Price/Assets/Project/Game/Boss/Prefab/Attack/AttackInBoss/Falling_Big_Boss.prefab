@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3645438852812806337}
   - component: {fileID: 9013041314036842757}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Falling_Big_Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,5 +54,5 @@ MonoBehaviour:
   parabolicObj: {fileID: 0}
   guideObj: {fileID: 8780537794030816270, guid: ca9da2f5d969341459683a8dc9fabdcc, type: 3}
   timeToGuide: 1.65
-  bossParent: {fileID: 0}
+  enemyParent: {fileID: 0}
   posInPlayer: 1

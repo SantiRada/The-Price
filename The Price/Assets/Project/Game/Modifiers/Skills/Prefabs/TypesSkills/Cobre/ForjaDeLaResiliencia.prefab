@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7109605414140319949}
   - component: {fileID: 4583996863956020501}
   - component: {fileID: -5984100917639937932}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ForjaDeLaResiliencia
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,3 +192,4 @@ MonoBehaviour:
   hasState: 0
   state: 0
   countOfLoads: 0
+  spread: {fileID: 0}

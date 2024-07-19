@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6623633174615806392}
   - component: {fileID: 8020630272338450110}
   - component: {fileID: -104317291729646787}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bow
   m_TagString: Weapon
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponID: 1
-  spr: {fileID: 0}
+  spr: {fileID: 7417986852598368054, guid: 61feb750ec46d644f990bcbc7f922a45, type: 3}
   nameWeapon: 64
   descWeapon: 1
   damageWeapon: 8
@@ -94,6 +94,7 @@ MonoBehaviour:
   delayBetweenAttack: 0.15
   delayDetect: 1.5
   durationDamage: 0.35
+  delayDetectRoll: 0
   projectile: {fileID: 3546439524351028113, guid: 79259104cc8cfe344bab25ed6eb62b90, type: 3}
   distanceAttack: 10
   speedProjectile: 14

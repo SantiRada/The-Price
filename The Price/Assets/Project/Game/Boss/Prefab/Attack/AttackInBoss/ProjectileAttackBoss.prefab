@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7326236149675876995}
   - component: {fileID: 806258577112852410}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ProjectileAttackBoss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,9 +50,11 @@ MonoBehaviour:
   timeToDestroy: 3
   countCreated: 1
   timeBetweenCreated: 1
+  isParabolic: 0
+  parabolicObj: {fileID: 0}
   guideObj: {fileID: 4703553652369985285, guid: c889662b1f0b49c4788540de7bdd9912, type: 3}
   timeToGuide: 0.75
-  bossParent: {fileID: 0}
+  enemyParent: {fileID: 0}
   distanceProjectile: 7
   speedProjectile: 1.75
   canTraverse: 1

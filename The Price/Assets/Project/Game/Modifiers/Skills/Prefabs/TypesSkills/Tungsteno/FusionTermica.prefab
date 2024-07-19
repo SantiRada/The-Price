@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8378819644184720450}
   - component: {fileID: 7708595572275818605}
   - component: {fileID: 777173541224576456}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FusionTermica
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -202,3 +202,4 @@ MonoBehaviour:
   hasState: 1
   state: 1
   countOfLoads: 1
+  spread: {fileID: 0}

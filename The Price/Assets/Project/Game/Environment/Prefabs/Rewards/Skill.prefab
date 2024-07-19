@@ -179,13 +179,14 @@ MonoBehaviour:
   typeContent: 1
   nameContent: 13
   descContent: 14
+  timeToAppear: 2
+  caller: 0
   inSelect: 0
   inTrigger: 0
   isNew: 0
   isShop: 0
   priceInGold: 0
   _manager: {fileID: 0}
-  obj: {fileID: 0}
 --- !u!114 &8264308406918515283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,8 +203,9 @@ MonoBehaviour:
   _howToOpen: 1
   whoSpeak: 13
   whatSay: 0f0000001000000011000000
-  _dialogueStatic: 1
-  _repeatDialogue: 0
-  _showSkills: 1
-  _showObject: 0
-  _showAptitud: 0
+  callerCamera: 1
+  dialogueStatic: 1
+  repeatDialogue: 0
+  showSkills: 1
+  showObject: 0
+  showAptitud: 0

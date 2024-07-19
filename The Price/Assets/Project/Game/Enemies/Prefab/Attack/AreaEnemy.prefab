@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4052876206909462617}
   - component: {fileID: 6568203729577959596}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AreaEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

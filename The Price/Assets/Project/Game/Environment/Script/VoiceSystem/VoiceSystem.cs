@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Text;
 using TMPro;
@@ -13,26 +12,30 @@ public class VoiceSystem : MonoBehaviour {
     [Header("Private Data")]
     private bool inDialogue = false;
     private bool finishDialogue = false;
-    private float timer = 1.5f;
     private CanvasGroup _canvas;
 
     [Header("Static Data")]
     private static int indexDialogue;
+    private static bool freeze = false;
 
     private void Awake() { _canvas = GetComponent<CanvasGroup>(); }
     private void OnEnable() { CloseDialogue(); }
-    public static void StartDialogue(int index) { indexDialogue = index; }
+    public static void StartDialogue(int index, bool freezeGame = false)
+    {
+        indexDialogue = index;
+        freeze = freezeGame;
+
+        if (freeze) { CameraMovement.SetSize(SizeCamera.specific); }
+    }
     private void Update()
     {
         if (inDialogue)
         {
-            if (finishDialogue)
+            if (PlayerActionStates.IsDashing || PlayerActionStates.IsUse)
             {
-                timer -= Time.deltaTime;
-
-                if (timer <= 0) CloseDialogue();
+                if(finishDialogue) CloseDialogue();
+                else StartCoroutine("Finish");
             }
-            else { if (PlayerActionStates.IsUse || PlayerActionStates.IsDashing || PlayerActionStates.IsAttacking) Finish(); }
         }
         else
         {
@@ -41,11 +44,15 @@ public class VoiceSystem : MonoBehaviour {
     }
     public IEnumerator DialogueOn()
     {
+        if (freeze)
+        {
+            Pause.state = State.Interface;
+            CameraMovement.SetCinematic(true);
+        }
         inDialogue = true;
         finishDialogue = false;
         content.text = "";
-        
-        timer = 1.5f;
+       
         _canvas.alpha = 1f;
 
         string dialogue = LanguageManager.GetValue("Game", indexDialogue);
@@ -78,13 +85,15 @@ public class VoiceSystem : MonoBehaviour {
         // Asigna el texto completo (con etiquetas) al componente de texto
         content.text = fullText.ToString();
 
-        Finish();
+        StartCoroutine("Finish");
     }
-    private void Finish()
+    private IEnumerator Finish()
     {
         StopCoroutine("DialogueOn");
 
-        content.text = LanguageManager.GetValue("Game", indexDialogue);
+        if(indexDialogue > 0) content.text = LanguageManager.GetValue("Game", indexDialogue);
+
+        yield return new WaitForSeconds(0.75f);
 
         finishDialogue = true;
     }
@@ -95,5 +104,12 @@ public class VoiceSystem : MonoBehaviour {
         finishDialogue = false;
 
         _canvas.alpha = 0f;
+
+        if (freeze)
+        {
+            Pause.state = State.Game;
+            CameraMovement.SetCinematic(false);
+            CameraMovement.SetSize(SizeCamera.normal);
+        }
     }
 }

@@ -15,6 +15,8 @@ public class CrosshairData : MonoBehaviour {
 
     [Header("Object")]
     public List<GameObject> enemies = new List<GameObject>();
+    public float delayBetweenRedirection;
+    private float delayBaseRedirection;
     private BoxCollider2D _sectorCross;
     private ActionForControlPlayer _controlPlayer;
     private int index = 0;
@@ -27,6 +29,9 @@ public class CrosshairData : MonoBehaviour {
     }
     private void Start()
     {
+        delayBaseRedirection = delayBetweenRedirection;
+        delayBetweenRedirection = 0;
+
         if (active)
         {
             _sectorCross.offset = new Vector2(0, _levelHelp * 0.75f);
@@ -38,20 +43,25 @@ public class CrosshairData : MonoBehaviour {
     {
         if (Pause.Comprobation(State.Game)) return;
 
-        if(enemies.Count != 0)
+        if (enemies.Count != 0)
         {
             Vector2 rightStick = _controlPlayer.RightStick();
             if (rightStick != Vector2.zero || crossWithStick)
             {
-                Debug.Log("Right Stick");
-                crossWithStick = true;
                 // SIRVE PARA QUE AL TOCAR EL STICK DERECHO MIRES A ALGUIEN MÁS QUE ESTÉ CERCA
-                VerifyRightStick(rightStick);
+                delayBetweenRedirection -= Time.deltaTime;
+
+                if(delayBetweenRedirection <= 0)
+                {
+                    VerifyRightStick(rightStick);
+                    delayBetweenRedirection = delayBaseRedirection;
+                }
+
             }
-            else
-            {
-                RevaluateIndex(); // Sirve para que se haga auto-aim al enemigo más cercano al player
-            }
+            else { RevaluateIndex(); /* Sirve para que se haga auto-aim al enemigo más cercano al player */ }
+
+            // VERIFICACIÓN DE QUE ESTE OBJETIVO SIGA EN LA ESCENA Y EN LA VISTA
+            if (index > (enemies.Count - 1)) RevaluateIndex();
 
             _posEnemy = enemies[index].transform.position;
         }
@@ -67,7 +77,7 @@ public class CrosshairData : MonoBehaviour {
         float absY = Mathf.Abs(rightStick.y);
 
         #region CreateSublist
-        List<GameObject> sublistEnemies = new List<GameObject>();
+        Dictionary<GameObject, int> sublistEnemies = new Dictionary<GameObject, int>();
         // CAMBIAR AL ENEMIGO QUE ESTÉ A LA IZQUIERDA
         for (int i = 0; i < enemies.Count; i++)
         {
@@ -77,15 +87,13 @@ public class CrosshairData : MonoBehaviour {
                 // BUSCO EN IZQUIERDA O DERECHA
                 if (rightStick.x > 0)
                 {
-                    print("Buscando a la DERECHA");
                     // PREGUNTO POR DERECHA
-                    if (enemies[i].transform.position.x > enemies[index].transform.position.x) { sublistEnemies.Add(enemies[i]); }
+                    if (enemies[i].transform.position.x > enemies[index].transform.position.x) { sublistEnemies.Add(enemies[i], i); }
                 }
                 else
                 {
-                    print("Buscando a la IZQUIERDA");
                     // PREGUNTO POR IZQUIERDA
-                    if (enemies[i].transform.position.x < enemies[index].transform.position.x) { sublistEnemies.Add(enemies[i]); }
+                    if (enemies[i].transform.position.x < enemies[index].transform.position.x) { sublistEnemies.Add(enemies[i], i); }
                 }
             }
             else
@@ -95,15 +103,13 @@ public class CrosshairData : MonoBehaviour {
                 // BUSCO POR ARRIBA O ABAJO
                 if (rightStick.y > 0)
                 {
-                    print("Buscando ARRIBA");
                     // PREGUNTO POR ARRIBA
-                    if (enemies[i].transform.position.y > enemies[index].transform.position.y) { sublistEnemies.Add(enemies[i]); }
+                    if (enemies[i].transform.position.y > enemies[index].transform.position.y) { sublistEnemies.Add(enemies[i], i); }
                 }
                 else
                 {
-                    print("Buscando ABAJO");
                     // PREGUNTO POR ABAJO
-                    if (enemies[i].transform.position.y < enemies[index].transform.position.y) { sublistEnemies.Add(enemies[i]); }
+                    if (enemies[i].transform.position.y < enemies[index].transform.position.y) { sublistEnemies.Add(enemies[i], i); }
                 }
             }
         }
@@ -112,15 +118,20 @@ public class CrosshairData : MonoBehaviour {
         #region CalculateMinDistance
         float distance = 1000;
         int newIndex = 0;
-        for (int i = 0; i < sublistEnemies.Count; i++)
+        foreach (KeyValuePair<GameObject, int> entry in sublistEnemies)
         {
-            if (Vector2.Distance(enemies[index].transform.position, sublistEnemies[i].transform.position) < distance)
+            GameObject obj = entry.Key;
+            int value = entry.Value;
+
+            if (Vector2.Distance(enemies[index].transform.position, obj.transform.position) < distance)
             {
-                newIndex = i;
-                distance = Vector2.Distance(sublistEnemies[i].transform.position, enemies[index].transform.position);
+                newIndex = value;
+                distance = Vector2.Distance(obj.transform.position, enemies[index].transform.position);
             }
         }
         #endregion
+
+        crossWithStick = true;
 
         index = newIndex;
     }

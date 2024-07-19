@@ -9,22 +9,14 @@ public class Gold : MonoBehaviour {
     private bool canMove = false;
     [HideInInspector] public Transform target;
 
-    private void Start()
-    {
-        StartCoroutine("InitAnimation");
-    }
-    private void FixedUpdate()
-    {
-        if (LoadingScreen.inLoading || Pause.state != State.Game) return;
-
-        if (canMove && !Pause.inPause) transform.position = Vector3.Lerp(transform.position, target.position, _offsetToAnim * Time.fixedDeltaTime);
-    }
+    private void Start() { StartCoroutine("InitAnimation"); }
+    private void FixedUpdate() { if (canMove) transform.position = Vector3.Lerp(transform.position, target.position, _offsetToAnim * Time.fixedDeltaTime); }
     private IEnumerator InitAnimation()
     {
         canMove = false;
         yield return new WaitForSeconds(delayToAnim);
         canMove = true;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.65f);
         Destroy(gameObject);
     }
 }

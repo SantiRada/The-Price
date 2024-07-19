@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public abstract class WeaponSystem : MonoBehaviour {
@@ -17,25 +18,32 @@ public abstract class WeaponSystem : MonoBehaviour {
 
     [Header("Timers")]
     [Range(0, 3), Tooltip("Tiempo entre ataques")] public float delayBetweenAttack;
-    [Range(0, 3), Tooltip("Tiempo que tarda en dejarde detectar un combo")] public float delayDetect = 1.75f;
+    [Range(0, 3), Tooltip("Tiempo que tarda en dejar de detectar un combo")] public float delayDetect = 1.75f;
     [Range(0, 2), Tooltip("Duración del ataque")] public float durationDamage = 0.35f;
+    [Range(0, 2), Tooltip("Tiempo que tarda en dejar de detectar que acabas de saltar (roll)")] public float delayDetectRoll = 0.65f;
     private float _durationDamageBase;
     private float _delayBetweenBase;
     private float _delayDetectBase;
+    private float _delayBaseRoll;
     private bool _inAttack = false;
+    private bool _damageSubsequence = false;
 
     [Header("Private Data")]
-    protected PlayerStats _player;
+    protected PlayerStats _playerStats;
     private Animator anim;
 
     private void OnEnable()
     {
-        _player = GetComponentInParent<PlayerStats>();
-        anim = _player.GetComponent<Animator>();
+        _playerStats = GetComponentInParent<PlayerStats>();
+        anim = _playerStats.GetComponent<Animator>();
 
         _delayBetweenBase = delayBetweenAttack;
         _durationDamageBase = durationDamage;
+        _delayBaseRoll = delayDetectRoll;
         _delayDetectBase = delayDetect;
+        delayDetectRoll = 0;
+
+        PlayerStats.jumpBetween += DelayMadeJump;
     }
     private void Update()
     {
@@ -45,6 +53,11 @@ public abstract class WeaponSystem : MonoBehaviour {
             countAttack = 0;
             delayDetect = _delayDetectBase;
         }
+
+        if(delayDetectRoll > 0)
+        {
+            delayDetectRoll -= Time.deltaTime;
+        }else { _damageSubsequence = false; }
 
         if (!canAttack)
         {
@@ -64,6 +77,11 @@ public abstract class WeaponSystem : MonoBehaviour {
             }
         }
     }
+    private void DelayMadeJump()
+    {
+        delayDetectRoll = _delayBaseRoll;
+        _damageSubsequence = true;
+    }
     public void PrepareAttack()
     {
         if (!canAttack) return;
@@ -76,16 +94,31 @@ public abstract class WeaponSystem : MonoBehaviour {
         anim.SetBool("Attack", true);
         _inAttack = true;
 
+        bool missChance = _playerStats.ComprobationMissChance();
+        bool criticalChance = _playerStats.ComprobationCriticalChance();
+
         if(countAttack >= 3)
         {
             damage = damageFinalHit;
             delayBetweenAttack = (_delayBetweenBase * 1.5f);
             countAttack = 0;
+
+            if (missChance) { damage = 0; }
+            if (criticalChance) { damage *= 2; }
+
+            if (_damageSubsequence) damage += (int)(_playerStats.GetterStats(6, true) * damage / 100);
+            
             FinalHit();
         }
         else
         {
             damage = damageWeapon;
+
+            if (missChance) damage = 0;
+            if (criticalChance) damage *= 2;
+
+            if (_damageSubsequence) damage += (int)(_playerStats.GetterStats(6, true) * damage / 100);
+
             Attack();
         }
 
@@ -100,7 +133,8 @@ public abstract class WeaponSystem : MonoBehaviour {
 
         gameObject.tag = "Weapon";
         _inAttack = false;
-
-        _player.CanReceivedDamage = true;
     }
+    // ---- DESTROYED ---- //
+    private void OnDisable() { PlayerStats.jumpBetween -= DelayMadeJump; }
+    private void OnDestroy() { PlayerStats.jumpBetween -= DelayMadeJump; }
 }

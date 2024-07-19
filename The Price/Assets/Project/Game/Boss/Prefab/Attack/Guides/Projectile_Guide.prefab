@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3833596611053195616}
   - component: {fileID: 561456401502465860}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Projectile_Guide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7712459773905829159}
   - component: {fileID: 7971510210536248256}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

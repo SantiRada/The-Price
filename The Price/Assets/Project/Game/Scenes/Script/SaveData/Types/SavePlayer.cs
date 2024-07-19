@@ -19,7 +19,9 @@ public class SavePlayer
     public float concentracion;
     public float sanity;
 
+    public bool canHaveSouls;
     public int gold;
+    public int souls;
 
     public List<int> weaponInHand = new List<int>();
 

@@ -1,20 +1,35 @@
 using UnityEngine;
 
-public enum TypeCall { trigger, finishRoom, perfectRoom }
+public enum TypeCall { trigger, initialRoom, finishRoom, perfectRoom }
 public class CallVoice : MonoBehaviour {
 
     [Header("Data Dialogue")]
     public int indexDialogue;
     public int repeatDialogue;
+    [Space]
     public bool destroyer = false;
-    private bool _spokeBefore = false;
-
+    public bool freeze = false;
+    public bool requiredFinishRoom = false;
     public TypeCall typeCall;
+    public Vector3 positionToCreate;
+
+    [Header("Private Data")]
     private bool canAdvance = false;
+    private bool _spokeBefore = false;
 
     private void Start()
     {
-        if(typeCall != TypeCall.perfectRoom) { RoomManager.finishRoom += AdvanceDialogue; }
+        if(typeCall == TypeCall.trigger)
+        {
+            if (requiredFinishRoom) RoomManager.finishRoom += AdvanceDialogue;
+            else canAdvance = true;
+        }
+        else if(typeCall == TypeCall.finishRoom) { RoomManager.finishRoom += AdvanceDialogue; }
+        else if (typeCall == TypeCall.initialRoom)
+        {
+            canAdvance = true;
+            LoadingScreen.finishLoading += CreateDialogue;
+        }
         else { RoomManager.perfectRoom += AdvanceDialogue; }
     }
     private void AdvanceDialogue()
@@ -29,8 +44,8 @@ public class CallVoice : MonoBehaviour {
     }
     private void CreateDialogue()
     {
-        if (_spokeBefore) { VoiceSystem.StartDialogue(repeatDialogue); }
-        else { VoiceSystem.StartDialogue(indexDialogue); }
+        if (_spokeBefore) { VoiceSystem.StartDialogue(repeatDialogue, freeze); }
+        else { VoiceSystem.StartDialogue(indexDialogue, freeze); }
 
         _spokeBefore = true;
 
@@ -40,5 +55,6 @@ public class CallVoice : MonoBehaviour {
     {
         if (typeCall == TypeCall.perfectRoom) RoomManager.perfectRoom -= AdvanceDialogue;
         else if (typeCall == TypeCall.finishRoom) RoomManager.finishRoom -= AdvanceDialogue;
+        else if(typeCall == TypeCall.initialRoom) LoadingScreen.finishLoading -= CreateDialogue;
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static ActionForControlPlayer;
 
 public enum TypeDialogue { FullScreen, Window }
 public enum HowToOpenDialogue { RequiredTrigger, RequiredAction, RequiredStartRoom, RequiredEndRoom }
@@ -13,15 +14,16 @@ public class DialogueManager : MonoBehaviour {
     public int[] whatSay;
 
     [Header("Data")]
-    public bool _dialogueStatic = false;
-    public bool _repeatDialogue = true;
-    public bool _showSkills = false;
-    public bool _showObject = false;
-    public bool _showAptitud = false;
+    public bool callerCamera = false;
+    public bool dialogueStatic = false;
+    public bool repeatDialogue = true;
+    public bool showSkills = false;
+    public bool showObject = false;
+    public bool showAptitud = false;
     [Space]
     private bool _inDialogue = false;
-    private int _index = 0;
     private bool canRepeat = true;
+    private int _index = 0;
 
     [Header("Private Content")]
     private DialogueUI _ui;
@@ -32,7 +34,7 @@ public class DialogueManager : MonoBehaviour {
     {
         if (_howToOpen == HowToOpenDialogue.RequiredEndRoom) RoomManager.finishRoom += ChangeState;
 
-        if (_showSkills || _showObject) StartCoroutine("CrazyPeople");
+        if (showSkills || showObject) StartCoroutine("CrazyPeople");
     }
     private IEnumerator CrazyPeople()
     {
@@ -54,10 +56,10 @@ public class DialogueManager : MonoBehaviour {
 
         ShowDialogue();
 
-        if (_dialogueStatic) Pause.StateChange = State.Interface;
+        if (dialogueStatic) Pause.StateChange = State.Interface;
         else Pause.StateChange = State.Game;
 
-        if (!_repeatDialogue) canRepeat = false;
+        if (!repeatDialogue) canRepeat = false;
     }
     private void Update()
     {
@@ -65,7 +67,7 @@ public class DialogueManager : MonoBehaviour {
         {
             if (_ui.finishText)
             {
-                if (Input.GetButtonDown("Fire1"))
+                if (PlayerActionStates.IsUse)
                 {
                     _index++;
                     ShowDialogue();
@@ -79,20 +81,26 @@ public class DialogueManager : MonoBehaviour {
     }
     private void ShowDialogue()
     {
-        if (whatSay.Length > _index) { _ui.ShowDialogue(transform.position, _typeDialogue, whoSpeak, whatSay[_index]); }
+        if (whatSay.Length > _index)
+        {
+            if (_typeDialogue == TypeDialogue.Window) if (callerCamera) CameraMovement.CallCamera(transform.position, 1000);
+            _ui.ShowDialogue(transform.position, _typeDialogue, whoSpeak, whatSay[_index]);
+        }
         else
         {
+            if (callerCamera) CameraMovement.CancelCallCamera();
+
             _inDialogue = false;
             _ui.hideDialogue();
 
             // PARA MOSTRAR EL SELECTOR DE HABILIDADES
-            if (_showSkills) SkillPlacement.StartSkillsSelector();
+            if (showSkills) SkillPlacement.StartSkillsSelector();
 
             // PARA MOSTRAR EL SELECTOR DE OBJETOS
-            if (_showObject) ObjectPlacement.StartObjectSelector();
+            if (showObject) ObjectPlacement.StartObjectSelector();
 
             // PARA MOSTRAR EL SELECTOR DE INSTINTOS
-            if (_showAptitud) FlairSystem.StartFlairSelector();
+            if (showAptitud) FlairSystem.StartFlairSelector();
 
             Destroy(gameObject, 0.65f);
         }

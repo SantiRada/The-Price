@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5544698874272052105}
   - component: {fileID: 8644255591475205853}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MultiFallingGuide
   m_TagString: Untagged
   m_Icon: {fileID: 0}

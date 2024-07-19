@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static ActionForControlPlayer;
@@ -21,6 +20,7 @@ public class WeaponManagerUI : MonoBehaviour {
     public TextMeshProUGUI descWeapon;
     public TextMeshProUGUI dataWeapon;
     [Space]
+    public GameObject[] currentWeapon;
     public Image[] currentImgWeapon;
     public TextMeshProUGUI[] currentNameWeapon;
     public TextMeshProUGUI[] currentDescWeapon;
@@ -59,11 +59,12 @@ public class WeaponManagerUI : MonoBehaviour {
                 if (v != 0) StartCoroutine(MoveSlot(v));
             }
 
-            if (Input.GetButtonDown("Fire1") || PlayerActionStates.IsUse || PlayerActionStates.IsDashing) Select();
+            if (PlayerActionStates.IsUse) StartCoroutine("Select");
         }
 
     }
-    public WeaponSystem RandomPool()
+    public void SetWeaponPool(WeaponSystem weaponPrev) { weapon = weaponPrev; }
+    public void RandomPool()
     {
         if(weapon == null)
         {
@@ -76,10 +77,13 @@ public class WeaponManagerUI : MonoBehaviour {
 
                 for(int i = 0; i < _playerStats.weapons.Count; i++)
                 {
-                    if (weapons[rnd].weaponID == _playerStats.weapons[i].weaponID)
+                    if (_playerStats.weapons[i] != null)
                     {
-                        canAdvance = false;
-                        break;
+                        if (weapons[rnd].weaponID == _playerStats.weapons[i].weaponID)
+                        {
+                            canAdvance = false;
+                            break;
+                        }
                     }
                 }
 
@@ -87,8 +91,6 @@ public class WeaponManagerUI : MonoBehaviour {
 
             weapon = weapons[rnd];
         }
-
-        return weapon;
     }
     public IEnumerator OpenWindow()
     {
@@ -106,10 +108,28 @@ public class WeaponManagerUI : MonoBehaviour {
         // CURRENT CONTENT
         for(int i = 0; i < currentImgWeapon.Length; i++)
         {
-            currentImgWeapon[i].sprite = _playerStats.weapons[i].spr;
-            currentNameWeapon[i].text = LanguageManager.GetValue("Menu", _playerStats.weapons[i].nameWeapon);
-            currentDescWeapon[i].text = LanguageManager.GetValue("Menu", _playerStats.weapons[i].descWeapon);
-            currentDataWeapon[i].text = _playerStats.weapons[i].damageWeapon + " > " + _playerStats.weapons[i].damageWeapon + " > <color=yellow>" + _playerStats.weapons[i].damageFinalHit + "</color>";
+            if (_playerStats.weapons.Count > i)
+            {
+                if (_playerStats.weapons[i] != null)
+                {
+                    currentImgWeapon[i].sprite = _playerStats.weapons[i].spr;
+                    currentNameWeapon[i].text = LanguageManager.GetValue("Menu", _playerStats.weapons[i].nameWeapon);
+                    currentDescWeapon[i].text = LanguageManager.GetValue("Menu", _playerStats.weapons[i].descWeapon);
+                    currentDataWeapon[i].text = _playerStats.weapons[i].damageWeapon + " > " + _playerStats.weapons[i].damageWeapon + " > <color=yellow>" + _playerStats.weapons[i].damageFinalHit + "</color>";
+                }
+                else
+                {
+                    currentNameWeapon[i].text = "";
+                    currentDescWeapon[i].text = "";
+                    currentDataWeapon[i].text = "";
+                }
+            }
+            else
+            {
+                currentNameWeapon[i].text = "";
+                currentDescWeapon[i].text = "";
+                currentDataWeapon[i].text = "";
+            }
         }
 
         yield return new WaitForSeconds(deadTime);
@@ -135,13 +155,29 @@ public class WeaponManagerUI : MonoBehaviour {
 
         _canMove = true;
     }
-    private void Select()
+    private IEnumerator Select()
     {
+        _inSelect = false;
+        _canvas.interactable = false;
+        yield return new WaitForSeconds(0.25f);
+
+        do
+        {
+            objNewWeapon.transform.position = Vector3.Lerp(objNewWeapon.transform.position, currentWeapon[_index].transform.position, 1f * Time.deltaTime);
+            yield return new WaitForSeconds(0.005f);
+        } while (Vector3.Distance(objNewWeapon.transform.position, currentDataWeapon[_index].transform.position) <= 10);
+
+        objNewWeapon.transform.position = currentWeapon[_index].transform.position;
+
         int prevWeapon = _playerStats.SetWeapon(_index, weapon);
         
-        for(int i = 0; i < weapons.Count; i++) { if (weapons[i].weaponID == prevWeapon) { weapon = weapons[i]; break; } }
+        // INSTACIAR EL ARMA QUE SE DESCARTA EN LA ESCENA SI ES ESE EL CASO
+        if(prevWeapon != -1)
+        {
+            for (int i = 0; i < weapons.Count; i++) { if (weapons[i].weaponID == prevWeapon) { weapon = weapons[i]; break; } }
 
-        Instantiate(interactiveObj.gameObject, _playerStats.transform.position, Quaternion.identity);
+            Instantiate(interactiveObj.gameObject, _playerStats.transform.position, Quaternion.identity);
+        }
 
         ResetValues();
 
@@ -153,6 +189,7 @@ public class WeaponManagerUI : MonoBehaviour {
         _canvas.alpha = 0;
         _canvas.interactable = false;
         _inSelect = false;
+        weapon = null;
 
         objNewWeapon.transform.position = positions[0].transform.position;
     }

@@ -3,10 +3,18 @@ using UnityEngine;
 
 public class FloatText : MonoBehaviour {
 
-    [Range(0, 0.5f)] public float speedMovement;
     public float timeInScreen;
 
+    [Header("Movement")]
+    [Range(0, 0.5f)] public float speedMovement;
+
+    [Header("Shake")]
+    public float shakeIntensity = 0.1f;
+    public float rotationIntensity;
+    private Vector3 originalPosition;
+
     private Animator anim;
+    [HideInInspector] public bool isStatic = false;
 
     private void Start()
     {
@@ -14,7 +22,8 @@ public class FloatText : MonoBehaviour {
 
         transform.SetAsFirstSibling();
 
-        StartCoroutine("Movement");
+        if (isStatic) { StartCoroutine("Shake"); }
+        else { StartCoroutine("Movement"); }
     }
     private void Update()
     {
@@ -31,6 +40,22 @@ public class FloatText : MonoBehaviour {
         {
             transform.position += new Vector3(0, speedMovement, 0);
             yield return new WaitForSeconds(0.05f);
+        }
+    }
+    private IEnumerator Shake()
+    {
+        originalPosition = transform.localPosition;
+
+        transform.rotation = Quaternion.Euler(0, 0, rotationIntensity);
+
+        while (true)
+        {
+            Vector3 randomPosition = originalPosition + (Vector3)Random.insideUnitCircle * shakeIntensity;
+            transform.localPosition = randomPosition;
+
+            yield return new WaitForSeconds(0.05f);
+
+            transform.localPosition = originalPosition;
         }
     }
 }

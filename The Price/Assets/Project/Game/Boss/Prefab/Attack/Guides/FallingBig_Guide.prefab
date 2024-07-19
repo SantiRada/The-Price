@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4138926089036238797}
   - component: {fileID: 8397056237313531275}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FallingBig_Guide
   m_TagString: Untagged
   m_Icon: {fileID: 0}

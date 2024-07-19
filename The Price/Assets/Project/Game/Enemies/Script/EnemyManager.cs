@@ -32,9 +32,9 @@ public abstract class EnemyManager : EnemyBase {
         _spr = GetComponent<SpriteRenderer>();
         _worldPosition = FindAnyObjectByType<InteractiveManager>().GetComponent<Canvas>();
 
-
         // CREAR UI PARA CADA ENEMIGO
         _enemyUI = Instantiate(uiObject, ((Vector2)transform.position + offsetPositionUI), Quaternion.identity, _worldPosition.transform).GetComponent<EnemyUI>();
+        _enemyUI.transform.SetAsFirstSibling();
         _enemyUI.SetInitialValues(gameObject, offsetPositionUI);
 
         StartCoroutine("DelayToMovement");
@@ -58,6 +58,9 @@ public abstract class EnemyManager : EnemyBase {
     public override IEnumerator Die()
     {
         _room?.SetLivingEnemies(this);
+
+        // SUMAR CONCENTRACION EN LA CANTIDAD DEL PESO DEL ENEMIGO
+        _playerStats.SetValue(1, Weight, false);
 
         Destroy(_enemyUI.gameObject);
 

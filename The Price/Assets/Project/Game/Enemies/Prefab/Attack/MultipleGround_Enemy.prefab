@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 823363376211689211}
   - component: {fileID: 2012990945970884246}
   - component: {fileID: 8954908474237505178}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MultipleGround_Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

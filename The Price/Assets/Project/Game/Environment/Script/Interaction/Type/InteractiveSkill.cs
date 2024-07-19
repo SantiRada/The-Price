@@ -15,10 +15,10 @@ public class InteractiveSkill : Interactive {
         if (inTrigger && !isShop)
         {
             // CAMBIAR EN LA POSICIÓN DE TRIANGULO
-            if (Input.GetButtonDown("Fire4") || PlayerActionStates.IsSkillOne) ComprobationForPositionSkill(0);
+            if (PlayerActionStates.IsSkillOne) ComprobationForPositionSkill(0);
 
             // CAMBIAR EN LA POSICIÓN DE CÍRCULO
-            if (Input.GetButtonDown("Fire2") || PlayerActionStates.IsSkillTwo) ComprobationForPositionSkill(1);
+            if (PlayerActionStates.IsSkillTwo) ComprobationForPositionSkill(1);
         }
     }
     private void ComprobationForPositionSkill(int pos)

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5559193938307885429}
   - component: {fileID: 4810839337977162351}
   - component: {fileID: 8037549001589326782}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AleacionDePlata
   m_TagString: Proyectile
   m_Icon: {fileID: 0}
@@ -175,6 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e72afceec1708941ac93fbcfd5536d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillID: 0
   icon: {fileID: 0}
   skillName: 7
   descName: 13
@@ -186,8 +187,16 @@ MonoBehaviour:
   loadType: 0
   destroyType: 0
   timeToDestroy: 4
-  preventDamage: 0
+  preventDamagePerType: 0
   countPrevent: 0000000000000000000000000000000000000000
+  reflects: 0000000000
+  preventDistanceDamage: 0
+  preventDistance: 0000000000000000
+  reflectDistance: 0000
+  hasState: 0
+  state: 0
+  countOfLoads: 0
+  hasStatePerAttack: 0
   _disperser: 0
 --- !u!114 &8037549001589326782
 MonoBehaviour:

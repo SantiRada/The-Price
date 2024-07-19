@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1986590769455309835}
   - component: {fileID: 5776177400596426609}
   - component: {fileID: 2268195738477951897}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ConductividadArcana
   m_TagString: Proyectile
   m_Icon: {fileID: 0}

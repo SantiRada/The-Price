@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7329176186931410543}
   - component: {fileID: 2537552435112229831}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MultiFallingAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,5 +54,5 @@ MonoBehaviour:
   parabolicObj: {fileID: 8545451829422390905, guid: 98b5280f3b4383146ae498e026c8250c, type: 3}
   guideObj: {fileID: 1478314309484297350, guid: ad7fcdffc0d201048b5d78172bce35c9, type: 3}
   timeToGuide: 0.8
-  bossParent: {fileID: 0}
+  enemyParent: {fileID: 0}
   posInPlayer: 1

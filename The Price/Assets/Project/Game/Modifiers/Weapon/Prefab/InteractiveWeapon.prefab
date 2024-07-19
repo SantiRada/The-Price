@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8762490887606847517}
   - component: {fileID: 7432696303768926010}
   - component: {fileID: 5822817129795961072}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: InteractiveWeapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,6 +110,7 @@ MonoBehaviour:
   isShop: 0
   priceInGold: 0
   _manager: {fileID: 0}
+  weaponPrev: {fileID: 0}
 --- !u!58 &5822817129795961072
 CircleCollider2D:
   m_ObjectHideFlags: 0

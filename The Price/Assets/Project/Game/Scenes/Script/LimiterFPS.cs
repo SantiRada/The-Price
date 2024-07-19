@@ -13,6 +13,7 @@ public class LimiterFPS : MonoBehaviour {
     [Header("Version Data")]
     public string version;
     public TextMeshProUGUI textVersion;
+    private float timerToVerifyFPS = 1f;
 
     private void Start()
     {
@@ -29,11 +30,15 @@ public class LimiterFPS : MonoBehaviour {
     }
     private void Update()
     {
-        if (showFPS)
+        timerToVerifyFPS -= Time.deltaTime;
+
+        if (showFPS && timerToVerifyFPS <= 0)
         {
             delta += (Time.unscaledDeltaTime - delta) * 0.1f;
             float fps = 1.0f / delta;
             textFPS.text = Mathf.Ceil(fps).ToString() + " FPS";
+
+            timerToVerifyFPS = 1f;
         }
     }
 }

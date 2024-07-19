@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8470407395626940564}
   - component: {fileID: 6756157110449791345}
   - component: {fileID: 3890488785821167363}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MultipleGround_Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,4 +64,4 @@ MonoBehaviour:
   parabolicObj: {fileID: 0}
   guideObj: {fileID: 7136982939203221516, guid: 821c76d9f927c5e4f9d2e2c6ebee4a1f, type: 3}
   timeToGuide: 1.5
-  bossParent: {fileID: 0}
+  enemyParent: {fileID: 0}

@@ -307,7 +307,9 @@ public class SkillPlacement : MonoBehaviour {
     }
     private void SelectCard()
     {
-        if(_player.skills.Count >= 2)
+        RoomManager.CallMadeInteraction();
+
+        if (_player.skills.Count >= 2)
         {
             // CREO LA HABILIDAD EN EL SUELO
             InteractiveSkill sk = Instantiate(_objForScene.gameObject, _player.transform.position, Quaternion.identity).GetComponent<InteractiveSkill>();

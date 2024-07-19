@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1626964982232015155}
   - component: {fileID: 158718570692667406}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FallingBig_Guide (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 244081104859164094}
   - component: {fileID: 2929639468700243605}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FallingBig_Guide (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,7 +182,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8669013647692580697}
   - component: {fileID: 4023070657801571249}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FallingBig_Guide (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,7 +268,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2023776788882515124}
   - component: {fileID: 8737226415919320799}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FallingBig_Guide (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -354,7 +354,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5998082529591549625}
   - component: {fileID: 8857970342333700195}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FallingBig_Guide (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 1487149960629088620}
   - component: {fileID: 3890224793343328061}
   - component: {fileID: 2259340785835556461}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MultipleGround_Guide
   m_TagString: Untagged
   m_Icon: {fileID: 0}

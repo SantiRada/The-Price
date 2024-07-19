@@ -13,19 +13,21 @@ public class LunarCycle : MonoBehaviour {
     public int countIteration;
     [Range(0, 0.25f)] public float delayBetweenIter;
     private static int countRoom = 0;
-    [HideInInspector] public bool isActive;
+    public static bool isActive;
 
-    private void Start() { canvas = GetComponent<CanvasGroup>(); }
+    private void Start() { isActive = false; }
     public static int CalculateNextWorld()
     {
-        if(countRoom % 4 == 0 && countRoom != 0) return (countRoom / 4);
+        if(countRoom % 4 == 0 && countRoom != 0 && isActive) return (countRoom / 4);
         else return -1;
     }
-    public IEnumerator AddRoom()
+    private void Update()
     {
-        if(isActive) canvas.alpha = 1;
+        if (isActive) canvas.alpha = 1;
         else canvas.alpha = 0;
-        
+    }
+    public IEnumerator AddRoom()
+    {        
         countRoom++;
 
         yield return new WaitForSeconds(0.15f);
@@ -53,7 +55,5 @@ public class LunarCycle : MonoBehaviour {
 
             yield return new WaitForSeconds(delayBetweenIter);
         }
-
-        isActive = true;
     }
 }

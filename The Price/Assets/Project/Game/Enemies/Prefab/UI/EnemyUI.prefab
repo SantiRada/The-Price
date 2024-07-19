@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2498211135373701177}
   - component: {fileID: 1547815107826773951}
   - component: {fileID: 3946154616894516846}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 9079706749275817210}
   - component: {fileID: 952513885503263529}
   - component: {fileID: 9202740042779935447}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 7229534301101735555}
   - component: {fileID: 1571691124683991610}
   - component: {fileID: 7513927928965509513}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,7 +234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3756554944045721454}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Healthbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -271,7 +271,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 931119142177127993}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Shieldbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,7 +309,7 @@ GameObject:
   m_Component:
   - component: {fileID: 782934975200850694}
   - component: {fileID: 7598057435879057259}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: EnemyUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -362,7 +362,7 @@ GameObject:
   - component: {fileID: 8153499061508021593}
   - component: {fileID: 1442692795614357707}
   - component: {fileID: 8868770973445602904}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}

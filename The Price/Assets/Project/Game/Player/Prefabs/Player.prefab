@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3917327514093164555}
   - component: {fileID: 631481786061970340}
   - component: {fileID: 7745312185467084353}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: AttackData
   m_TagString: Crosshair
   m_Icon: {fileID: 0}
@@ -51,6 +51,7 @@ MonoBehaviour:
   _levelHelp: 6
   active: 1
   enemies: []
+  delayBetweenRedirection: 0.15
 --- !u!61 &7745312185467084353
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -116,7 +117,7 @@ GameObject:
   - component: {fileID: 1324836505429316149}
   - component: {fileID: 7510341761890864215}
   - component: {fileID: 7919977148951944366}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -304,6 +305,7 @@ MonoBehaviour:
   _dashingTime: 0.14
   _dashingCooldown: 0.5
   isDashing: 0
+  _playerStats: {fileID: 0}
 --- !u!114 &8385875373981250499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,6 +318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1fb9df156651fa4681e287a5f4232fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weapon: []
 --- !u!114 &7862890231065333886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,9 +347,9 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8385875373981250499}
-        m_TargetAssemblyTypeName: InputController, Assembly-CSharp
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
         m_MethodName: Dash
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -382,18 +385,6 @@ MonoBehaviour:
       - m_Target: {fileID: 8385875373981250499}
         m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
         m_MethodName: StaticAim
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 8385875373981250499}
-        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
-        m_MethodName: LeftInUI
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -455,18 +446,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 8385875373981250499}
-        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
-        m_MethodName: RightInUI
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
     m_ActionId: a9774047-5a62-48f0-8d10-3b3a6e6e33ee
     m_ActionName: 'Player/Use[/DualShock4GamepadHID/rightShoulder,/XInputControllerWindows/rightShoulder,/Keyboard/e]'
   - m_PersistentCalls:
@@ -505,7 +484,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8385875373981250499}
         m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
-        m_MethodName: SkillFragments
+        m_MethodName: SkillThree
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -549,6 +528,134 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 682f7759-6a3d-46ac-a3da-48fb762a089e
     m_ActionName: 'Player/Attack Three[/XInputControllerWindows/rightTrigger]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: SelectInUI
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8e44e5cf-d493-480c-b656-56426afe2b1c
+    m_ActionName: 'Pause/Select[/Keyboard/enter,/Keyboard/f,/XInputControllerWindows/buttonSouth]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: BackInUI
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5232d9b0-7f5d-4eca-a20e-3ccc1104278f
+    m_ActionName: 'Pause/Back[/Keyboard/escape,/XInputControllerWindows/buttonEast]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: LeftInUI
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 91be4fff-e9ce-4991-94e6-f16106b01856
+    m_ActionName: 'Pause/LeftUI[/Keyboard/q,/XInputControllerWindows/leftShoulder]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: RightInUI
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a04c3dd0-d806-4085-bc15-596513afa30d
+    m_ActionName: 'Pause/RightUI[/Keyboard/e,/XInputControllerWindows/rightShoulder]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: OtherFunctionInUI
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a0397d4a-d2db-4b1f-9f4e-5b2c544c8142
+    m_ActionName: 'Pause/OtherFunction[/Keyboard/c,/XInputControllerWindows/buttonWest]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: ResetValuesInUI
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b350c142-8607-48d4-93d7-ee044d7c840e
+    m_ActionName: 'Pause/ResetValues[/Keyboard/r,/XInputControllerWindows/buttonNorth]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: PauseAction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 77203133-8bac-4b2a-9597-f9ba175e4c7c
+    m_ActionName: 'Pause/Pause[/XInputControllerWindows/start,/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8385875373981250499}
+        m_TargetAssemblyTypeName: ActionForControlPlayer, Assembly-CSharp
+        m_MethodName: Stats
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 965e0b78-b777-4196-9625-3427942da576
+    m_ActionName: 'Pause/Stats[/XInputControllerWindows/select,/Keyboard/tab]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Player
@@ -590,18 +697,16 @@ MonoBehaviour:
   - 25
   - 5
   - 8
-  - 0
+  - 15
   - 80
+  _canReceivedDamage: 0
   changerConcentration: 2
   countKillsInRoom: 0
   countDamageInRoom: 0
   countDamageReceivedInRoom: 0
-  countGold: 0
-  weapons:
-  - {fileID: 5869596726363329175, guid: 5bf65ad67d7155945858b5017e3edd74, type: 3}
-  - {fileID: 8020630272338450110, guid: 89852514b8bbfe14897cf1e1819129fa, type: 3}
-  - {fileID: 5912235016396145848, guid: a8ea58d9e4a63b441ac4a6634c3de604, type: 3}
+  weapons: []
   weaponParent: {fileID: 7088614093564551266}
+  weaponInScene: []
   skills: []
   objects: []
   deadSystem: {fileID: 0}
@@ -644,6 +749,7 @@ MonoBehaviour:
   killedMaxBoss_Cielo: 0
   killedMaxBoss_Infierno: 0
   killedThanatos: 0
+  canHaveSouls: 0
   currentWorld: 0
   nextWorld: 1
 --- !u!1 &7088614093564551266
@@ -656,7 +762,7 @@ GameObject:
   m_Component:
   - component: {fileID: 634329528103286550}
   - component: {fileID: 5577573603885388122}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: Crosshair
   m_TagString: Weapon
   m_Icon: {fileID: 0}

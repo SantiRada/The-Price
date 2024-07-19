@@ -179,6 +179,8 @@ MonoBehaviour:
   typeContent: 1
   nameContent: 41
   descContent: 14
+  timeToAppear: 0
+  caller: 0
   inSelect: 0
   inTrigger: 0
   isNew: 0
@@ -201,8 +203,9 @@ MonoBehaviour:
   _howToOpen: 1
   whoSpeak: 41
   whatSay: 2a000000
-  _dialogueStatic: 1
-  _repeatDialogue: 0
-  _showSkills: 0
-  _showObject: 0
-  _showAptitud: 1
+  callerCamera: 1
+  dialogueStatic: 1
+  repeatDialogue: 0
+  showSkills: 0
+  showObject: 0
+  showAptitud: 1

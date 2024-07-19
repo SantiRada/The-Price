@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5627197474276279967}
   - component: {fileID: 1987070904013646661}
   - component: {fileID: 7010528681191478905}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FiloDeTungsteno
   m_TagString: Untagged
   m_Icon: {fileID: 0}

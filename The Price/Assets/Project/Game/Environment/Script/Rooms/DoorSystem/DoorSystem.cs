@@ -13,11 +13,13 @@ public class DoorSystem : MonoBehaviour {
     private RoomManager _roomManager;
     private LunarCycle _lunarCycle;
     private DeadSystem _deadSystem;
+    PlayerStats _playerStats;
 
     private void OnEnable()
     {
         _saveLoad = FindAnyObjectByType<SaveLoadManager>();
         _roomManager = FindAnyObjectByType<RoomManager>();
+        _playerStats = FindAnyObjectByType<PlayerStats>();
         _lunarCycle = FindAnyObjectByType<LunarCycle>();
         _deadSystem = FindAnyObjectByType<DeadSystem>();
     }
@@ -34,6 +36,7 @@ public class DoorSystem : MonoBehaviour {
     }
     private IEnumerator ChangeScene()
     {
+        _playerStats.SetValue(10, -5, false);
         _lunarCycle.canvas.alpha = 0;
 
         _roomManager.loadingSector.SetBool("inLoading", true);
@@ -48,6 +51,7 @@ public class DoorSystem : MonoBehaviour {
         }
 
         _deadSystem.currentWorld = whereItTakesMe;
+
         _saveLoad.SaveData(ReasonSave.deadSystem);
 
         yield return new WaitForSeconds(timerToLoadScene);

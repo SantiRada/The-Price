@@ -172,6 +172,8 @@ public class ObjectPlacement : MonoBehaviour {
     }
     private IEnumerator Selected()
     {
+        RoomManager.CallMadeInteraction();
+
         // MOVER TODAS LAS CARTAS HACIA ABAJO EXCEPTO LA SELECCIONADA
         for (int i = 0; i < _slots.Count; i++)
         {
@@ -204,7 +206,6 @@ public class ObjectPlacement : MonoBehaviour {
 
         // AGREGO EL OBJETO AL JUGADOR
         _player.AddObject(_objectCreated[_index]);
-        // _player.GetComponent<PlayerStats>().SetChangeObject(); AUN NO EXISTE ESTA FUNCION
 
         RestartContent();
     }

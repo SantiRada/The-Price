@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public abstract class EnemyBase : MonoBehaviour {
 
@@ -16,6 +17,13 @@ public abstract class EnemyBase : MonoBehaviour {
     [Range(0, 1), Tooltip("Tiempo en que no detecta daño después de haberlo resibido (intangibilidad)")] public float delayToDetectDamage;
     [Tooltip("Tiempo que tenes que colisionar para que te aplique daño.")] public float timeToDetectCollision;
     private float detectCollisionBase;
+
+    [Header("Rewards")]
+    public bool canReleaseSouls;
+    public int countSouls;
+    [Space]
+    public bool canReleaseGold;
+    public CountGold countGold;
 
     [Header("Attack Data")]
     public float durationForEffect;
@@ -57,7 +65,6 @@ public abstract class EnemyBase : MonoBehaviour {
     private IEnumerator ApplyEffect()
     {
         // SE APLICÓ EL EFECTO DE STUN
-        Debug.Log("Se aplicó el STUN");
         sanity = sanityBase * 1.5f;
 
         inMove = false;
@@ -128,6 +135,7 @@ public abstract class EnemyBase : MonoBehaviour {
             }
 
             sanity -= 1;
+            _playerStats.SetCountDamage(dmg);
 
             SpecificTakeDamage(dmg);
 
@@ -135,7 +143,13 @@ public abstract class EnemyBase : MonoBehaviour {
 
             canTakeDamage = true;
 
-            if (health <= 0) { StartCoroutine("Die"); }
+            if (health <= 0)
+            {
+                if (canReleaseSouls) ManagerGold.CreateSouls((transform.position + new Vector3(0.5f,0.5f, 0)), countSouls);
+                if (canReleaseGold) ManagerGold.CreateGold((transform.position + Vector3.one), countGold);
+
+                StartCoroutine("Die");
+            }
         }
     }
     public void Attack(int index = -1)
@@ -153,19 +167,19 @@ public abstract class EnemyBase : MonoBehaviour {
     {
         if (collision.CompareTag("Proyectile"))
         {
-            int damage = 0;
+            int dmg = 0;
 
             if (collision.GetComponent<WeaponSystem>())
             {
                 WeaponSystem weapon = collision.GetComponent<WeaponSystem>();
-                damage = weapon.damage;
+                dmg = weapon.damage;
 
                 weapon.FinishAttack();
             }
             else if (collision.GetComponent<Projectile>())
             {
                 Projectile pr = collision.GetComponent<Projectile>();
-                damage = pr.damage;
+                dmg = pr.damage;
 
                 // VERIFICA QUE EL PROYECTIL HAYA SIDO LANZADO POR EL JUGADOR
                 if (pr.whoIsBoss != 0) return;
@@ -174,7 +188,9 @@ public abstract class EnemyBase : MonoBehaviour {
                 if (!pr.canTraverse) Destroy(collision.gameObject);
             }
 
-            StartCoroutine(TakeDamage(damage));
+            StartCoroutine(TakeDamage(dmg));
+
+            _playerStats.ApplyDamage(dmg);
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
@@ -185,7 +201,6 @@ public abstract class EnemyBase : MonoBehaviour {
 
             if (timeToDetectCollision <= 0)
             {
-                Debug.Log("Detect Per Collision");
                 _playerStats.TakeDamage(gameObject, damage);
 
                 // Aplica daño al PLAYER si colisionó con el BOSS por X segundos
@@ -202,6 +217,8 @@ public abstract class EnemyBase : MonoBehaviour {
                 weapon.FinishAttack();
 
                 StartCoroutine(TakeDamage(dmg));
+
+                _playerStats.ApplyDamage(dmg);
             }
         }
     }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using static ActionForControlPlayer;
 
@@ -8,6 +9,8 @@ public abstract class Interactive : MonoBehaviour {
     public ListContent typeContent;
     public string nameContent;
     public string descContent;
+    public float timeToAppear;
+    protected bool canAppear = false;
     [HideInInspector] public bool inSelect = false;
     [HideInInspector] public bool inTrigger = false;
     [HideInInspector] public bool isNew = false;
@@ -26,9 +29,19 @@ public abstract class Interactive : MonoBehaviour {
         _HUD = FindAnyObjectByType<HUD>();
 
         if (isNew && !isShop) RandomPool();
+
+        StartCoroutine("AppearObject");
+    }
+    public IEnumerator AppearObject()
+    {
+        yield return new WaitForSeconds(timeToAppear);
+        
+        canAppear = true;
     }
     public virtual void OpenWindow()
     {
+        if (!canAppear) return;
+
         inTrigger = true;
 
         // CANCELAR LA ABERTURA DE LA VENTANA SI TIENE UN TRIGGER ESPECÍFICO DISTINTO
@@ -40,7 +53,7 @@ public abstract class Interactive : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision) { if (collision.CompareTag("Player")) OpenWindow(); }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && canAppear)
         {
             if (PlayerActionStates.IsUse && !inSelect)
             {

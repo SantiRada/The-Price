@@ -2,6 +2,7 @@ public enum ReasonSave { Null, closeGame, deadSystem }
 [System.Serializable]
 public class SaveWorld
 {
+    public int positionGame = 0;
     public bool passedTutorial = false;
     public ReasonSave reasonSave;
     public int currentWorld = 0;

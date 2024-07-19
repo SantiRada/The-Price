@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6924773949411469119}
   - component: {fileID: 4689661770573173690}
   - component: {fileID: 2680034213232052569}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: FloatingCrazyTXT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,8 +151,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e16e49612d9104991bca96f89301c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedMovement: 0.035
   timeInScreen: 1
+  speedMovement: 0.035
+  shakeIntensity: 0.1
+  rotationIntensity: 0
+  isStatic: 0
 --- !u!95 &4689661770573173690
 Animator:
   serializedVersion: 7

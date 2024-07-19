@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7777327411678181070}
   - component: {fileID: 1717391173340660149}
   - component: {fileID: 6115203071084512920}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Camuflaje
   m_TagString: Untagged
   m_Icon: {fileID: 0}

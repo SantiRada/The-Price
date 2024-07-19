@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using static ActionForControlPlayer;
@@ -20,14 +21,14 @@ public class PlayerMovement : MonoBehaviour {
     [Header("Element")]
     private Rigidbody2D _rigidbody2D;
     private SpriteRenderer _spriteRenderer;
-    private PlayerStats _player;
+    [HideInInspector] public PlayerStats _playerStats;
 
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         
-        _player = GetComponent<PlayerStats>();
+        _playerStats = GetComponent<PlayerStats>();
     }
     private void Update()
     {
@@ -39,14 +40,14 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (isDashing) return;
 
-        if (_canMove && !Pause.inPause && Pause.state == State.Game) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * (int)_player.GetterStats(2, false) * Time.fixedDeltaTime);
+        if (_canMove && !Pause.inPause && Pause.state == State.Game) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * (int)_playerStats.GetterStats(2, false) * Time.fixedDeltaTime);
         else _rigidbody2D.velocity = Vector2.zero;
     }
     private void Movement()
     {
         if (!_canMove) return;
 
-        if(_rigidbody2D.velocity != Vector2.zero) _player.JumpBetweenAttack();
+        if(_rigidbody2D.velocity != Vector2.zero) _playerStats.JumpBetweenAttack();
 
         #region Flip
         if (_moveInput.x > 0) _spriteRenderer.flipX = true;
@@ -56,9 +57,9 @@ public class PlayerMovement : MonoBehaviour {
     public IEnumerator Roll()
     {
         // NO PUEDE RECIBIR DAÑO DURANTE EL DASH
-        _player.CanReceivedDamage = false;
+        _playerStats._canReceivedDamage = false;
 
-        _player.JumpBetweenAttack();
+        _playerStats.JumpBetweenAttack();
         _canDash = false;
         isDashing = true;
 
@@ -71,7 +72,7 @@ public class PlayerMovement : MonoBehaviour {
         PlayerActionStates.IsDashing = false;
 
         // PUEDE RECIBIR DAÑO NUEVAMENTE
-        _player.CanReceivedDamage = true;
+        _playerStats._canReceivedDamage = true;
     }
     // ---- SETTERS & GETTERS ---- //
     public void SetDirection(Vector2 values)

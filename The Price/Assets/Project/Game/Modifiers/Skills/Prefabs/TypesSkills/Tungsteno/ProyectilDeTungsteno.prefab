@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8621910495439206195}
   - component: {fileID: 2895001226992986238}
   - component: {fileID: 4736128806754869029}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ProyectilDeTungsteno
   m_TagString: Proyectile
   m_Icon: {fileID: 0}

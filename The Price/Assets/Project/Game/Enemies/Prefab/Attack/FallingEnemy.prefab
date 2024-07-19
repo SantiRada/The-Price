@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2510289287849457084}
   - component: {fileID: 5291894021195748977}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FallingEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

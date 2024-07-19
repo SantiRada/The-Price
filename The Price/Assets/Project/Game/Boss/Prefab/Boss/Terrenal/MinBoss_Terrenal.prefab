@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 1878828399067867312}
   - component: {fileID: 7105337657330464152}
   - component: {fileID: 1011478350328863812}
-  - component: {fileID: 1380473012032805492}
   - component: {fileID: -3842517137492939018}
-  m_Layer: 0
+  - component: {fileID: 1380473012032805492}
+  m_Layer: 7
   m_Name: MinBoss_Terrenal
-  m_TagString: Boss
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -139,9 +139,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4db289956851324bb6cf371c38d5f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthMax: 350
+  shieldMax: 100
+  damage: 10
+  speed: 1.1
+  sanity: 14
+  health: 450
+  shield: 100
+  delayToDetectDamage: 0.35
+  timeToDetectCollision: 0.75
+  durationForEffect: 2
+  delayBetweenAttack: 4
+  delayBetweenMovement: 3
   countPhase: 2
   changePhasePerLife: 1
-  limiterPerPhase: f40100002c010000
+  limiterPerPhase: c800000078000000
   countAttacksPerPhase: 0300000005000000
   attacks:
   - {fileID: 1136640752146106191, guid: 9b5c4d81d09cb8740a28b61fd9640a97, type: 3}
@@ -152,20 +164,8 @@ MonoBehaviour:
   - {fileID: 6370981291506861122, guid: 24f80519847a181409bff6fbeb26c22f, type: 3}
   nameBoss: 43
   typeBoss: 0
-  health: 450
-  shield: 100
-  damageMultiplier: 15
-  speed: 1.1
-  sanity: 14
-  timeToDetectCollision: 0.75
-  delayBetweenMovement: 3
-  delayBetweenAttack: 5
   isAggressive: 1
   includeAllAttacks: 1
-  inMove: 0
-  canMove: 0
-  inAttack: 0
-  canAttack: 0
 --- !u!114 &1011478350328863812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,9 +179,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToCancel: 5
-  speedMove: 0
+  speedMove: 0.24
   inMove: 0
   minDistanceToPlayer: 5
+--- !u!114 &-3842517137492939018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4127154019616426257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87c97ef1f5fdf74b8e04a12ed7bfa38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeToCancel: 8
+  speedMove: 0.35
+  inMove: 0
+  intensity: 45
 --- !u!50 &1380473012032805492
 Rigidbody2D:
   serializedVersion: 4
@@ -209,19 +225,3 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &-3842517137492939018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4127154019616426257}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d87c97ef1f5fdf74b8e04a12ed7bfa38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeToCancel: 8
-  speedMove: 0.35
-  inMove: 0
-  intensity: 45

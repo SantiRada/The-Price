@@ -212,6 +212,10 @@ MonoBehaviour:
   shield: 0
   delayToDetectDamage: 0.1
   timeToDetectCollision: 0.7
+  canReleaseSouls: 1
+  countSouls: 1
+  canReleaseGold: 0
+  countGold: 2
   durationForEffect: 2
   delayBetweenAttack: 3
   delayBetweenMovement: 2

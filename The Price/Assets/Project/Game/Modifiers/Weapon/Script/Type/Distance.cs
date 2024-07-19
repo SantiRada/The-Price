@@ -31,7 +31,7 @@ public class Distance : WeaponSystem {
                 for (int i = 0; i < 2; i++)
                 {
                     Projectile proyectil = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
-                    proyectil.SetterValues(_player.gameObject, distanceAttack, damage, canTraverse, direction, 0, speedProjectile);
+                    proyectil.SetterValues(_playerStats.gameObject, distanceAttack, damage, canTraverse, direction, 0, speedProjectile);
                 }
             }
             else if(typeFinalHit == DistanceFinalHit.theyAreBig)
@@ -41,6 +41,6 @@ public class Distance : WeaponSystem {
             else if(typeFinalHit == DistanceFinalHit.generateAreaDamage) { pr.canAreaDamage = true; }
         }
 
-        pr.SetterValues(_player.gameObject, distanceAttack, damage, canTraverse, _crosshair.GetCurrentAimDirection(), 0, speedProjectile);
+        pr.SetterValues(_playerStats.gameObject, distanceAttack, damage, canTraverse, _crosshair.GetCurrentAimDirection(), 0, speedProjectile);
     }
 }

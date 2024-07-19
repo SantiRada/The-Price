@@ -128,6 +128,7 @@ public class LanguageManager : MonoBehaviour {
             // dataFinal[0] = "Menu" && dataFinal[1] = 1
 
             _allText[i].text = GetValue(dataFinal[0], int.Parse(dataFinal[1])).ToString();
+            // Debug.Log(dataFinal[0] + "-" + dataFinal[1] + ": " + GetValue(dataFinal[0], int.Parse(dataFinal[1])));
         }
 
         for (int i = 0; i < _allLabel.Length; i++)
@@ -138,6 +139,7 @@ public class LanguageManager : MonoBehaviour {
             // dataFinal[0] = "Menu" && dataFinal[1] = 1
 
             _allLabel[i].text = GetValue(dataFinal[0], int.Parse(dataFinal[1])).ToString();
+            // Debug.Log(dataFinal[0] + "-" + dataFinal[1] + ": " + GetValue(dataFinal[0], int.Parse(dataFinal[1])));
         }
     }
     public static string GetValue(string list, int rowIndex)

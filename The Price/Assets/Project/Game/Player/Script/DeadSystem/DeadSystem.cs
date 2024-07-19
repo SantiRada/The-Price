@@ -1,7 +1,7 @@
-using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static ActionForControlPlayer;
 
 public enum Worlds { Terrenal, Cielo, Infierno, Astral, Inframundo }
 public class DeadSystem : MonoBehaviour {
@@ -33,18 +33,29 @@ public class DeadSystem : MonoBehaviour {
     [HideInInspector] public int killedMaxBoss_Infierno;
     [Space]
     [HideInInspector] public bool killedThanatos = false;
+    [Space]
+    [HideInInspector] public bool canHaveSouls;
 
     [Header("Current Data")]
     public Worlds currentWorld;
     public Worlds nextWorld;
 
     private SaveLoadManager _saveLoad;
+    private PlayerStats _playerStats;
+    private HUD _hud;
     private bool isActive = false;
 
-    private void Awake() { _saveLoad = FindAnyObjectByType<SaveLoadManager>(); }
+    private void Awake()
+    {
+        _hud = FindAnyObjectByType<HUD>();
+        _saveLoad = FindAnyObjectByType<SaveLoadManager>();
+    }
     private void Start() { LoadInfo(); }
     private void LoadInfo()
     {
+        int pos = PlayerPrefs.GetInt("PositionGame");
+        _playerStats = GetComponent<PlayerStats>();
+
         _saveLoad.LoadData();
 
         if (_saveLoad.GetWorldData() != null)
@@ -62,6 +73,9 @@ public class DeadSystem : MonoBehaviour {
                 }
                 else if (_saveLoad.GetWorldData().reasonSave == ReasonSave.closeGame)
                 {
+                    // MODIFICAR EL MUNDO AL CUAL IR COMO "TERRENAL" PARA LA PRIMERA VEZ QUE TOCAMOS EL PLANO ASTRAL
+                    if(wasInAstral == 1) currentWorld = Worlds.Terrenal;
+
                     _saveLoad.SaveData(ReasonSave.Null);
                     SceneManager.LoadScene("Astral");
                     return;
@@ -77,14 +91,21 @@ public class DeadSystem : MonoBehaviour {
             {
                 if (_saveLoad.GetWorldData().reasonSave == ReasonSave.closeGame)
                 {
-                    File.Delete(Application.persistentDataPath + "/World.json");
-                    File.Delete(Application.persistentDataPath + "/Player.json");
+                    File.Delete(Application.persistentDataPath + "/World-" + pos.ToString() + ".json");
+                    File.Delete(Application.persistentDataPath + "/Player-" + pos.ToString() + ".json");
+
+                    PlayerPrefs.DeleteKey("Position-" + pos);
+                    PlayerPrefs.DeleteKey("PositionGame");
 
                     SceneManager.LoadScene("Terrenal");
                 }
             }
         }
-        else { _saveLoad.SaveData(ReasonSave.closeGame); }
+        else
+        {
+            _saveLoad.SaveData(ReasonSave.Null);
+            SceneManager.LoadScene("Cinematic");
+        }
     }
     public void DiePlayer()
     {
@@ -134,6 +155,8 @@ public class DeadSystem : MonoBehaviour {
     }
     private void ApplyChanges()
     {
+        _playerStats.SetValue(10, -5, false);
+
         bool canChange = true;
         if (_saveLoad.GetWorldData() != null)
         {
@@ -155,5 +178,20 @@ public class DeadSystem : MonoBehaviour {
             currentWorld = nextWorld;
             _saveLoad.SaveData(ReasonSave.deadSystem);
         }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Soul")) { if (PlayerActionStates.IsUse) { PickUpSouls(collision.gameObject); } }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Soul")) { if(PlayerActionStates.IsUse || PlayerActionStates.IsDashing) { PickUpSouls(collision.gameObject); } }
+    }
+    private void PickUpSouls(GameObject obj)
+    {
+        canHaveSouls = true;
+        _hud.ShowSouls();
+        FindAnyObjectByType<RoomManager>().MadeInteraction();
+        Destroy(obj);
     }
 }

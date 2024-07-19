@@ -26,23 +26,43 @@ public class FloatTextManager : MonoBehaviour {
         colors = colorsPool;
     }
     public static Color GetColor(TypeFlair type) { return colors[(int)type]; }
-    public static void CreateText(Vector2 position, TypeColor type, string content, bool isCrazy = false)
+    public static void CreateText(Vector2 position, TypeColor type, string content, bool isCrazy = false, bool isWord = false)
     {
-        TextMeshProUGUI text;
+        FloatText text;
 
-        if (isCrazy) text = Instantiate(_textCrazyPrefab.gameObject, CalculatePos(position), Quaternion.identity, _transform).GetComponent<TextMeshProUGUI>();
-        else text = Instantiate(_textPrefab.gameObject, CalculatePos(position), Quaternion.identity, _transform).GetComponent<TextMeshProUGUI>();
+        // VERIFY TYPE TEXT AND CREATE
+        if (isCrazy) { text = Instantiate(_textCrazyPrefab.gameObject, CalculatePos(position, isWord), Quaternion.identity, _transform).GetComponent<FloatText>(); }
+        else { text = Instantiate(_textPrefab.gameObject, CalculatePos(position, isWord), Quaternion.identity, _transform).GetComponent<FloatText>(); }
 
-        text.color = colors[(int)type];
-        text.text = content;
+        // CHANGE MOVE
+        text.isStatic = isWord;
+
+        // CHANGE VALUES
+        if (isWord) content = LanguageManager.GetValue("Game", int.Parse(content));
+        TextMeshProUGUI textInScene = text.GetComponent<TextMeshProUGUI>();
+
+        // APPLY VALUES
+        textInScene.color = colors[(int)type];
+        textInScene.text = content;
     }
     // ---- FUNCIÓN INTEGRA ---- //
-    public static Vector2 CalculatePos(Vector2 pos)
+    public static Vector2 CalculatePos(Vector2 pos, bool isWord = false)
     {
         float rndX;
-        do { rndX = Random.Range(-1f, 1f); } while (rndX > -.5f && rndX < .5f);
+        float rndY;
 
-        float rndY = Random.Range(-1.5f, 0f);
+        if (!isWord)
+        {
+            rndX = Random.Range(-0.5f, 0.5f);
+
+            rndY = 0.5f;
+        }
+        else
+        {
+            do { rndX = Random.Range(-1f, 1f); } while (rndX > -.5f && rndX < .5f);
+
+            rndY = Random.Range(-1f, 1f);
+        }
 
         pos.x += rndX;
         pos.y += rndY;

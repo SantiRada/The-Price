@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5721909316822279400}
   - component: {fileID: 4222638246214336430}
   - component: {fileID: 4972424169552175811}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Dialogue_Interactive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,12 +175,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 882c7b5d80c14d14597f741167f02c8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _content: 3
+  content: 0
+  typeContent: 0
   nameContent: 13
   descContent: 14
-  attackContent: 14
   inSelect: 0
   inTrigger: 0
+  isNew: 0
+  isShop: 0
+  priceInGold: 0
   _manager: {fileID: 0}
 --- !u!114 &4972424169552175811
 MonoBehaviour:
@@ -200,3 +203,6 @@ MonoBehaviour:
   whatSay: 0f0000001000000011000000
   _dialogueStatic: 1
   _repeatDialogue: 1
+  _showSkills: 0
+  _showObject: 0
+  _showAptitud: 0

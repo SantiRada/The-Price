@@ -11,6 +11,7 @@ public class WalkableMapGenerator : MonoBehaviour {
     [SerializeField] private LayerMask walkableLayer;
     [SerializeField] private LayerMask unwalkableLayer;
 
+    public bool GetPositionIsWalkable(int x, int y) { return walkableMap[x, y] == TypeNode.walkable ? true : false; }
     public void GenerateWalkableMap()
     {
         if (walkableMap != null) walkableMap = null;
@@ -53,7 +54,7 @@ public class WalkableMapGenerator : MonoBehaviour {
         set { mapSize = value; }
     }
     #region Gizmos
-    /*
+    
     private void OnDrawGizmos()
     {
         if (walkableMap == null) return;
@@ -79,6 +80,6 @@ public class WalkableMapGenerator : MonoBehaviour {
 
         }
     }
-    */
+    
     #endregion
 }

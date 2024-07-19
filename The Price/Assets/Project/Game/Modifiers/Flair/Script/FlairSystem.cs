@@ -125,6 +125,7 @@ public class FlairSystem : MonoBehaviour {
     }
     public IEnumerator Select()
     {
+        RoomManager.CallMadeInteraction();
         canMove = false;
 
         // NUEVOS VALORES BASE
@@ -184,10 +185,10 @@ public class FlairSystem : MonoBehaviour {
         int value = Random.Range(0, 100);
         int final;
 
-        if (value <= 60) final = 5;
-        else if (value > 60 && value < 90) final = 10;
-        else if (value >= 90 && value < 97) final = 15;
-        else final = 20;
+        if (value <= 60) final = 2;
+        else if (value > 60 && value < 90) final = 5;
+        else if (value >= 90 && value < 97) final = 8;
+        else final = 12;
 
         return final;
     }

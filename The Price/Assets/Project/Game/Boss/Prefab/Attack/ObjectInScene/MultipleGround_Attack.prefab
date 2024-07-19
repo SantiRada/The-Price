@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8312308205510022427}
   - component: {fileID: -3463762309392859060}
   - component: {fileID: 2002430980044093502}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MultipleGround_Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

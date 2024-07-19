@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6047857846833733000}
   - component: {fileID: 5545751268761729463}
   - component: {fileID: 5912235016396145848}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shield
   m_TagString: Weapon
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ SpriteRenderer:
   m_Size: {x: 0.2, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &5912235016396145848
@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponID: 3
-  spr: {fileID: 0}
+  spr: {fileID: 5088557994025745989, guid: 61feb750ec46d644f990bcbc7f922a45, type: 3}
   nameWeapon: 70
   descWeapon: 1
   damageWeapon: 0
@@ -148,4 +148,5 @@ MonoBehaviour:
   delayBetweenAttack: 0.25
   delayDetect: 1.5
   durationDamage: 0.4
+  delayDetectRoll: 0
   intensity: 2

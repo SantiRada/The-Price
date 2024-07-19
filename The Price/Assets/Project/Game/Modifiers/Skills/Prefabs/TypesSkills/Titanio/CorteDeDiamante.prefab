@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5815342617988876993}
   - component: {fileID: 2022846567127507699}
   - component: {fileID: 5584450860467164116}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CorteDeDiamante
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -99,7 +99,7 @@ public class BossSystem : EnemyBase {
 
         indexPhase = 0;
         CancelEnemy(true);
-        Pause.StateChange = State.Pause;
+        Pause.StateChange = State.Interface;
         CameraMovement.CallCamera(transform.position, 2f);
 
         // anim.SetBool("Presentation", true);
@@ -108,7 +108,7 @@ public class BossSystem : EnemyBase {
 
         // anim.SetBool("Presentation", false);
 
-        Pause.StateChange = State.Game;
+        Pause.StateChange = State.Interface;
         CancelEnemy(true);
     }
     // ---- REPEATERS ---- //
@@ -146,7 +146,7 @@ public class BossSystem : EnemyBase {
     public override IEnumerator Die()
     {
         CancelEnemy(true);
-        Pause.StateChange = State.Pause;
+        Pause.StateChange = State.Interface;
 
         StartCoroutine("CancelMove");
         StartCoroutine("CancelAttack");
@@ -159,7 +159,7 @@ public class BossSystem : EnemyBase {
 
         yield return new WaitForSeconds(3.5f);
 
-        Pause.StateChange = State.Game;
+        Pause.StateChange = State.Interface;
         _room.Advance();
 
         _bossUI.StartCoroutine("HideUI");

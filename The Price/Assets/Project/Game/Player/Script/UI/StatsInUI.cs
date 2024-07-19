@@ -11,13 +11,17 @@ public class StatsInUI : MonoBehaviour {
     [Header("Content UI")]
     public GameObject dieUI;
     public GameObject statsWindow;
-    public TextMeshProUGUI[] textStats;
     public CanvasGroup[] sectioners;
 
     [Header("Content Menu UI")]
     public GameObject sectorMenu;
     public Image[] menuOptions;
     public Sprite selectSprite, unselectSprite;
+
+    [Header("Content Stats UI")]
+    public TextMeshProUGUI[] textStats;
+    public GameObject[] parentWeapon;
+    public Image[] weapons;
 
     [Header("Content Skills UI")]
     public Image[] skillOptions;
@@ -85,11 +89,14 @@ public class StatsInUI : MonoBehaviour {
     }
     private void Update()
     {
-        if (LoadingScreen.inLoading || Pause.state != State.Interface || !_canMove) return;
+        if (LoadingScreen.inLoading || Pause.state != State.Pause || !_canMove) return;
 
         // MOVIMIENTO ENTRE VENTANAS --------- //
         if (PlayerActionStates.leftUI) StartCoroutine(MoveSector(-1));
         if (PlayerActionStates.rightUI) StartCoroutine(MoveSector(1));
+
+        // FUNCIONES ESPECIALES -------------- //
+        if (PlayerActionStates.otherFunctionUI && _indexWindow == 1) StartCoroutine("ChangePosWeapon");
 
         // MOVIMIENTO INTERNO DE LA UI ------- //
         if (Input.GetAxis("Vertical") != 0) StartCoroutine(Move(Input.GetAxis("Vertical")));
@@ -99,6 +106,12 @@ public class StatsInUI : MonoBehaviour {
     {
         if(pos == 0) _hud.SetHealthbar(value, valueMax);
         else _hud.SetConcentracion(value, valueMax);
+    }
+    public void SetWeaponInHUD(int index, Sprite spr)
+    {
+        weapons[index].sprite = spr;
+
+        _hud.SetWeapon(index, spr);
     }
     // ---- WINDOW OBJECTS ---- //
     public void AddObjectInUI()
@@ -169,14 +182,14 @@ public class StatsInUI : MonoBehaviour {
         }
         else
         {
-            Pause.StateChange = State.Interface;
+            Pause.StateChange = State.Pause;
             OpenUI(TypeUI.menu);
         }
     }
     // ---- WINDOW STATS ---- //
     public void ShowWindowedStats()
     {
-        Pause.StateChange = State.Interface;
+        Pause.StateChange = State.Pause;
         OpenUI(TypeUI.stats);
     }
     public void ChangeValueInUI(int type)
@@ -192,6 +205,70 @@ public class StatsInUI : MonoBehaviour {
             textStats[i].text = valueMax.ToString() + "%";
         else if (i == 4 || i == 5)
             textStats[i].text = valueMax.ToString();
+    }
+    private IEnumerator ChangePosWeapon()
+    {
+        PlayerActionStates.otherFunctionUI = false;
+        Image[] content = new Image[3];
+        WeaponSystem[] contentWeapon = new WeaponSystem[_player.weapons.Count];
+        WeaponSystem[] contentWeaponScene = new WeaponSystem[_player.weaponInScene.Count];
+
+        int newPos = 0;
+
+        for (int i = 0; i < parentWeapon.Length; i++)
+        {
+            content[i] = weapons[i];
+            if(_player.weapons.Count > i)
+            {
+                if (_player.weapons[i] != null) contentWeapon[i] = _player.weapons[i];
+                else contentWeapon[i] = null;
+            }
+            if (_player.weaponInScene.Count > i)
+            {
+                if (_player.weaponInScene[i] != null) contentWeaponScene[i] = _player.weaponInScene[i];
+                else contentWeaponScene[i] = null;
+            }
+
+            newPos = i + 1;
+            if (newPos >= weapons.Length) newPos = 0;
+
+            Vector3 newPosition = new Vector3(parentWeapon[newPos].transform.position.x, weapons[i].transform.position.y, 0);
+            StartCoroutine(OffsetMove(weapons[i].gameObject, newPosition));
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            newPos = i - 1;
+            if (newPos < 0) newPos = weapons.Length - 1;
+
+            // SETTEAR CAMBIOS EN STATS
+            weapons[i] = content[newPos];
+
+            // SETTEAR CAMBIOS EN PLAYER-STATS
+            if (_player.weapons.Count > i) _player.weapons[i] = contentWeapon[newPos];
+            if (_player.weaponInScene.Count > i) _player.weaponInScene[i] = contentWeaponScene[newPos];
+
+            // SETTEAR CAMBIOS EN ACTION-FOR-CONTROL-PLAYER
+            _player.UpdateWeaponInAction();
+
+            // SETTEAR CAMBIOS EN EL HUD
+            Sprite spr = _player.weapons[i] != null ? _player.weapons[i].spr : null;
+            SetWeaponInHUD(i, spr);
+        }
+
+        // CAMBIAR LAS POSICIONES EN EL HUD
+        // CAMBIAR SU POSICION EN LOS ARRAYS ORIGINALES - playerStats - 
+    }
+    private IEnumerator OffsetMove(GameObject obj, Vector3 newPos)
+    {
+        do
+        {
+            obj.transform.position = Vector3.Slerp(obj.transform.position, newPos, 0.2f * Time.deltaTime);
+            yield return new WaitForSeconds(0.15f);
+        } while (Vector3.Distance(obj.transform.position, newPos) < 5f);
+
+        obj.transform.position = newPos;
     }
     // ---- MOVEMENT IN UI ---- //
     private void OpenUI(TypeUI typeUI)

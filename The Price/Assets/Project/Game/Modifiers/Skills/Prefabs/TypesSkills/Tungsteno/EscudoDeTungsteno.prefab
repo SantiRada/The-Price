@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3538216177165794672}
   - component: {fileID: 6620029387842005463}
   - component: {fileID: 227350114101408464}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EscudoDeTungsteno
   m_TagString: Untagged
   m_Icon: {fileID: 0}

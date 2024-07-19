@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3528771504655969822}
   - component: {fileID: 7759396924909983717}
   - component: {fileID: 1242574443573261368}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: NeuroestimulacionMetalica
   m_TagString: Untagged
   m_Icon: {fileID: 0}

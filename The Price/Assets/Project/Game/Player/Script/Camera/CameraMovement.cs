@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum SizeCamera { normal, boss, specific }
@@ -7,16 +6,19 @@ public class CameraMovement : MonoBehaviour {
     [Header("Content Move")]
     public GameObject target;
     public float offset;
+    public GameObject darknessBG;
+    private static GameObject _overlayOBJ;
 
     [Header("Private Content")]
     private static Vector2 min, max;
-    private Vector3 _initialPos;
     private static bool _diePlayer;
+    private Vector3 _initialPos;
 
-    [Header("Content Shake")]
+    [Header("Camera Content")]
     private static CameraMovement instance;
     private static Camera _cam;
 
+    [Header("Content Shake")]
     private float shakeDuration = 0f;
     private float shakeAmount = 0.7f;
     private float decreaseFactor = 1.0f;
@@ -33,6 +35,11 @@ public class CameraMovement : MonoBehaviour {
     [Header("Battle System")]
     [Tooltip("Velocidad del cambio de tamaño de la cámara cuando el jugador se aleja o acerca al enemigo")] public float zoomSpeed;
     private static BossSystem _boss;
+
+    [Header("Sizing")]
+    private static int _newPerspective;
+    private static bool _inChangeSizing;
+    private static bool _inCinematic;
 
     private void Awake()
     {
@@ -52,6 +59,9 @@ public class CameraMovement : MonoBehaviour {
         _diePlayer = false;
 
         _initialPos = transform.position;
+
+        _overlayOBJ = darknessBG;
+        _overlayOBJ.SetActive(false);
     }
     private void Update()
     {
@@ -93,7 +103,15 @@ public class CameraMovement : MonoBehaviour {
 
         if (_boss == null)
         {
-            Vector3 newPos = new Vector3(Mathf.Clamp(target.transform.position.x, min.x, max.x), Mathf.Clamp(target.transform.position.y, min.y, max.y), _initialPos.z);
+            Vector3 newPos;
+            if (_inCinematic)
+            {
+                newPos = new Vector3(Mathf.Clamp(target.transform.position.x, min.x - 2, max.x + 2), Mathf.Clamp(target.transform.position.y, min.y - 2, max.y + 2), _initialPos.z);
+            }
+            else
+            {
+                newPos = new Vector3(Mathf.Clamp(target.transform.position.x, min.x, max.x), Mathf.Clamp(target.transform.position.y, min.y, max.y), _initialPos.z);
+            }
             transform.position = Vector3.Slerp(transform.position, newPos, offset * Time.deltaTime);
         }
         else
@@ -112,18 +130,36 @@ public class CameraMovement : MonoBehaviour {
             float targetSize = Mathf.Clamp(distance, 7, 10);
             _cam.orthographicSize = Mathf.Lerp(_cam.orthographicSize, targetSize, Time.deltaTime * zoomSpeed);
         }
-            
-    }
-    public static void SetMinMax(Vector2 minValues, Vector2 maxValues)
-    {
-        min = minValues;
-        max = maxValues;
+
+        if (_inChangeSizing)
+        {
+            _cam.orthographicSize = Mathf.Lerp(_cam.orthographicSize, _newPerspective, 1 * Time.deltaTime);
+
+            if (_cam.orthographicSize == _newPerspective) _inChangeSizing = false;
+        }
     }
     public static void SetDie()
     {
         _diePlayer = true;
-        _cam.cullingMask = (1 << 5) | (1 << 7);
+        _cam.cullingMask = (1 << 5) | (1 << 9);
     }
+    public static void SetCinematic(bool isOn)
+    {
+        _inCinematic = isOn;
+
+        if (isOn)
+        {
+            StartCinematic();
+            // EVITA ESTAS CAPAS ESPECÍFICAS
+            _cam.cullingMask = ~LayerMask.GetMask("No-Cinematic") & ~LayerMask.GetMask("UI");
+        }
+        else
+        {
+            EndCinematic();
+            _cam.cullingMask = -1;
+        }
+    }
+    // ---- SHAKE ---- //
     public static void Shake(float intensity, float duration)
     {
         _originalPos = _cam.transform.localPosition;
@@ -135,6 +171,28 @@ public class CameraMovement : MonoBehaviour {
             instance.shakeDuration = duration;
         }
     }
+    // ---- SIZING ---- //
+    public static void SetSize(SizeCamera type)
+    {
+        _inChangeSizing = true;
+
+        switch (type)
+        {
+            case SizeCamera.specific: _newPerspective = 4; break;
+            case SizeCamera.normal: _newPerspective = 5; break;
+            case SizeCamera.boss: _boss = FindAnyObjectByType<BossSystem>(); break;
+        }
+    }
+    public static void CancelSize() { _newPerspective = 5; }
+    public static void SetMinMax(Vector2 minValues, Vector2 maxValues)
+    {
+        min = minValues;
+        max = maxValues;
+    }
+    // ---- CINEMATIC ---- //
+    public static void StartCinematic() { _overlayOBJ.SetActive(true); }
+    public static void EndCinematic() { _overlayOBJ.SetActive(false); }
+    // ---- CALLER ---- //
     public static void CallCamera(Vector2 pos, float time)
     {
         prevPosCamera = _cam.transform.position;
@@ -142,13 +200,10 @@ public class CameraMovement : MonoBehaviour {
         posCaller = pos;
         inCall = true;
     }
-    public static void SetSize(SizeCamera type)
+    public static void CancelCallCamera()
     {
-        switch (type)
-        {
-            case SizeCamera.specific: _cam.orthographicSize = 3; break;
-            case SizeCamera.normal: _cam.orthographicSize = 5; break;
-            case SizeCamera.boss: _boss = FindAnyObjectByType<BossSystem>(); break;
-        }
+        posCaller = Vector2.zero;
+        inCall = false;
+        timeToCall = 0;
     }
 }
