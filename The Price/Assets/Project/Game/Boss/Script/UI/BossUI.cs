@@ -70,7 +70,7 @@ public class BossUI : MonoBehaviour {
     {
         healthbar.maxValue = health;
 
-        float between = 2 / health;
+        float between = health / 4;
 
         for(int i = 0; i < health; i++)
         {

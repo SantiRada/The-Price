@@ -259,8 +259,8 @@ TextureImporter:
       name: Keyboard_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 192
+        y: 64
         width: 64
         height: 64
       alignment: 0
@@ -280,7 +280,7 @@ TextureImporter:
       name: Keyboard_4
       rect:
         serializedVersion: 2
-        x: 64
+        x: 0
         y: 0
         width: 64
         height: 64
@@ -301,7 +301,7 @@ TextureImporter:
       name: Keyboard_5
       rect:
         serializedVersion: 2
-        x: 128
+        x: 64
         y: 0
         width: 64
         height: 64
@@ -322,7 +322,7 @@ TextureImporter:
       name: Keyboard_6
       rect:
         serializedVersion: 2
-        x: 192
+        x: 128
         y: 0
         width: 64
         height: 64
@@ -335,6 +335,27 @@ TextureImporter:
       bones: []
       spriteID: 49f2061b5e4581430800000000000000
       internalID: 3753843634913423252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Keyboard_7
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8babc3ccddff7d449a47286a65f11e09
+      internalID: 711718558
       vertices: []
       indices: 
       edges: []
@@ -357,6 +378,7 @@ TextureImporter:
       Keyboard_4: -8273527477377572067
       Keyboard_5: -8487786551566072494
       Keyboard_6: 3753843634913423252
+      Keyboard_7: 711718558
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

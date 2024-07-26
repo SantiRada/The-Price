@@ -6,11 +6,12 @@ public enum TypeCollectable { Gold, Souls }
 public class ManagerGold : MonoBehaviour {
 
     [Header("Data")]
-    [SerializeField] private Gold _gold;
-    [SerializeField] private Gold _souls;
-    [SerializeField] private float _delayToCreateCoin;
-    private static Vector3 _position;
+    public Gold gold;
+    public Gold souls;
+    public float delayToCreateCoin;
+    [Space]
     private static int _count;
+    private static Vector3 _position;
     private static bool _canCreate = false;
     private static TypeCollectable _typeCollectable;
 
@@ -54,12 +55,12 @@ public class ManagerGold : MonoBehaviour {
             Gold money;
             Vector3 finalPos = new Vector3(Random.Range(position.x - 0.5f, position.x + 0.5f), Random.Range(position.y - 0.5f, position.y + 0.5f), 0);
 
-            if (_typeCollectable == TypeCollectable.Gold) money = Instantiate(_gold.gameObject, finalPos, Quaternion.identity).GetComponent<Gold>();
-            else money = Instantiate(_souls.gameObject, finalPos, Quaternion.identity).GetComponent<Gold>();
+            if (_typeCollectable == TypeCollectable.Gold) money = Instantiate(gold.gameObject, finalPos, Quaternion.identity).GetComponent<Gold>();
+            else money = Instantiate(souls.gameObject, finalPos, Quaternion.identity).GetComponent<Gold>();
             
             money.target = transform;
 
-            yield return new WaitForSeconds(_delayToCreateCoin);
+            yield return new WaitForSeconds(delayToCreateCoin);
         }
     }
 }

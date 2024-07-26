@@ -6,8 +6,6 @@ public class CameraMovement : MonoBehaviour {
     [Header("Content Move")]
     public GameObject target;
     public float offset;
-    public GameObject darknessBG;
-    private static GameObject _overlayOBJ;
 
     [Header("Private Content")]
     private static Vector2 min, max;
@@ -59,9 +57,6 @@ public class CameraMovement : MonoBehaviour {
         _diePlayer = false;
 
         _initialPos = transform.position;
-
-        _overlayOBJ = darknessBG;
-        _overlayOBJ.SetActive(false);
     }
     private void Update()
     {
@@ -149,15 +144,10 @@ public class CameraMovement : MonoBehaviour {
 
         if (isOn)
         {
-            StartCinematic();
             // EVITA ESTAS CAPAS ESPECÍFICAS
             _cam.cullingMask = ~LayerMask.GetMask("No-Cinematic") & ~LayerMask.GetMask("UI");
         }
-        else
-        {
-            EndCinematic();
-            _cam.cullingMask = -1;
-        }
+        else { _cam.cullingMask = -1; }
     }
     // ---- SHAKE ---- //
     public static void Shake(float intensity, float duration)
@@ -189,9 +179,6 @@ public class CameraMovement : MonoBehaviour {
         min = minValues;
         max = maxValues;
     }
-    // ---- CINEMATIC ---- //
-    public static void StartCinematic() { _overlayOBJ.SetActive(true); }
-    public static void EndCinematic() { _overlayOBJ.SetActive(false); }
     // ---- CALLER ---- //
     public static void CallCamera(Vector2 pos, float time)
     {

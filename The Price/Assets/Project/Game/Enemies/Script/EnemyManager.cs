@@ -41,6 +41,8 @@ public abstract class EnemyManager : EnemyBase {
     }
     private void Update()
     {
+        if (LoadingScreen.inLoading || Pause.state != State.Game) return;
+
         if (canMove)
         {
             if (_playerStats.transform.position.x > transform.position.x) _spr.flipX = true;

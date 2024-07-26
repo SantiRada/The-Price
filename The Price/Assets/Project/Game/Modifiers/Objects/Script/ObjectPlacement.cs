@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static ActionForControlPlayer;
@@ -14,6 +15,7 @@ public class ObjectPlacement : MonoBehaviour {
     [SerializeField] private Object[] _poolLegendary;
     [SerializeField] private Object[] _poolMythical;
     private static List<Object> _localPool = new List<Object>();
+    private static List<Object> _discardPool = new List<Object>();
     private List<Object> _objectCreated = new List<Object>();
 
     [Header("Content UI")]
@@ -30,7 +32,7 @@ public class ObjectPlacement : MonoBehaviour {
     [Header("Movement")]
     [SerializeField] private float _timeBetweenCards;
     private int _index = 0, _prevIndex = 0;
-    private bool _canMove = true;
+    private bool _canMove = true, _canSelected = false;
 
     [Header("Private Content")]
     private CanvasGroup _canvasGroup;
@@ -66,20 +68,24 @@ public class ObjectPlacement : MonoBehaviour {
     {
         List<Object> testFor = GetListObject();
 
-        if (_player.objects.Count != 0)
+        if (_player.objects.Count > 0)
         {
             bool canUse = true;
 
             for (int i = 0; i < testFor.Count; i++)
             {
                 for(int j = 0; j < _player.objects.Count; j++)
-                {
-                    if (_player.objects[j] == testFor[i])
+{
+                    if (_player.objects[j] != null)
                     {
-                        canUse = false;
-                        break;
+                        if (_player.objects[j].objectID == testFor[i].objectID)
+                        {
+                            canUse = false;
+                            break;
+                        }
                     }
                 }
+
                 if(canUse) _localPool.Add(testFor[i]);
             }
         }
@@ -98,37 +104,23 @@ public class ObjectPlacement : MonoBehaviour {
 
         Pause.StateChange = State.Interface;
 
-        // APLICAR VALORES A CADA CARTA
-        /*List<Object> values = GetListObject();
-        int rnd = 0;
-        bool canUse = true;
-        do
+        // ESTABLECER VALORES DE LAS CARDS
+        for(int i = 0; i < 3; i++)
         {
-            rnd = Random.Range(0, values.Count);
+            int rnd = Random.Range(0, _localPool.Count);
 
-            for (int i = 0; i < _objectCreated.Count; i++)
-            {
-                if (_objectCreated[i] == values[rnd])
-                {
-                    canUse = false;
-                    break;
-                }
-            }
+            _discardPool.Add(_localPool[rnd]);
+            _objectCreated.Add(_localPool[rnd]);
 
-            if (canUse) _objectCreated.Add(values[rnd]);
-
-        } while (_objectCreated.Count < 3);*/
-
-        _objectCreated.Add(_poolBasic[0]);
-        _objectCreated.Add(_poolBasic[1]);
-        _objectCreated.Add(_poolBasic[2]);
+            _localPool.RemoveAt(rnd);
+        }
 
         for (int i = 0; i < _slots.Count; i++)
         {
             _slots[i].gameObject.SetActive(true);
             _slots[i].sprite = cardBase;
 
-            // _slotIcon[i].sprite = _objectCreated[i].icon;
+            _slotIcon[i].sprite = _objectCreated[i].icon;
             _slotName[i].text = LanguageManager.GetValue("Object", _objectCreated[i].itemName);
             _slotDesc[i].text = LanguageManager.GetValue("Object", _objectCreated[i].description);
 
@@ -151,10 +143,11 @@ public class ObjectPlacement : MonoBehaviour {
         if (h != 0 && _canMove) StartCoroutine(MoveSlot(h));
 
         // SELECCIONAR UNA SKILL
-        if (Input.GetButtonDown("Fire1") || PlayerActionStates.IsUse) StartCoroutine("Selected");
+        if (PlayerActionStates.IsUse && _canSelected) StartCoroutine("Selected");
     }
     private IEnumerator MoveSlot(float dir)
     {
+        _canSelected = false;
         _canMove = false;
         _prevIndex = _index;
 
@@ -169,9 +162,12 @@ public class ObjectPlacement : MonoBehaviour {
 
         yield return new WaitForSeconds(0.19f);
         _canMove = true;
+        _canSelected = true;
     }
     private IEnumerator Selected()
     {
+        _canSelected = false;
+        _canMove = false;
         RoomManager.CallMadeInteraction();
 
         // MOVER TODAS LAS CARTAS HACIA ABAJO EXCEPTO LA SELECCIONADA
@@ -211,8 +207,6 @@ public class ObjectPlacement : MonoBehaviour {
     }
     private void RestartContent()
     {
-        StopAllCoroutines();
-
         for (int i = 0; i < _objectCreated.Count; i++)
         {
             _slotName[i].text = "";
@@ -229,6 +223,7 @@ public class ObjectPlacement : MonoBehaviour {
         _startObject = false;
         _initial = false;
         _canMove = false;
+        _canSelected = false;
         _index = 0;
         _prevIndex = 0;
 

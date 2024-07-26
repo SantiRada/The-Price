@@ -135,6 +135,8 @@ public class RoomManager : MonoBehaviour {
     {
         advanceRoom?.Invoke();
 
+        if (FindAnyObjectByType<Tutorial>()) { FindAnyObjectByType<Tutorial>().StartCoroutine("VerifyRoom"); }
+
         for (int i = 0; i < statsPerRoom.Length; i++) { statsPerRoom[i].gameObject.SetActive(false); }
 
         _player._playerStats.ResetValuesPerRoom();

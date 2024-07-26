@@ -13,7 +13,7 @@ public class CreatorTutorialRoom : MonoBehaviour {
     {
         _typeRooms = new TypeRoom[18];
 
-        if (nameScene == "Terrenal")
+        if(nameScene == "Terrenal")
         {
             // Asignar las salas fijas
             _typeRooms[0] = TypeRoom.Basic;
@@ -31,7 +31,35 @@ public class CreatorTutorialRoom : MonoBehaviour {
             SelectedOptionalRooms(TypeRoom.Object, new int[] { 4, 7, 11, 13 }, 2, 4);
 
             // Asignar salas Aptitudes
-            SelectedOptionalRooms(TypeRoom.Aptitud, new int[] { 2, 6, 12 ,14 }, 2, 4);
+            SelectedOptionalRooms(TypeRoom.Aptitud, new int[] { 2, 6, 12, 14 }, 2, 4);
+
+            // Asignar salas aleatorias restantes a Oro
+            for (int i = 0; i < _typeRooms.Length; i++)
+            {
+                if (_typeRooms[i] == TypeRoom.Null) { _typeRooms[i] = TypeRoom.Gold; }
+            }
+
+        }
+        else if(nameScene == "Cielo")
+        {
+            // Asignar las salas fijas
+            _typeRooms[0] = TypeRoom.Basic;
+            _typeRooms[1] = TypeRoom.Basic;
+            _typeRooms[2] = TypeRoom.Gold;
+            _typeRooms[3] = TypeRoom.Skill;
+            _typeRooms[4] = TypeRoom.Gold;
+            _typeRooms[7] = TypeRoom.MiniBoss;
+            _typeRooms[8] = TypeRoom.Shop;
+            _typeRooms[9] = TypeRoom.Skill;
+            _typeRooms[15] = TypeRoom.Boss;
+            _typeRooms[16] = TypeRoom.Astral;
+            _typeRooms[17] = TypeRoom.MaxBoss;
+
+            // Asignar salas Objetos
+            SelectedOptionalRooms(TypeRoom.Object, new int[] { 4, 7, 11, 13 }, 2, 4);
+
+            // Asignar salas Aptitudes
+            SelectedOptionalRooms(TypeRoom.Aptitud, new int[] { 2, 6, 12, 14 }, 2, 4);
 
             // Asignar salas aleatorias restantes a Oro
             for (int i = 0; i < _typeRooms.Length; i++)

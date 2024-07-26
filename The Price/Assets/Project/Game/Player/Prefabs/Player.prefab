@@ -690,14 +690,14 @@ MonoBehaviour:
   _generalMaxStats:
   - 75
   - 16
+  - 7.5
   - 7
   - 10
-  - 14
-  - 10
-  - 25
-  - 5
   - 8
   - 15
+  - 0
+  - 15
+  - 0
   - 80
   _canReceivedDamage: 0
   changerConcentration: 2

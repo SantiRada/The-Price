@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public abstract class EnemyBase : MonoBehaviour {
 
@@ -54,7 +53,7 @@ public abstract class EnemyBase : MonoBehaviour {
     }
     private void LateUpdate()
     {
-        if (Pause.state != State.Game || LoadingScreen.inLoading) return;
+        if (LoadingScreen.inLoading || Pause.state != State.Game) return;
 
         #region Sanity
         if (sanity < sanityBase) { sanity += Time.deltaTime; }
@@ -165,6 +164,8 @@ public abstract class EnemyBase : MonoBehaviour {
     // ---- TRIGGERS ---- //
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (LoadingScreen.inLoading || Pause.state != State.Game) return;
+
         if (collision.CompareTag("Proyectile"))
         {
             int dmg = 0;
@@ -195,6 +196,8 @@ public abstract class EnemyBase : MonoBehaviour {
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
+        if (LoadingScreen.inLoading || Pause.state != State.Game) return;
+
         if (collision.gameObject.CompareTag("Player"))
         {
             timeToDetectCollision -= Time.deltaTime;
@@ -224,6 +227,8 @@ public abstract class EnemyBase : MonoBehaviour {
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (LoadingScreen.inLoading || Pause.state != State.Game) return;
+
         if (collision.gameObject.CompareTag("Player")) timeToDetectCollision = detectCollisionBase;
     }
     // ---- GETTERS ---- //

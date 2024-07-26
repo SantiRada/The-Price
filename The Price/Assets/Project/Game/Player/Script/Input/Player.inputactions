@@ -69,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Skill One",
+                    "name": "SkillOne",
                     "type": "Button",
                     "id": "9a756e8d-4d06-4994-b22c-e620d341de03",
                     "expectedControlType": "Button",
@@ -78,7 +78,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Skill Two",
+                    "name": "SkillTwo",
                     "type": "Button",
                     "id": "17f0a20d-c929-471f-aa70-72c4f9d1dbdc",
                     "expectedControlType": "Button",
@@ -87,7 +87,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Skill Three",
+                    "name": "SkillThree",
                     "type": "Button",
                     "id": "2bef7504-e301-472f-a279-44942a255229",
                     "expectedControlType": "Button",
@@ -96,7 +96,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack One",
+                    "name": "AttackOne",
                     "type": "Button",
                     "id": "1139eb42-9f87-49b5-a149-8a6c02dd4e9c",
                     "expectedControlType": "Button",
@@ -105,7 +105,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack Two",
+                    "name": "AttackTwo",
                     "type": "Button",
                     "id": "0e965f6a-87c6-441a-a135-93d1016decd5",
                     "expectedControlType": "Button",
@@ -114,7 +114,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack Three",
+                    "name": "AttackThree",
                     "type": "Button",
                     "id": "682f7759-6a3d-46ac-a3da-48fb762a089e",
                     "expectedControlType": "Button",
@@ -242,61 +242,6 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Aim",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Arrow",
-                    "id": "1478dbbd-79e9-4584-8ec5-419a2980ed74",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "8ee29996-40be-4544-b367-89de97d860cb",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "225e49f1-b817-4924-9c5f-4e3661b93dda",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "0cd39edc-7a50-4410-b6ad-a15f97a3b1e4",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "1de538d2-9e37-4aec-94ac-3ab6f92ad8a4",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -483,7 +428,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Skill One",
+                    "action": "SkillOne",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -494,7 +439,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Skill One",
+                    "action": "SkillOne",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -505,7 +450,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Skill Two",
+                    "action": "SkillTwo",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -516,7 +461,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Skill Two",
+                    "action": "SkillTwo",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -549,7 +494,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Skill Three",
+                    "action": "SkillThree",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -560,7 +505,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Skill Three",
+                    "action": "SkillThree",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -571,7 +516,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Attack Two",
+                    "action": "AttackTwo",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -582,18 +527,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Attack Two",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "cf7a20d6-2383-4c22-8f97-5e9e75f236ee",
-                    "path": "<Keyboard>/numpad8",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Attack Two",
+                    "action": "AttackTwo",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -604,7 +538,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Attack Three",
+                    "action": "AttackThree",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -615,18 +549,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Attack Three",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "10a1aabf-b054-4962-954d-60953c2c058d",
-                    "path": "<Keyboard>/numpad6",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Attack Three",
+                    "action": "AttackThree",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -637,18 +560,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Attack One",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "fd53673d-9630-4645-8f2e-d6f3fd9cb860",
-                    "path": "<Keyboard>/numpad4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Attack One",
+                    "action": "AttackOne",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -659,7 +571,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Attack One",
+                    "action": "AttackOne",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

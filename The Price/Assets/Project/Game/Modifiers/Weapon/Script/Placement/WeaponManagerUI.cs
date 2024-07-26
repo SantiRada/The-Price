@@ -14,6 +14,9 @@ public class WeaponManagerUI : MonoBehaviour {
     public InteractiveWeapon interactiveObj;
 
     [Header("UI Content")]
+    public GameObject arrowUp;
+    public GameObject arrowDown;
+    [Space]
     public GameObject objNewWeapon;
     public Image imgWeapon;
     public TextMeshProUGUI nameWeapon;
@@ -151,6 +154,8 @@ public class WeaponManagerUI : MonoBehaviour {
 
         objNewWeapon.transform.position = positions[_index].transform.position;
 
+        VerifyArrows();
+
         yield return new WaitForSeconds(timeBetweenMove);
 
         _canMove = true;
@@ -192,6 +197,26 @@ public class WeaponManagerUI : MonoBehaviour {
         weapon = null;
 
         objNewWeapon.transform.position = positions[0].transform.position;
+
+        VerifyArrows();
     }
     private void ResetWeapon() { weapon = null; }
+    private void VerifyArrows()
+    {
+        if (_index == 0)
+        {
+            arrowUp.SetActive(false);
+            arrowDown.SetActive(true);
+        }
+        if (_index == 1)
+        {
+            arrowUp.SetActive(true);
+            arrowDown.SetActive(true);
+        }
+        if (_index == 2)
+        {
+            arrowUp.SetActive(true);
+            arrowDown.SetActive(false);
+        }
+    }
 }

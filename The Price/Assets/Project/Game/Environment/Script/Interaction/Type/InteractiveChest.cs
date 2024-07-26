@@ -19,6 +19,10 @@ public class InteractiveChest : Interactive {
         if(typeChest == TypeChest.Gold) { ManagerGold.CreateGold(transform.position, (CountGold)count); }
         if (typeChest == TypeChest.Souls) { ManagerGold.CreateSouls(transform.position, count); }
 
+        inTrigger = false;
+        CloseWindow();
+
+        Destroy(this);
         Destroy(gameObject, 3f);
     }
 }

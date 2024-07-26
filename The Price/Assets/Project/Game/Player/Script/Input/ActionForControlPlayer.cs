@@ -14,6 +14,7 @@ public class ActionForControlPlayer : MonoBehaviour {
 
     [Header("UI Content")]
     private StatsInUI _statsInUI;
+    private InputSystemManager _inputSystem;
 
     [Header("Crosshair")]
     private bool aimWithStick = false;
@@ -35,6 +36,7 @@ public class ActionForControlPlayer : MonoBehaviour {
         _movement = GetComponent<PlayerMovement>();
         _statsInUI = FindAnyObjectByType<StatsInUI>();
         _crosshair = GetComponentInChildren<CrosshairData>();
+        _inputSystem = FindAnyObjectByType<InputSystemManager>();
     }
     private void Start() { PlayerStats.changesInWeapons += ChangesWeapons; }
     private void Update()
@@ -69,7 +71,14 @@ public class ActionForControlPlayer : MonoBehaviour {
         if (!detectClic) return;
         if (Pause.state != State.Game) return;
 
-        if (context.phase == InputActionPhase.Started) { if (Pause.state == State.Game) PlayerActionStates.IsDashing = true; }
+        if (context.phase == InputActionPhase.Started)
+        {
+            if (Pause.state == State.Game)
+            {
+                PlayerActionStates.IsDashing = true;
+                _inputSystem.ApplyAnimation("Dash");
+            }
+        }
         if (context.phase == InputActionPhase.Performed)
         {
             // ENVIAR A LA SIGUIENTE SALA AL CLIQUEAR ESTO SI ESTÁ MUERTO
@@ -87,6 +96,7 @@ public class ActionForControlPlayer : MonoBehaviour {
         if (context.phase == InputActionPhase.Started)
         {
             PlayerActionStates.IsAttacking = true;
+            _inputSystem.ApplyAnimation("AttackOne");
         }
         if(context.phase == InputActionPhase.Performed)
         {
@@ -109,7 +119,11 @@ public class ActionForControlPlayer : MonoBehaviour {
         {
             if (_weapon.Count > 1) if(_weapon[1] != null) _weapon[1].PrepareAttack();
         }
-        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsAttackingTwo = true;
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.IsAttackingTwo = true;
+            _inputSystem.ApplyAnimation("AttackTwo");
+        }
         if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsAttackingTwo = false;
     }
     public void AttackThree(InputAction.CallbackContext context)
@@ -121,7 +135,11 @@ public class ActionForControlPlayer : MonoBehaviour {
         {
             if (_weapon.Count > 2) if (_weapon[2] != null) _weapon[2].PrepareAttack();
         }
-        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsAttackingThree = true;
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.IsAttackingThree = true;
+            _inputSystem.ApplyAnimation("AttackThree");
+        }
         if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsAttackingThree = false;
     }
     // ----------------------------- //
@@ -133,6 +151,7 @@ public class ActionForControlPlayer : MonoBehaviour {
         if (context.phase == InputActionPhase.Started)
         {
             PlayerActionStates.IsUse = true;
+            _inputSystem.ApplyAnimation("Use");
         }
         if(context.phase == InputActionPhase.Performed)
         {
@@ -149,10 +168,12 @@ public class ActionForControlPlayer : MonoBehaviour {
         if (!detectClic) return;
         if (Pause.state != State.Game) return;
 
-        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsSkillOne = true;
-
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.IsSkillOne = true;
+            _inputSystem.ApplyAnimation("SkillOne");
+        }
         if (context.phase == InputActionPhase.Performed) skillOne?.Invoke();
-
         if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsSkillOne = false;
     }
     public void SkillTwo(InputAction.CallbackContext context)
@@ -160,7 +181,11 @@ public class ActionForControlPlayer : MonoBehaviour {
         if (!detectClic) return;
         if (Pause.state != State.Game) return;
 
-        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsSkillTwo = true;
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.IsSkillTwo = true;
+            _inputSystem.ApplyAnimation("SkillTwo");
+        }
 
         if (context.phase == InputActionPhase.Performed)
         {
@@ -175,7 +200,11 @@ public class ActionForControlPlayer : MonoBehaviour {
         if (!detectClic) return;
         if (Pause.state != State.Game) return;
 
-        if (context.phase == InputActionPhase.Started) PlayerActionStates.IsSkillThree = true;
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.IsSkillThree = true;
+            _inputSystem.ApplyAnimation("SkillThree");
+        }
 
         if (context.phase == InputActionPhase.Performed) skillFragments?.Invoke();
 
@@ -190,6 +219,7 @@ public class ActionForControlPlayer : MonoBehaviour {
         if (context.phase == InputActionPhase.Started)
         {
             aimWithStick = true;
+            _inputSystem.ApplyAnimation("StaticAim");
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
@@ -198,7 +228,8 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void Stats()
     {
-        if(Pause.state == State.Pause)
+        _inputSystem.ApplyAnimation("Stats");
+        if (Pause.state == State.Pause)
         {
             PlayerActionStates.InStats = false;
             _playerInput.SwitchCurrentActionMap("Player");
@@ -213,6 +244,7 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void PauseAction()
     {
+        _inputSystem.ApplyAnimation("Pause");
         if (Pause.state == State.Game)
         {
             PlayerActionStates.inPause = true;
@@ -231,42 +263,66 @@ public class ActionForControlPlayer : MonoBehaviour {
     {
         if (Pause.state != State.Pause) return;
 
-        if (context.phase == InputActionPhase.Started) PlayerActionStates.selectUI = true;
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.selectUI = true;
+            _inputSystem.ApplyAnimation("Select");
+        }
         if (context.phase == InputActionPhase.Canceled) PlayerActionStates.selectUI = false;
     }
     public void BackInUI(InputAction.CallbackContext context)
     {
         if (Pause.state != State.Pause) return;
 
-        if (context.phase == InputActionPhase.Started) { PlayerActionStates.backUI = true; }
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.backUI = true;
+            _inputSystem.ApplyAnimation("Back");
+        }
         if (context.phase == InputActionPhase.Canceled) PlayerActionStates.backUI = false;
     }
     public void OtherFunctionInUI(InputAction.CallbackContext context)
     {
         if (Pause.state != State.Pause) return;
 
-        if (context.phase == InputActionPhase.Started) PlayerActionStates.otherFunctionUI = true;
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.otherFunctionUI = true;
+            _inputSystem.ApplyAnimation("OtherFunction");
+        }
         if (context.phase == InputActionPhase.Canceled) PlayerActionStates.otherFunctionUI = false;
     }
     public void ResetValuesInUI(InputAction.CallbackContext context)
     {
         if (Pause.state != State.Pause) return;
 
-        if (context.phase == InputActionPhase.Started) PlayerActionStates.resetValuesUI = true;
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.resetValuesUI = true;
+            _inputSystem.ApplyAnimation("ResetValues");
+        }
         if (context.phase == InputActionPhase.Canceled) PlayerActionStates.resetValuesUI = false;
     }
     public void LeftInUI(InputAction.CallbackContext context)
     {
         if (Pause.state != State.Pause) return;
 
-        if (context.phase == InputActionPhase.Started) PlayerActionStates.leftUI = true;
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.leftUI = true;
+            _inputSystem.ApplyAnimation("LeftUI");
+        }
         if (context.phase == InputActionPhase.Canceled) PlayerActionStates.leftUI = false;
     }
     public void RightInUI(InputAction.CallbackContext context)
     {
         if (Pause.state != State.Pause) return;
 
-        if (context.phase == InputActionPhase.Started) PlayerActionStates.rightUI = true; 
+        if (context.phase == InputActionPhase.Started)
+        {
+            PlayerActionStates.rightUI = true;
+            _inputSystem.ApplyAnimation("RightUI");
+        }
         if (context.phase == InputActionPhase.Canceled) PlayerActionStates.rightUI = false;
     }
     // ----------------------------- //

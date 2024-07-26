@@ -12,6 +12,7 @@ public class StatsInUI : MonoBehaviour {
     public GameObject dieUI;
     public GameObject statsWindow;
     public CanvasGroup[] sectioners;
+    public GameObject[] guides;
 
     [Header("Content Menu UI")]
     public GameObject sectorMenu;

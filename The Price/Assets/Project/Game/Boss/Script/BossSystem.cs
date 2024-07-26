@@ -98,7 +98,7 @@ public class BossSystem : EnemyBase {
         _bossUI.StartUIPerBoss(nameBoss, health, shield);
 
         indexPhase = 0;
-        CancelEnemy(true);
+        CancelEnemy(false);
         Pause.StateChange = State.Interface;
         CameraMovement.CallCamera(transform.position, 2f);
 
@@ -108,7 +108,7 @@ public class BossSystem : EnemyBase {
 
         // anim.SetBool("Presentation", false);
 
-        Pause.StateChange = State.Interface;
+        Pause.StateChange = State.Game;
         CancelEnemy(true);
     }
     // ---- REPEATERS ---- //

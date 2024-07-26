@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,6 +10,8 @@ public enum TypeController { Null, Xbox, PlayStation, Keyboard }
 public class InputSystemManager : MonoBehaviour {
 
     [Header("Content UI")]
+    public float timeOfRecolor;
+    public Color recolor;
     public Sprite[] xboxInput;
     public Sprite[] psInput;
     public Sprite[] keyboardInput;
@@ -67,246 +70,40 @@ public class InputSystemManager : MonoBehaviour {
     public void ApplyChanges()
     {
         _oldTypeController = _typeController;
+        if (_oldTypeController != TypeController.Keyboard) { for(int i = 0; i < textKeys.Length; i++) { textKeys[i].text = ""; } }
 
         for (int i = 0; i < keys.Length; i++)
         {
-            string[] dataText = keys[i].name.Split('['); // dataText[0] = "Keys[" // dataText[1] = "Use]"
-            string[] dataValues = dataText[1].Split(']'); // dataValues[0] = "Use" // dataValues[1] = "]"
+            string[] dataText = keys[i].name.Split('['); // dataText[0] = "Keys[" // dataText[1] = "1-Use]"
+            string[] dataValues = dataText[1].Split(']'); // dataValues[0] = "1-Use" // dataValues[1] = "]"
+            string[] dataFinal = dataValues[0].Split('-'); // dataFinal[0] = "1" // dataFinal[1] = "Use"
 
-            switch (dataValues[0])
+            if (dataFinal[0] == "1")
             {
-                case "MoveUp":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.moveUp]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.moveUp]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "MoveDown":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.moveDown]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.moveDown]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "MoveLeft":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.moveLeft]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.moveLeft]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "MoveRight":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.moveRight]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.moveRight]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-
-                case "Use":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.use]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.use]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "Dash":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.dash]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.dash]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-
-                case "StaticAim":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.staticAim]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.staticAim]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "AimUp":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.aimUp]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.aimUp]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "AimDown":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.aimDown]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.aimDown]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "AimLeft":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.aimLeft]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.aimLeft]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "AimRight":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.aimRight]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.aimRight]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-
-                case "Stats":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.stats]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.stats]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "Pause":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.pause]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.pause]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-
-                case "AttackOne":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.attackOne]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.attackOne]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "AttackTwo":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.attackTwo]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.attackTwo]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "AttackThree":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.attackThree]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.attackThree]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-
-                case "SkillOne":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.skillOne]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.skillOne]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "SkillTwo":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.skillTwo]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.skillTwo]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "SkillThree":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.skillThree]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.skillThree]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-
-                case "Back":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.back]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.back]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "Select":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.select]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.select]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "ResetValues":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.resetValues]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.resetValues]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "OtherFunction":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.otherFunction]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.otherFunction]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-
-                case "LeftUI":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.leftUI]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.leftUI]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
-                case "RightUI":
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.rightUI]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.rightUI]; }
-                    else // KEYBOARD
-                    {
-                        keys[i].sprite = keyboardInput[0];
-                        textKeys[i].text = "";
-                    }
-                    break;
+                if (dataFinal[1].Contains("Move"))
+                {
+                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.GetValueControl(dataFinal[1])]; }
+                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.GetValueControl(dataFinal[1])]; }
+                    else { SetChangeKeyboard(i, "Move", "Player"); }
+                }
+                else if (dataFinal[1].Contains("Aim"))
+                {
+                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.GetValueControl(dataFinal[1])]; }
+                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.GetValueControl(dataFinal[1])]; }
+                    else { SetChangeKeyboard(i, "Aim", "Player"); }
+                }
+                else
+                {
+                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.GetValueControl(dataFinal[1])]; }
+                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.GetValueControl(dataFinal[1])]; }
+                    else { SetChangeKeyboard(i, dataFinal[1], "Player"); }
+                }
+            }
+            else
+            {
+                if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.GetValueControl(dataFinal[1])]; }
+                else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.GetValueControl(dataFinal[1])]; }
+                else { SetChangeKeyboard(i, dataFinal[1], "Pause"); }
             }
         }
     }
@@ -332,26 +129,124 @@ public class InputSystemManager : MonoBehaviour {
                         bool isNumber = int.TryParse(value, out number);
                         if (!isNumber) number = 0;
 
-                        if (nameJoysticks[number].ToLower().Contains("xbox"))
-                        {
-                            Debug.Log("Es un Joystick de Xbox");
-                            _typeController = TypeController.Xbox;
-                        }
-                        else if (nameJoysticks[int.Parse(separateValues[0])].ToLower().Contains("play") || nameJoysticks[int.Parse(separateValues[0])].ToLower().Contains("dualshock"))
+                        if (nameJoysticks[number].ToLower().Contains("station") || nameJoysticks[number].ToLower().Contains("wireless"))
                         {
                             Debug.Log("Es un Joystick de Play Station");
                             _typeController = TypeController.PlayStation;
                         }
+                        else if (nameJoysticks[number].ToLower().Contains("xbox"))
+                        {
+                            Debug.Log("Es un Joystick de Xbox");
+                            _typeController = TypeController.Xbox;
+                        }
+                        else
+                        {
+                            Debug.Log("Es un Joystick Genérico");
+                            _typeController = TypeController.Xbox;
+                        }
                     }
-                    else
-                    {
-                        Debug.Log("Se presionó un teclado");
-                        _typeController = TypeController.Keyboard;
-                    }
+                    else { _typeController = TypeController.Keyboard; }
 
                     if (_typeController != _oldTypeController) ApplyChanges();
                 }
             }
         }
+    }
+    // ---- FUNCION INTEGRA ---- //
+    private Sprite GetSpriteKeyboard(string binding)
+    {
+        Sprite spr = keyboardInput[0];
+
+        if(binding.Length > 1)
+        {
+            if (binding.ToLower().Contains("arrow"))
+            {
+                switch (binding.ToLower())
+                {
+                    case "uparrow": spr = keyboardInput[3]; break;
+                    case "downarrow": spr = keyboardInput[4]; break;
+                    case "leftarrow": spr = keyboardInput[5]; break;
+                    case "rightarrow": spr = keyboardInput[6]; break;
+                }
+            }
+            else if (binding.ToLower().Contains("shift")) { spr = keyboardInput[2]; }
+            else if (binding.ToLower().Contains("back")) { spr = keyboardInput[7]; }
+            else { spr = keyboardInput[1]; }
+        }
+
+        return spr;
+    }
+    private string GetKeyboardName(string data, string actionMap = "Player")
+    {
+        var actionMapping = _playerInput.actions.FindActionMap(actionMap);
+
+        var action = actionMapping.FindAction(data);
+        string binding = "";
+
+        foreach (var values in action.bindings)
+        {
+            if (values.groups.Contains("Keyboard"))
+            {
+                string[] separateName = values.ToString().Split("/");
+                string[] deleteFinish = separateName[1].Split("[");
+                binding = deleteFinish[0].ToUpper();
+                break;
+            }
+        }
+
+        // RENAME SPECIFIC KEYS
+        switch (binding)
+        {
+            case "BACKSPACE": binding = "BACK"; break;
+            case "CONTROL": binding = "CTRL"; break;
+            case "LEFTCONTROL": binding = "CTRL"; break;
+            case "RIGHTCONTROL": binding = "CTRL"; break;
+            case "LEFTALT": binding = "ALT"; break;
+            case "RIGHTALT": binding = "ALT"; break;
+            case "DELETE": binding = "SUPR"; break;
+            case "INSERT": binding = "INS"; break;
+            case "PAGEUP": binding = "REPAG"; break;
+            case "PAGEDOWN": binding = "AVPAG"; break;
+            case "OEM1": binding = "<"; break;
+            case "OEM2": binding = ">"; break;
+            case "ENTER": binding = "RETURN"; break;
+            case "NUMPADENTER": binding = "INTRO"; break;
+        }
+
+        // Debug.Log(data + ": " + binding);
+
+        return binding;
+    }
+    private void SetChangeKeyboard(int pos, string name, string actionMap)
+    {
+        string binding = GetKeyboardName(name, actionMap);
+        keys[pos].sprite = GetSpriteKeyboard(binding);
+
+        if (!binding.ToLower().Contains("arrow") && !binding.ToLower().Contains("shift") && !binding.ToLower().Contains("back")) textKeys[pos].text = binding;
+    }
+    // ---- ANIMATION ---- //
+    public void ApplyAnimation(string use)
+    {
+        for (int i = 0; i < keys.Length; i++)
+        {
+            if (keys[i].gameObject.activeSelf)
+            {
+                string[] separateName = keys[i].name.Split('-'); // [0] = "Keys[1-" // [1] = Use]
+                string[] dataFinal = separateName[1].Split(']'); // [0] = "Use" // [1] = "]"
+
+                if (use == dataFinal[0])
+                {
+                    StartCoroutine(AnimationKey(keys[i]));
+                }
+            }
+        }
+    }
+    private IEnumerator AnimationKey(Image img)
+    {
+        img.color = recolor;
+
+        yield return new WaitForSeconds(timeOfRecolor);
+
+        img.color = Color.white;
     }
 }

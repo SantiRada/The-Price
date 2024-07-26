@@ -32,6 +32,7 @@ public class LoadingScreen : MonoBehaviour {
     {
         inLoading = false;
         finishLoading?.Invoke();
+
         gameObject.SetActive(false);
     }
 }

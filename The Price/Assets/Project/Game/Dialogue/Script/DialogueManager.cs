@@ -17,6 +17,8 @@ public class DialogueManager : MonoBehaviour {
     public bool callerCamera = false;
     public bool dialogueStatic = false;
     public bool repeatDialogue = true;
+    public bool randomDialogue = false;
+    [Space]
     public bool showSkills = false;
     public bool showObject = false;
     public bool showAptitud = false;
@@ -78,9 +80,13 @@ public class DialogueManager : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player")) { if (_howToOpen == HowToOpenDialogue.RequiredTrigger) ChangeState(); }
+
+        if (collision.CompareTag("Proyectile")) if (_howToOpen == HowToOpenDialogue.RequiredTrigger && randomDialogue) ChangeState();
     }
     private void ShowDialogue()
     {
+        if (randomDialogue) _index = Random.Range(0, whatSay.Length);
+
         if (whatSay.Length > _index)
         {
             if (_typeDialogue == TypeDialogue.Window) if (callerCamera) CameraMovement.CallCamera(transform.position, 1000);

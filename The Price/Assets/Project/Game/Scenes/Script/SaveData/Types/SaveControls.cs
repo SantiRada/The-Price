@@ -35,4 +35,49 @@ public class SaveControls {
 
     public int leftUI;
     public int rightUI;
+
+    public int GetValueControl(string name)
+    {
+        int value = 0;
+
+        switch (name)
+        {
+            case "Move": value = moveUp; break;
+            case "MoveUp": value = moveUp; break;
+            case "MoveDown": value = moveDown; break;
+            case "MoveLeft": value = moveLeft; break;
+            case "MoveRight": value = moveRight; break;
+
+            case "Use": value = use; break;
+            case "Dash": value = dash; break;
+
+            case "StaticAim": value = staticAim; break;
+            case "Aim": value = aimUp; break;
+            case "AimUp": value = aimUp; break;
+            case "AimDown": value = aimDown; break;
+            case "AimLeft": value = aimLeft; break;
+            case "aimRight": value = aimRight; break;
+
+            case "Stats": value = stats; break;
+            case "Pause": value = pause; break;
+
+            case "AttackOne": value = attackOne; break;
+            case "AttackTwo": value = attackTwo; break;
+            case "AttackThree": value = attackThree; break;
+
+            case "SkillOne": value = skillOne; break;
+            case "SkillTwo": value = skillTwo; break;
+            case "SkillThree": value = skillThree; break;
+
+            case "Back": value = back; break;
+            case "Select": value = select; break;
+            case "ResetValues": value = resetValues; break;
+            case "OtherFunction": value = otherFunction; break;
+
+            case "LeftUI": value = leftUI; break;
+            case "RightUI": value = rightUI; break;
+        }
+
+        return value;
+    }
 }
