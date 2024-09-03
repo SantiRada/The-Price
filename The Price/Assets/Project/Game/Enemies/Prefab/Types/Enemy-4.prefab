@@ -132,7 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nextWaypointDistance: 1
   _repathDistance: 1
-  _pathUpdateInterval: 0.5
+  _pathUpdateInterval: 0.12
 --- !u!95 &3753919290775796848
 Animator:
   serializedVersion: 7
@@ -206,7 +206,7 @@ MonoBehaviour:
   healthMax: 12
   shieldMax: 6
   damage: 10
-  speed: 1.25
+  speed: 1.8
   sanity: 12
   health: 0
   shield: 0

@@ -80,24 +80,9 @@ public class InputSystemManager : MonoBehaviour {
 
             if (dataFinal[0] == "1")
             {
-                if (dataFinal[1].Contains("Move"))
-                {
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.GetValueControl(dataFinal[1])]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.GetValueControl(dataFinal[1])]; }
-                    else { SetChangeKeyboard(i, "Move", "Player"); }
-                }
-                else if (dataFinal[1].Contains("Aim"))
-                {
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.GetValueControl(dataFinal[1])]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.GetValueControl(dataFinal[1])]; }
-                    else { SetChangeKeyboard(i, "Aim", "Player"); }
-                }
-                else
-                {
-                    if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.GetValueControl(dataFinal[1])]; }
-                    else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.GetValueControl(dataFinal[1])]; }
-                    else { SetChangeKeyboard(i, dataFinal[1], "Player"); }
-                }
+                if (_oldTypeController == TypeController.Xbox) { keys[i].sprite = xboxInput[_controls.GetValueControl(dataFinal[1])]; }
+                else if (_oldTypeController == TypeController.PlayStation) { keys[i].sprite = psInput[_controls.GetValueControl(dataFinal[1])]; }
+                else { SetChangeKeyboard(i, dataFinal[1], "Player"); }
             }
             else
             {
@@ -131,17 +116,17 @@ public class InputSystemManager : MonoBehaviour {
 
                         if (nameJoysticks[number].ToLower().Contains("station") || nameJoysticks[number].ToLower().Contains("wireless"))
                         {
-                            Debug.Log("Es un Joystick de Play Station");
+                            // Debug.Log("Es un Joystick de Play Station");
                             _typeController = TypeController.PlayStation;
                         }
                         else if (nameJoysticks[number].ToLower().Contains("xbox"))
                         {
-                            Debug.Log("Es un Joystick de Xbox");
+                            // Debug.Log("Es un Joystick de Xbox");
                             _typeController = TypeController.Xbox;
                         }
                         else
                         {
-                            Debug.Log("Es un Joystick Genérico");
+                            // Debug.Log("Es un Joystick Genérico");
                             _typeController = TypeController.Xbox;
                         }
                     }
@@ -163,10 +148,10 @@ public class InputSystemManager : MonoBehaviour {
             {
                 switch (binding.ToLower())
                 {
-                    case "uparrow": spr = keyboardInput[3]; break;
-                    case "downarrow": spr = keyboardInput[4]; break;
-                    case "leftarrow": spr = keyboardInput[5]; break;
-                    case "rightarrow": spr = keyboardInput[6]; break;
+                    case "uparrow": spr = keyboardInput[4]; break;
+                    case "downarrow": spr = keyboardInput[5]; break;
+                    case "leftarrow": spr = keyboardInput[6]; break;
+                    case "rightarrow": spr = keyboardInput[7]; break;
                 }
             }
             else if (binding.ToLower().Contains("shift")) { spr = keyboardInput[2]; }
@@ -178,10 +163,15 @@ public class InputSystemManager : MonoBehaviour {
     }
     private string GetKeyboardName(string data, string actionMap = "Player")
     {
-        var actionMapping = _playerInput.actions.FindActionMap(actionMap);
+        string dataSearch = data;
+        if (data.Contains("Move")) dataSearch = "Move";
+        else if (data.Contains("Aim")) dataSearch = "Aim";
 
-        var action = actionMapping.FindAction(data);
+        var actionMapping = _playerInput.actions.FindActionMap(actionMap);
+        var action = actionMapping.FindAction(dataSearch);
+
         string binding = "";
+        int iteration = 0;
 
         foreach (var values in action.bindings)
         {
@@ -189,8 +179,28 @@ public class InputSystemManager : MonoBehaviour {
             {
                 string[] separateName = values.ToString().Split("/");
                 string[] deleteFinish = separateName[1].Split("[");
-                binding = deleteFinish[0].ToUpper();
-                break;
+
+                if (data.Contains("Move"))
+                {
+                    if (data == "MoveUp" && iteration == 0) binding = deleteFinish[0].ToUpper();
+                    else if (data == "MoveDown" && iteration == 1) binding = deleteFinish[0].ToUpper();
+                    else if (data == "MoveLeft" && iteration == 2) binding = deleteFinish[0].ToUpper();
+                    else if (data == "MoveRight" && iteration == 3) binding = deleteFinish[0].ToUpper();
+
+                    iteration++;
+                }
+                else if (data.Contains("Aim"))
+                {
+                    if (data == "AimUp" && iteration == 0) binding = deleteFinish[0].ToUpper();
+                    else if (data == "AimDown" && iteration == 1) binding = deleteFinish[0].ToUpper();
+                    else if (data == "AimLeft" && iteration == 2) binding = deleteFinish[0].ToUpper();
+                    else if (data == "AimRight" && iteration == 3) binding = deleteFinish[0].ToUpper();
+
+                    iteration++;
+                }
+                else { binding = deleteFinish[0].ToUpper(); }
+                
+                if (binding != "" && binding != null) break;
             }
         }
 
@@ -212,8 +222,6 @@ public class InputSystemManager : MonoBehaviour {
             case "ENTER": binding = "RETURN"; break;
             case "NUMPADENTER": binding = "INTRO"; break;
         }
-
-        // Debug.Log(data + ": " + binding);
 
         return binding;
     }

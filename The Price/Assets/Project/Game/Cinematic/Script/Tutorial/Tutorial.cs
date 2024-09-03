@@ -3,6 +3,8 @@ using UnityEngine;
 
 public abstract class Tutorial : MonoBehaviour {
 
+    public bool canCreateChest;
+
     protected SaveLoadManager _saveLoad;
     protected RoomManager _roomManager;
     protected PlayerStats _playerStats;
@@ -29,6 +31,7 @@ public abstract class Tutorial : MonoBehaviour {
             }
         }
     }
+    public abstract void CallMadeInteraction();
     protected abstract IEnumerator ChangesInZeroRoom();
     protected abstract IEnumerator ChangesInFirstRoom();
     protected abstract IEnumerator ChangesInSecondRoom();

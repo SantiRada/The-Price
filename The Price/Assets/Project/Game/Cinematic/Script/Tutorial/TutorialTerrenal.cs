@@ -6,6 +6,7 @@ public class TutorialTerrenal : Tutorial {
     [Header("Scene 01")]
     public CallVoice[] _voices;
     public InteractiveWeapon[] weapons;
+    private int countWeapon = 0;
 
     [Header("Scene 02")]
     public GameObject talkativeEnemy;
@@ -14,6 +15,23 @@ public class TutorialTerrenal : Tutorial {
     public GameObject soulBoy;
     public GameObject soulObject;
 
+    private PlayerStats _player;
+
+    private void Awake() { _player = FindAnyObjectByType<PlayerStats>(); }
+    private void Start()
+    {
+        canCreateChest = false;
+
+        _roomManager.canCreateChest = canCreateChest;
+    }
+    public override void CallMadeInteraction()
+    {
+        countWeapon = 1;
+
+        for(int i = 0; i < _player.weapons.Count; i++) { if (_player.weapons[i] != null) countWeapon++; }
+
+        if(countWeapon >= 2) { RoomManager.CallMadeInteraction(); }
+    }
     protected override IEnumerator ChangesInZeroRoom()
     {
         yield return new WaitForSeconds(0.1f);

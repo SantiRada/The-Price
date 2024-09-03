@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public abstract class WeaponSystem : MonoBehaviour {
@@ -30,12 +29,12 @@ public abstract class WeaponSystem : MonoBehaviour {
 
     [Header("Private Data")]
     protected PlayerStats _playerStats;
-    private Animator anim;
+    protected Animator anim;
 
+    private void Awake() { anim = GetComponent<Animator>(); }
     private void OnEnable()
     {
         _playerStats = GetComponentInParent<PlayerStats>();
-        anim = _playerStats.GetComponent<Animator>();
 
         _delayBetweenBase = delayBetweenAttack;
         _durationDamageBase = durationDamage;

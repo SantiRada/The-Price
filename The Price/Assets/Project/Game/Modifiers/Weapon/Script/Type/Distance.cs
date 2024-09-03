@@ -16,6 +16,7 @@ public class Distance : WeaponSystem {
     private CrosshairData _crosshair;
 
     private void Awake() { _crosshair = FindAnyObjectByType<CrosshairData>(); }
+    private void Start() { anim = _playerStats.GetComponent<Animator>(); }
     public override void Attack() { CreateProjectile(false); }
     public override void FinalHit() { CreateProjectile(true); }
     // ---- FUNCION INTEGRA ---- //

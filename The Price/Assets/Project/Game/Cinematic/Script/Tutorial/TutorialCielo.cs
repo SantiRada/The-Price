@@ -10,12 +10,15 @@ public class TutorialCielo : Tutorial {
     public GameObject[] bars;
     public Vector3[] posOfBars;
 
-
+    public override void CallMadeInteraction() { print("Not required call made specific interaction in heaven"); }
     protected override IEnumerator ChangesInZeroRoom()
     {
         yield return new WaitForSeconds(0.1f);
 
         Instantiate(voices[0].gameObject, voices[0].positionToCreate, Quaternion.identity);
+
+        // ---- CANCELAR NECESIDAD DE INTERACCIÓN ---- //
+        _roomManager.MadeInteraction();
     }
     protected override IEnumerator ChangesInFirstRoom()
     {

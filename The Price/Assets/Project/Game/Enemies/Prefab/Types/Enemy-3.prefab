@@ -132,7 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nextWaypointDistance: 1
   _repathDistance: 1
-  _pathUpdateInterval: 0.5
+  _pathUpdateInterval: 0.12
 --- !u!95 &4346745970110370211
 Animator:
   serializedVersion: 7
@@ -204,14 +204,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthMax: 12
-  shieldMax: 5
-  damage: 10
-  speed: 1.65
-  sanity: 8
+  shieldMax: 6
+  damage: 12
+  speed: 2
+  sanity: 6
   health: 0
   shield: 0
   delayToDetectDamage: 0.1
-  timeToDetectCollision: 0.65
+  timeToDetectCollision: 0.75
   canReleaseSouls: 1
   countSouls: 1
   canReleaseGold: 0

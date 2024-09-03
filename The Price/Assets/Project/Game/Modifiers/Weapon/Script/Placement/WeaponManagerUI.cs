@@ -71,6 +71,8 @@ public class WeaponManagerUI : MonoBehaviour {
     {
         if(weapon == null)
         {
+            print("Randomizando...");
+
             int rnd;
             bool canAdvance;
             do
@@ -97,6 +99,8 @@ public class WeaponManagerUI : MonoBehaviour {
     }
     public IEnumerator OpenWindow()
     {
+        RandomPool();
+
         _canvas.alpha = 1;
         _canvas.interactable = true;
 
@@ -106,10 +110,12 @@ public class WeaponManagerUI : MonoBehaviour {
         imgWeapon.sprite = weapon.spr;
         nameWeapon.text = LanguageManager.GetValue("Menu", weapon.nameWeapon);
         descWeapon.text = LanguageManager.GetValue("Menu", weapon.descWeapon);
-        dataWeapon.text = weapon.damageWeapon + " > " + weapon.damageWeapon +  " > <color=yellow>" + weapon.damageFinalHit + "</color>";
+
+        if(weapon.damageWeapon != 0) dataWeapon.text = weapon.damageWeapon + " > " + weapon.damageWeapon +  " > <color=yellow>" + weapon.damageFinalHit + "</color>";
+        else dataWeapon.text = LanguageManager.GetValue("Menu", 81);
 
         // CURRENT CONTENT
-        for(int i = 0; i < currentImgWeapon.Length; i++)
+        for (int i = 0; i < currentImgWeapon.Length; i++)
         {
             if (_playerStats.weapons.Count > i)
             {
@@ -118,7 +124,10 @@ public class WeaponManagerUI : MonoBehaviour {
                     currentImgWeapon[i].sprite = _playerStats.weapons[i].spr;
                     currentNameWeapon[i].text = LanguageManager.GetValue("Menu", _playerStats.weapons[i].nameWeapon);
                     currentDescWeapon[i].text = LanguageManager.GetValue("Menu", _playerStats.weapons[i].descWeapon);
-                    currentDataWeapon[i].text = _playerStats.weapons[i].damageWeapon + " > " + _playerStats.weapons[i].damageWeapon + " > <color=yellow>" + _playerStats.weapons[i].damageFinalHit + "</color>";
+                    if (_playerStats.weapons[i].damageWeapon != 0)
+                        currentDataWeapon[i].text = _playerStats.weapons[i].damageWeapon + " > " + _playerStats.weapons[i].damageWeapon + " > <color=yellow>" + _playerStats.weapons[i].damageFinalHit + "</color>";
+                    else
+                        currentDataWeapon[i].text = LanguageManager.GetValue("Menu", 81);
                 }
                 else
                 {
@@ -175,13 +184,22 @@ public class WeaponManagerUI : MonoBehaviour {
         objNewWeapon.transform.position = currentWeapon[_index].transform.position;
 
         int prevWeapon = _playerStats.SetWeapon(_index, weapon);
-        
-        // INSTACIAR EL ARMA QUE SE DESCARTA EN LA ESCENA SI ES ESE EL CASO
-        if(prevWeapon != -1)
-        {
-            for (int i = 0; i < weapons.Count; i++) { if (weapons[i].weaponID == prevWeapon) { weapon = weapons[i]; break; } }
 
-            Instantiate(interactiveObj.gameObject, _playerStats.transform.position, Quaternion.identity);
+        // INSTACIAR EL ARMA QUE SE DESCARTA EN LA ESCENA SI ES ESE EL CASO
+        if (prevWeapon != -1)
+        {
+            WeaponSystem dataWeapon = null;
+            for (int i = 0; i < weapons.Count; i++)
+            {
+                if (weapons[i].weaponID == prevWeapon)
+                {
+                    dataWeapon = weapons[i];
+                    break;
+                }
+            }
+
+            InteractiveWeapon interactive = Instantiate(interactiveObj.gameObject, _playerStats.transform.position, Quaternion.identity).GetComponent<InteractiveWeapon>();
+            interactive.SetWeapon(dataWeapon);
         }
 
         ResetValues();

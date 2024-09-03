@@ -216,7 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nextWaypointDistance: 1
   _repathDistance: 1
-  _pathUpdateInterval: 0.5
+  _pathUpdateInterval: 0.12
 --- !u!58 &6317042843780810480
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -290,7 +290,7 @@ MonoBehaviour:
   healthMax: 30
   shieldMax: 10
   damage: 15
-  speed: 1.2
+  speed: 2.4
   sanity: 15
   health: 0
   shield: 0

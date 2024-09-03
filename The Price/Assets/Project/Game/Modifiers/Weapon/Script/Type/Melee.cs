@@ -2,6 +2,15 @@ using UnityEngine;
 
 public class Melee : WeaponSystem {
 
-    public override void Attack() { gameObject.tag = "Proyectile"; }
-    public override void FinalHit() { gameObject.tag = "Proyectile"; }
+    private void Awake() { anim = GetComponent<Animator>(); }
+    public override void Attack()
+    {
+        anim.SetBool("Attack", true);
+        gameObject.tag = "Proyectile";
+    }
+    public override void FinalHit()
+    {
+        anim.SetBool("Attack", true);
+        gameObject.tag = "Proyectile";
+    }
 }

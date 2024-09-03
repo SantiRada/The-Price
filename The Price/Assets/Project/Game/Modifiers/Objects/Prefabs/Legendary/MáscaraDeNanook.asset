@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "M\xE1scaraDeNanook"
   m_EditorClassIdentifier: 
   objectID: 6
-  icon: {fileID: -8386645779307496254, guid: 439074d73354ba74b94257f3c9b2f1d8, type: 3}
+  icon: {fileID: -7164587401463187081, guid: 61feb750ec46d644f990bcbc7f922a45, type: 3}
   itemName: 12
   description: 13
   typeObject: 2

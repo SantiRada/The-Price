@@ -61,6 +61,7 @@ public class RoomManager : MonoBehaviour {
     private bool _clickPerAdvance = false;
 
     [Header("Chest")]
+    public bool canCreateChest;
     public float[] chestChance;
     [Tooltip("Se debe ordenar desde el que menos posible sea que aparezca, al que más")] public GameObject[] typeChest;
 
@@ -207,31 +208,34 @@ public class RoomManager : MonoBehaviour {
         _walkableMap.GenerateWalkableMap();
 
         #region Chest
-        if (_typeRooms[_countRoomsComplete] != TypeRoom.MiniBoss && _typeRooms[_countRoomsComplete] != TypeRoom.Boss && _typeRooms[_countRoomsComplete] != TypeRoom.MaxBoss && _typeRooms[_countRoomsComplete] != TypeRoom.Shop)
+        if (canCreateChest)
         {
-            int rndChest = UnityEngine.Random.Range(0, 100);
-            float x, y;
-            bool isWalkable;
-
-            // BUSCAR UNA POSICIÓN WALKABLE ALEATORIA PARA COLOCAR EL COFRE
-            do
+            if (_typeRooms[_countRoomsComplete] != TypeRoom.MiniBoss && _typeRooms[_countRoomsComplete] != TypeRoom.Boss && _typeRooms[_countRoomsComplete] != TypeRoom.MaxBoss && _typeRooms[_countRoomsComplete] != TypeRoom.Shop)
             {
-                x = UnityEngine.Random.Range(0, currentRoom.sizeMap.x);
-                y = UnityEngine.Random.Range(0, currentRoom.sizeMap.y);
-                isWalkable = _walkableMap.GetPositionIsWalkable((int)x, (int)y);
-            } while (!isWalkable);
+                int rndChest = UnityEngine.Random.Range(0, 100);
+                float x, y;
+                bool isWalkable;
 
-            x += _walkableMap.transform.position.x;
-            y += _walkableMap.transform.position.y;
-
-            Vector3 posChest = new Vector3(x, y, 0);
-
-            for (int i = 0; i < chestChance.Length; i++)
-            {
-                if (rndChest < chestChance[i])
+                // BUSCAR UNA POSICIÓN WALKABLE ALEATORIA PARA COLOCAR EL COFRE
+                do
                 {
-                    Instantiate(typeChest[i], posChest, Quaternion.identity);
-                    break;
+                    x = UnityEngine.Random.Range(0, currentRoom.sizeMap.x);
+                    y = UnityEngine.Random.Range(0, currentRoom.sizeMap.y);
+                    isWalkable = _walkableMap.GetPositionIsWalkable((int)x, (int)y);
+                } while (!isWalkable);
+
+                x += _walkableMap.transform.position.x;
+                y += _walkableMap.transform.position.y;
+
+                Vector3 posChest = new Vector3(x, y, 0);
+
+                for (int i = 0; i < chestChance.Length; i++)
+                {
+                    if (rndChest < chestChance[i])
+                    {
+                        Instantiate(typeChest[i], posChest, Quaternion.identity);
+                        break;
+                    }
                 }
             }
         }

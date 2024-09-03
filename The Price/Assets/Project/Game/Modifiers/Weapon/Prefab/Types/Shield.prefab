@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6047857846833733000}
   - component: {fileID: 5545751268761729463}
   - component: {fileID: 5912235016396145848}
+  - component: {fileID: 4808339961929456946}
   m_Layer: 7
   m_Name: Shield
   m_TagString: Weapon
@@ -68,7 +69,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.75}
   m_Radius: 0.85
 --- !u!212 &5545751268761729463
 SpriteRenderer:
@@ -113,12 +114,12 @@ SpriteRenderer:
   m_SortingLayerID: 937805277
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: -461620999, guid: 406c12fef39a9e94d8164eb8a0b1c251, type: 3}
-  m_Color: {r: 0.74805355, g: 0, b: 1, a: 0.3764706}
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 2.6785715, y: 2.6785715}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -145,8 +146,30 @@ MonoBehaviour:
   damage: 0
   countAttack: 0
   canAttack: 1
-  delayBetweenAttack: 0.25
+  delayBetweenAttack: 0.5
   delayDetect: 1.5
   durationDamage: 0.4
   delayDetectRoll: 0
   intensity: 2
+--- !u!95 &4808339961929456946
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4467726743871081931}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 84666b77c7b162345ac673094451f2fe, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
