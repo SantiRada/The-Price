@@ -6,25 +6,25 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Project/Game/Scenes/Menu.unity
+    path: Assets/Scenes/System/Menu.unity
     guid: 3f3625615347c8447885729742675ba9
   - enabled: 1
-    path: Assets/Project/Game/Scenes/Cinematic.unity
+    path: Assets/Scenes/Planes/Cinematic.unity
     guid: a82cf10eb4e4a584480e395b43d6a57d
   - enabled: 1
-    path: Assets/Project/Game/Scenes/Terrenal.unity
+    path: Assets/Scenes/Planes/Terrenal.unity
     guid: 88fbebe83535f474ea836d4e2c1dbb41
   - enabled: 1
-    path: Assets/Project/Game/Scenes/Cielo.unity
+    path: Assets/Scenes/Planes/Cielo.unity
     guid: 662ecb4ffb59c904080888a9e18e65a6
   - enabled: 1
-    path: Assets/Project/Game/Scenes/Infierno.unity
+    path: Assets/Scenes/Planes/Infierno.unity
     guid: 848b8c468a115cc4d99e2d83aba84eab
   - enabled: 1
-    path: Assets/Project/Game/Scenes/Astral.unity
+    path: Assets/Scenes/Planes/Astral.unity
     guid: 87ea8ff856515944783dc601893472be
   - enabled: 1
-    path: Assets/Project/Game/Scenes/Inframundo.unity
+    path: Assets/Scenes/Planes/Inframundo.unity
     guid: 3862db7f01b596448a1b711cbb28950b
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

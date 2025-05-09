@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Documentos\\GitHub\\The-Price\\The Price\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F0E79A08-B568-AF63-E086-7EC9E5C8DB6B}|Assembly-CSharp.csproj|d:\\documentos\\github\\the-price\\the price\\assets\\script\\characters\\enemies\\enemybase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0E79A08-B568-AF63-E086-7EC9E5C8DB6B}|Assembly-CSharp.csproj|solutionrelative:assets\\script\\characters\\enemies\\enemybase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F0E79A08-B568-AF63-E086-7EC9E5C8DB6B}|Assembly-CSharp.csproj|D:\\Documentos\\GitHub\\The-Price\\The Price\\assets\\script\\weapon\\weaponsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F0E79A08-B568-AF63-E086-7EC9E5C8DB6B}|Assembly-CSharp.csproj|solutionrelative:assets\\script\\weapon\\weaponsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EnemyBase.cs",
+              "DocumentMoniker": "D:\\Documentos\\GitHub\\The-Price\\The Price\\Assets\\Script\\Characters\\Enemies\\EnemyBase.cs",
+              "RelativeDocumentMoniker": "Assets\\Script\\Characters\\Enemies\\EnemyBase.cs",
+              "ToolTip": "D:\\Documentos\\GitHub\\The-Price\\The Price\\Assets\\Script\\Characters\\Enemies\\EnemyBase.cs",
+              "RelativeToolTip": "Assets\\Script\\Characters\\Enemies\\EnemyBase.cs",
+              "ViewState": "AQIAALsAAAAAAAAAAAAAAM4AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-08T20:55:16.013Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "WeaponSystem.cs",
+              "DocumentMoniker": "D:\\Documentos\\GitHub\\The-Price\\The Price\\Assets\\Script\\Weapon\\WeaponSystem.cs",
+              "RelativeDocumentMoniker": "Assets\\Script\\Weapon\\WeaponSystem.cs",
+              "ToolTip": "D:\\Documentos\\GitHub\\The-Price\\The Price\\Assets\\Script\\Weapon\\WeaponSystem.cs",
+              "RelativeToolTip": "Assets\\Script\\Weapon\\WeaponSystem.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAABIAAAAxAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-03T19:40:09.868Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

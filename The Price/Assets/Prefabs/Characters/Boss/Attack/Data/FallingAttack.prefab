@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3421782533424682279
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4089913012832010526}
+  - component: {fileID: 1136640752146106191}
+  m_Layer: 7
+  m_Name: FallingAttack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4089913012832010526
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3421782533424682279}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1136640752146106191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3421782533424682279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ad55d956602c64d82d83fb12c3f54f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualAttack: {fileID: 5649686638002010392, guid: b39ab31fb0a32af41b8b9a916eb0e3d5, type: 3}
+  damage: 10
+  distanceToAttack: 4
+  timeToDestroy: 2
+  countCreated: 1
+  timeBetweenCreated: 1
+  isParabolic: 1
+  parabolicObj: {fileID: 8545451829422390905, guid: 98b5280f3b4383146ae498e026c8250c, type: 3}
+  guideObj: {fileID: 8141251484000843000, guid: a30dc2e19ebbbda4cbb3546b769c68df, type: 3}
+  timeToGuide: 1
+  enemyParent: {fileID: 0}
+  posInPlayer: 1
