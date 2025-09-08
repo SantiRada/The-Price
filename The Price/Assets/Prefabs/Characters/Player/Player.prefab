@@ -301,6 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b949ea2fcd1a92c40b1a850b7d9daa26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canMove: 1
   _dashingPower: 21
   _dashingTime: 0.14
   _dashingCooldown: 0.6
@@ -731,6 +732,8 @@ MonoBehaviour:
   weapons: []
   weaponParent: {fileID: 7088614093564551266}
   weaponInScene: []
+  delayToAttack: 0.19
+  canLaunchAttack: 0
   skills: []
   objects: []
   deadSystem: {fileID: 0}

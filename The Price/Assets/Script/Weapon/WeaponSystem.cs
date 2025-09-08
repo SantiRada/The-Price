@@ -10,6 +10,7 @@ public abstract class WeaponSystem : MonoBehaviour {
     public int damageWeapon;
     public int damageFinalHit;
     [HideInInspector] public int damage;
+    public bool isStaticAttack;
 
     [Header("Attack System")]
     [HideInInspector] public int countAttack = 0;
@@ -32,11 +33,13 @@ public abstract class WeaponSystem : MonoBehaviour {
     protected PlayerStats _playerStats;
     protected Animator anim;
     private ActionForControlPlayer _actionUI;
+    private PlayerMovement _movement;
 
     private void Awake() { anim = GetComponent<Animator>(); }
     private void OnEnable()
     {
         _playerStats = GetComponentInParent<PlayerStats>();
+        _movement = _playerStats.GetComponent<PlayerMovement>();
         _actionUI = _playerStats.GetComponent<ActionForControlPlayer>();
 
         _delayBetweenBase = delayBetweenAttack;
@@ -90,10 +93,15 @@ public abstract class WeaponSystem : MonoBehaviour {
     public void PrepareAttack()
     {
         if (!canAttack) return;
+        if (!_playerStats.canLaunchAttack) return;
+
+        _playerStats.LaunchAttack();
 
         // FUNCIONAMIENTO DE DELAY ENTRE ATAQUES
         delayBetweenAttack = _delayBetweenBase;
         delayDetect = _delayDetectBase;
+
+        if(isStaticAttack) _movement.SetMove(false);
 
         countAttack++;
         anim.SetBool("Attack", true);
@@ -139,6 +147,8 @@ public abstract class WeaponSystem : MonoBehaviour {
     public void FinishAttack()
     {
         anim.SetBool("Attack", false);
+
+        if(isStaticAttack) _movement.SetMove(true);
 
         gameObject.tag = "Weapon";
         _inAttack = false;

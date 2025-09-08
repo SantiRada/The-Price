@@ -90,8 +90,10 @@ MonoBehaviour:
   damageWeapon: 5
   damageFinalHit: 10
   damage: 0
+  isStaticAttack: 1
   countAttack: 0
   canAttack: 1
+  destroyToDetectCollision: 0
   delayBetweenAttack: 0.45
   delayDetect: 1.5
   durationDamage: 0.5

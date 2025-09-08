@@ -57,8 +57,6 @@ public class ManagerGold : MonoBehaviour {
 
             if (_typeCollectable == TypeCollectable.Gold) money = Instantiate(gold.gameObject, finalPos, Quaternion.identity).GetComponent<Gold>();
             else money = Instantiate(souls.gameObject, finalPos, Quaternion.identity).GetComponent<Gold>();
-            
-            money.target = transform;
 
             yield return new WaitForSeconds(delayToCreateCoin);
         }

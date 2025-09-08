@@ -48,10 +48,13 @@ public class ActionForControlPlayer : MonoBehaviour {
 
         if (!detectClic || Pause.Comprobation(State.Game)) return;
 
-        _movement.SetDirection(_playerInput.actions["Move"].ReadValue<Vector2>());
-
-        if (!aimWithStick) _crosshair.SetAimDirection(_playerInput.actions["Move"].ReadValue<Vector2>());
-        else AimWithRightStick();
+        if (_movement._canMove)
+        {
+            _movement.SetDirection(_playerInput.actions["Move"].ReadValue<Vector2>());
+            
+            if (!aimWithStick) _crosshair.SetAimDirection(_playerInput.actions["Move"].ReadValue<Vector2>());
+            else AimWithRightStick();
+        }
     }
     private void DelayPerPressNotHold()
     {
@@ -73,6 +76,7 @@ public class ActionForControlPlayer : MonoBehaviour {
     {
         if (!detectClic) return;
         if (Pause.state != State.Game) return;
+        if (!_movement._canMove) return;
 
         if (context.phase == InputActionPhase.Started)
         {
@@ -85,6 +89,7 @@ public class ActionForControlPlayer : MonoBehaviour {
     public void MoveLeftStick(InputAction.CallbackContext context)
     {
         if (Pause.state != State.Game) return;
+        if (!_movement._canMove) return;
 
         if (context.phase == InputActionPhase.Performed)
         {
@@ -136,10 +141,7 @@ public class ActionForControlPlayer : MonoBehaviour {
 
             if (_weapon.Count > 0) if(_weapon[0] != null) _weapon[0].PrepareAttack();
         }
-        if(context.phase == InputActionPhase.Canceled)
-        {
-            PlayerActionStates.IsAttacking = false;
-        }
+        if(context.phase == InputActionPhase.Canceled) PlayerActionStates.IsAttacking = false;
     }
     public void AttackTwo(InputAction.CallbackContext context)
     {

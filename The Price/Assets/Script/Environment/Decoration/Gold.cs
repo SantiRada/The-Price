@@ -7,10 +7,18 @@ public class Gold : MonoBehaviour {
     [Tooltip("Cuanto tarda en empezar la animación del oro")] public float delayToAnim;
     [SerializeField, Tooltip("Cuanto dura la animación del oro")] public float _offsetToAnim;
     private bool canMove = false;
-    [HideInInspector] public Transform target;
 
     private void Start() { StartCoroutine("InitAnimation"); }
-    private void FixedUpdate() { if (canMove) transform.position = Vector3.Lerp(transform.position, target.position, _offsetToAnim * Time.fixedDeltaTime); }
+    private void FixedUpdate()
+    {
+        if (canMove)
+        {
+            Vector3 screenTopRight = new Vector3(Screen.width, Screen.height, Camera.main.nearClipPlane);
+            Vector3 worldTopRight = Camera.main.ScreenToWorldPoint(screenTopRight) + new Vector3(-2, 2, 0);
+
+            transform.position = Vector3.Lerp(transform.position, worldTopRight, _offsetToAnim * Time.fixedDeltaTime);
+        }
+    }
     private IEnumerator InitAnimation()
     {
         canMove = false;

@@ -24,6 +24,9 @@ public class PlayerStats : MonoBehaviour {
     public List<WeaponSystem> weapons = new List<WeaponSystem>();
     public GameObject weaponParent;
     [HideInInspector] public List<WeaponSystem> weaponInScene = new List<WeaponSystem>();
+    [Space]
+    public float delayToAttack;
+    public bool canLaunchAttack;
 
     [Header("Player Content")]
     public List<SkillManager> skills = new List<SkillManager>();
@@ -66,6 +69,8 @@ public class PlayerStats : MonoBehaviour {
     {
         _generalStats = new float[_generalMaxStats.Length];
         for (int i = 0; i < _generalMaxStats.Length; i++) { _generalStats[i] = _generalMaxStats[i]; }
+
+        canLaunchAttack = true;
 
         if (weapons != null) InitialWeapon();
     }
@@ -297,6 +302,15 @@ public class PlayerStats : MonoBehaviour {
         countKillsInRoom = 0;
         countDamageInRoom = 0;
         countDamageReceivedInRoom = 0;
+    }
+    public void LaunchAttack() { StartCoroutine(LaunchAttackDelay()); }
+    private IEnumerator LaunchAttackDelay()
+    {
+        canLaunchAttack = false;
+
+        yield return new WaitForSeconds(delayToAttack);
+
+        canLaunchAttack = true;
     }
     // ---- GETTERS ---- //
     public float GetterStats(int pos, bool max = true)

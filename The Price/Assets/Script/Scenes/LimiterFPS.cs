@@ -9,6 +9,7 @@ public class LimiterFPS : MonoBehaviour {
     public LimitFPS limit;
     public TextMeshProUGUI textFPS;
     private float delta = 0.0f;
+    private float prevFPS;
 
     [Header("Version Data")]
     public string version;
@@ -33,7 +34,14 @@ public class LimiterFPS : MonoBehaviour {
         {
             delta += (Time.unscaledDeltaTime - delta) * 0.1f;
             float fps = 1.0f / delta;
-            textFPS.text = Mathf.Ceil(fps).ToString() + " FPS";
+            float value = Mathf.Ceil(fps);
+
+            // Solo actualiza si la diferencia es de al menos 5 FPS respecto al último mostrado
+            if (Mathf.Abs(value - prevFPS) >= 5f)
+            {
+                prevFPS = value;
+                textFPS.text = value.ToString("0") + " FPS";
+            }
         }
     }
 }

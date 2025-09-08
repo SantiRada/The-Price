@@ -1,12 +1,12 @@
-using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using static ActionForControlPlayer;
 
 public class PlayerMovement : MonoBehaviour {
 
     [Header("Movement")]
-    private bool _canMove = true;
+    [HideInInspector] public bool _canMove = true;
 
     [Header("Roll")]
     [SerializeField] private float _dashingPower = 24f;
@@ -32,11 +32,7 @@ public class PlayerMovement : MonoBehaviour {
     }
     private void Update()
     {
-        if (Pause.inPause || Pause.state != State.Game)
-        {
-            Debug.Log("State: " + Pause.inPause + ", " + Pause.state.ToString());
-            return;
-        }
+        if (Pause.inPause || Pause.state != State.Game) return;
 
         Movement();
     }
@@ -86,6 +82,12 @@ public class PlayerMovement : MonoBehaviour {
     public bool GetCanMove()
     {
         return _canMove;
+    }
+    public void SetMove(bool value)
+    {
+        if (Pause.state != State.Game) return;
+
+        _canMove = value;
     }
     public bool GetCanDashing()
     {
