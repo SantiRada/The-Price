@@ -3,11 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Maneja todas las estadísticas del jugador, su sistema de daño, armas, habilidades y objetos.
+/// Refactorizado para ser autosustentable con validaciones completas.
+/// </summary>
 public class PlayerStats : MonoBehaviour {
 
     [Header("General Values")]
     [Tooltip("Tiempo que dura el color Rojo del 'Take Damage'")] public float timeToTakeDamage;
-    [Tooltip("Tiempo de intangibilidad tras recibir da�o")] public float timeToIntangible;
+    [Tooltip("Tiempo de intangibilidad tras recibir daño")] public float timeToIntangible;
     [SerializeField] private float[] _generalMaxStats;
     private float[] _generalStats;
     public bool _canReceivedDamage;
@@ -31,7 +35,7 @@ public class PlayerStats : MonoBehaviour {
     [Header("Player Content")]
     public List<SkillManager> skills = new List<SkillManager>();
     public List<Object> objects = new List<Object>();
-    
+
     [HideInInspector] public DeadSystem deadSystem;
     private TriggeringObject triggering;
     private StatsInUI _statsInUI;
@@ -55,33 +59,91 @@ public class PlayerStats : MonoBehaviour {
     public static event Action jumpBetween;
     public static event Action criticalChance;
     public static event Action missChance;
-    // EVENTO INTEGRO
     public static event Action changesInWeapons;
 
     private void Awake()
     {
-        triggering = GetComponent<TriggeringObject>();
-        _statsInUI = FindAnyObjectByType<StatsInUI>();
-        deadSystem = GetComponent<DeadSystem>();
-        _spr = GetComponent<SpriteRenderer>();
+        InitializeComponents();
+        ValidateConfiguration();
     }
+
+    /// <summary>
+    /// Inicializa y valida todos los componentes necesarios
+    /// </summary>
+    private void InitializeComponents()
+    {
+        // Componentes locales - críticos
+        if (!this.TryGetComponentSafe(out triggering))
+        {
+            Debug.LogError($"[PlayerStats] TriggeringObject no encontrado en {gameObject.name}. El sistema de objetos no funcionará correctamente.");
+        }
+
+        if (!this.TryGetComponentSafe(out deadSystem))
+        {
+            Debug.LogError($"[PlayerStats] DeadSystem no encontrado en {gameObject.name}. El sistema de muerte no funcionará.");
+        }
+
+        if (!this.TryGetComponentSafe(out _spr))
+        {
+            Debug.LogError($"[PlayerStats] SpriteRenderer no encontrado en {gameObject.name}. Los efectos visuales de daño no funcionarán.");
+        }
+
+        // Componentes de escena - pueden no existir en escenas de prueba
+        if (!ComponentHelper.TryFindObjectSafe(out _statsInUI, nameof(PlayerStats)))
+        {
+            Debug.LogWarning($"[PlayerStats] StatsInUI no encontrado. La interfaz de usuario no se actualizará.");
+        }
+    }
+
+    /// <summary>
+    /// Valida la configuración del jugador
+    /// </summary>
+    private void ValidateConfiguration()
+    {
+        if (_generalMaxStats == null || _generalMaxStats.Length == 0)
+        {
+            Debug.LogError($"[PlayerStats] _generalMaxStats no está configurado. Usando valores por defecto.");
+            _generalMaxStats = new float[11]; // 11 stats por defecto
+        }
+
+        if (weaponParent == null)
+        {
+            Debug.LogWarning($"[PlayerStats] weaponParent no está asignado. Las armas no se crearán correctamente.");
+        }
+    }
+
     private void OnEnable()
     {
-        _generalStats = new float[_generalMaxStats.Length];
-        for (int i = 0; i < _generalMaxStats.Length; i++) { _generalStats[i] = _generalMaxStats[i]; }
+        InitializeStats();
 
-        canLaunchAttack = true;
-
-        if (weapons != null) InitialWeapon();
+        if (weapons != null && weapons.Count > 0)
+            InitialWeapon();
     }
+
     private void Start()
     {
         _canReceivedDamage = true;
 
+        // Suscribir a eventos de habilidades
         ActionForControlPlayer.skillOne += () => LaunchedSkill(0);
         ActionForControlPlayer.skillTwo += () => LaunchedSkill(1);
         ActionForControlPlayer.skillFragments += () => LaunchedSkill(2);
     }
+
+    /// <summary>
+    /// Inicializa las estadísticas del jugador
+    /// </summary>
+    private void InitializeStats()
+    {
+        _generalStats = new float[_generalMaxStats.Length];
+        for (int i = 0; i < _generalMaxStats.Length; i++)
+        {
+            _generalStats[i] = _generalMaxStats[i];
+        }
+
+        canLaunchAttack = true;
+    }
+
     // -------------- DEAD -------------- //
     private IEnumerator Die()
     {
@@ -93,146 +155,269 @@ public class PlayerStats : MonoBehaviour {
         Pause.StateChange = State.Interface;
         yield return new WaitForSeconds(0.5f);
 
-        _statsInUI.dieUI.gameObject.SetActive(true);
+        if (_statsInUI != null && _statsInUI.dieUI != null)
+        {
+            _statsInUI.dieUI.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("[PlayerStats] No se pudo mostrar la UI de muerte.");
+        }
     }
+
     // ---- FUNCIONES BASE ---- //
     public void TakeDamage(GameObject obj, int dmg)
     {
-        if (!_canReceivedDamage) { return; }
+        if (!_canReceivedDamage) return;
+        if (dmg <= 0) return;
 
-        #region ComprobateEnemy
-        EnemyManager attacker;
-
-        if (obj.GetComponent<EnemyManager>())
+        // Intentar obtener el atacante para cálculos especiales
+        EnemyManager attacker = obj?.GetComponent<EnemyManager>();
+        if (attacker != null)
         {
-            attacker = obj.GetComponent<EnemyManager>();
-
-            // ---- PREVIENE ATAQUES DE UN TIPO ESPEC�FICO ---- //
-            dmg = (attacker != null) ? CalculateNewDamage(attacker, dmg) : dmg;
+            dmg = CalculateNewDamage(attacker, dmg);
         }
 
         if (dmg <= 0)
         {
-            Debug.Log("No hay da�o suficiente");
+            Debug.Log("[PlayerStats] Daño completamente prevenido");
             return;
         }
-        #endregion
 
-        // EVENTO = RECIBIR DA�O
+        // EVENTO = RECIBIR DAÑO
         takeDamage?.Invoke();
 
-        #region ApplyDamage
-        SetValue(0, -dmg, false);
+        // Aplicar el daño
+        ApplyDamageInternal(dmg);
 
-        if (_statsInUI == null) return;
-        _statsInUI.SetHUD(0, _generalStats[0], _generalMaxStats[0]);
+        // Aplicar efectos visuales y estado de intangibilidad
+        ApplyDamageEffects();
 
-        // GUARDAR DA�O RECIBIDO
+        // Guardar daño recibido
         countDamageReceivedInRoom += dmg;
 
-
-        // APLICAR ESTADO DE INTANGIBILIDAD
-        _canReceivedDamage = false;
-        // CAMBIAR COLOR POR UN PEQUE�O PERIODO DE TIEMPO
-        _spr.color = Color.red;
-        Invoke("ResetColor", timeToTakeDamage);
-        // QUITAR ESTADO DE INTANGIBILIDAD
-        Invoke("RemoveStateIntangible", timeToIntangible);
-        #endregion
-
-        // VERIFICAR SI SIGUE VIVO
-        if (_generalStats[0] <= 0) StartCoroutine("Die");
+        // Verificar si sigue vivo
+        if (_generalStats[0] <= 0)
+        {
+            StartCoroutine(Die());
+        }
     }
+
+    /// <summary>
+    /// Aplica daño interno al jugador
+    /// </summary>
+    private void ApplyDamageInternal(int dmg)
+    {
+        SetValue(0, -dmg, false);
+
+        if (_statsInUI != null)
+        {
+            _statsInUI.SetHUD(0, _generalStats[0], _generalMaxStats[0]);
+        }
+    }
+
+    /// <summary>
+    /// Aplica efectos visuales de daño
+    /// </summary>
+    private void ApplyDamageEffects()
+    {
+        _canReceivedDamage = false;
+
+        if (_spr != null)
+        {
+            _spr.color = Color.red;
+            Invoke(nameof(ResetColor), timeToTakeDamage);
+        }
+
+        Invoke(nameof(RemoveStateIntangible), timeToIntangible);
+    }
+
     public void ApplyDamage(int value)
     {
+        if (!_generalStats.IsValidIndex(9, "_generalStats"))
+            return;
+
         int percentage = (int)_generalStats[9] * value / 100;
 
         SetValue(0, percentage, false, true);
-        _statsInUI.SetHUD(0, _generalStats[0], _generalMaxStats[0]);
+
+        if (_statsInUI != null)
+        {
+            _statsInUI.SetHUD(0, _generalStats[0], _generalMaxStats[0]);
+        }
     }
+
     // ---- OBJECTS ---- //
     public void AddObject(Object obj)
     {
-        objects.Add(obj);
-        triggering.SetObjects(objects);
+        if (obj == null)
+        {
+            Debug.LogWarning("[PlayerStats] Intentando agregar un objeto null");
+            return;
+        }
 
-        _statsInUI.AddObjectInUI();
+        objects.Add(obj);
+
+        if (triggering != null)
+        {
+            triggering.SetObjects(objects);
+        }
+
+        if (_statsInUI != null)
+        {
+            _statsInUI.AddObjectInUI();
+        }
     }
+
     // ---- SKILLS ---- //
     private void LaunchedSkill(int pos)
     {
-        if (skills.Count <= pos) return;
+        if (!skills.IsValidIndex(pos, "skills"))
+            return;
 
-        if (skills[pos].loadType == LoadTypeSkill.concentration)
+        SkillManager skill = skills[pos];
+        if (skill == null)
         {
-            if (_generalStats[1] >= skills[pos].amountFuel) CreateSkill(pos);
+            Debug.LogWarning($"[PlayerStats] Skill en posición {pos} es null");
+            return;
         }
 
-        if (skills[pos].loadType == LoadTypeSkill.kills)
-        {
-            if (countKillsInRoom >= skills[pos].amountFuel) CreateSkill(pos);
-        }
+        bool canLaunch = CanLaunchSkill(pos, skill);
 
-        if (skills[pos].loadType == LoadTypeSkill.receiveDamage)
+        if (canLaunch)
         {
-            if (countDamageReceivedInRoom >= skills[pos].amountFuel) CreateSkill(pos);
-        }
-
-        if (skills[pos].loadType == LoadTypeSkill.damage)
-        {
-            if (countDamageInRoom >= skills[pos].amountFuel) CreateSkill(pos);
+            CreateSkill(pos);
         }
     }
+
+    /// <summary>
+    /// Verifica si se puede lanzar una habilidad según su tipo de carga
+    /// </summary>
+    private bool CanLaunchSkill(int pos, SkillManager skill)
+    {
+        switch (skill.loadType)
+        {
+            case LoadTypeSkill.concentration:
+                return _generalStats.IsValidIndex(1) && _generalStats[1] >= skill.amountFuel;
+
+            case LoadTypeSkill.kills:
+                return countKillsInRoom >= skill.amountFuel;
+
+            case LoadTypeSkill.receiveDamage:
+                return countDamageReceivedInRoom >= skill.amountFuel;
+
+            case LoadTypeSkill.damage:
+                return countDamageInRoom >= skill.amountFuel;
+
+            default:
+                return false;
+        }
+    }
+
     private void CreateSkill(int id)
     {
-        Vector3 position = this.transform.position;
-        if (skills[id].typeShow == TypeShowSkill.created)
+        if (!skills.IsValidIndex(id, "skills"))
+            return;
+
+        SkillManager skill = skills[id];
+        if (skill == null || skill.gameObject == null)
         {
-            // CREAR ENCIMA DEL ENEMIGO AL QUE LE APUNTA EL JUGADOR
+            Debug.LogWarning($"[PlayerStats] No se puede crear skill en posición {id}");
+            return;
+        }
+
+        Vector3 position = transform.position;
+
+        if (skill.typeShow == TypeShowSkill.created)
+        {
+            // TODO: Crear encima del enemigo al que le apunta el jugador
         }
 
         LessAmountPerSkill(id);
 
-        for(int i = 0; i < skills[id].countCreated; i++) { Instantiate(skills[id].gameObject, position, Quaternion.identity); }
+        for(int i = 0; i < skill.countCreated; i++)
+        {
+            Instantiate(skill.gameObject, position, Quaternion.identity);
+        }
     }
+
     private void LessAmountPerSkill(int pos)
     {
-        if (skills[pos].loadType == LoadTypeSkill.concentration) SetValue(1, -skills[pos].amountFuel, false);
+        if (!skills.IsValidIndex(pos, "skills"))
+            return;
 
-        if (skills[pos].loadType == LoadTypeSkill.damage) countDamageInRoom -= skills[pos].amountFuel;
+        SkillManager skill = skills[pos];
+        if (skill == null) return;
 
-        if (skills[pos].loadType == LoadTypeSkill.receiveDamage) countDamageReceivedInRoom -= skills[pos].amountFuel;
+        switch (skill.loadType)
+        {
+            case LoadTypeSkill.concentration:
+                SetValue(1, -skill.amountFuel, false);
+                break;
+
+            case LoadTypeSkill.damage:
+                countDamageInRoom -= skill.amountFuel;
+                break;
+
+            case LoadTypeSkill.receiveDamage:
+                countDamageReceivedInRoom -= skill.amountFuel;
+                break;
+        }
     }
+
     // ---- FUNCIONES DE OTROS SCRIPT ---- //
-    public void JumpBetweenAttack() { jumpBetween?.Invoke(); }
+    public void JumpBetweenAttack()
+    {
+        jumpBetween?.Invoke();
+    }
+
     // ---- SETTERS ---- //
     public void PreventDamagePerType(int[] count, bool[] reflects)
     {
-        countPrevent = count;
-        whichReflect = reflects;
+        if (count != null && count.Length == 5)
+            countPrevent = count;
+
+        if (reflects != null && reflects.Length == 5)
+            whichReflect = reflects;
     }
+
     public void PreventDamagePerDistance(int[] count, bool[] reflects)
     {
-        preventDistance = count;
-        reflectDistance = reflects;
+        if (count != null && count.Length == 2)
+            preventDistance = count;
+
+        if (reflects != null && reflects.Length == 2)
+            reflectDistance = reflects;
     }
+
     public void AddStatePerDamage(TypeState st, int number)
     {
         state = st;
         numberOfLoads = number;
     }
+
     public void SetValue(int type, float value, bool max = true, bool canShow = true, bool equalValue = false)
     {
         if (value == 0) return;
 
-        if (_generalStats[type] == _generalMaxStats[type] && !max && value > 0) return;
-
-        if (canShow)
+        if (!_generalStats.IsValidIndex(type, "_generalStats") ||
+            !_generalMaxStats.IsValidIndex(type, "_generalMaxStats"))
         {
-            if (value < 0) FloatTextManager.CreateText(transform.position, (TypeColor)type, value.ToString());
-            else FloatTextManager.CreateText(transform.position, (TypeColor)type, ("+" + value.ToString()));
+            Debug.LogWarning($"[PlayerStats] Índice de stat {type} inválido");
+            return;
         }
 
+        if (_generalStats[type] == _generalMaxStats[type] && !max && value > 0)
+            return;
+
+        // Mostrar texto flotante
+        if (canShow)
+        {
+            string displayValue = value < 0 ? value.ToString() : ("+" + value.ToString());
+            FloatTextManager.CreateText(transform.position, (TypeColor)type, displayValue);
+        }
+
+        // Aplicar el valor
         if (equalValue)
         {
             if (max) _generalMaxStats[type] = value;
@@ -240,70 +425,128 @@ public class PlayerStats : MonoBehaviour {
         }
         else
         {
-            if (max) { _generalMaxStats[type] += value; }
+            if (max)
+            {
+                _generalMaxStats[type] += value;
+            }
             else
             {
-                // COMPROBACION NECESARIA PARA NO PASARSE DEL VALOR M�XIMO DE STATS
-                if ((_generalStats[type] + value) > _generalMaxStats[type]) { _generalStats[type] = value; }
-                else { _generalStats[type] += value; }
+                // Comprobación necesaria para no pasarse del valor máximo de stats
+                if ((_generalStats[type] + value) > _generalMaxStats[type])
+                {
+                    _generalStats[type] = _generalMaxStats[type];
+                }
+                else
+                {
+                    _generalStats[type] += value;
+                }
             }
         }
 
-        // CHANGE IN HUD
-        if (type == 1 && !max) _statsInUI.SetHUD(1, _generalStats[1], _generalMaxStats[1]);
-
-        if(_statsInUI != null )_statsInUI.ChangeValueInUI(type);
+        // Actualizar HUD
+        UpdateHUD(type, max);
     }
-    public float ChangerConcentration { set { changerConcentration = value; } get { return changerConcentration; } }
+
+    /// <summary>
+    /// Actualiza la interfaz según el tipo de estadística modificada
+    /// </summary>
+    private void UpdateHUD(int type, bool max)
+    {
+        if (_statsInUI == null) return;
+
+        // Concentración
+        if (type == 1 && !max)
+        {
+            _statsInUI.SetHUD(1, _generalStats[1], _generalMaxStats[1]);
+        }
+
+        _statsInUI.ChangeValueInUI(type);
+    }
+
+    public float ChangerConcentration
+    {
+        set { changerConcentration = value; }
+        get { return changerConcentration; }
+    }
+
     public int SetWeapon(int index, WeaponSystem weapon)
     {
-        _statsInUI.SetWeaponInHUD(index, weapon.spr);
-
-        if(weapons.Count > index)
+        if (weapon == null)
         {
-            if (weapons[index] == null)
-            {
-                weapons[index] = weapon;
-                CreateWeaponInScene(true, index);
-                return -1;
-            }
-            else
-            {
-                GameObject prevObject = weaponInScene[index].gameObject;
-                int prevWeapon = weaponInScene[index].weaponID;
-
-                weapons[index] = weapon;
-                CreateWeaponInScene(false, index);
-
-                Destroy(prevObject, 1f);
-
-                return prevWeapon;
-            }
-        }
-        else
-        {
-            for(int i = 0; i < index; i++)
-            {
-                if(weapons.Count <= i) { weapons.Add(null); }
-            }
-
-            weapons.Add(weapon);
-            CreateWeaponInScene(true, index);
-
+            Debug.LogWarning("[PlayerStats] Intentando establecer un arma null");
             return -1;
         }
+
+        if (_statsInUI != null)
+        {
+            _statsInUI.SetWeaponInHUD(index, weapon.spr);
+        }
+
+        return SetWeaponInternal(index, weapon);
     }
-    public void UpdateWeaponInAction() { changesInWeapons?.Invoke(); }
-    // ----  ---- //
-    public void SetCountKills() { countKillsInRoom++; }
-    public void SetCountDamage(int count) { countDamageInRoom += count; }
+
+    /// <summary>
+    /// Lógica interna para establecer un arma
+    /// </summary>
+    private int SetWeaponInternal(int index, WeaponSystem weapon)
+    {
+        // Asegurar que la lista tenga el tamaño adecuado
+        while (weapons.Count <= index)
+        {
+            weapons.Add(null);
+        }
+
+        int previousWeaponID = -1;
+
+        // Si ya hay un arma en esa posición
+        if (weapons[index] != null)
+        {
+            if (weaponInScene.IsValidIndex(index, "weaponInScene"))
+            {
+                GameObject prevObject = weaponInScene[index]?.gameObject;
+                previousWeaponID = weaponInScene[index]?.weaponID ?? -1;
+
+                if (prevObject != null)
+                {
+                    Destroy(prevObject, 1f);
+                }
+            }
+        }
+
+        weapons[index] = weapon;
+        CreateWeaponInScene(false, index);
+
+        return previousWeaponID;
+    }
+
+    public void UpdateWeaponInAction()
+    {
+        changesInWeapons?.Invoke();
+    }
+
+    // ---- ROOM STATS ---- //
+    public void SetCountKills()
+    {
+        countKillsInRoom++;
+    }
+
+    public void SetCountDamage(int count)
+    {
+        countDamageInRoom += count;
+    }
+
     public void ResetValuesPerRoom()
     {
         countKillsInRoom = 0;
         countDamageInRoom = 0;
         countDamageReceivedInRoom = 0;
     }
-    public void LaunchAttack() { StartCoroutine(LaunchAttackDelay()); }
+
+    public void LaunchAttack()
+    {
+        StartCoroutine(LaunchAttackDelay());
+    }
+
     private IEnumerator LaunchAttackDelay()
     {
         canLaunchAttack = false;
@@ -312,132 +555,204 @@ public class PlayerStats : MonoBehaviour {
 
         canLaunchAttack = true;
     }
+
     // ---- GETTERS ---- //
     public float GetterStats(int pos, bool max = true)
     {
-        if (max) return _generalMaxStats[pos];
-        else return _generalStats[pos];
+        if (max)
+        {
+            return _generalMaxStats.GetSafe(pos, 0f);
+        }
+        else
+        {
+            return _generalStats.GetSafe(pos, 0f);
+        }
     }
-    // ---- FUNCION INTEGRA ---- //
+
+    // ---- FUNCION INTEGRA: DAMAGE CALCULATION ---- //
     private int CalculateNewDamage(EnemyManager attacker, int dmg)
     {
         if (attacker == null) return 0;
 
-        #region Verify Prevent & Reflect Damage Per Type
-        bool dmgPrevent = false;
-        if (attacker.typeAttack == TypeEnemyAttack.Energy)
-        {
-            if (whichReflect[1]) attacker.TakeDamage(dmg);
-            dmg -= (dmg * (countPrevent[1] / 100));
-            dmgPrevent = true;
-        }
-        if (attacker.typeAttack == TypeEnemyAttack.Fire)
-        {
-            if (whichReflect[2]) attacker.TakeDamage(dmg);
-            dmg -= (dmg * (countPrevent[2] / 100));
-            dmgPrevent = true;
-        }
-        if (attacker.typeAttack == TypeEnemyAttack.Cold)
-        {
-            if (whichReflect[3]) attacker.TakeDamage(dmg);
-            dmg -= (dmg * (countPrevent[3] / 100));
-            dmgPrevent = true;
-        }
-        if (attacker.typeAttack == TypeEnemyAttack.Fortify)
-        {
-            if (whichReflect[4]) attacker.TakeDamage(dmg);
-            dmg -= (dmg * (countPrevent[4] / 100));
-            dmgPrevent = true;
-        }
-        if (!dmgPrevent)
-        {
-            if (whichReflect[0]) attacker.TakeDamage(dmg);
-            dmg -= (dmg * (countPrevent[0] / 100));
-        }
-        #endregion
+        // Verificar prevención y reflejo por tipo de ataque
+        dmg = ApplyDamagePreventionByType(attacker, dmg);
 
-        #region Verify Prevent & Reflect Damage Per Distance
-        // VERIFICACI�N POR MELEE
-        if (!attacker.distanceAttack && preventDistance[0] != 0)
-        {
-            if (reflectDistance[0]) attacker.TakeDamage(dmg);
-            dmg -= (dmg * (preventDistance[0] / 100));
-        }
-        // VERIFICACI�N POR DISTANCIA
-        if(attacker.distanceAttack && preventDistance[1] != 0)
-        {
-            if (reflectDistance[1]) attacker.TakeDamage(dmg);
-            dmg -= (dmg * (preventDistance[1] / 100));
-        }
-        #endregion
+        // Verificar prevención y reflejo por distancia
+        dmg = ApplyDamagePreventionByDistance(attacker, dmg);
 
         return dmg;
     }
+
+    /// <summary>
+    /// Aplica la prevención de daño basada en el tipo de ataque del enemigo
+    /// </summary>
+    private int ApplyDamagePreventionByType(EnemyManager attacker, int dmg)
+    {
+        int typeIndex = GetDamageTypeIndex(attacker.typeAttack);
+
+        if (typeIndex >= 0 && countPrevent.IsValidIndex(typeIndex))
+        {
+            if (whichReflect.IsValidIndex(typeIndex) && whichReflect[typeIndex])
+            {
+                attacker.TakeDamage(dmg);
+            }
+
+            int prevention = countPrevent[typeIndex];
+            if (prevention > 0)
+            {
+                dmg -= (dmg * prevention / 100);
+            }
+        }
+
+        return dmg;
+    }
+
+    /// <summary>
+    /// Obtiene el índice del tipo de daño
+    /// </summary>
+    private int GetDamageTypeIndex(TypeEnemyAttack attackType)
+    {
+        switch (attackType)
+        {
+            case TypeEnemyAttack.Energy: return 1;
+            case TypeEnemyAttack.Fire: return 2;
+            case TypeEnemyAttack.Cold: return 3;
+            case TypeEnemyAttack.Fortify: return 4;
+            case TypeEnemyAttack.Base: return 0;
+            default: return 0;
+        }
+    }
+
+    /// <summary>
+    /// Aplica la prevención de daño basada en la distancia del ataque
+    /// </summary>
+    private int ApplyDamagePreventionByDistance(EnemyManager attacker, int dmg)
+    {
+        int distanceIndex = attacker.distanceAttack ? 1 : 0;
+
+        if (preventDistance.IsValidIndex(distanceIndex) && preventDistance[distanceIndex] > 0)
+        {
+            if (reflectDistance.IsValidIndex(distanceIndex) && reflectDistance[distanceIndex])
+            {
+                attacker.TakeDamage(dmg);
+            }
+
+            int prevention = preventDistance[distanceIndex];
+            dmg -= (dmg * prevention / 100);
+        }
+
+        return dmg;
+    }
+
+    // ---- WEAPON MANAGEMENT ---- //
     private void InitialWeapon()
     {
-        if(weapons.Count > 0)
+        if (weapons == null || weapons.Count == 0) return;
+        if (weaponParent == null)
         {
-            for(int i = 0; i < weapons.Count; i++)
+            Debug.LogError("[PlayerStats] weaponParent no está asignado. No se pueden crear armas.");
+            return;
+        }
+
+        for(int i = 0; i < weapons.Count; i++)
+        {
+            if(weapons[i] != null)
             {
-                if(weapons[i] != null) weaponInScene.Add(Instantiate(weapons[i].gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform).GetComponent<WeaponSystem>());
+                WeaponSystem newWeapon = Instantiate(
+                    weapons[i].gameObject,
+                    weaponParent.transform.position,
+                    Quaternion.identity,
+                    weaponParent.transform
+                ).GetComponent<WeaponSystem>();
+
+                if (newWeapon != null)
+                {
+                    weaponInScene.Add(newWeapon);
+                }
             }
         }
+
         changesInWeapons?.Invoke();
     }
+
     private void CreateWeaponInScene(bool isNew, int index = 0)
     {
-        if (!isNew)
+        if (weaponParent == null || !weapons.IsValidIndex(index))
         {
-            weaponInScene[index] = Instantiate(weapons[index].gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform).GetComponent<WeaponSystem>();
+            Debug.LogWarning($"[PlayerStats] No se puede crear arma en índice {index}");
+            return;
         }
-        else
-        {
-            for (int i = 0; i < index; i++)
-            {
-                if (weaponInScene.Count <= i) { weaponInScene.Add(null); }
-            }
 
-            if(weaponInScene.Count > index)
-            {
-                weaponInScene[index] = Instantiate(weapons[index].gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform).GetComponent<WeaponSystem>();
-            }
-            else
-            {
-                weaponInScene.Add(Instantiate(weapons[index].gameObject, weaponParent.transform.position, Quaternion.identity, weaponParent.transform).GetComponent<WeaponSystem>());
-            }
+        if (weapons[index] == null)
+        {
+            Debug.LogWarning($"[PlayerStats] Arma en índice {index} es null");
+            return;
+        }
+
+        // Asegurar que weaponInScene tenga el tamaño correcto
+        while (weaponInScene.Count <= index)
+        {
+            weaponInScene.Add(null);
+        }
+
+        WeaponSystem newWeapon = Instantiate(
+            weapons[index].gameObject,
+            weaponParent.transform.position,
+            Quaternion.identity,
+            weaponParent.transform
+        ).GetComponent<WeaponSystem>();
+
+        if (newWeapon != null)
+        {
+            weaponInScene[index] = newWeapon;
         }
 
         changesInWeapons?.Invoke();
     }
-    private void ResetColor() { _spr.color = Color.white; }
-    private void RemoveStateIntangible() { _canReceivedDamage = true; }
-    // ---- FUNCION INTEGRA: WEAPON ---- //
+
+    private void ResetColor()
+    {
+        if (_spr != null)
+            _spr.color = Color.white;
+    }
+
+    private void RemoveStateIntangible()
+    {
+        _canReceivedDamage = true;
+    }
+
+    // ---- FUNCION INTEGRA: WEAPON CHANCES ---- //
     public bool ComprobationMissChance()
     {
+        if (!_generalStats.IsValidIndex(8))
+            return false;
+
         int rnd = UnityEngine.Random.Range(0, 100);
 
         if(rnd < _generalStats[8])
         {
             missChance?.Invoke();
-
             FloatTextManager.CreateText(transform.position, TypeColor.MissChance, "47", false, true);
-
             return true;
         }
-        else { return false; }
+
+        return false;
     }
+
     public bool ComprobationCriticalChance()
     {
+        if (!_generalStats.IsValidIndex(7))
+            return false;
+
         int rnd = UnityEngine.Random.Range(0, 100);
 
         if (rnd < _generalStats[7])
         {
             criticalChance?.Invoke();
-
             FloatTextManager.CreateText(transform.position, TypeColor.CriticalChance, "48", false, true);
-
             return true;
         }
-        else { return false; }
+
+        return false;
     }
 }
