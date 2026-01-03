@@ -35,9 +35,9 @@ public class Projectile : MonoBehaviour {
 
         if (speed != 0) speedMovement = speed;
 
-        // BOSS = 0 = Lo envió el Player
-        // BOSS = 1 = Lo envió un enemigo
-        // BOSS = 2 = Lo envió un Boss
+        // BOSS = 0 = Lo enviï¿½ el Player
+        // BOSS = 1 = Lo enviï¿½ un enemigo
+        // BOSS = 2 = Lo enviï¿½ un Boss
         whoIsBoss = boss;
 
         if (boss != 0) { _collider.isTrigger = false; }
@@ -52,7 +52,7 @@ public class Projectile : MonoBehaviour {
 
         if(_distanceToAttack != 0) if (Vector3.Distance(_initPos, transform.position) > _distanceToAttack) { Destroy(gameObject); }
 
-        _rb2d.velocity = _target * speedMovement;
+        _rb2d.linearVelocity = _target * speedMovement;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
