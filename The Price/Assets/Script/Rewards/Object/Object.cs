@@ -22,10 +22,10 @@ public abstract class Object : ScriptableObject {
     protected float timerBaseCooling;
     [HideInInspector] public bool canActive = true;
 
-    [Header("0. PV\n1. Concentración\n2. Velocidad de Movimiento\n3. Velocidad de Ataque\n4. Daño de Habilidad\n5. Daño\n6. Daño Sucesivo\n7. Probabilidad de Crítico\n8. Probabilidad de Fallos\n9. Robo de Vida\n10. Cordura")]
+    [Header("0. PV\n1. Concentraciï¿½n\n2. Velocidad de Movimiento\n3. Velocidad de Ataque\n4. Daï¿½o de Habilidad\n5. Daï¿½o\n6. Probabilidad de Crï¿½tico")]
     [Space]
-    public float[] statsModifiable = new float[11];
-    public float[] statsMaxModifiable = new float[11];
+    public float[] statsModifiable = new float[7];
+    public float[] statsMaxModifiable = new float[7];
 
     [HideInInspector] public PlayerStats playerStats;
 

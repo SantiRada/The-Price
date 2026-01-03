@@ -2,6 +2,10 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+/// <summary>
+/// Maneja el guardado y carga de partidas.
+/// Actualizado para el nuevo sistema: 7 stats, 1 arma, 2 habilidades.
+/// </summary>
 // C:\Users\santy\AppData\LocalLow\DefaultCompany\The Price
 public class SaveLoadManager : MonoBehaviour {
 
@@ -22,12 +26,18 @@ public class SaveLoadManager : MonoBehaviour {
 
     private void Awake()
     {
-        _hud = FindAnyObjectByType<HUD>();
-        _roomManager = FindAnyObjectByType<RoomManager>();
-        _weaponManager = FindAnyObjectByType<WeaponManagerUI>();
-        _playerStats = FindAnyObjectByType<PlayerStats>();
-        _deadSystem = _playerStats.GetComponent<DeadSystem>();
+        // Buscar componentes con validaciones
+        ComponentHelper.TryFindObjectQuiet(out _hud);
+        ComponentHelper.TryFindObjectQuiet(out _roomManager);
+        ComponentHelper.TryFindObjectQuiet(out _weaponManager);
+        ComponentHelper.TryFindObjectQuiet(out _playerStats);
+
+        if (_playerStats != null)
+        {
+            _playerStats.TryGetComponentSafe(out _deadSystem);
+        }
     }
+
     // ---- MAINS ---- //
     public void SaveData(ReasonSave reason)
     {
@@ -43,8 +53,6 @@ public class SaveLoadManager : MonoBehaviour {
         filePath = Path.Combine(Application.persistentDataPath, "Player-" + PlayerPrefs.GetInt("PositionGame").ToString() + ".json");
         string jsonPlayer = JsonUtility.ToJson(_player);
         File.WriteAllText(filePath, jsonPlayer);
-        // Debug.Log(filePath);
-
 
         filePath = Path.Combine(Application.persistentDataPath, "World-" + PlayerPrefs.GetInt("PositionGame").ToString() + ".json");
         string jsonWorld = JsonUtility.ToJson(_world);
@@ -54,6 +62,7 @@ public class SaveLoadManager : MonoBehaviour {
         string jsonControls = JsonUtility.ToJson(_controls);
         File.WriteAllText(filePath, jsonControls);
     }
+
     public void LoadData()
     {
         filePath = Path.Combine(Application.persistentDataPath, "Player-" + PlayerPrefs.GetInt("PositionGame").ToString() + ".json");
@@ -65,24 +74,25 @@ public class SaveLoadManager : MonoBehaviour {
             string jsonPlayer = File.ReadAllText(filePath);
             _player = JsonUtility.FromJson<SavePlayer>(jsonPlayer);
 
-            #region Stats
+            if (_playerStats == null) return;
+
+            #region Stats (7 total)
+            // Stats máximas
             _playerStats.SetValue(0, _player.maxPV, true, false, true);
             _playerStats.SetValue(1, _player.maxConcentracion, true, false, true);
             _playerStats.SetValue(2, _player.speedMovement, true, false, true);
             _playerStats.SetValue(3, _player.speedAttack, true, false, true);
             _playerStats.SetValue(4, _player.skillDamage, true, false, true);
             _playerStats.SetValue(5, _player.damage, true, false, true);
-            _playerStats.SetValue(6, _player.subsequenceDamage, true, false, true);
-            _playerStats.SetValue(7, _player.criticalChance, true, false, true);
-            _playerStats.SetValue(8, _player.missChance, true, false, true);
-            _playerStats.SetValue(9, _player.stealing, true, false, true);
-            _playerStats.SetValue(10, _player.maxSanity, true, false, true);
+            _playerStats.SetValue(6, _player.criticalChance, true, false, true);
 
-            if (_player.pv <= 0) _playerStats.SetValue(0, _player.maxPV, false, false, true);
-            else _playerStats.SetValue(0, _player.pv, false, false, true);
+            // Stats actuales
+            if (_player.pv <= 0)
+                _playerStats.SetValue(0, _player.maxPV, false, false, true);
+            else
+                _playerStats.SetValue(0, _player.pv, false, false, true);
 
             _playerStats.SetValue(1, _player.concentracion, false, false, true);
-            _playerStats.SetValue(10, _player.sanity, false, false, true);
             #endregion
 
             if (_hud == null) return;
@@ -90,8 +100,10 @@ public class SaveLoadManager : MonoBehaviour {
             _hud.SetGold(_player.gold);
             _hud.SetSouls(_player.souls);
 
-            _playerStats.weapons = LoadWeapons(_player.weaponInHand);
+            // Cargar arma (solo 1)
+            _playerStats.weapon = LoadWeapon(_player.weaponID);
 
+            // Cargar objetos y habilidades
             _playerStats.objects = LoadObjects(_player.objects);
             _playerStats.skills = LoadSkills(_player.skills);
         }
@@ -103,6 +115,8 @@ public class SaveLoadManager : MonoBehaviour {
         {
             string jsonWorld = File.ReadAllText(filePath);
             _world = JsonUtility.FromJson<SaveWorld>(jsonWorld);
+
+            if (_deadSystem == null) return;
 
             if (_world.reasonSave == ReasonSave.closeGame) _deadSystem.currentWorld = Worlds.Astral;
             else _deadSystem.currentWorld = (Worlds)_world.currentWorld;
@@ -131,6 +145,7 @@ public class SaveLoadManager : MonoBehaviour {
             _controls = JsonUtility.FromJson<SaveControls>(jsonControls);
         }
     }
+
     // ---- GUARDADOS ---- //
     private void RefillDataWorld(ReasonSave reason)
     {
@@ -157,54 +172,68 @@ public class SaveLoadManager : MonoBehaviour {
         _world.deadInCielo = _deadSystem.deadInCielo;
         _world.deadInInfierno = _deadSystem.deadInInfierno;
         _world.deadInInframundo = _deadSystem.deadInInframundo;
-
-        // FALTA FUNCIONAMIENTO DE MBOSS, BOSS, MAXBOSS Y THANATOS //
     }
+
     private void RefillDataPlayer()
     {
         if (_playerStats == null || _hud == null || _deadSystem == null) return;
 
+        // Stats máximas (7 total)
         _player.maxPV = _playerStats.GetterStats(0, true);
         _player.maxConcentracion = _playerStats.GetterStats(1, true);
         _player.speedMovement = _playerStats.GetterStats(2, true);
         _player.speedAttack = _playerStats.GetterStats(3, true);
         _player.skillDamage = _playerStats.GetterStats(4, true);
         _player.damage = _playerStats.GetterStats(5, true);
-        _player.subsequenceDamage = _playerStats.GetterStats(6, true);
-        _player.criticalChance = _playerStats.GetterStats(7, true);
-        _player.missChance = _playerStats.GetterStats(8, true);
-        _player.stealing = _playerStats.GetterStats(9, true);
-        _player.maxSanity = _playerStats.GetterStats(10, true);
+        _player.criticalChance = _playerStats.GetterStats(6, true);
 
+        // Stats actuales
         _player.pv = _playerStats.GetterStats(0, false);
         _player.concentracion = _playerStats.GetterStats(1, false);
-        _player.sanity = _playerStats.GetterStats(10, false);
 
         _player.canHaveSouls = _deadSystem.canHaveSouls;
         _player.souls = _hud.GetSouls();
         _player.gold = _hud.GetGold();
 
-        if(_playerStats.weapons.Count > 0)
+        // Guardar arma (solo 1)
+        if (_playerStats.weapon != null)
         {
-            List<int> weapons = new List<int>();
-            for(int i = 0; i< _playerStats.weapons.Count; i++)
-            {
-                if (_playerStats.weapons[i] != null) weapons.Add(_playerStats.weapons[i].weaponID);
-                else weapons.Add(-1);
-            }
-
-            _player.weaponInHand = weapons;
+            _player.weaponID = _playerStats.weapon.weaponID;
+        }
+        else
+        {
+            _player.weaponID = -1;
         }
 
+        // Guardar objetos
         List<int> objects = new List<int>();
-        for(int i = 0; i < _playerStats.objects.Count; i++) { objects.Add(_playerStats.objects[i].objectID); }
+        for(int i = 0; i < _playerStats.objects.Count; i++)
+        {
+            if (_playerStats.objects[i] != null)
+            {
+                objects.Add(_playerStats.objects[i].objectID);
+            }
+        }
         _player.objects = objects;
 
+        // Guardar habilidades (máximo 2)
         List<int> skills = new List<int>();
-        for (int i = 0; i < _playerStats.skills.Count; i++) { skills.Add(_playerStats.skills[i].skillID); }
+        for (int i = 0; i < _playerStats.skills.Count && i < 2; i++)
+        {
+            if (_playerStats.skills[i] != null)
+            {
+                skills.Add(_playerStats.skills[i].skillID);
+            }
+        }
         _player.skills = skills;
-        FindAnyObjectByType<StatsInUI>().SetChangeSkillsInUI(_playerStats.skills);
+
+        // Actualizar UI de habilidades
+        if (ComponentHelper.TryFindObjectQuiet(out StatsInUI statsUI))
+        {
+            statsUI.SetChangeSkillsInUI(_playerStats.skills);
+        }
     }
+
     private void RefillDataControls()
     {
         if (_controls == null) return;
@@ -226,71 +255,91 @@ public class SaveLoadManager : MonoBehaviour {
         _controls.stats = 11;
         _controls.pause = 12;
 
+        // Solo 1 arma ahora (usamos attackOne)
         _controls.attackOne = 13;
-        _controls.attackTwo = 14;
-        _controls.attackThree = 15;
 
-        _controls.skillOne = 16;
-        _controls.skillTwo = 17;
-        _controls.skillThree = 18;
+        // Solo 2 habilidades ahora
+        _controls.skillOne = 14;
+        _controls.skillTwo = 15;
 
         // UI-CONTENT
-        _controls.back = 15;
+        _controls.back = 16;
         _controls.select = 5;
-        _controls.resetValues = 14;
+        _controls.resetValues = 17;
         _controls.otherFunction = 13;
 
         _controls.leftUI = 6;
         _controls.rightUI = 4;
     }
+
     // ---- INTEGRAS ---- //
     private List<SkillManager> LoadSkills(List<int> skillsID)
     {
-        SkillPlacement placement = FindAnyObjectByType<SkillPlacement>();
+        if (!ComponentHelper.TryFindObjectQuiet(out SkillPlacement placement))
+        {
+            Debug.LogWarning("[SaveLoadManager] SkillPlacement no encontrado");
+            return new List<SkillManager>();
+        }
+
         List<SkillManager> skills = new List<SkillManager>();
 
-        for(int i = 0; i < skillsID.Count; i++)
+        // Máximo 2 habilidades
+        for(int i = 0; i < skillsID.Count && i < 2; i++)
         {
-            skills.Add(placement.GetSkillPerID(skillsID[i]));
+            SkillManager skill = placement.GetSkillPerID(skillsID[i]);
+            if (skill != null)
+            {
+                skills.Add(skill);
+            }
         }
 
         return skills;
     }
+
     private List<Object> LoadObjects(List<int> objectID)
     {
-        ObjectPlacement placement = FindAnyObjectByType<ObjectPlacement>();
+        if (!ComponentHelper.TryFindObjectQuiet(out ObjectPlacement placement))
+        {
+            Debug.LogWarning("[SaveLoadManager] ObjectPlacement no encontrado");
+            return new List<Object>();
+        }
+
         List<Object> objects = new List<Object>();
 
         for (int i = 0; i < objectID.Count; i++)
         {
-            objects.Add(placement.GetObjectPerID(objectID[i]));
+            Object obj = placement.GetObjectPerID(objectID[i]);
+            if (obj != null)
+            {
+                objects.Add(obj);
+            }
         }
 
         return objects;
     }
-    private List<WeaponSystem> LoadWeapons(List<int> weaponID)
+
+    private WeaponSystem LoadWeapon(int weaponID)
     {
-        List<WeaponSystem> weaponSystem = new List<WeaponSystem>();
+        if (weaponID == -1) return null;
+
+        if (_weaponManager == null || _weaponManager.weapons == null)
+        {
+            Debug.LogWarning("[SaveLoadManager] WeaponManager no encontrado o sin armas");
+            return null;
+        }
 
         for(int i = 0; i < _weaponManager.weapons.Count; i++)
         {
-            for(int j = 0; j < weaponID.Count; j++)
+            if (_weaponManager.weapons[i] != null && _weaponManager.weapons[i].weaponID == weaponID)
             {
-                if (_weaponManager.weapons[i].weaponID == weaponID[j])
-                {
-                    weaponSystem.Add(_weaponManager.weapons[i]);
-                    break;
-                }
-                if (weaponID[j] == -1)
-                {
-                    weaponSystem.Add(null);
-                    break;
-                }
+                return _weaponManager.weapons[i];
             }
         }
 
-        return weaponSystem;
+        Debug.LogWarning($"[SaveLoadManager] Arma con ID {weaponID} no encontrada");
+        return null;
     }
+
     // ---- GETTERS ---- //
     public SaveWorld GetWorldData()
     {
@@ -299,5 +348,6 @@ public class SaveLoadManager : MonoBehaviour {
         if (File.Exists(filePath)) { return _world; }
         else { return null; }
     }
+
     public SaveControls GetControls(){ return _controls; }
 }
