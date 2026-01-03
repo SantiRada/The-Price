@@ -5,14 +5,14 @@ using UnityEngine;
 
 /// <summary>
 /// Maneja todas las estadísticas del jugador, su sistema de daño, armas, habilidades y objetos.
-/// Refactorizado para ser autosustentable con validaciones completas.
+/// Simplificado: 7 stats, 1 slot de arma, 2 slots de habilidad.
 /// </summary>
 public class PlayerStats : MonoBehaviour {
 
     [Header("General Values")]
     [Tooltip("Tiempo que dura el color Rojo del 'Take Damage'")] public float timeToTakeDamage;
     [Tooltip("Tiempo de intangibilidad tras recibir daño")] public float timeToIntangible;
-    [SerializeField] private float[] _generalMaxStats;
+    [SerializeField] private float[] _generalMaxStats; // 7 stats: PV, Concentración, VelMov, VelAtk, SkillDmg, Dmg, CritChance
     private float[] _generalStats;
     public bool _canReceivedDamage;
 
@@ -24,16 +24,16 @@ public class PlayerStats : MonoBehaviour {
     [HideInInspector] public int countDamageInRoom;
     [HideInInspector] public int countDamageReceivedInRoom;
 
-    [Header("Weapons")]
-    public List<WeaponSystem> weapons = new List<WeaponSystem>();
+    [Header("Weapon - Solo 1 slot")]
+    public WeaponSystem weapon; // Solo un arma
     public GameObject weaponParent;
-    [HideInInspector] public List<WeaponSystem> weaponInScene = new List<WeaponSystem>();
+    [HideInInspector] public WeaponSystem weaponInScene;
     [Space]
     public float delayToAttack;
     public bool canLaunchAttack;
 
-    [Header("Player Content")]
-    public List<SkillManager> skills = new List<SkillManager>();
+    [Header("Player Content - 2 slots de habilidad")]
+    public List<SkillManager> skills = new List<SkillManager>(); // Máximo 2
     public List<Object> objects = new List<Object>();
 
     [HideInInspector] public DeadSystem deadSystem;
@@ -56,10 +56,8 @@ public class PlayerStats : MonoBehaviour {
 
     // EVENTOS
     public static event Action takeDamage;
-    public static event Action jumpBetween;
     public static event Action criticalChance;
-    public static event Action missChance;
-    public static event Action changesInWeapons;
+    public static event Action weaponChanged;
 
     private void Awake()
     {
@@ -100,15 +98,22 @@ public class PlayerStats : MonoBehaviour {
     /// </summary>
     private void ValidateConfiguration()
     {
-        if (_generalMaxStats == null || _generalMaxStats.Length == 0)
+        if (_generalMaxStats == null || _generalMaxStats.Length != 7)
         {
-            Debug.LogError($"[PlayerStats] _generalMaxStats no está configurado. Usando valores por defecto.");
-            _generalMaxStats = new float[11]; // 11 stats por defecto
+            Debug.LogError($"[PlayerStats] _generalMaxStats debe tener exactamente 7 stats. Usando valores por defecto.");
+            _generalMaxStats = new float[7]; // 7 stats
         }
 
         if (weaponParent == null)
         {
             Debug.LogWarning($"[PlayerStats] weaponParent no está asignado. Las armas no se crearán correctamente.");
+        }
+
+        // Validar que solo haya máximo 2 habilidades
+        if (skills.Count > 2)
+        {
+            Debug.LogWarning($"[PlayerStats] Se encontraron {skills.Count} habilidades, pero solo se permiten 2. Eliminando extras.");
+            skills.RemoveRange(2, skills.Count - 2);
         }
     }
 
@@ -116,7 +121,7 @@ public class PlayerStats : MonoBehaviour {
     {
         InitializeStats();
 
-        if (weapons != null && weapons.Count > 0)
+        if (weapon != null)
             InitialWeapon();
     }
 
@@ -124,10 +129,9 @@ public class PlayerStats : MonoBehaviour {
     {
         _canReceivedDamage = true;
 
-        // Suscribir a eventos de habilidades
+        // Suscribir a eventos de habilidades (máximo 2)
         ActionForControlPlayer.skillOne += () => LaunchedSkill(0);
         ActionForControlPlayer.skillTwo += () => LaunchedSkill(1);
-        ActionForControlPlayer.skillFragments += () => LaunchedSkill(2);
     }
 
     /// <summary>
@@ -135,8 +139,8 @@ public class PlayerStats : MonoBehaviour {
     /// </summary>
     private void InitializeStats()
     {
-        _generalStats = new float[_generalMaxStats.Length];
-        for (int i = 0; i < _generalMaxStats.Length; i++)
+        _generalStats = new float[7]; // 7 stats
+        for (int i = 0; i < _generalMaxStats.Length && i < 7; i++)
         {
             _generalStats[i] = _generalMaxStats[i];
         }
@@ -232,21 +236,6 @@ public class PlayerStats : MonoBehaviour {
         Invoke(nameof(RemoveStateIntangible), timeToIntangible);
     }
 
-    public void ApplyDamage(int value)
-    {
-        if (!_generalStats.IsValidIndex(9, "_generalStats"))
-            return;
-
-        int percentage = (int)_generalStats[9] * value / 100;
-
-        SetValue(0, percentage, false, true);
-
-        if (_statsInUI != null)
-        {
-            _statsInUI.SetHUD(0, _generalStats[0], _generalMaxStats[0]);
-        }
-    }
-
     // ---- OBJECTS ---- //
     public void AddObject(Object obj)
     {
@@ -269,7 +258,7 @@ public class PlayerStats : MonoBehaviour {
         }
     }
 
-    // ---- SKILLS ---- //
+    // ---- SKILLS (Máximo 2) ---- //
     private void LaunchedSkill(int pos)
     {
         if (!skills.IsValidIndex(pos, "skills"))
@@ -363,12 +352,6 @@ public class PlayerStats : MonoBehaviour {
                 countDamageReceivedInRoom -= skill.amountFuel;
                 break;
         }
-    }
-
-    // ---- FUNCIONES DE OTROS SCRIPT ---- //
-    public void JumpBetweenAttack()
-    {
-        jumpBetween?.Invoke();
     }
 
     // ---- SETTERS ---- //
@@ -469,59 +452,43 @@ public class PlayerStats : MonoBehaviour {
         get { return changerConcentration; }
     }
 
-    public int SetWeapon(int index, WeaponSystem weapon)
+    // ---- WEAPON (Solo 1 slot) ---- //
+    public int SetWeapon(WeaponSystem newWeapon)
     {
-        if (weapon == null)
+        if (newWeapon == null)
         {
             Debug.LogWarning("[PlayerStats] Intentando establecer un arma null");
             return -1;
         }
 
-        if (_statsInUI != null)
-        {
-            _statsInUI.SetWeaponInHUD(index, weapon.spr);
-        }
-
-        return SetWeaponInternal(index, weapon);
-    }
-
-    /// <summary>
-    /// Lógica interna para establecer un arma
-    /// </summary>
-    private int SetWeaponInternal(int index, WeaponSystem weapon)
-    {
-        // Asegurar que la lista tenga el tamaño adecuado
-        while (weapons.Count <= index)
-        {
-            weapons.Add(null);
-        }
-
         int previousWeaponID = -1;
 
-        // Si ya hay un arma en esa posición
-        if (weapons[index] != null)
+        // Si ya hay un arma, destruirla
+        if (weapon != null)
         {
-            if (weaponInScene.IsValidIndex(index, "weaponInScene"))
-            {
-                GameObject prevObject = weaponInScene[index]?.gameObject;
-                previousWeaponID = weaponInScene[index]?.weaponID ?? -1;
+            previousWeaponID = weapon.weaponID;
 
-                if (prevObject != null)
-                {
-                    Destroy(prevObject, 1f);
-                }
+            if (weaponInScene != null)
+            {
+                Destroy(weaponInScene.gameObject, 1f);
+                weaponInScene = null;
             }
         }
 
-        weapons[index] = weapon;
-        CreateWeaponInScene(false, index);
+        weapon = newWeapon;
+        CreateWeaponInScene();
+
+        if (_statsInUI != null)
+        {
+            _statsInUI.SetWeaponInHUD(0, weapon.spr);
+        }
 
         return previousWeaponID;
     }
 
     public void UpdateWeaponInAction()
     {
-        changesInWeapons?.Invoke();
+        weaponChanged?.Invoke();
     }
 
     // ---- ROOM STATS ---- //
@@ -644,59 +611,18 @@ public class PlayerStats : MonoBehaviour {
         return dmg;
     }
 
-    // ---- WEAPON MANAGEMENT ---- //
+    // ---- WEAPON MANAGEMENT (Solo 1 arma) ---- //
     private void InitialWeapon()
     {
-        if (weapons == null || weapons.Count == 0) return;
+        if (weapon == null) return;
         if (weaponParent == null)
         {
-            Debug.LogError("[PlayerStats] weaponParent no está asignado. No se pueden crear armas.");
+            Debug.LogError("[PlayerStats] weaponParent no está asignado. No se puede crear arma.");
             return;
-        }
-
-        for(int i = 0; i < weapons.Count; i++)
-        {
-            if(weapons[i] != null)
-            {
-                WeaponSystem newWeapon = Instantiate(
-                    weapons[i].gameObject,
-                    weaponParent.transform.position,
-                    Quaternion.identity,
-                    weaponParent.transform
-                ).GetComponent<WeaponSystem>();
-
-                if (newWeapon != null)
-                {
-                    weaponInScene.Add(newWeapon);
-                }
-            }
-        }
-
-        changesInWeapons?.Invoke();
-    }
-
-    private void CreateWeaponInScene(bool isNew, int index = 0)
-    {
-        if (weaponParent == null || !weapons.IsValidIndex(index))
-        {
-            Debug.LogWarning($"[PlayerStats] No se puede crear arma en índice {index}");
-            return;
-        }
-
-        if (weapons[index] == null)
-        {
-            Debug.LogWarning($"[PlayerStats] Arma en índice {index} es null");
-            return;
-        }
-
-        // Asegurar que weaponInScene tenga el tamaño correcto
-        while (weaponInScene.Count <= index)
-        {
-            weaponInScene.Add(null);
         }
 
         WeaponSystem newWeapon = Instantiate(
-            weapons[index].gameObject,
+            weapon.gameObject,
             weaponParent.transform.position,
             Quaternion.identity,
             weaponParent.transform
@@ -704,10 +630,33 @@ public class PlayerStats : MonoBehaviour {
 
         if (newWeapon != null)
         {
-            weaponInScene[index] = newWeapon;
+            weaponInScene = newWeapon;
         }
 
-        changesInWeapons?.Invoke();
+        weaponChanged?.Invoke();
+    }
+
+    private void CreateWeaponInScene()
+    {
+        if (weaponParent == null || weapon == null)
+        {
+            Debug.LogWarning($"[PlayerStats] No se puede crear arma");
+            return;
+        }
+
+        WeaponSystem newWeapon = Instantiate(
+            weapon.gameObject,
+            weaponParent.transform.position,
+            Quaternion.identity,
+            weaponParent.transform
+        ).GetComponent<WeaponSystem>();
+
+        if (newWeapon != null)
+        {
+            weaponInScene = newWeapon;
+        }
+
+        weaponChanged?.Invoke();
     }
 
     private void ResetColor()
@@ -722,31 +671,14 @@ public class PlayerStats : MonoBehaviour {
     }
 
     // ---- FUNCION INTEGRA: WEAPON CHANCES ---- //
-    public bool ComprobationMissChance()
-    {
-        if (!_generalStats.IsValidIndex(8))
-            return false;
-
-        int rnd = UnityEngine.Random.Range(0, 100);
-
-        if(rnd < _generalStats[8])
-        {
-            missChance?.Invoke();
-            FloatTextManager.CreateText(transform.position, TypeColor.MissChance, "47", false, true);
-            return true;
-        }
-
-        return false;
-    }
-
     public bool ComprobationCriticalChance()
     {
-        if (!_generalStats.IsValidIndex(7))
+        if (!_generalStats.IsValidIndex(6))
             return false;
 
         int rnd = UnityEngine.Random.Range(0, 100);
 
-        if (rnd < _generalStats[7])
+        if (rnd < _generalStats[6])
         {
             criticalChance?.Invoke();
             FloatTextManager.CreateText(transform.position, TypeColor.CriticalChance, "48", false, true);
