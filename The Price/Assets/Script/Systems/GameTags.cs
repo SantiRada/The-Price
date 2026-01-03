@@ -44,4 +44,13 @@ public static class GameTags
         if (component == null || component.gameObject == null) return false;
         return component.CompareTag(tag);
     }
+
+    /// <summary>
+    /// Verifica si un Collider2D tiene un tag específico de manera segura
+    /// </summary>
+    public static bool HasTag(this Collider2D collider, string tag)
+    {
+        if (collider == null || collider.gameObject == null) return false;
+        return collider.CompareTag(tag);
+    }
 }
