@@ -20,7 +20,7 @@ public class SkillLaunched : SkillManager {
     {
         if (typeShow == TypeShowSkill.launched)
         {
-            _rb2d.velocity = direction * _player.GetterStats(3, false);
+            _rb2d.linearVelocity = direction * _player.GetterStats(3, false);
         }
     }
     protected override void TakeEffect() { Debug.Log("Skill Launched!"); }

@@ -41,13 +41,13 @@ public class PlayerMovement : MonoBehaviour {
         if (isDashing) return;
 
         if (_canMove && !Pause.inPause && Pause.state == State.Game) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * (int)_playerStats.GetterStats(2, false) * Time.fixedDeltaTime);
-        else _rigidbody2D.velocity = Vector2.zero;
+        else _rigidbody2D.linearVelocity = Vector2.zero;
     }
     private void Movement()
     {
         if (!_canMove) return;
 
-        if(_rigidbody2D.velocity != Vector2.zero) _playerStats.JumpBetweenAttack();
+        if(_rigidbody2D.linearVelocity != Vector2.zero) _playerStats.JumpBetweenAttack();
 
         #region Flip
         if (_moveInput.x > 0) _spriteRenderer.flipX = true;
@@ -56,14 +56,14 @@ public class PlayerMovement : MonoBehaviour {
     }
     public IEnumerator Roll()
     {
-        // NO PUEDE RECIBIR DAÑO DURANTE EL DASH
+        // NO PUEDE RECIBIR DAï¿½O DURANTE EL DASH
         _playerStats._canReceivedDamage = false;
 
         _playerStats.JumpBetweenAttack();
         _canDash = false;
         isDashing = true;
 
-        _rigidbody2D.velocity = new Vector2(_moveInput.x, _moveInput.y).normalized * _dashingPower;
+        _rigidbody2D.linearVelocity = new Vector2(_moveInput.x, _moveInput.y).normalized * _dashingPower;
 
         yield return new WaitForSeconds(_dashingTime);
         isDashing = false;
@@ -71,7 +71,7 @@ public class PlayerMovement : MonoBehaviour {
         _canDash = true;
         PlayerActionStates.IsDashing = false;
 
-        // PUEDE RECIBIR DAÑO NUEVAMENTE
+        // PUEDE RECIBIR DAï¿½O NUEVAMENTE
         _playerStats._canReceivedDamage = true;
     }
     // ---- SETTERS & GETTERS ---- //

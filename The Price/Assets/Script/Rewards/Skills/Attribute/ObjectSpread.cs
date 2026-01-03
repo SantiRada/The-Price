@@ -19,13 +19,13 @@ public class ObjectSpread : MonoBehaviour {
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            // EMPUJAR AL ENEMIGO SI ESTÁ MARCADO COMO "CANPUSH"
+            // EMPUJAR AL ENEMIGO SI ESTï¿½ MARCADO COMO "CANPUSH"
             if (canPush) StartCoroutine(PushEnemy(collision.gameObject));
 
-            // AGREGAR ESTADO AL ENEMIGO COLISIONADO SI ESTA OPCIÓN ESTÁ ACTIVA
+            // AGREGAR ESTADO AL ENEMIGO COLISIONADO SI ESTA OPCIï¿½N ESTï¿½ ACTIVA
             if (state != TypeState.Null) collision.GetComponent<EnemyManager>().AddState(state, countOfLoads);
 
-            // APLICAR DAÑO AL ENEMIGO COLISIONADO
+            // APLICAR DAï¿½O AL ENEMIGO COLISIONADO
             collision.GetComponent<EnemyManager>().TakeDamage(damage);
 
             damageAffected += damage;
@@ -47,7 +47,7 @@ public class ObjectSpread : MonoBehaviour {
                 enemyRigidbody.AddForce(direction * (intensity / 20), ForceMode2D.Impulse);
 
                 float maxVelocity = 10.0f;  // Adjust this value as needed
-                enemyRigidbody.velocity = Vector2.ClampMagnitude(enemyRigidbody.velocity, maxVelocity);
+                enemyRigidbody.linearVelocity = Vector2.ClampMagnitude(enemyRigidbody.linearVelocity, maxVelocity);
             }
             yield return new WaitForSeconds(0.05f);
         }
