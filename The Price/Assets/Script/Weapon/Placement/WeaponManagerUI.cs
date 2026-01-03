@@ -10,7 +10,7 @@ public class WeaponManagerUI : MonoBehaviour {
     [Header("Content Weapon")]
     public List<WeaponSystem> weapons = new List<WeaponSystem>();
     [Space]
-    [Tooltip("El arma exacta que aparecerá en pantalla")] public WeaponSystem weapon;
+    [Tooltip("El arma exacta que aparecerï¿½ en pantalla")] public WeaponSystem weapon;
     public InteractiveWeapon interactiveObj;
 
     [Header("UI Content")]
@@ -32,7 +32,7 @@ public class WeaponManagerUI : MonoBehaviour {
 
     [Header("Movement")]
     public GameObject[] positions;
-    [Range(0, 0.3f), Tooltip("Tiempo muerto desde la aparición hasta que puedas moverte")] public float deadTime;
+    [Range(0, 0.3f), Tooltip("Tiempo muerto desde la apariciï¿½n hasta que puedas moverte")] public float deadTime;
     [Range(0, 0.3f), Tooltip("Delay entre movimientos")] public float timeBetweenMove;
     private int _index = 0;
     private bool _inSelect = false;
@@ -183,7 +183,7 @@ public class WeaponManagerUI : MonoBehaviour {
 
         objNewWeapon.transform.position = currentWeapon[_index].transform.position;
 
-        int prevWeapon = _playerStats.SetWeapon(_index, weapon);
+        int prevWeapon = _playerStats.SetWeapon(weapon);
 
         // INSTACIAR EL ARMA QUE SE DESCARTA EN LA ESCENA SI ES ESE EL CASO
         if (prevWeapon != -1)
