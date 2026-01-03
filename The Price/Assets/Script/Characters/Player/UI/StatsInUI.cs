@@ -209,57 +209,10 @@ public class StatsInUI : MonoBehaviour {
     }
     private IEnumerator ChangePosWeapon()
     {
+        // Sistema de cambio de posición de armas eliminado
+        // Solo hay 1 arma ahora, no hay nada que cambiar
         PlayerActionStates.otherFunctionUI = false;
-        Image[] content = new Image[3];
-        WeaponSystem[] contentWeapon = new WeaponSystem[_player.weapons.Count];
-        WeaponSystem[] contentWeaponScene = new WeaponSystem[_player.weaponInScene.Count];
-
-        int newPos = 0;
-
-        for (int i = 0; i < parentWeapon.Length; i++)
-        {
-            content[i] = weapons[i];
-            if(_player.weapons.Count > i)
-            {
-                if (_player.weapons[i] != null) contentWeapon[i] = _player.weapons[i];
-                else contentWeapon[i] = null;
-            }
-            if (_player.weaponInScene.Count > i)
-            {
-                if (_player.weaponInScene[i] != null) contentWeaponScene[i] = _player.weaponInScene[i];
-                else contentWeaponScene[i] = null;
-            }
-
-            newPos = i + 1;
-            if (newPos >= weapons.Length) newPos = 0;
-
-            Vector3 newPosition = new Vector3(parentWeapon[newPos].transform.position.x, weapons[i].transform.position.y, 0);
-            StartCoroutine(OffsetMove(weapons[i].gameObject, newPosition));
-            yield return new WaitForSeconds(0.1f);
-        }
-
-        for (int i = 0; i < weapons.Length; i++)
-        {
-            newPos = i - 1;
-            if (newPos < 0) newPos = weapons.Length - 1;
-
-            // SETTEAR CAMBIOS EN STATS
-            weapons[i] = content[newPos];
-
-            // SETTEAR CAMBIOS EN PLAYER-STATS
-            if (_player.weapons.Count > i) _player.weapons[i] = contentWeapon[newPos];
-            if (_player.weaponInScene.Count > i) _player.weaponInScene[i] = contentWeaponScene[newPos];
-
-            // SETTEAR CAMBIOS EN ACTION-FOR-CONTROL-PLAYER
-            _player.UpdateWeaponInAction();
-
-            // SETTEAR CAMBIOS EN EL HUD
-            Sprite spr = _player.weapons[i] != null ? _player.weapons[i].spr : null;
-            SetWeaponInHUD(i, spr);
-        }
-
-        // CAMBIAR LAS POSICIONES EN EL HUD
-        // CAMBIAR SU POSICION EN LOS ARRAYS ORIGINALES - playerStats - 
+        yield break;
     }
     private IEnumerator OffsetMove(GameObject obj, Vector3 newPos)
     {
