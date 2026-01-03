@@ -1,0 +1,4 @@
+*.vsidx
+*.meta
+*.db-wal
+*.db-shm
