@@ -1,5 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 
+/// <summary>
+/// Sistema base para todas las armas del jugador.
+/// Simplificado para soportar solo armas a distancia.
+/// </summary>
 public abstract class WeaponSystem : MonoBehaviour {
 
     [Header("Info General")]
@@ -8,26 +12,19 @@ public abstract class WeaponSystem : MonoBehaviour {
     public int nameWeapon;
     public int descWeapon;
     public int damageWeapon;
-    public int damageFinalHit;
     [HideInInspector] public int damage;
     public bool isStaticAttack;
 
     [Header("Attack System")]
-    [HideInInspector] public int countAttack = 0;
     [HideInInspector] public bool canAttack = true;
 
     [Header("Timers")]
     public bool destroyToDetectCollision = false;
     [Range(0, 3), Tooltip("Tiempo entre ataques")] public float delayBetweenAttack;
-    [Range(0, 3), Tooltip("Tiempo que tarda en dejar de detectar un combo")] public float delayDetect = 1.75f;
     [Range(0, 2), Tooltip("Duración del ataque")] public float durationDamage = 0.35f;
-    [Range(0, 2), Tooltip("Tiempo que tarda en dejar de detectar que acabas de saltar (roll)")] public float delayDetectRoll = 0.65f;
     private float _durationDamageBase;
     private float _delayBetweenBase;
-    private float _delayDetectBase;
-    private float _delayBaseRoll;
     private bool _inAttack = false;
-    private bool _damageSubsequence = false;
 
     [Header("Private Data")]
     protected PlayerStats _playerStats;
@@ -35,38 +32,39 @@ public abstract class WeaponSystem : MonoBehaviour {
     private ActionForControlPlayer _actionUI;
     private PlayerMovement _movement;
 
-    private void Awake() { anim = GetComponent<Animator>(); }
+    private void Awake()
+    {
+        if (this.TryGetComponentSafe(out anim))
+        {
+            // Animator encontrado
+        }
+    }
+
     private void OnEnable()
     {
         _playerStats = GetComponentInParent<PlayerStats>();
-        _movement = _playerStats.GetComponent<PlayerMovement>();
-        _actionUI = _playerStats.GetComponent<ActionForControlPlayer>();
+
+        if (_playerStats != null)
+        {
+            if (_playerStats.TryGetComponentSafe(out _movement))
+            {
+                // Movement encontrado
+            }
+
+            if (_playerStats.TryGetComponentSafe(out _actionUI))
+            {
+                _actionUI.changeRotation += CalculateRotation;
+            }
+        }
 
         _delayBetweenBase = delayBetweenAttack;
         _durationDamageBase = durationDamage;
-        _delayBaseRoll = delayDetectRoll;
-        _delayDetectBase = delayDetect;
-        delayDetectRoll = 0;
-
-        PlayerStats.jumpBetween += DelayMadeJump;
 
         CalculateRotation();
-        _actionUI.changeRotation += CalculateRotation;
     }
+
     private void Update()
     {
-        delayDetect -= Time.deltaTime;
-        if (delayDetect <= 0)
-        {
-            countAttack = 0;
-            delayDetect = _delayDetectBase;
-        }
-
-        if(delayDetectRoll > 0)
-        {
-            delayDetectRoll -= Time.deltaTime;
-        }else { _damageSubsequence = false; }
-
         if (!canAttack)
         {
             delayBetweenAttack -= Time.deltaTime;
@@ -85,83 +83,80 @@ public abstract class WeaponSystem : MonoBehaviour {
             }
         }
     }
-    private void DelayMadeJump()
-    {
-        delayDetectRoll = _delayBaseRoll;
-        _damageSubsequence = true;
-    }
+
     public void PrepareAttack()
     {
         if (!canAttack) return;
-        if (!_playerStats.canLaunchAttack) return;
+        if (_playerStats == null || !_playerStats.canLaunchAttack) return;
 
         _playerStats.LaunchAttack();
 
         // FUNCIONAMIENTO DE DELAY ENTRE ATAQUES
         delayBetweenAttack = _delayBetweenBase;
-        delayDetect = _delayDetectBase;
 
-        if(isStaticAttack) _movement.SetMove(false);
+        if(isStaticAttack && _movement != null)
+        {
+            _movement.SetMove(false);
+        }
 
-        countAttack++;
-        anim.SetBool("Attack", true);
+        if (anim != null)
+        {
+            anim.SetBool("Attack", true);
+        }
+
         _inAttack = true;
 
-        bool missChance = _playerStats.ComprobationMissChance();
-        bool criticalChance = _playerStats.ComprobationCriticalChance();
+        // Calcular daño con probabilidad de crítico
+        damage = damageWeapon;
 
-        if(countAttack >= 3)
+        bool criticalChance = _playerStats != null && _playerStats.ComprobationCriticalChance();
+        if (criticalChance)
         {
-            damage = damageFinalHit;
-            delayBetweenAttack = (_delayBetweenBase * 1.5f);
-            countAttack = 0;
-
-            if (missChance) { damage = 0; }
-            if (criticalChance) { damage *= 2; }
-
-            if (_damageSubsequence) damage += (int)(_playerStats.GetterStats(6, true) * damage / 100);
-            
-            FinalHit();
-        }
-        else
-        {
-            damage = damageWeapon;
-
-            if (missChance) damage = 0;
-            if (criticalChance) damage *= 2;
-
-            if (_damageSubsequence) damage += (int)(_playerStats.GetterStats(6, true) * damage / 100);
-
-            Attack();
+            damage *= 2;
         }
 
+        Attack();
         canAttack = false;
     }
+
     private void CalculateRotation()
     {
-
+        // Implementación específica en clases derivadas si es necesario
     }
+
     public abstract void Attack();
-    public abstract void FinalHit();
+
     // ---- EVENTO DEL ANIMATOR ---- //
     public void FinishAttack()
     {
-        anim.SetBool("Attack", false);
+        if (anim != null)
+        {
+            anim.SetBool("Attack", false);
+        }
 
-        if(isStaticAttack) _movement.SetMove(true);
+        if(isStaticAttack && _movement != null)
+        {
+            _movement.SetMove(true);
+        }
 
-        gameObject.tag = "Weapon";
+        gameObject.tag = GameTags.Weapon;
         _inAttack = false;
     }
+
     // ---- DESTROYED ---- //
     private void OnDisable()
     {
-        PlayerStats.jumpBetween -= DelayMadeJump;
-        _actionUI.changeRotation -= CalculateRotation;
+        if (_actionUI != null)
+        {
+            _actionUI.changeRotation -= CalculateRotation;
+        }
     }
+
     private void OnDestroy()
     {
-        PlayerStats.jumpBetween -= DelayMadeJump;
-        _actionUI.changeRotation -= CalculateRotation;
+        if (_actionUI != null)
+        {
+            _actionUI.changeRotation -= CalculateRotation;
+        }
     }
 }
