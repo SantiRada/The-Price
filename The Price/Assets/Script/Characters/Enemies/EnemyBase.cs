@@ -314,12 +314,6 @@ public abstract class EnemyBase : MonoBehaviour {
         if (dmg > 0)
         {
             StartCoroutine(TakeDamage(dmg));
-
-            // Aplicar daño al jugador (robo de vida)
-            if (_playerStats != null)
-            {
-                _playerStats.ApplyDamage(dmg);
-            }
         }
     }
 
@@ -338,11 +332,6 @@ public abstract class EnemyBase : MonoBehaviour {
         }
 
         StartCoroutine(TakeDamage(dmg));
-
-        if (_playerStats != null)
-        {
-            _playerStats.ApplyDamage(dmg);
-        }
     }
 
     // ---- GETTERS && SETTERS ---- //
