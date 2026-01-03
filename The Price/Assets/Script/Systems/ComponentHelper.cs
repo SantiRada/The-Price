@@ -51,9 +51,31 @@ public static class ComponentHelper
     }
 
     /// <summary>
+    /// Busca un componente en el Collider2D de forma segura
+    /// </summary>
+    public static bool TryGetComponentSafe<T>(this Collider2D collider, out T component) where T : Component
+    {
+        component = null;
+        if (collider == null || collider.gameObject == null)
+        {
+            Debug.LogWarning($"[ComponentHelper] Intentando obtener componente {typeof(T).Name} de un Collider2D null");
+            return false;
+        }
+
+        component = collider.GetComponent<T>();
+        if (component == null)
+        {
+            Debug.LogWarning($"[ComponentHelper] No se encontró el componente {typeof(T).Name} en {collider.name}");
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
     /// Busca un componente en la escena de forma segura
     /// </summary>
-    public static bool TryFindObjectSafe<T>(out T obj, string contextName = "") where T : Object
+    public static bool TryFindObjectSafe<T>(out T obj, string contextName = "") where T : UnityEngine.Object
     {
         obj = Object.FindAnyObjectByType<T>();
 
@@ -70,7 +92,7 @@ public static class ComponentHelper
     /// <summary>
     /// Busca un componente en la escena sin warnings (para componentes opcionales)
     /// </summary>
-    public static bool TryFindObjectQuiet<T>(out T obj) where T : Object
+    public static bool TryFindObjectQuiet<T>(out T obj) where T : UnityEngine.Object
     {
         obj = Object.FindAnyObjectByType<T>();
         return obj != null;
@@ -117,7 +139,7 @@ public static class ComponentHelper
     }
 
     /// <summary>
-    /// Obtiene un elemento de un array de forma segura
+    /// Obtiene un elemento de un array de forma segura (para tipos de referencia)
     /// </summary>
     public static T GetSafe<T>(this T[] array, int index, T defaultValue = default) where T : class
     {
@@ -128,7 +150,18 @@ public static class ComponentHelper
     }
 
     /// <summary>
-    /// Obtiene un elemento de una lista de forma segura
+    /// Obtiene un elemento de un array de forma segura (para tipos de valor)
+    /// </summary>
+    public static T GetSafeValue<T>(this T[] array, int index, T defaultValue = default) where T : struct
+    {
+        if (!array.IsValidIndex(index))
+            return defaultValue;
+
+        return array[index];
+    }
+
+    /// <summary>
+    /// Obtiene un elemento de una lista de forma segura (para tipos de referencia)
     /// </summary>
     public static T GetSafe<T>(this System.Collections.Generic.List<T> list, int index, T defaultValue = default) where T : class
     {
@@ -136,6 +169,17 @@ public static class ComponentHelper
             return defaultValue;
 
         return list[index] ?? defaultValue;
+    }
+
+    /// <summary>
+    /// Obtiene un elemento de una lista de forma segura (para tipos de valor)
+    /// </summary>
+    public static T GetSafeValue<T>(this System.Collections.Generic.List<T> list, int index, T defaultValue = default) where T : struct
+    {
+        if (!list.IsValidIndex(index))
+            return defaultValue;
+
+        return list[index];
     }
 
     /// <summary>
@@ -164,7 +208,7 @@ public static class ComponentHelper
     /// <summary>
     /// Verifica si un objeto de Unity es válido (no null y no destruido)
     /// </summary>
-    public static bool IsValid(this Object obj)
+    public static bool IsValid(this UnityEngine.Object obj)
     {
         return obj != null && obj;
     }
@@ -174,7 +218,7 @@ public static class ComponentHelper
     /// </summary>
     public static void DestroySafe(this GameObject obj, float delay = 0f)
     {
-        if (obj.IsValid())
+        if (obj != null && obj)
         {
             if (delay > 0)
                 Object.Destroy(obj, delay);
@@ -188,7 +232,7 @@ public static class ComponentHelper
     /// </summary>
     public static void DestroySafe(this Component component, float delay = 0f)
     {
-        if (component.IsValid())
+        if (component != null && component)
         {
             if (delay > 0)
                 Object.Destroy(component, delay);

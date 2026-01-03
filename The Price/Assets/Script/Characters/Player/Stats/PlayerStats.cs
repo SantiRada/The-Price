@@ -561,11 +561,11 @@ public class PlayerStats : MonoBehaviour {
     {
         if (max)
         {
-            return _generalMaxStats.GetSafe(pos, 0f);
+            return _generalMaxStats.GetSafeValue(pos, 0f);
         }
         else
         {
-            return _generalStats.GetSafe(pos, 0f);
+            return _generalStats.GetSafeValue(pos, 0f);
         }
     }
 
