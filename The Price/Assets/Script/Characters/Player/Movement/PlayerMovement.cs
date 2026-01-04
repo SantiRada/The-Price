@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (!_canMove) return;
 
-        if(_rigidbody2D.velocity != Vector2.zero) _playerStats.JumpBetweenAttack();
+        if(_rigidbody2D.linearVelocity != Vector2.zero) _playerStats.JumpBetweenAttack();
 
         #region Flip
         if (_moveInput.x > 0) _spriteRenderer.flipX = true;
@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour {
         _canDash = false;
         isDashing = true;
 
-        _rigidbody2D.velocity = new Vector2(_moveInput.x, _moveInput.y).normalized * _dashingPower;
+        _rigidbody2D.linearVelocity = new Vector2(_moveInput.x, _moveInput.y).normalized * _dashingPower;
 
         yield return new WaitForSeconds(_dashingTime);
         isDashing = false;
