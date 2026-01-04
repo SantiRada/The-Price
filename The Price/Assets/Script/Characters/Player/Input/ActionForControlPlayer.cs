@@ -10,7 +10,7 @@ public class ActionForControlPlayer : MonoBehaviour {
     private CrosshairData _crosshair;
     private PlayerInput _playerInput;
     private PlayerStats _playerStats;
-    public List<WeaponSystem> _weapon = new List<WeaponSystem>();
+    public WeaponSystem _weapon; // Solo 1 arma
 
     [Header("UI Content")]
     private StatsInUI _statsInUI;
@@ -24,7 +24,6 @@ public class ActionForControlPlayer : MonoBehaviour {
     // EVENTOS
     public static event Action skillOne;
     public static event Action skillTwo;
-    public static event Action skillFragments;
     public event Action changeRotation;
 
     public static bool detectClic = true;
@@ -117,7 +116,7 @@ public class ActionForControlPlayer : MonoBehaviour {
         }
         if (context.phase == InputActionPhase.Performed)
         {
-            // ENVIAR A LA SIGUIENTE SALA AL CLIQUEAR ESTO SI EST¡ MUERTO
+            // ENVIAR A LA SIGUIENTE SALA AL CLIQUEAR ESTO SI ESTÔøΩ MUERTO
             if (_playerStats.isDead) { _playerStats.deadSystem.DiePlayer(); }
             else { if (_movement.GetCanDashing() && _movement.GetCanMove()) { _movement.StartCoroutine("Roll"); } }
         }
@@ -136,44 +135,12 @@ public class ActionForControlPlayer : MonoBehaviour {
         }
         if(context.phase == InputActionPhase.Performed)
         {
-            // ENVIAR A LA SIGUIENTE SALA AL CLIQUEAR ESTO SI EST¡ MUERTO
+            // ENVIAR A LA SIGUIENTE SALA AL CLIQUEAR ESTO SI EST√Å MUERTO
             if (_playerStats.isDead) _playerStats.deadSystem.DiePlayer();
 
-            if (_weapon.Count > 0) if(_weapon[0] != null) _weapon[0].PrepareAttack();
+            if (_weapon != null) _weapon.PrepareAttack();
         }
         if(context.phase == InputActionPhase.Canceled) PlayerActionStates.IsAttacking = false;
-    }
-    public void AttackTwo(InputAction.CallbackContext context)
-    {
-        if (!detectClic) return;
-        if (Pause.state != State.Game) return;
-
-        if (context.phase == InputActionPhase.Performed)
-        {
-            if (_weapon.Count > 1) if(_weapon[1] != null) _weapon[1].PrepareAttack();
-        }
-        if (context.phase == InputActionPhase.Started)
-        {
-            PlayerActionStates.IsAttackingTwo = true;
-            _inputSystem.ApplyAnimation("AttackTwo");
-        }
-        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsAttackingTwo = false;
-    }
-    public void AttackThree(InputAction.CallbackContext context)
-    {
-        if (!detectClic) return;
-        if (Pause.state != State.Game) return;
-
-        if (context.phase == InputActionPhase.Performed)
-        {
-            if (_weapon.Count > 2) if (_weapon[2] != null) _weapon[2].PrepareAttack();
-        }
-        if (context.phase == InputActionPhase.Started)
-        {
-            PlayerActionStates.IsAttackingThree = true;
-            _inputSystem.ApplyAnimation("AttackThree");
-        }
-        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsAttackingThree = false;
     }
     // ----------------------------- //
     public void Use(InputAction.CallbackContext context)
@@ -188,7 +155,7 @@ public class ActionForControlPlayer : MonoBehaviour {
         }
         if(context.phase == InputActionPhase.Performed)
         {
-            // ENVIAR A LA SIGUIENTE SALA AL CLIQUEAR ESTO SI EST¡ MUERTO
+            // ENVIAR A LA SIGUIENTE SALA AL CLIQUEAR ESTO SI ESTÔøΩ MUERTO
             if (_playerStats.isDead) _playerStats.deadSystem.DiePlayer();
         }
         if (context.phase == InputActionPhase.Canceled)
@@ -228,21 +195,6 @@ public class ActionForControlPlayer : MonoBehaviour {
 
         if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsSkillTwo = false;
     }
-    public void SkillThree(InputAction.CallbackContext context)
-    {
-        if (!detectClic) return;
-        if (Pause.state != State.Game) return;
-
-        if (context.phase == InputActionPhase.Started)
-        {
-            PlayerActionStates.IsSkillThree = true;
-            _inputSystem.ApplyAnimation("SkillThree");
-        }
-
-        if (context.phase == InputActionPhase.Performed) skillFragments?.Invoke();
-
-        if (context.phase == InputActionPhase.Canceled) PlayerActionStates.IsSkillThree = false;
-    }
     public void StaticAim(InputAction.CallbackContext context)
     {
         if (!detectClic) return;
@@ -275,6 +227,9 @@ public class ActionForControlPlayer : MonoBehaviour {
     }
     public void PauseAction()
     {
+        // CR√çTICO: No permitir pausar durante loading
+        if (LoadingScreen.inLoading) return;
+
         _inputSystem.ApplyAnimation("Pause");
         if (Pause.state == State.Game)
         {
@@ -369,12 +324,9 @@ public class ActionForControlPlayer : MonoBehaviour {
     public static class PlayerActionStates
     {
         public static bool IsDashing { get; set; }
-        public static bool IsAttacking { get; set; }
-        public static bool IsAttackingTwo { get; set; }
-        public static bool IsAttackingThree { get; set; }
+        public static bool IsAttacking { get; set; } // Solo 1 arma
         public static bool IsSkillOne { get; set; }
-        public static bool IsSkillTwo { get; set; }
-        public static bool IsSkillThree { get; set; }
+        public static bool IsSkillTwo { get; set; } // Solo 2 habilidades
         public static bool IsUse { get; set; }
         public static bool InStats { get; set; }
 
@@ -388,5 +340,5 @@ public class ActionForControlPlayer : MonoBehaviour {
         public static bool inPause {  get; set; } // Start
     }
     // ---- FUNCION INTEGRA X EVENTO ---- //
-    private void ChangesWeapons() { _weapon = _playerStats.weaponInScene; }
+    private void ChangesWeapons() { _weapon = _playerStats.weaponInScene; } // Solo 1 arma
 }

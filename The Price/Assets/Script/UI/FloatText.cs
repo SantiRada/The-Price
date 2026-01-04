@@ -27,7 +27,7 @@ public class FloatText : MonoBehaviour {
     }
     private void Update()
     {
-        if (LoadingScreen.inLoading || Pause.inPause || Pause.state != State.Game) return;
+        if (!Pause.IsGamePlaying()) return;
 
         // DESVANECIMIENTO DEL TEXTO
         timeInScreen -= Time.deltaTime;

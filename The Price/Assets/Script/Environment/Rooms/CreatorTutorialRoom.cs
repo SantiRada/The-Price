@@ -23,9 +23,9 @@ public class CreatorTutorialRoom : MonoBehaviour {
             _typeRooms[7] = TypeRoom.MiniBoss;
             _typeRooms[8] = TypeRoom.Shop;
             _typeRooms[9] = TypeRoom.Skill;
-            _typeRooms[15] = TypeRoom.Boss;
+            _typeRooms[15] = TypeRoom.Gold;
             _typeRooms[16] = TypeRoom.Astral;
-            _typeRooms[17] = TypeRoom.MaxBoss;
+            _typeRooms[17] = TypeRoom.Boss; // Boss final en lugar de MaxBoss
 
             // Asignar salas Objetos
             SelectedOptionalRooms(TypeRoom.Object, new int[] { 4, 7, 11, 13 }, 2, 4);
@@ -51,9 +51,9 @@ public class CreatorTutorialRoom : MonoBehaviour {
             _typeRooms[7] = TypeRoom.MiniBoss;
             _typeRooms[8] = TypeRoom.Shop;
             _typeRooms[9] = TypeRoom.Skill;
-            _typeRooms[15] = TypeRoom.Boss;
+            _typeRooms[15] = TypeRoom.Gold;
             _typeRooms[16] = TypeRoom.Astral;
-            _typeRooms[17] = TypeRoom.MaxBoss;
+            _typeRooms[17] = TypeRoom.Boss; // Boss final en lugar de MaxBoss
 
             // Asignar salas Objetos
             SelectedOptionalRooms(TypeRoom.Object, new int[] { 4, 7, 11, 13 }, 2, 4);

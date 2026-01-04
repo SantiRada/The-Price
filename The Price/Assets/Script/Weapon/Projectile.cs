@@ -18,6 +18,11 @@ public class Projectile : MonoBehaviour {
     private Rigidbody2D _rb2d;
     private Collider2D _collider;
 
+    // Object Pooling
+    private ProjectilePool _pool;
+    private GameObject _prefab;
+    private bool _usePooling = false;
+
     private void OnEnable()
     {
         _collider = GetComponent<Collider2D>();
@@ -46,11 +51,48 @@ public class Projectile : MonoBehaviour {
         float angle = Mathf.Atan2(target.y, target.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
+    /// <summary>
+    /// Configura el pooling para este proyectil
+    /// </summary>
+    public void SetPool(ProjectilePool pool, GameObject prefab)
+    {
+        _pool = pool;
+        _prefab = prefab;
+        _usePooling = true;
+    }
+
+    /// <summary>
+    /// Devuelve el proyectil al pool o lo destruye si no usa pooling
+    /// </summary>
+    private void ReturnToPool()
+    {
+        if (_usePooling && _pool != null && _prefab != null)
+        {
+            // Resetear valores antes de devolver al pool
+            canAreaDamage = false;
+            canTraverse = false;
+            damage = 0;
+            _rb2d.velocity = Vector2.zero;
+
+            _pool.ReturnProjectile(_prefab, this);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void Update()
     {
         if (LoadingScreen.inLoading || Pause.state != State.Game) return;
 
-        if(_distanceToAttack != 0) if (Vector3.Distance(_initPos, transform.position) > _distanceToAttack) { Destroy(gameObject); }
+        if(_distanceToAttack != 0)
+        {
+            if (Vector3.Distance(_initPos, transform.position) > _distanceToAttack)
+            {
+                ReturnToPool();
+            }
+        }
 
         _rb2d.linearVelocity = _target * speedMovement;
     }
@@ -61,8 +103,15 @@ public class Projectile : MonoBehaviour {
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && whoIsBoss != 0) collision.gameObject.GetComponent<PlayerStats>().TakeDamage(gameObj, damage);
+        if (collision.gameObject.CompareTag("Player") && whoIsBoss != 0)
+        {
+            PlayerStats playerStats = collision.gameObject.GetComponent<PlayerStats>();
+            if (playerStats != null)
+            {
+                playerStats.TakeDamage(gameObj, damage);
+            }
+        }
 
-        Destroy(gameObject);
+        ReturnToPool();
     }
 }

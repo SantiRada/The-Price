@@ -4,7 +4,7 @@ using UnityEngine;
 public class FallingAttack : AttackBoss
 {
 
-    [Tooltip("Si es verdadero, el ataque caerá sobre la posición del jugador en lugar de sobre el enemigo")]
+    [Tooltip("Si es verdadero, el ataque caerï¿½ sobre la posiciï¿½n del jugador en lugar de sobre el enemigo")]
     public bool posInPlayer;
 
     protected override Vector3 GetPosition()
@@ -13,9 +13,32 @@ public class FallingAttack : AttackBoss
         else return enemyParent.transform.position;
     }
 
+    protected override void CreateGuide()
+    {
+        if (guideObj != null)
+        {
+            Vector3 targetPos = GetPosition();
+            guideInScene = Instantiate(guideObj, targetPos, Quaternion.identity);
+
+            // Configurar guÃ­a de punto en la posiciÃ³n donde caerÃ¡ el ataque
+            PointGuide pointGuide = guideInScene.GetComponent<PointGuide>();
+            if (pointGuide != null)
+            {
+                PointGuideConfig config = new PointGuideConfig
+                {
+                    target = targetPos,
+                    size = 1.5f // TamaÃ±o visual del marcador
+                };
+                pointGuide.Configure(config);
+            }
+
+            Destroy(guideInScene, timeToGuide);
+        }
+    }
+
     protected override IEnumerator LaunchedAttack()
     {
-        // Instancia múltiples objetos de ataque con un intervalo entre cada uno
+        // Instancia mï¿½ltiples objetos de ataque con un intervalo entre cada uno
         for (int i = 0; i < countCreated; i++)
         {
             ObjectPerDamage obj = Instantiate(visualAttack.gameObject, posInScene, Quaternion.identity).GetComponent<ObjectPerDamage>();

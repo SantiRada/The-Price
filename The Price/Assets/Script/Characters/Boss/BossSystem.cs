@@ -6,9 +6,12 @@ public enum TypeBoss { minBoss, Boss, maxBoss }
 
 public class BossSystem : EnemyBase
 {
+    [Header("Boss Configuration")]
+    [Tooltip("ScriptableObject con toda la configuraci�n del boss (RECOMENDADO)")]
+    public BossData bossData;
 
-    [Header("Manager Content")]
-    [Tooltip("Cantidad total de fases que tendr� el boss durante el combate")]
+    [Header("Manual Configuration (Legacy - usar solo si no hay BossData)")]
+    [Tooltip("Cantidad total de fases que tendr� el boss durante el combate")]
     public int countPhase;
 
     [Tooltip("Este BOSS cambia de fase por cantidad de vida (o por tiempo).")]
@@ -26,14 +29,14 @@ public class BossSystem : EnemyBase
     private int indexPhase = 0;
 
     [Header("General Stats")]
-    [Tooltip("Identificador del boss para l�gica de guardado u otros sistemas")]
+    [Tooltip("Identificador del boss para l�gica de guardado u otros sistemas")]
     public int nameBoss;
 
     [Tooltip("Unicamente sirve para el JSON de guardado de muertes.")]
     public TypeBoss typeBoss;
 
     [Header("Move & Attack")]
-    [Tooltip("Si lo es, tiene m�s probabilidad de atacar que de moverse por el mapa.")]
+    [Tooltip("Si lo es, tiene m�s probabilidad de atacar que de moverse por el mapa.")]
     public bool isAggressive;
 
     [Tooltip("Si es TRUE, en fases posteriores incluye todos los ataques de fases previas.")]
@@ -51,17 +54,99 @@ public class BossSystem : EnemyBase
 
     private void Start()
     {
+        // Cargar configuración desde BossData si está disponible
+        if (bossData != null)
+        {
+            LoadFromBossData();
+        }
+
         _bossUI = FindAnyObjectByType<BossUI>();
         _typeMovement.AddRange(GetComponents<TypeMovement>());
 
-        // Instancia los ataques definidos y los asocia al boss
-        for (int i = 0; i < attacks.Count; i++)
+        // Instanciar patrones de movimiento desde BossData si están definidos
+        if (bossData != null && bossData.movementPatternPrefabs.Count > 0)
         {
-            _typeAttacks.Add(Instantiate(attacks[i].gameObject, transform.position, Quaternion.identity, transform).GetComponent<AttackBoss>());
+            foreach (GameObject movementPrefab in bossData.movementPatternPrefabs)
+            {
+                GameObject movementObj = Instantiate(movementPrefab, transform);
+                TypeMovement movement = movementObj.GetComponent<TypeMovement>();
+                if (movement != null)
+                {
+                    _typeMovement.Add(movement);
+                }
+            }
+        }
+
+        // Instancia los ataques definidos y los asocia al boss
+        List<AttackBoss> attacksToInstantiate = (bossData != null && bossData.attackPrefabs.Count > 0)
+            ? ConvertAttackPrefabsToAttackBoss(bossData.attackPrefabs)
+            : attacks;
+
+        for (int i = 0; i < attacksToInstantiate.Count; i++)
+        {
+            _typeAttacks.Add(Instantiate(attacksToInstantiate[i].gameObject, transform.position, Quaternion.identity, transform).GetComponent<AttackBoss>());
         }
 
         ComprobateDistanceToPlayer();
         StartCoroutine("Presentation");
+    }
+
+    /// <summary>
+    /// Carga la configuración del boss desde el ScriptableObject BossData
+    /// </summary>
+    private void LoadFromBossData()
+    {
+        // Identificación
+        nameBoss = bossData.bossID;
+        typeBoss = bossData.bossType;
+
+        // Stats base
+        health = bossData.maxHealth;
+        shield = bossData.initialShield;
+        damage = bossData.baseDamage;
+        speed = bossData.baseSpeed;
+        defense = bossData.defense;
+
+        // Sistema de fases
+        changePhasePerLife = bossData.changePhaseByHealth;
+        countPhase = bossData.GetPhaseCount();
+
+        limiterPerPhase.Clear();
+        countAttacksPerPhase.Clear();
+
+        for (int i = 0; i < bossData.phases.Count; i++)
+        {
+            limiterPerPhase.Add(bossData.phases[i].triggerValue);
+            countAttacksPerPhase.Add(bossData.phases[i].attackCount);
+        }
+
+        // Distancias de combate
+        maxDistance = bossData.maxCombatDistance;
+        minDistance = bossData.minCombatDistance;
+
+        // Comportamiento de ataque (usar primera fase como referencia)
+        if (bossData.phases.Count > 0)
+        {
+            isAggressive = bossData.phases[0].aggressionLevel > 50;
+            includeAllAttacks = bossData.phases[0].includeAllPreviousAttacks;
+        }
+    }
+
+    /// <summary>
+    /// Convierte los prefabs de ataque de BossData en lista de AttackBoss
+    /// </summary>
+    private List<AttackBoss> ConvertAttackPrefabsToAttackBoss(List<GameObject> prefabs)
+    {
+        List<AttackBoss> result = new List<AttackBoss>();
+        foreach (GameObject prefab in prefabs)
+        {
+            AttackBoss attack = prefab.GetComponent<AttackBoss>();
+            if (attack != null)
+            {
+                result.Add(attack);
+            }
+        }
+        return result;
     }
     private void Update()
     {
@@ -101,6 +186,12 @@ public class BossSystem : EnemyBase
         CancelEnemy(true);
         if ((countAttacksPerPhase.Count - 1) > indexPhase) indexPhase++;
 
+        // Aplicar modificadores de la nueva fase desde BossData
+        if (bossData != null && indexPhase < bossData.phases.Count)
+        {
+            ApplyPhaseModifiers(indexPhase);
+        }
+
         // anim.SetBool("ChangePhase", true);
 
         yield return new WaitForSeconds(2f);
@@ -108,6 +199,35 @@ public class BossSystem : EnemyBase
         // anim.SetBool("ChangePhase", false);
 
         CancelEnemy(true);
+    }
+
+    /// <summary>
+    /// Aplica los modificadores de stats de una fase específica
+    /// </summary>
+    private void ApplyPhaseModifiers(int phaseIndex)
+    {
+        BossPhaseData phaseData = bossData.GetPhaseData(phaseIndex);
+        if (phaseData == null) return;
+
+        // Aplicar multiplicadores de stats
+        damage = Mathf.RoundToInt(bossData.baseDamage * phaseData.damageMultiplier);
+        speed = bossData.baseSpeed * phaseData.speedMultiplier;
+
+        // Actualizar comportamiento de agresión
+        isAggressive = phaseData.aggressionLevel > 50;
+
+        // Instanciar efecto visual de cambio de fase si existe
+        if (phaseData.phaseChangeEffect != null)
+        {
+            Instantiate(phaseData.phaseChangeEffect, transform.position, Quaternion.identity);
+        }
+
+        // Actualizar color de la UI si está disponible
+        if (_bossUI != null)
+        {
+            // Aquí se podría actualizar el color de la barra de vida
+            // _bossUI.SetHealthBarColor(phaseData.phaseColor);
+        }
     }
     private IEnumerator Presentation()
     {
@@ -150,14 +270,14 @@ public class BossSystem : EnemyBase
 
         for (int i = 0; i < _typeAttacks.Count; i++)
         {
-            // GUARDA EL ATAQUE DE M�NIMA DISTANCIA
+            // GUARDA EL ATAQUE DE M�NIMA DISTANCIA
             if (_typeAttacks[i].distanceToAttack < minDistance)
             {
                 minDistance = _typeAttacks[i].distanceToAttack;
                 indexMin = i;
             }
 
-            // GUARDA EL ATAQUE DE M�XIMA DISTANCIA
+            // GUARDA EL ATAQUE DE M�XIMA DISTANCIA
             if (_typeAttacks[i].distanceToAttack > maxDistance) { maxDistance = _typeAttacks[i].distanceToAttack; }
         }
     }

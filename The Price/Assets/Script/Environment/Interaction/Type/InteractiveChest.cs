@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum TypeChest { Gold, Souls, Bomb }
+public enum TypeChest { Gold, Bomb }
 public class InteractiveChest : Interactive {
 
     public TypeChest typeChest;
@@ -17,7 +17,6 @@ public class InteractiveChest : Interactive {
         _anim.SetBool("Open", true);
 
         if(typeChest == TypeChest.Gold) { ManagerGold.CreateGold(transform.position, (CountGold)count); }
-        if (typeChest == TypeChest.Souls) { ManagerGold.CreateSouls(transform.position, count); }
 
         inTrigger = false;
         CloseWindow();

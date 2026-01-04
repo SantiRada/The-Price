@@ -22,9 +22,6 @@ public abstract class EnemyBase : MonoBehaviour {
     public float delayToDetectDamage;
 
     [Header("Rewards")]
-    public bool canReleaseSouls;
-    public int countSouls;
-    [Space]
     public bool canReleaseGold;
     public CountGold countGold;
 
@@ -220,13 +217,6 @@ public abstract class EnemyBase : MonoBehaviour {
     /// </summary>
     private void ReleaseRewards()
     {
-        Vector3 dropPosition = transform.position + new Vector3(0.5f, 0.5f, 0);
-
-        if (canReleaseSouls)
-        {
-            ManagerGold.CreateSouls(dropPosition, countSouls);
-        }
-
         if (canReleaseGold)
         {
             ManagerGold.CreateGold(transform.position + Vector3.one, countGold);

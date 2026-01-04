@@ -5,28 +5,27 @@ using UnityEngine;
 public abstract class AttackBoss : MonoBehaviour {
 
     [Header("Visual")]
-    [Tooltip("Prefab del ataque visual que se instanciará")] public GameObject visualAttack;
-    [Tooltip("Daño base del ataque (se suma al daño del enemigo)")] public int damage;
+    [Tooltip("Prefab del ataque visual que se instanciarï¿½")] public GameObject visualAttack;
+    [Tooltip("Daï¿½o base del ataque (se suma al daï¿½o del enemigo)")] public int damage;
     [Tooltip("Distancia total del ataque respecto a su punto de origen")] public float distanceToAttack;
     [Range(0f, 5f)] [Tooltip("Tiempo que permanece activo el objeto de ataque antes de destruirse")] public float timeToDestroy;
     public bool moveInAttack;
 
     [Header("Repeaters")]
-    [Tooltip("Cantidad de instancias de ataque que se crearán")] public int countCreated;
-    [Tooltip("Tiempo entre creación de cada piso")] public float timeBetweenCreated;
+    [Tooltip("Cantidad de instancias de ataque que se crearï¿½n")] public int countCreated;
+    [Tooltip("Tiempo entre creaciï¿½n de cada piso")] public float timeBetweenCreated;
 
     [Header("Guides")]
-    [Tooltip("Prefab visual que indica por dónde se ejecutará el ataque")] public GameObject guideObj;
-    [Tooltip("Tiempo que permanece activa la guía visual antes de desaparecer")] public float timeToGuide;
+    [Tooltip("Prefab visual que indica por dï¿½nde se ejecutarï¿½ el ataque")] public GameObject guideObj;
+    [Tooltip("Tiempo que permanece activa la guï¿½a visual antes de desaparecer")] public float timeToGuide;
 
     protected Vector3 posInScene;
     [Space]
     protected GameObject guideInScene;
-    protected event Action guideCreated;
 
     [HideInInspector] public EnemyBase enemyParent;
     protected PlayerStats _player;
-    private Vector3 _playerPosition;
+    protected Vector3 _playerPosition;
 
     private void OnEnable() { _player = FindAnyObjectByType<PlayerStats>(); }
     public IEnumerator Attack()
@@ -34,26 +33,32 @@ public abstract class AttackBoss : MonoBehaviour {
         posInScene = GetPosition();
         _playerPosition = _player.transform.position;
 
-        CreateGuide(posInScene);
+        // Cada tipo de ataque crea su propia guÃ­a con configuraciÃ³n especÃ­fica
+        CreateGuide();
 
         enemyParent.CanMove = moveInAttack;
 
         yield return new WaitForSeconds((timeToGuide - 0.25f));
 
-        // Inicia la secuencia de ataque tras mostrar la guía
+        // Inicia la secuencia de ataque tras mostrar la guï¿½a
         StartCoroutine("LaunchedAttack");
 
-        // Activa la lógica de cancelación del ataque desde el enemigo
+        // Activa la lï¿½gica de cancelaciï¿½n del ataque desde el enemigo
         enemyParent.StartCoroutine("CancelAttack");
     }
-    private void CreateGuide(Vector2 pos)
+
+    /// <summary>
+    /// Crea la guÃ­a visual especÃ­fica para este tipo de ataque.
+    /// Cada tipo de ataque implementa su propia lÃ³gica de guÃ­a.
+    /// </summary>
+    protected virtual void CreateGuide()
     {
-        guideInScene = Instantiate(guideObj, pos, Quaternion.identity);
-
-        // Evento que notifica a otros scripts que la guía fue creada
-        guideCreated?.Invoke();
-
-        Destroy(guideInScene, timeToGuide);
+        // ImplementaciÃ³n por defecto: crear guÃ­a simple en posiciÃ³n
+        if (guideObj != null)
+        {
+            guideInScene = Instantiate(guideObj, posInScene, Quaternion.identity);
+            Destroy(guideInScene, timeToGuide);
+        }
     }
     // --- FUNCION INTEGRA ---- //
     protected int GetDamage() { return (damage + enemyParent.damage); }

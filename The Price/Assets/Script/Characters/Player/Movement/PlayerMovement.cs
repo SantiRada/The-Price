@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour {
     }
     private void Update()
     {
-        if (Pause.inPause || Pause.state != State.Game) return;
+        if (!Pause.IsGamePlaying()) return;
 
         Movement();
     }
@@ -40,8 +40,8 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (isDashing) return;
 
-        if (_canMove && !Pause.inPause && Pause.state == State.Game) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * (int)_playerStats.GetterStats(2, false) * Time.fixedDeltaTime);
-        else _rigidbody2D.linearVelocity = Vector2.zero;
+        if (_canMove && Pause.IsGamePlaying()) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * (int)_playerStats.GetterStats(2, false) * Time.fixedDeltaTime);
+        else _rigidbody2D.velocity = Vector2.zero;
     }
     private void Movement()
     {

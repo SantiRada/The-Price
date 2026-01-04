@@ -7,7 +7,7 @@ public class FollowForPathfinding : MonoBehaviour {
     public float initialDelay = 1.0f;
 
     [SerializeField, Tooltip("Distancia al siguiente punto de camino")] private float _nextWaypointDistance = 1f;
-    [SerializeField, Tooltip("Distancia m�nima para recalcular el camino")] private float _repathDistance = 1f;
+    [SerializeField, Tooltip("Distancia m�nima para recalcular el camino")] private float _repathDistance = 1f;
     [SerializeField, Tooltip("Tiempo entre revisiones de camino")] private float _pathUpdateInterval = 0.5f;
     private Vector2 _lastTargetPosition;
 
@@ -47,10 +47,18 @@ public class FollowForPathfinding : MonoBehaviour {
         while (true)
         {
             yield return new WaitForSeconds(_pathUpdateInterval);
-            if (Vector2.Distance(_target.position, _lastTargetPosition) > _repathDistance && Pause.state == State.Game)
+
+            // Actualizar path si el target se movió O si no hay path válido
+            if (Pause.state == State.Game)
             {
-                UpdatePath();
-                _lastTargetPosition = _target.position;
+                bool targetMoved = Vector2.Distance(_target.position, _lastTargetPosition) > _repathDistance;
+                bool needsPath = _path == null || _path.Count == 0;
+
+                if (targetMoved || needsPath)
+                {
+                    UpdatePath();
+                    _lastTargetPosition = _target.position;
+                }
             }
         }
     }
@@ -65,15 +73,55 @@ public class FollowForPathfinding : MonoBehaviour {
         Vector2Int start = ClearIndexToMap(new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y)));
         Vector2Int end = ClearIndexToMap(new Vector2Int(Mathf.RoundToInt(_target.position.x), Mathf.RoundToInt(_target.position.y)));
 
-        _path = _pathfinding.FindPath(start, end, mapGenerator.walkableMap);
-        _currentWaypoint = 0;
+        List<Node> newPath = _pathfinding.FindPath(start, end, mapGenerator.walkableMap);
+
+        if (newPath != null && newPath.Count > 0)
+        {
+            // Preservar progreso: encontrar el waypoint más cercano en el nuevo path
+            if (_path != null && _path.Count > 0 && _currentWaypoint < _path.Count)
+            {
+                Vector2 currentTarget = _path[_currentWaypoint].position;
+                _currentWaypoint = FindClosestWaypointIndex(newPath, currentTarget);
+            }
+            else
+            {
+                _currentWaypoint = 0;
+            }
+
+            _path = newPath;
+        }
+    }
+
+    /// <summary>
+    /// Encuentra el índice del waypoint más cercano a una posición
+    /// </summary>
+    private int FindClosestWaypointIndex(List<Node> path, Vector2 position)
+    {
+        int closestIndex = 0;
+        float closestDistance = float.MaxValue;
+
+        for (int i = 0; i < path.Count; i++)
+        {
+            float distance = Vector2.Distance(path[i].position, position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestIndex = i;
+            }
+        }
+
+        return closestIndex;
     }
     private Vector2Int ClearIndexToMap(Vector2Int position)
     {
-        int newX = Mathf.Abs((int)_pathfinding.transform.position.x) + position.x;
-        int newY = Mathf.Abs((int)_pathfinding.transform.position.y) + position.y;
+        // Usar el offset correcto desde mapGenerator.InitialPosition
+        // NO usar Mathf.Abs() ya que destruye coordenadas negativas
+        Vector2Int offset = new Vector2Int(
+            Mathf.RoundToInt(mapGenerator.InitialPosition.x),
+            Mathf.RoundToInt(mapGenerator.InitialPosition.y)
+        );
 
-        position = new Vector2Int(newX, newY);
+        // Las coordenadas del mundo YA incluyen el offset, solo se pasan directamente
         return position;
     }
     private void FixedUpdate()
