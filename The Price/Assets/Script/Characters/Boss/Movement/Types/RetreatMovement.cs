@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -12,79 +11,54 @@ public class RetreatMovement : TypeMovement
     [Tooltip("Distancia de seguridad que el boss intenta mantener")]
     public float safeDistance = 6f;
 
-    [Tooltip("Duración del movimiento de retirada")]
-    public float retreatDuration = 1.5f;
-
-    [Tooltip("Si es verdadero, el boss retrocede en línea recta. Si es falso, retrocede con esquiva lateral.")]
+    [Tooltip("Si es verdadero, retrocede en línea recta. Si es falso, con esquiva lateral.")]
     public bool straightRetreat = false;
 
     [Tooltip("Ángulo de desvío lateral si no es retirada recta (grados)")]
     [Range(0, 90)]
     public float dodgeAngle = 45f;
 
-    public override void Move()
+    private Vector3 retreatDirection;
+    private bool hasCalculatedDirection = false;
+
+    public override void DataMove()
     {
-        StartCoroutine(RetreatSequence());
-    }
-
-    public override void CancelMove()
-    {
-        StopAllCoroutines();
-        _bossManager.CanMove = true;
-        _bossManager.inMove = false;
-    }
-
-    private IEnumerator RetreatSequence()
-    {
-        float elapsed = 0f;
-
-        // Calcular dirección de retirada
-        Vector3 playerPos = _player.transform.position;
-        Vector3 retreatDirection = (transform.position - playerPos).normalized;
-
-        // Si no es retirada recta, añadir componente lateral
-        if (!straightRetreat)
+        // Calcular dirección de retirada solo al inicio
+        if (!hasCalculatedDirection)
         {
-            // Elegir dirección lateral aleatoria
-            int lateralDir = Random.Range(0, 2) == 0 ? 1 : -1;
-            float angleRad = dodgeAngle * Mathf.Deg2Rad * lateralDir;
+            Vector3 playerPos = _playerStats.transform.position;
+            retreatDirection = (transform.position - playerPos).normalized;
 
-            // Rotar la dirección de retirada
-            float cos = Mathf.Cos(angleRad);
-            float sin = Mathf.Sin(angleRad);
-            Vector3 rotatedDir = new Vector3(
-                retreatDirection.x * cos - retreatDirection.y * sin,
-                retreatDirection.x * sin + retreatDirection.y * cos,
-                0
-            );
-
-            retreatDirection = rotatedDir.normalized;
-        }
-
-        while (elapsed < retreatDuration)
-        {
-            if (Pause.state != State.Game || LoadingScreen.inLoading)
+            // Si no es retirada recta, añadir componente lateral
+            if (!straightRetreat)
             {
-                yield return null;
-                continue;
+                int lateralDir = Random.Range(0, 2) == 0 ? 1 : -1;
+                float angleRad = dodgeAngle * Mathf.Deg2Rad * lateralDir;
+
+                float cos = Mathf.Cos(angleRad);
+                float sin = Mathf.Sin(angleRad);
+                Vector3 rotatedDir = new Vector3(
+                    retreatDirection.x * cos - retreatDirection.y * sin,
+                    retreatDirection.x * sin + retreatDirection.y * cos,
+                    0
+                );
+
+                retreatDirection = rotatedDir.normalized;
             }
 
-            // Verificar si ya está a distancia segura
-            float currentDistance = Vector3.Distance(transform.position, _player.transform.position);
-            if (currentDistance >= safeDistance)
-            {
-                break;
-            }
-
-            // Mover en dirección de retirada
-            Vector3 movement = retreatDirection * _bossManager.speed * Time.deltaTime;
-            transform.position += movement;
-
-            elapsed += Time.deltaTime;
-            yield return null;
+            hasCalculatedDirection = true;
         }
 
-        _bossManager.CanMove = true;
-        _bossManager.inMove = false;
+        // Verificar si ya está a distancia segura
+        float currentDistance = Vector3.Distance(transform.position, _playerStats.transform.position);
+        if (currentDistance >= safeDistance)
+        {
+            inMove = false;
+            hasCalculatedDirection = false;
+            return;
+        }
+
+        // Mover en dirección de retirada
+        transform.position += retreatDirection * speedMove * Time.deltaTime;
     }
 }
