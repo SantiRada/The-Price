@@ -142,7 +142,7 @@ public class RoomManager : MonoBehaviour {
     {
         advanceRoom?.Invoke();
 
-        _tutorialElement.StartCoroutine("VerifyRoom");
+        // Tutorial system removed
 
         for (int i = 0; i < statsPerRoom.Length; i++) { statsPerRoom[i].gameObject.SetActive(false); }
 
