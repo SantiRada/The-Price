@@ -94,7 +94,7 @@ public class Projectile : MonoBehaviour {
             }
         }
 
-        _rb2d.linearVelocity = _target * speedMovement;
+        _rb2d.velocity = _target * speedMovement;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

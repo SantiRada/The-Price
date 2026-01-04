@@ -78,7 +78,7 @@ public class BossData : ScriptableObject
 
     [Header("Rewards")]
     [Tooltip("Cantidad de oro que suelta al morir")]
-    public CountGold goldReward = CountGold.medium;
+    public CountGold goldReward = CountGold.Medium;
 
     [Tooltip("Probabilidad de soltar objetos especiales (0-100)")]
     [Range(0, 100)]

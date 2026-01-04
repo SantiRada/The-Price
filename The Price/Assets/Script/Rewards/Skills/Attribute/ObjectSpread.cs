@@ -47,7 +47,7 @@ public class ObjectSpread : MonoBehaviour {
                 enemyRigidbody.AddForce(direction * (intensity / 20), ForceMode2D.Impulse);
 
                 float maxVelocity = 10.0f;  // Adjust this value as needed
-                enemyRigidbody.linearVelocity = Vector2.ClampMagnitude(enemyRigidbody.linearVelocity, maxVelocity);
+                enemyRigidbody.velocity = Vector2.ClampMagnitude(enemyRigidbody.velocity, maxVelocity);
             }
             yield return new WaitForSeconds(0.05f);
         }
