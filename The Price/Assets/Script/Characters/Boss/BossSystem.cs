@@ -105,7 +105,7 @@ public class BossSystem : EnemyBase
         shield = bossData.initialShield;
         damage = bossData.baseDamage;
         speed = bossData.baseSpeed;
-        defense = bossData.defense;
+        // Nota: defense no está en EnemyBase, se puede implementar en el futuro si es necesario
 
         // Sistema de fases
         changePhasePerLife = bossData.changePhaseByHealth;

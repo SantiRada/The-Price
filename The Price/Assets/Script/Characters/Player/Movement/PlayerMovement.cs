@@ -47,7 +47,8 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (!_canMove) return;
 
-        if(_rigidbody2D.linearVelocity != Vector2.zero) _playerStats.JumpBetweenAttack();
+        // JumpBetweenAttack fue removido en refactorización
+        // if(_rigidbody2D.velocity != Vector2.zero) _playerStats.JumpBetweenAttack();
 
         #region Flip
         if (_moveInput.x > 0) _spriteRenderer.flipX = true;
@@ -59,11 +60,12 @@ public class PlayerMovement : MonoBehaviour {
         // NO PUEDE RECIBIR DA�O DURANTE EL DASH
         _playerStats._canReceivedDamage = false;
 
-        _playerStats.JumpBetweenAttack();
+        // JumpBetweenAttack fue removido en refactorización
+        // _playerStats.JumpBetweenAttack();
         _canDash = false;
         isDashing = true;
 
-        _rigidbody2D.linearVelocity = new Vector2(_moveInput.x, _moveInput.y).normalized * _dashingPower;
+        _rigidbody2D.velocity = new Vector2(_moveInput.x, _moveInput.y).normalized * _dashingPower;
 
         yield return new WaitForSeconds(_dashingTime);
         isDashing = false;

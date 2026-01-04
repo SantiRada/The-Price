@@ -80,15 +80,12 @@ public class WeaponManagerUI : MonoBehaviour {
                 canAdvance = true;
                 rnd = Random.Range(0, weapons.Count);
 
-                for(int i = 0; i < _playerStats.weapons.Count; i++)
+                // Sistema simplificado: solo 1 arma
+                if (_playerStats.weapon != null)
                 {
-                    if (_playerStats.weapons[i] != null)
+                    if (weapons[rnd].weaponID == _playerStats.weapon.weaponID)
                     {
-                        if (weapons[rnd].weaponID == _playerStats.weapons[i].weaponID)
-                        {
-                            canAdvance = false;
-                            break;
-                        }
+                        canAdvance = false;
                     }
                 }
 
@@ -111,30 +108,21 @@ public class WeaponManagerUI : MonoBehaviour {
         nameWeapon.text = LanguageManager.GetValue("Menu", weapon.nameWeapon);
         descWeapon.text = LanguageManager.GetValue("Menu", weapon.descWeapon);
 
-        if(weapon.damageWeapon != 0) dataWeapon.text = weapon.damageWeapon + " > " + weapon.damageWeapon +  " > <color=yellow>" + weapon.damageFinalHit + "</color>";
+        if(weapon.damageWeapon != 0) dataWeapon.text = "Damage: " + weapon.damageWeapon;
         else dataWeapon.text = LanguageManager.GetValue("Menu", 81);
 
-        // CURRENT CONTENT
+        // CURRENT CONTENT - Sistema simplificado: solo 1 arma
         for (int i = 0; i < currentImgWeapon.Length; i++)
         {
-            if (_playerStats.weapons.Count > i)
+            if (i == 0 && _playerStats.weapon != null)
             {
-                if (_playerStats.weapons[i] != null)
-                {
-                    currentImgWeapon[i].sprite = _playerStats.weapons[i].spr;
-                    currentNameWeapon[i].text = LanguageManager.GetValue("Menu", _playerStats.weapons[i].nameWeapon);
-                    currentDescWeapon[i].text = LanguageManager.GetValue("Menu", _playerStats.weapons[i].descWeapon);
-                    if (_playerStats.weapons[i].damageWeapon != 0)
-                        currentDataWeapon[i].text = _playerStats.weapons[i].damageWeapon + " > " + _playerStats.weapons[i].damageWeapon + " > <color=yellow>" + _playerStats.weapons[i].damageFinalHit + "</color>";
-                    else
-                        currentDataWeapon[i].text = LanguageManager.GetValue("Menu", 81);
-                }
+                currentImgWeapon[i].sprite = _playerStats.weapon.spr;
+                currentNameWeapon[i].text = LanguageManager.GetValue("Menu", _playerStats.weapon.nameWeapon);
+                currentDescWeapon[i].text = LanguageManager.GetValue("Menu", _playerStats.weapon.descWeapon);
+                if (_playerStats.weapon.damageWeapon != 0)
+                    currentDataWeapon[i].text = "Damage: " + _playerStats.weapon.damageWeapon;
                 else
-                {
-                    currentNameWeapon[i].text = "";
-                    currentDescWeapon[i].text = "";
-                    currentDataWeapon[i].text = "";
-                }
+                    currentDataWeapon[i].text = LanguageManager.GetValue("Menu", 81);
             }
             else
             {

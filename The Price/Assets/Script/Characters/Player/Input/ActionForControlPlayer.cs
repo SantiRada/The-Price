@@ -40,7 +40,11 @@ public class ActionForControlPlayer : MonoBehaviour {
         _crosshair = GetComponentInChildren<CrosshairData>();
         _inputSystem = FindAnyObjectByType<InputSystemManager>();
     }
-    private void Start() { PlayerStats.changesInWeapons += ChangesWeapons; }
+    private void Start()
+    {
+        // changesInWeapons evento fue removido en refactorización (solo hay 1 arma ahora)
+        ChangesWeapons(); // Inicializar arma directamente
+    }
     private void Update()
     {
         DelayPerPressNotHold();

@@ -26,11 +26,10 @@ public class TutorialTerrenal : Tutorial {
     }
     public override void CallMadeInteraction()
     {
-        countWeapon = 1;
+        // Sistema simplificado: solo hay 1 arma ahora
+        countWeapon = (_player.weapon != null) ? 1 : 0;
 
-        for(int i = 0; i < _player.weapons.Count; i++) { if (_player.weapons[i] != null) countWeapon++; }
-
-        if(countWeapon >= 2) { RoomManager.CallMadeInteraction(); }
+        if(countWeapon >= 1) { RoomManager.CallMadeInteraction(); }
     }
     protected override IEnumerator ChangesInZeroRoom()
     {
