@@ -4,18 +4,41 @@ using UnityEngine;
 public class AreaAttackBoss : AttackBoss
 {
 
-    // Retorna la posición del enemigo como punto de origen del ataque
+    // Retorna la posiciï¿½n del enemigo como punto de origen del ataque
     protected override Vector3 GetPosition() { return enemyParent.transform.position; }
+
+    protected override void CreateGuide()
+    {
+        if (guideObj != null)
+        {
+            Vector3 attackPos = enemyParent.transform.position;
+            guideInScene = Instantiate(guideObj, attackPos, Quaternion.identity);
+
+            // Configurar guÃ­a de Ã¡rea circular
+            AreaGuide areaGuide = guideInScene.GetComponent<AreaGuide>();
+            if (areaGuide != null)
+            {
+                AreaGuideConfig config = new AreaGuideConfig
+                {
+                    origin = attackPos,
+                    radius = distanceToAttack // Radio del Ã¡rea de efecto
+                };
+                areaGuide.Configure(config);
+            }
+
+            Destroy(guideInScene, timeToGuide);
+        }
+    }
 
     protected override IEnumerator LaunchedAttack()
     {
-        // Instancia el objeto visual del ataque en la posición indicada
+        // Instancia el objeto visual del ataque en la posiciï¿½n indicada
         ObjectPerDamage obj = Instantiate(visualAttack.gameObject, posInScene, Quaternion.identity).GetComponent<ObjectPerDamage>();
 
-        // Configura el daño y tiempo de vida del objeto de ataque
+        // Configura el daï¿½o y tiempo de vida del objeto de ataque
         obj.SetValues(GetDamage(), timeToDestroy);
 
-        // Pequeña espera tras lanzar el ataque
+        // Pequeï¿½a espera tras lanzar el ataque
         yield return new WaitForSeconds(0.1f);
     }
 }

@@ -4,21 +4,43 @@ using UnityEngine;
 public class ProjectileAttackBoss : AttackBoss {
 
     [Header("Data Projectile")]
-    [Tooltip("Distancia máxima que recorrerá el proyectil")]
+    [Tooltip("Distancia mï¿½xima que recorrerï¿½ el proyectil")]
     public float distanceProjectile;
 
-    [Tooltip("Velocidad a la que se moverá el proyectil")]
+    [Tooltip("Velocidad a la que se moverï¿½ el proyectil")]
     public float speedProjectile;
 
     [Tooltip("Si es verdadero, el proyectil puede atravesar objetos o enemigos")]
     public bool canTraverse;
 
-    private void Start() { guideCreated += ChangeValuesGuide; }
-    private void ChangeValuesGuide() { guideInScene.GetComponent<GuideProjectile>().SetSize(GetPlayerPosition(), distanceProjectile, true); }
+    protected override void CreateGuide()
+    {
+        if (guideObj != null)
+        {
+            guideInScene = Instantiate(guideObj, enemyParent.transform.position, Quaternion.identity);
+
+            // Configurar guÃ­a lineal desde boss hacia jugador
+            LinearGuide linearGuide = guideInScene.GetComponent<LinearGuide>();
+            if (linearGuide != null)
+            {
+                LinearGuideConfig config = new LinearGuideConfig
+                {
+                    origin = enemyParent.transform.position,
+                    target = GetPlayerPosition(),
+                    size = distanceProjectile,
+                    targetTransform = _player.transform // Seguir al jugador
+                };
+                linearGuide.Configure(config);
+            }
+
+            Destroy(guideInScene, timeToGuide);
+        }
+    }
+
     protected override Vector3 GetPosition() { return enemyParent.transform.position; }
     protected override IEnumerator LaunchedAttack()
     {
-        // Instancia el proyectil y configura sus parámetros iniciales como daño, dirección, velocidad, etc.
+        // Instancia el proyectil y configura sus parï¿½metros iniciales como daï¿½o, direcciï¿½n, velocidad, etc.
         Projectile obj = Instantiate(visualAttack.gameObject, GetPosition(), Quaternion.identity).GetComponent<Projectile>();
         obj.SetterValues(enemyParent.gameObject, distanceProjectile, GetDamage(), canTraverse, -(GetPosition() - GetPlayerPosition()), 2, speedProjectile);
         yield return new WaitForSeconds(0.1f);

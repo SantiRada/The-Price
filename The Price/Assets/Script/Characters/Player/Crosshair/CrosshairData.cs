@@ -9,7 +9,7 @@ public class CrosshairData : MonoBehaviour {
     private Vector2 _direction, _posEnemy;
 
     [Header("Auto Crosshair Data")]
-    [SerializeField] private int _levelHelp = 4;
+    [SerializeField] private float _detectionRadius = 8f; // Radio de detecci\u00f3n circular
     public bool active = true;
     private Vector2 _directionBase;
 
@@ -17,38 +17,40 @@ public class CrosshairData : MonoBehaviour {
     public List<GameObject> enemies = new List<GameObject>();
     public float delayBetweenRedirection;
     private float delayBaseRedirection;
-    private BoxCollider2D _sectorCross;
     private ActionForControlPlayer _controlPlayer;
     private int index = 0;
     private bool crossWithStick = false;
 
+    [Header("Debug")]
+    [SerializeField] private bool showDetectionRadius = false; // Para debug visual
+
     private void Awake()
     {
-        _sectorCross = GetComponent<BoxCollider2D>();
         _controlPlayer = FindAnyObjectByType<ActionForControlPlayer>();
     }
+
     private void Start()
     {
         delayBaseRedirection = delayBetweenRedirection;
         delayBetweenRedirection = 0;
-
-        if (active)
-        {
-            _sectorCross.offset = new Vector2(0, _levelHelp * 0.75f);
-            _sectorCross.size = new Vector2(_levelHelp, _levelHelp * 1.5f);
-        }
-        else { _sectorCross.enabled = false; }
     }
+
     private void Update()
     {
         if (Pause.Comprobation(State.Game)) return;
+
+        // Actualizar lista de enemigos en rango circular
+        if (active)
+        {
+            UpdateEnemiesInRange();
+        }
 
         if (enemies.Count != 0)
         {
             Vector2 rightStick = _controlPlayer.RightStick();
             if (rightStick != Vector2.zero || crossWithStick)
             {
-                // SIRVE PARA QUE AL TOCAR EL STICK DERECHO MIRES A ALGUIEN MÁS QUE ESTÉ CERCA
+                // SIRVE PARA QUE AL TOCAR EL STICK DERECHO MIRES A ALGUIEN M\u00c1S QUE EST\u00c9 CERCA
                 delayBetweenRedirection -= Time.deltaTime;
 
                 if(delayBetweenRedirection <= 0)
@@ -58,16 +60,38 @@ public class CrosshairData : MonoBehaviour {
                 }
 
             }
-            else { RevaluateIndex(); /* Sirve para que se haga auto-aim al enemigo más cercano al player */ }
+            else { RevaluateIndex(); /* Sirve para que se haga auto-aim al enemigo m\u00e1s cercano al player */ }
 
-            // VERIFICACIÓN DE QUE ESTE OBJETIVO SIGA EN LA ESCENA Y EN LA VISTA
+            // VERIFICACI\u00d3N DE QUE ESTE OBJETIVO SIGA EN LA ESCENA Y EN LA VISTA
             if (index > (enemies.Count - 1)) RevaluateIndex();
 
-            _posEnemy = enemies[index].transform.position;
+            if (enemies.Count > 0 && index < enemies.Count && enemies[index] != null)
+            {
+                _posEnemy = enemies[index].transform.position;
+            }
         }
         else { index = 0; crossWithStick = false; }
 
         Crosshair();
+    }
+
+    /// <summary>
+    /// Actualiza la lista de enemigos usando detecci\u00f3n circular en 360\u00b0
+    /// </summary>
+    private void UpdateEnemiesInRange()
+    {
+        enemies.Clear();
+
+        // Detecci\u00f3n circular omnidireccional
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, _detectionRadius);
+
+        foreach (Collider2D collider in hitColliders)
+        {
+            if (collider.CompareTag("Enemy") || collider.CompareTag("Boss"))
+            {
+                enemies.Add(collider.gameObject);
+            }
+        }
     }
     private void VerifyRightStick(Vector2 rightStick)
     {
@@ -78,7 +102,7 @@ public class CrosshairData : MonoBehaviour {
 
         #region CreateSublist
         Dictionary<GameObject, int> sublistEnemies = new Dictionary<GameObject, int>();
-        // CAMBIAR AL ENEMIGO QUE ESTÉ A LA IZQUIERDA
+        // CAMBIAR AL ENEMIGO QUE ESTï¿½ A LA IZQUIERDA
         for (int i = 0; i < enemies.Count; i++)
         {
             if (i == index) continue;
@@ -151,7 +175,7 @@ public class CrosshairData : MonoBehaviour {
     }
     private void Crosshair()
     {
-        // ESPACIO DE CORTE SEGÚN AUTO-AIM
+        // ESPACIO DE CORTE SEGï¿½N AUTO-AIM
         if (active)
         {
             if(_posEnemy != Vector2.zero && _posEnemy != null)
@@ -172,19 +196,17 @@ public class CrosshairData : MonoBehaviour {
 
         if (_direction != Vector2.zero) transform.localPosition = Vector3.Slerp(transform.position, _direction, _rotationSpeed);
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Enemy")) { enemies.Add(collision.gameObject); }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "Enemy")
-        {
-            enemies.Remove(collision.gameObject);
 
-            _posEnemy = Vector2.zero;
+    // Debug visual para ver el radio de detecci\u00f3n
+    private void OnDrawGizmosSelected()
+    {
+        if (showDetectionRadius)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, _detectionRadius);
         }
     }
+
     // ---- GETTERS ---- //
     public Vector2 GetPosEnemy() { return _posEnemy; }
     public void SetAimDirection(Vector2 direction) { _directionBase = direction; }
