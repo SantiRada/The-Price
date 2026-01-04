@@ -28,13 +28,7 @@ public class DeadSystem : MonoBehaviour {
     [HideInInspector] public int killedBoss_Cielo;
     [HideInInspector] public int killedBoss_Infierno;
     [Space]
-    [HideInInspector] public int killedMaxBoss_Terrenal;
-    [HideInInspector] public int killedMaxBoss_Cielo;
-    [HideInInspector] public int killedMaxBoss_Infierno;
-    [Space]
     [HideInInspector] public bool killedThanatos = false;
-    [Space]
-    [HideInInspector] public bool canHaveSouls;
 
     [Header("Current Data")]
     public Worlds currentWorld;
@@ -180,20 +174,5 @@ public class DeadSystem : MonoBehaviour {
             currentWorld = nextWorld;
             _saveLoad.SaveData(ReasonSave.deadSystem);
         }
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Soul")) { if (PlayerActionStates.IsUse) { PickUpSouls(collision.gameObject); } }
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Soul")) { if(PlayerActionStates.IsUse || PlayerActionStates.IsDashing) { PickUpSouls(collision.gameObject); } }
-    }
-    private void PickUpSouls(GameObject obj)
-    {
-        canHaveSouls = true;
-        _hud.ShowSouls();
-        FindAnyObjectByType<RoomManager>().MadeInteraction();
-        Destroy(obj);
     }
 }

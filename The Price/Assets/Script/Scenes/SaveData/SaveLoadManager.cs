@@ -98,14 +98,23 @@ public class SaveLoadManager : MonoBehaviour {
             if (_hud == null) return;
 
             _hud.SetGold(_player.gold);
-            _hud.SetSouls(_player.souls);
 
-            // Cargar arma (solo 1)
-            _playerStats.weapon = LoadWeapon(_player.weaponID);
+            // Cargar arma (solo 1) - usar SetWeapon para que se instancie correctamente
+            WeaponSystem loadedWeapon = LoadWeapon(_player.weaponID);
+            if (loadedWeapon != null)
+            {
+                _playerStats.SetWeapon(loadedWeapon);
+            }
 
             // Cargar objetos y habilidades
             _playerStats.objects = LoadObjects(_player.objects);
             _playerStats.skills = LoadSkills(_player.skills);
+
+            // Actualizar UI de habilidades
+            if (ComponentHelper.TryFindObjectQuiet(out StatsInUI statsUI))
+            {
+                statsUI.SetChangeSkillsInUI(_playerStats.skills);
+            }
         }
 
         //// FUNCIONAMIENTO PARA WORLDS ----------------- ////
@@ -191,8 +200,6 @@ public class SaveLoadManager : MonoBehaviour {
         _player.pv = _playerStats.GetterStats(0, false);
         _player.concentracion = _playerStats.GetterStats(1, false);
 
-        _player.canHaveSouls = _deadSystem.canHaveSouls;
-        _player.souls = _hud.GetSouls();
         _player.gold = _hud.GetGold();
 
         // Guardar arma (solo 1)

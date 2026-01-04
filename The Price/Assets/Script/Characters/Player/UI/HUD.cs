@@ -13,9 +13,6 @@ public class HUD : MonoBehaviour {
     [Space]
     private int countGold = 0;
     [HideInInspector] public int countFinishGold = 0;
-    [Space]
-    private int countSouls = 0;
-    [HideInInspector] public int countFinishSouls;
 
     [Header("Bars")]
     public TextMeshProUGUI textHealth;
@@ -31,20 +28,15 @@ public class HUD : MonoBehaviour {
     [Header("Gold")]
     public TextMeshProUGUI goldText;
 
-    [Header("Souls")]
-    public GameObject sectorSouls;
-    public TextMeshProUGUI soulsText;
-
     [Header("Weapon & Skills")]
-    public Image[] weapons;
-    public Image[] skills;
+    public Image weapon; // Solo 1 slot de arma
+    public Image[] skills; // 2 slots de habilidades
 
     [Header("Private Content")]
     private PlayerStats _player;
     private DeadSystem _deadSystem;
 
     private static int _staticCountGold;
-    private static int _staticCountSouls;
 
     private void Awake()
     {
@@ -55,17 +47,15 @@ public class HUD : MonoBehaviour {
     {
         canvasDelay.alpha = 0;
         delayBaseHealth = delayToLessHealth;
-        countFinishSouls = countSouls;
 
         goldText.text = countGold.ToString();
-        soulsText.text = countSouls.ToString();
         textHealth.text = _player.GetterStats(0, false).ToString() + "/" + _player.GetterStats(0, true).ToString();
 
-        if (_deadSystem.canHaveSouls) sectorSouls.gameObject.SetActive(true);
-        else sectorSouls.gameObject.SetActive(false);
+        // Solo 2 skills máximo
+        for (int i = 0; i < skills.Length && i < 2; i++) { if (skills[i].sprite == null) { skills[i].gameObject.SetActive(false); } }
 
-        for (int i = 0; i < skills.Length; i++) { if (skills[i].sprite == null) { skills[i].gameObject.SetActive(false); } }
-        for (int i = 0; i < weapons.Length; i++) { if (weapons[i].sprite == null) { weapons[i].gameObject.SetActive(false); } }
+        // Solo 1 arma
+        if (weapon != null && weapon.sprite == null) { weapon.gameObject.SetActive(false); }
     }
     private void Update()
     {
@@ -77,7 +67,6 @@ public class HUD : MonoBehaviour {
         if (delayToLessHealth <= 0) { StartCoroutine("UpdateHealthFeedback"); }
 
         _staticCountGold = countFinishGold;
-        _staticCountSouls = countFinishSouls;
     }
     private IEnumerator IncreaseGold()
     {
@@ -87,17 +76,6 @@ public class HUD : MonoBehaviour {
         {
             countGold++;
             goldText.text = countGold.ToString();
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-    private IEnumerator IncreaseSouls()
-    {
-        yield return new WaitForSeconds(0.25f);
-
-        while (countSouls < countFinishSouls)
-        {
-            countSouls++;
-            soulsText.text = countSouls.ToString();
             yield return new WaitForSeconds(0.1f);
         }
     }
@@ -119,13 +97,6 @@ public class HUD : MonoBehaviour {
         }
     }
     // ---- SETTERS ---- //
-    public void ShowSouls() { sectorSouls.gameObject.SetActive(true); }
-    public void SetSouls(int souls)
-    {
-        countFinishSouls += souls;
-
-        StartCoroutine("IncreaseSouls");
-    }
     public void SetGold(int gold)
     {
         countFinishGold += gold;
@@ -150,21 +121,25 @@ public class HUD : MonoBehaviour {
         concenBar.fillAmount = concentracion / concentracionMax;
         StartCoroutine("UpdateConcentracionFeedback");
     }
-    public void SetWeapon(int pos, Sprite spr)
+    public void SetWeapon(Sprite spr)
     {
-        weapons[pos].gameObject.SetActive(true);
-
-        weapons[pos].sprite = spr;
+        if (weapon != null)
+        {
+            weapon.gameObject.SetActive(true);
+            weapon.sprite = spr;
+        }
     }
     public void SetSkills(int pos, Sprite spr)
     {
-        skills[pos].gameObject.SetActive(true);
-
-        skills[pos].sprite = spr;
+        // Solo 2 skills máximo
+        if (pos < 2 && skills != null && pos < skills.Length)
+        {
+            skills[pos].gameObject.SetActive(true);
+            skills[pos].sprite = spr;
+        }
     }
     // ---- SETTERS && GETTERS ---- //
     public int GetGold() { return countFinishGold; }
-    public int GetSouls() { return countSouls; }
     private IEnumerator HealHealthbarBasePerRoom()
     {
         yield return new WaitForSeconds(0.25f);
@@ -204,5 +179,4 @@ public class HUD : MonoBehaviour {
     }
     // ---- STATIC ---- //
     public static int GetCountGold() { return _staticCountGold; }
-    public static int  GetCountSouls() { return _staticCountSouls; }
 }

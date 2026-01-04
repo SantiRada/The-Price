@@ -22,17 +22,24 @@ public class Distance : WeaponSystem {
     // ---- FUNCION INTEGRA ---- //
     private void CreateProjectile(bool isFinalHit)
     {
-        Projectile pr = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
+        // Usar Object Pooling para obtener proyectiles
+        Projectile pr = ProjectilePool.Instance.GetProjectile(projectile, transform.position, Quaternion.identity);
+        if (pr == null) return;
+
         Vector3 direction = _crosshair.GetCurrentAimDirection();
 
         if (isFinalHit)
         {
             if(typeFinalHit == DistanceFinalHit.theyAreQuantity)
             {
+                // Crear proyectiles adicionales para el golpe final
                 for (int i = 0; i < 2; i++)
                 {
-                    Projectile proyectil = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
-                    proyectil.SetterValues(_playerStats.gameObject, distanceAttack, damage, canTraverse, direction, 0, speedProjectile);
+                    Projectile proyectil = ProjectilePool.Instance.GetProjectile(projectile, transform.position, Quaternion.identity);
+                    if (proyectil != null)
+                    {
+                        proyectil.SetterValues(_playerStats.gameObject, distanceAttack, damage, canTraverse, direction, 0, speedProjectile);
+                    }
                 }
             }
             else if(typeFinalHit == DistanceFinalHit.theyAreBig)

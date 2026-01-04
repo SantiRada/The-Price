@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour {
     }
     private void Update()
     {
-        if (Pause.inPause || Pause.state != State.Game) return;
+        if (!Pause.IsGamePlaying()) return;
 
         Movement();
     }
@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (isDashing) return;
 
-        if (_canMove && !Pause.inPause && Pause.state == State.Game) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * (int)_playerStats.GetterStats(2, false) * Time.fixedDeltaTime);
+        if (_canMove && Pause.IsGamePlaying()) _rigidbody2D.MovePosition(_rigidbody2D.position + _moveInput * (int)_playerStats.GetterStats(2, false) * Time.fixedDeltaTime);
         else _rigidbody2D.velocity = Vector2.zero;
     }
     private void Movement()
@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour {
     }
     public IEnumerator Roll()
     {
-        // NO PUEDE RECIBIR DAÑO DURANTE EL DASH
+        // NO PUEDE RECIBIR DAï¿½O DURANTE EL DASH
         _playerStats._canReceivedDamage = false;
 
         _playerStats.JumpBetweenAttack();
@@ -71,7 +71,7 @@ public class PlayerMovement : MonoBehaviour {
         _canDash = true;
         PlayerActionStates.IsDashing = false;
 
-        // PUEDE RECIBIR DAÑO NUEVAMENTE
+        // PUEDE RECIBIR DAï¿½O NUEVAMENTE
         _playerStats._canReceivedDamage = true;
     }
     // ---- SETTERS & GETTERS ---- //

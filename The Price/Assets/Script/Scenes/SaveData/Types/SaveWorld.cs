@@ -27,9 +27,5 @@ public class SaveWorld
     public int killedBoss_Cielo;
     public int killedBoss_Infierno;
 
-    public int killedMaxBoss_Terrenal;
-    public int killedMaxBoss_Cielo;
-    public int killedMaxBoss_Infierno;
-
     public bool killedThanatos = false;
 }

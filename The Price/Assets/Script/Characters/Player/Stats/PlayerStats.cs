@@ -480,7 +480,7 @@ public class PlayerStats : MonoBehaviour {
 
         if (_statsInUI != null)
         {
-            _statsInUI.SetWeaponInHUD(0, weapon.spr);
+            _statsInUI.SetWeaponInHUD(weapon.spr);
         }
 
         return previousWeaponID;

@@ -21,9 +21,7 @@ public class SavePlayer
     public float concentracion;
 
     // Recursos
-    public bool canHaveSouls;
     public int gold;
-    public int souls;
 
     // Arma (solo 1)
     public int weaponID = -1; // -1 = sin arma

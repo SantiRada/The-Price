@@ -21,8 +21,8 @@ public class StatsInUI : MonoBehaviour {
 
     [Header("Content Stats UI")]
     public TextMeshProUGUI[] textStats;
-    public GameObject[] parentWeapon;
-    public Image[] weapons;
+    public GameObject parentWeapon; // Solo 1 arma
+    public Image weapon; // Solo 1 arma
 
     [Header("Content Skills UI")]
     public Image[] skillOptions;
@@ -108,11 +108,14 @@ public class StatsInUI : MonoBehaviour {
         if(pos == 0) _hud.SetHealthbar(value, valueMax);
         else _hud.SetConcentracion(value, valueMax);
     }
-    public void SetWeaponInHUD(int index, Sprite spr)
+    public void SetWeaponInHUD(Sprite spr)
     {
-        weapons[index].sprite = spr;
+        if (weapon != null)
+        {
+            weapon.sprite = spr;
+        }
 
-        _hud.SetWeapon(index, spr);
+        _hud.SetWeapon(spr);
     }
     // ---- WINDOW OBJECTS ---- //
     public void AddObjectInUI()
@@ -195,16 +198,18 @@ public class StatsInUI : MonoBehaviour {
     }
     public void ChangeValueInUI(int type)
     {
-        if (type == -1) { for (int i = 0; i < 11; i++) { ChangeStatsInUI(i, _player.GetterStats(i, false), _player.GetterStats(i, true)); } }
+        // Solo 7 stats ahora (0-6)
+        if (type == -1) { for (int i = 0; i < 7; i++) { ChangeStatsInUI(i, _player.GetterStats(i, false), _player.GetterStats(i, true)); } }
         else { ChangeStatsInUI(type, _player.GetterStats(type, false), _player.GetterStats(type, true)); }
     }
     private void ChangeStatsInUI(int i, float value, float valueMax)
     {
-        if (i == 0 || i == 1 || i == 10)
+        // Stats: 0=PV, 1=Concentracion, 2=VelMov, 3=VelAtk, 4=SkillDmg, 5=Dmg, 6=CritChance
+        if (i == 0 || i == 1) // PV y Concentración muestran current/max
             textStats[i].text = value.ToString() + "/" + valueMax.ToString();
-        else if (i == 2 || i == 3 || i == 6 || i == 7 || i == 8 || i == 9)
+        else if (i == 2 || i == 3 || i == 6) // Velocidades y CritChance en porcentaje
             textStats[i].text = valueMax.ToString() + "%";
-        else if (i == 4 || i == 5)
+        else if (i == 4 || i == 5) // SkillDamage y Damage en valor absoluto
             textStats[i].text = valueMax.ToString();
     }
     private IEnumerator ChangePosWeapon()

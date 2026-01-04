@@ -5,7 +5,7 @@ using UnityEngine;
 using TMPro;
 using static ActionForControlPlayer;
 
-public enum TypeRoom { Null, Basic, Gold, Skill, Aptitud, Object, Lore, Shop, MiniBoss, Boss, Astral, MaxBoss }
+public enum TypeRoom { Null, Basic, Gold, Skill, Aptitud, Object, Lore, Shop, MiniBoss, Boss, Astral }
 public class RoomManager : MonoBehaviour {
 
     [Header("Room Content")]
@@ -63,7 +63,7 @@ public class RoomManager : MonoBehaviour {
     [Header("Chest")]
     public bool canCreateChest;
     public float[] chestChance;
-    [Tooltip("Se debe ordenar desde el que menos posible sea que aparezca, al que más")] public GameObject[] typeChest;
+    [Tooltip("Se debe ordenar desde el que menos posible sea que aparezca, al que mï¿½s")] public GameObject[] typeChest;
 
     [Header("Map")]
     public WalkableMapGenerator walkableMap;
@@ -150,7 +150,7 @@ public class RoomManager : MonoBehaviour {
 
         _player._playerStats.ResetValuesPerRoom();
 
-        // VERIFICA OBJETOS EN ESCENA PARA ELIMINARLOS ANTES DE LA CREACIÓN DE UNA NUEVA SALA
+        // VERIFICA OBJETOS EN ESCENA PARA ELIMINARLOS ANTES DE LA CREACIï¿½N DE UNA NUEVA SALA
         SkillManager[] skills = FindObjectsByType<SkillManager>(FindObjectsSortMode.None);
         if (skills.Length > 0) { for (int i = 0; i < skills.Length; i++) { Destroy(skills[i].gameObject); } }
 
@@ -169,7 +169,7 @@ public class RoomManager : MonoBehaviour {
         Projectile[] pr = FindObjectsByType<Projectile>(FindObjectsSortMode.None);
         if (pr.Length > 0) for (int i = 0; i < pr.Length; i++) { Destroy(pr[i].gameObject); }
 
-        // ELIMINA TODOS LOS OBJETOS DE DAÑO
+        // ELIMINA TODOS LOS OBJETOS DE DAï¿½O
         ObjectPerDamage[] objDamage = FindObjectsByType<ObjectPerDamage>(FindObjectsSortMode.None);
         if (objDamage.Length > 0) for (int i = 0; i < objDamage.Length; i++) { Destroy(objDamage[i].gameObject); }
 
@@ -182,7 +182,7 @@ public class RoomManager : MonoBehaviour {
         _countRoomsComplete++;
         int rnd = UnityEngine.Random.Range(0, _roomPool.Length);
 
-        // --- CREAR SALA SEGÚN ESPACIO ACTUAL --- //
+        // --- CREAR SALA SEGï¿½N ESPACIO ACTUAL --- //
         CameraMovement.SetSize(SizeCamera.normal);
 
         if (_typeRooms[_countRoomsComplete] == TypeRoom.Basic)
@@ -221,13 +221,13 @@ public class RoomManager : MonoBehaviour {
         #region Chest
         if (canCreateChest)
         {
-            if (_typeRooms[_countRoomsComplete] != TypeRoom.MiniBoss && _typeRooms[_countRoomsComplete] != TypeRoom.Boss && _typeRooms[_countRoomsComplete] != TypeRoom.MaxBoss && _typeRooms[_countRoomsComplete] != TypeRoom.Shop)
+            if (_typeRooms[_countRoomsComplete] != TypeRoom.MiniBoss && _typeRooms[_countRoomsComplete] != TypeRoom.Boss && _typeRooms[_countRoomsComplete] != TypeRoom.Shop)
             {
                 int rndChest = UnityEngine.Random.Range(0, 100);
                 float x, y;
                 bool isWalkable;
 
-                // BUSCAR UNA POSICIÓN WALKABLE ALEATORIA PARA COLOCAR EL COFRE
+                // BUSCAR UNA POSICIï¿½N WALKABLE ALEATORIA PARA COLOCAR EL COFRE
                 do
                 {
                     x = UnityEngine.Random.Range(0, currentRoom.sizeMap.x);
@@ -266,9 +266,9 @@ public class RoomManager : MonoBehaviour {
 
         // Asignar las salas fijas
         _typeRooms[0] = TypeRoom.Basic;
-        _typeRooms[17] = TypeRoom.MaxBoss;
+        _typeRooms[17] = TypeRoom.Boss; // Boss final en lugar de MaxBoss
         _typeRooms[16] = TypeRoom.Astral;
-        _typeRooms[15] = TypeRoom.Boss;
+        _typeRooms[15] = TypeRoom.Gold;
         _typeRooms[7] = TypeRoom.MiniBoss;
         _typeRooms[8] = TypeRoom.Shop;
         _typeRooms[2] = TypeRoom.Skill;
@@ -283,7 +283,7 @@ public class RoomManager : MonoBehaviour {
         // Asignar salas Aptitudes
         SelectedOptionalRooms(TypeRoom.Aptitud, new int[] { 2, 6, 12, 14 }, 2, 4);
 
-        // Asignar salas aleatorias restantes a Oro y Básica
+        // Asignar salas aleatorias restantes a Oro y Bï¿½sica
         for (int i = 0; i < _typeRooms.Length; i++)
         {
             if (_typeRooms[i] == TypeRoom.Null) { _typeRooms[i] = TypeRoom.Gold; }
@@ -334,8 +334,7 @@ public class RoomManager : MonoBehaviour {
                 case 0: valuesData[i].text = _player._playerStats.countKillsInRoom.ToString(); break;
                 case 1: valuesData[i].text = _player._playerStats.countDamageInRoom.ToString(); break;
                 case 2: valuesData[i].text = _player._playerStats.countDamageReceivedInRoom.ToString(); break;
-                case 3: valuesData[i].text = HUD.GetCountSouls().ToString(); break;
-                case 4: valuesData[i].text = HUD.GetCountGold().ToString(); break;
+                case 3: valuesData[i].text = HUD.GetCountGold().ToString(); break;
             }
 
             yield return new WaitForSeconds(0.35f);
@@ -362,7 +361,7 @@ public class RoomManager : MonoBehaviour {
         }
 
         // INSTANCIA UN ARMA SOLO SI NO ES SALA DE BOSSES NI TIENDA
-        if (_typeRooms[_countRoomsComplete] != TypeRoom.Shop && _typeRooms[_countRoomsComplete] != TypeRoom.MiniBoss && _typeRooms[_countRoomsComplete] != TypeRoom.Boss && _typeRooms[_countRoomsComplete] != TypeRoom.MaxBoss && _typeRooms[_countRoomsComplete] != TypeRoom.Basic)
+        if (_typeRooms[_countRoomsComplete] != TypeRoom.Shop && _typeRooms[_countRoomsComplete] != TypeRoom.MiniBoss && _typeRooms[_countRoomsComplete] != TypeRoom.Boss && _typeRooms[_countRoomsComplete] != TypeRoom.Basic)
         {
             if (!GetComponent<CreatorTutorialRoom>())
             {
