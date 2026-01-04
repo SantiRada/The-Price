@@ -130,8 +130,8 @@ public class SaveLoadManager : MonoBehaviour {
             if (_world.reasonSave == ReasonSave.closeGame) _deadSystem.currentWorld = Worlds.Astral;
             else _deadSystem.currentWorld = (Worlds)_world.currentWorld;
 
-            if (_world.passedTutorial) PlayerPrefs.SetString("Position-" + (_world.positionGame), "Si");
-            else PlayerPrefs.SetString("Position-" + (_world.positionGame), "");
+            // Tutorial system removed - always set position as passed
+            PlayerPrefs.SetString("Position-" + (_world.positionGame), "Si");
 
             _deadSystem.wasInTerrenal = _world.wasInTerrenal;
             _deadSystem.wasInCielo = _world.wasInCielo;
@@ -161,12 +161,10 @@ public class SaveLoadManager : MonoBehaviour {
         if (_deadSystem == null || _world == null) return;
 
         _world.positionGame = PlayerPrefs.GetInt("PositionGame", 0);
-        _world.passedTutorial = (_deadSystem.wasInAstral > 0) ? true : false;
 
-        if (_world.passedTutorial) LunarCycle.isActive = true;
-
-        if (_world.passedTutorial) PlayerPrefs.SetString("Position-" + (_world.positionGame), "Si");
-        else PlayerPrefs.SetString("Position-" + (_world.positionGame), "");
+        // Tutorial system removed - always activate lunar cycle and position
+        LunarCycle.isActive = true;
+        PlayerPrefs.SetString("Position-" + (_world.positionGame), "Si");
 
         _world.reasonSave = reason;
         _world.currentWorld = (int)_deadSystem.currentWorld;

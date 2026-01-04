@@ -76,7 +76,6 @@ public class RoomManager : MonoBehaviour {
     [Header("Player Content")]
     private PlayerMovement _player;
     private TriggeringObject _triggering;
-    private Tutorial _tutorialElement;
 
     private void Awake()
     {
@@ -84,7 +83,6 @@ public class RoomManager : MonoBehaviour {
         _player = FindAnyObjectByType<PlayerMovement>();
         _saveLoad = FindAnyObjectByType<SaveLoadManager>();
         _triggering = _player.GetComponent<TriggeringObject>();
-        _tutorialElement = FindAnyObjectByType<Tutorial>();
     }
     private void Start()
     {
@@ -92,7 +90,7 @@ public class RoomManager : MonoBehaviour {
     }
     private void OnDestroy()
     {
-        walkableMap.completeMap -= () => _tutorialElement.StartCoroutine("VerifyRoom");
+        // Tutorial system removed
     }
     private void InitialValues()
     {
@@ -208,7 +206,19 @@ public class RoomManager : MonoBehaviour {
         textNextRoom.text += "Siguiente Sala: " + nextRoom;
         #endregion
 
-        _player.transform.position = currentRoom.spawnPlayer.transform.position;
+        // Esperar un frame para que Room se inicialice completamente
+        yield return null;
+
+        // Verificar que spawnPlayer esté asignado antes de acceder
+        if (currentRoom.spawnPlayer != null)
+        {
+            _player.transform.position = currentRoom.spawnPlayer.transform.position;
+        }
+        else
+        {
+            Debug.LogWarning("spawnPlayer no está asignado en Room. Usando posición por defecto.");
+            _player.transform.position = Vector3.zero;
+        }
 
         yield return new WaitForSeconds(0.1f);
 
@@ -257,12 +267,7 @@ public class RoomManager : MonoBehaviour {
     {
         _typeRooms = new TypeRoom[18];
 
-        if (GetComponent<CreatorTutorialRoom>())
-        {
-            madeInteraction = false;
-            _typeRooms = GetComponent<CreatorTutorialRoom>().CreateRooms();
-            return;
-        }
+        // Tutorial system removed
 
         // Asignar las salas fijas
         _typeRooms[0] = TypeRoom.Basic;
@@ -363,12 +368,8 @@ public class RoomManager : MonoBehaviour {
         // INSTANCIA UN ARMA SOLO SI NO ES SALA DE BOSSES NI TIENDA
         if (_typeRooms[_countRoomsComplete] != TypeRoom.Shop && _typeRooms[_countRoomsComplete] != TypeRoom.MiniBoss && _typeRooms[_countRoomsComplete] != TypeRoom.Boss && _typeRooms[_countRoomsComplete] != TypeRoom.Basic)
         {
-            if (!GetComponent<CreatorTutorialRoom>())
-            {
-                int rnd = UnityEngine.Random.Range(0, 100);
-
-                if (rnd < weaponChance) Instantiate(_weaponPlacement.gameObject, _player.transform.position, Quaternion.identity);
-            }
+            int rnd = UnityEngine.Random.Range(0, 100);
+            if (rnd < weaponChance) Instantiate(_weaponPlacement.gameObject, _player.transform.position, Quaternion.identity);
         }
 
         switch (_typeRooms[_countRoomsComplete])
@@ -376,8 +377,6 @@ public class RoomManager : MonoBehaviour {
             case TypeRoom.Gold: ManagerGold.CreateGold((_player.transform.position + Vector3.one), CountGold.Big); break;
             case TypeRoom.Skill:
                 Vector3 pos = currentRoom.posToReward;
-                if (_saveLoad.GetWorldData() != null) { if (!_saveLoad.GetWorldData().passedTutorial) pos = _player.transform.position; }
-
                 _rewardInScene = Instantiate(_rewardSkill, pos, Quaternion.identity);
                 break;
             case TypeRoom.Object: _rewardInScene = Instantiate(_rewardObject, currentRoom.posToReward, Quaternion.identity); break;

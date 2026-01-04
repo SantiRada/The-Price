@@ -3,7 +3,7 @@ public enum ReasonSave { Null, closeGame, deadSystem }
 public class SaveWorld
 {
     public int positionGame = 0;
-    public bool passedTutorial = false;
+    // Tutorial system removed
     public ReasonSave reasonSave;
     public int currentWorld = 0;
 
