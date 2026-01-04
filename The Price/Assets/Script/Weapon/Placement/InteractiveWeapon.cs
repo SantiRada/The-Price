@@ -20,7 +20,7 @@ public class InteractiveWeapon : Interactive {
     public override void RandomPool() { }
     public override void Select()
     {
-        if (FindAnyObjectByType<Tutorial>()) { FindAnyObjectByType<Tutorial>().CallMadeInteraction(); }
+        // Tutorial system removed
 
         if(weaponPrev != null) _weaponManager.SetWeaponPool(weaponPrev);
         _weaponManager.StartCoroutine("OpenWindow");
