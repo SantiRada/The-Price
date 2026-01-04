@@ -56,16 +56,14 @@ public class DeadSystem : MonoBehaviour {
 
         if (_saveLoad.GetWorldData() != null)
         {
-            if (_saveLoad.GetWorldData().passedTutorial)
+            // Tutorial system removed - always check for scene change
+            if (_saveLoad.GetWorldData().reasonSave == ReasonSave.deadSystem)
             {
-                if (_saveLoad.GetWorldData().reasonSave == ReasonSave.deadSystem)
+                if (SceneManager.GetActiveScene().name != currentWorld.ToString())
                 {
-                    if (SceneManager.GetActiveScene().name != currentWorld.ToString())
-                    {
-                        _saveLoad.SaveData(ReasonSave.Null);
-                        SceneManager.LoadScene(currentWorld.ToString());
-                        return;
-                    }
+                    _saveLoad.SaveData(ReasonSave.Null);
+                    SceneManager.LoadScene(currentWorld.ToString());
+                    return;
                 }
                 else if (_saveLoad.GetWorldData().reasonSave == ReasonSave.closeGame)
                 {
@@ -154,20 +152,7 @@ public class DeadSystem : MonoBehaviour {
         _playerStats.SetValue(10, -5, false);
 
         bool canChange = true;
-        if (_saveLoad.GetWorldData() != null)
-        {
-            if (!_saveLoad.GetWorldData().passedTutorial)
-            {
-                if (currentWorld == Worlds.Cielo)
-                {
-                    wasInAstral++;
-                    currentWorld = Worlds.Terrenal;
-                    nextWorld = Worlds.Astral;
-                    _saveLoad.SaveData(ReasonSave.closeGame);
-                    canChange = false;
-                }
-            }
-        }
+        // Tutorial system removed
 
         if (canChange)
         {

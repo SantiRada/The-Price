@@ -36,13 +36,35 @@ public class InteractiveManager : MonoBehaviour {
 
         if (!isFlair)
         {
-            string value = LanguageManager.GetValue(cnt, int.Parse(name));
+            // Usar TryParse para evitar excepciones si name no es un número válido
+            if (int.TryParse(name, out int nameIndex))
+            {
+                string value = LanguageManager.GetValue(cnt, nameIndex);
 
-            if(int.Parse(desc) != -1) _descContent[index].text = LanguageManager.GetValue(cnt, int.Parse(desc));
-            else _descContent[index].text = value;
+                if (int.TryParse(desc, out int descIndex) && descIndex != -1)
+                {
+                    _descContent[index].text = LanguageManager.GetValue(cnt, descIndex);
+                }
+                else
+                {
+                    _descContent[index].text = value;
+                }
 
-            if (index != 4) _nameContent[index].text = value;
-            else if(int.Parse(desc) != -1) _descContent[index].text += " <color=#" + colorNames.ToHexString() + ">" + value + "</color>";
+                if (index != 4)
+                {
+                    _nameContent[index].text = value;
+                }
+                else if (int.TryParse(desc, out int descIndex2) && descIndex2 != -1)
+                {
+                    _descContent[index].text += " <color=#" + colorNames.ToHexString() + ">" + value + "</color>";
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"InteractiveManager: name '{name}' no es un índice válido");
+                _nameContent[index].text = name; // Usar el string directamente si no es un número
+                _descContent[index].text = desc;
+            }
         }
         else
         {

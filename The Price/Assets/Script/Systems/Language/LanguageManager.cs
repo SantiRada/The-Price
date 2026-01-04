@@ -146,23 +146,47 @@ public class LanguageManager : MonoBehaviour {
     {
         string data = "";
         list = list.ToLower();
+
+        // Validación de índice
+        int arrayIndex = rowIndex - 1;
+
         switch (list)
         {
             case "menu":
-                if (_styleTDAH) data = _menuData[(rowIndex - 1), language];
-                else return _menuData[(rowIndex - 1), language];
+                if (arrayIndex < 0 || arrayIndex >= _menuData.GetLength(0))
+                {
+                    Debug.LogWarning($"LanguageManager: Index {rowIndex} fuera de rango para 'menu' (max: {_menuData.GetLength(0)})");
+                    return $"[MENU:{rowIndex}]";
+                }
+                if (_styleTDAH) data = _menuData[arrayIndex, language];
+                else return _menuData[arrayIndex, language];
                 break;
             case "skill":
-                if(_styleTDAH) data = _skillData[(rowIndex - 1), language];
-                else return _skillData[(rowIndex - 1), language];
+                if (arrayIndex < 0 || arrayIndex >= _skillData.GetLength(0))
+                {
+                    Debug.LogWarning($"LanguageManager: Index {rowIndex} fuera de rango para 'skill' (max: {_skillData.GetLength(0)})");
+                    return $"[SKILL:{rowIndex}]";
+                }
+                if(_styleTDAH) data = _skillData[arrayIndex, language];
+                else return _skillData[arrayIndex, language];
                 break;
             case "object":
-                if (_styleTDAH) data = _objectData[(rowIndex - 1), language];
-                else return _objectData[(rowIndex - 1), language];
+                if (arrayIndex < 0 || arrayIndex >= _objectData.GetLength(0))
+                {
+                    Debug.LogWarning($"LanguageManager: Index {rowIndex} fuera de rango para 'object' (max: {_objectData.GetLength(0)})");
+                    return $"[OBJECT:{rowIndex}]";
+                }
+                if (_styleTDAH) data = _objectData[arrayIndex, language];
+                else return _objectData[arrayIndex, language];
                 break;
             default:
-                if(_styleTDAH) data = _gameData[(rowIndex - 1), language];
-                else return _gameData[(rowIndex - 1), language];
+                if (arrayIndex < 0 || arrayIndex >= _gameData.GetLength(0))
+                {
+                    Debug.LogWarning($"LanguageManager: Index {rowIndex} fuera de rango para 'game' (max: {_gameData.GetLength(0)})");
+                    return $"[GAME:{rowIndex}]";
+                }
+                if(_styleTDAH) data = _gameData[arrayIndex, language];
+                else return _gameData[arrayIndex, language];
                 break;
         }
 
