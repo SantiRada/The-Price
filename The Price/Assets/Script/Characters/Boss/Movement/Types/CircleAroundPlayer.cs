@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -18,64 +17,35 @@ public class CircleAroundPlayer : TypeMovement
     [Range(-1, 1)]
     public int direction = 1;
 
-    [Tooltip("Duración del movimiento circular")]
-    public float moveDuration = 3f;
-
     private float currentAngle;
+    private bool initialized = false;
 
-    public override void Move()
+    public override void DataMove()
     {
-        if (direction == 0) direction = 1; // Asegurar que no sea 0
-        StartCoroutine(CircleMovement());
-    }
+        if (direction == 0) direction = 1;
 
-    public override void CancelMove()
-    {
-        StopAllCoroutines();
-        _bossManager.CanMove = true;
-        _bossManager.inMove = false;
-    }
+        Vector3 playerPos = _playerStats.transform.position;
 
-    private IEnumerator CircleMovement()
-    {
-        Vector3 playerPos = _player.transform.position;
-
-        // Calcular ángulo inicial basado en posición actual
-        Vector3 dirToPlayer = transform.position - playerPos;
-        currentAngle = Mathf.Atan2(dirToPlayer.y, dirToPlayer.x) * Mathf.Rad2Deg;
-
-        float elapsed = 0f;
-
-        while (elapsed < moveDuration)
+        // Inicializar ángulo solo una vez
+        if (!initialized)
         {
-            if (Pause.state != State.Game || LoadingScreen.inLoading)
-            {
-                yield return null;
-                continue;
-            }
-
-            // Actualizar posición del jugador para seguir su movimiento
-            playerPos = _player.transform.position;
-
-            // Incrementar ángulo
-            currentAngle += angularSpeed * direction * Time.deltaTime;
-
-            // Calcular nueva posición en el círculo
-            float radians = currentAngle * Mathf.Deg2Rad;
-            Vector3 targetPos = playerPos + new Vector3(
-                Mathf.Cos(radians) * orbitRadius,
-                Mathf.Sin(radians) * orbitRadius,
-                0
-            );
-
-            // Mover hacia la posición objetivo
-            transform.position = Vector2.MoveTowards(transform.position, targetPos, _bossManager.speed * Time.deltaTime);
-
-            elapsed += Time.deltaTime;
-            yield return null;
+            Vector3 dirToPlayer = transform.position - playerPos;
+            currentAngle = Mathf.Atan2(dirToPlayer.y, dirToPlayer.x) * Mathf.Rad2Deg;
+            initialized = true;
         }
 
-        _bossManager.CanMove = true;
-        _bossManager.inMove = false;
+        // Incrementar ángulo
+        currentAngle += angularSpeed * direction * Time.deltaTime;
+
+        // Calcular nueva posición en el círculo
+        float radians = currentAngle * Mathf.Deg2Rad;
+        Vector3 targetPos = playerPos + new Vector3(
+            Mathf.Cos(radians) * orbitRadius,
+            Mathf.Sin(radians) * orbitRadius,
+            0
+        );
+
+        // Mover hacia la posición objetivo
+        transform.position = Vector3.Lerp(transform.position, targetPos, speedMove * Time.deltaTime);
     }
 }
